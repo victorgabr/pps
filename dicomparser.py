@@ -7,10 +7,15 @@
 import logging
 import pandas as pd
 import numba as nb
+from scipy.interpolate import RegularGridInterpolator
 
 logger = logging.getLogger('dicomparser')
 import numpy as np
-import dicom
+
+try:
+    import pydicom as dicom
+except:
+    import dicom
 import random
 from PIL import Image
 from math import pow, sqrt
@@ -821,6 +826,7 @@ def pix_lut_numba(ds):
 class ScoringDicomParser(DicomParser):
     def __init__(self, dataset=None, filename=None):
         DicomParser.__init__(self, dataset=dataset, filename=filename)
+        self.interp_dose_plane = None
 
     def get_tps_data(self):
         """
@@ -840,6 +846,12 @@ class ScoringDicomParser(DicomParser):
             data['SoftwareVersions'] = self.ds.SoftwareVersions
 
         return data
+
+    def get_iso_position(self):
+
+        iso = self.ds.BeamSequence[0].ControlPointSequence[0].IsocenterPosition
+
+        return np.array(iso, dtype=float)
 
     def GetPatientToPixelLUT(self):
         """Get the image transformation matrix from the DICOM standard Part 3
@@ -889,3 +901,221 @@ class ScoringDicomParser(DicomParser):
             y.append(float(jmat[1]))
 
         return x, y
+
+    def GetStructures(self):
+        """Returns the structures (ROIs) with their coordinates."""
+
+        structures = {}
+
+        # Determine whether this is RT Structure Set file
+        if not (self.GetSOPClassUID() == 'rtss'):
+            return structures
+
+        # Locate the name and number of each ROI
+        if 'StructureSetROIs' in self.ds:
+            for item in self.ds.StructureSetROIs:
+                data = {}
+                number = item.ROINumber
+                data['id'] = number
+                data['name'] = item.ROIName
+                logger.debug("Found ROI #%s: %s", str(number), data['name'])
+                structures[number] = data
+
+        # Determine the type of each structure (PTV, organ, external, etc)
+        if 'RTROIObservations' in self.ds:
+            for item in self.ds.RTROIObservations:
+                number = item.ReferencedROINumber
+                structures[number]['RTROIType'] = item.RTROIInterpretedType
+
+        # The coordinate data of each ROI is stored within ROIContourSequence
+        if 'ROIContours' in self.ds:
+            for roi in self.ds.ROIContours:
+                number = roi.ReferencedROINumber
+
+                # Generate a random color for the current ROI
+                structures[number]['color'] = np.array((
+                    random.randint(0, 255),
+                    random.randint(0, 255),
+                    random.randint(0, 255)), dtype=float)
+                # Get the RGB color triplet for the current ROI if it exists
+                if 'ROIDisplayColor' in roi:
+                    # Make sure the color is not none
+                    if not (roi.ROIDisplayColor is None):
+                        color = roi.ROIDisplayColor
+                    # Otherwise decode values separated by forward slashes
+                    else:
+                        value = roi[0x3006, 0x002a].repval
+                        color = value.strip("'").split("/")
+                    # Try to convert the detected value to a color triplet
+                    try:
+                        structures[number]['color'] = \
+                            np.array(color, dtype=float)
+                    # Otherwise fail and fallback on the random color
+                    except:
+                        logger.debug(
+                            "Unable to decode display color for ROI #%s",
+                            str(number))
+
+                planes = {}
+                if 'Contours' in roi:
+                    # Locate the contour sequence for each referenced ROI
+                    for contour in roi.Contours:
+                        # For each plane, initialize a new plane dictionary
+                        plane = {}
+
+                        # Determine all the plane properties
+                        plane['geometricType'] = contour.ContourGeometricType
+                        plane['numContourPoints'] = contour.NumberofContourPoints
+                        plane['contourData'] = self.GetContourPoints(contour.ContourData)
+
+                        # Each plane which coincides with a image slice will have a unique ID
+                        if 'ContourImages' in contour:
+                            plane['UID'] = contour.ContourImages[0].ReferencedSOPInstanceUID
+
+                        # Add each plane to the planes dictionary of the current ROI
+                        if 'geometricType' in plane:
+                            z = ('%.2f' % plane['contourData'][0][2]).replace('-0', '0')
+                            if z not in planes.keys():
+                                planes[z] = []
+                            planes[z].append(plane)
+
+                # Calculate the plane thickness for the current ROI
+                structures[number]['thickness'] = self.CalculatePlaneThickness(planes)
+
+                # Add the planes dictionary to the current ROI
+                # print(planes)
+                structures[number]['planes'] = planes
+
+        return structures
+
+    def GetDoseGrid(self, z=0, threshold=0.5, interp_all=False):
+        """
+        Return the 2d dose grid for the given slice position (mm).
+
+        :param z:           Slice position in mm.
+        :param threshold:   Threshold in mm to determine the max difference from z to the closest dose slice without using interpolation.
+        :return:            An numpy 2d array of dose points.
+        """
+
+        # If this is a multi-frame dose pixel array,
+        # determine the offset for each frame
+        if 'GridFrameOffsetVector' in self.ds:
+            z = float(z)
+            # Get the initial dose grid position (z) in patient coordinates
+            imagepatpos = self.ds.ImagePositionPatient[2]
+            orientation = self.ds.ImageOrientationPatient[0]
+            # Add the position to the offset vector to determine the
+            # z coordinate of each dose plane
+            planes = orientation * np.array(self.ds.GridFrameOffsetVector) + \
+                     imagepatpos
+
+            if not interp_all:
+
+                frame = -1
+                # Check to see if the requested plane exists in the array
+                if np.amin(np.fabs(planes - z)) < threshold:
+                    frame = np.argmin(np.fabs(planes - z))
+                # Return the requested dose plane, since it was found
+                if not (frame == -1):
+                    return self.ds.pixel_array[frame]
+                # Check whether the requested plane is within the dose grid boundaries
+                elif (z < np.amin(planes)) or (z > np.amax(planes)):
+                    return []
+                # The requested plane was not found, so interpolate between planes
+                else:
+                    # Determine the upper and lower bounds
+                    umin = np.fabs(planes - z)
+                    ub = np.argmin(umin)
+                    lmin = umin.copy()
+                    # Change the minimum value to the max so we can find the 2nd min
+                    lmin[ub] = np.amax(umin)
+                    lb = np.argmin(lmin)
+                    # Fractional distance of dose plane between upper and lower bound
+                    fz = (z - planes[lb]) / (planes[ub] - planes[lb])
+                    plane = self.InterpolateDosePlanes(
+                        self.ds.pixel_array[ub], self.ds.pixel_array[lb], fz)
+                    return plane
+            else:
+                # Determine the upper and lower bounds
+                umin = np.fabs(planes - z)
+                ub = np.argmin(umin)
+                lmin = umin.copy()
+                # Change the minimum value to the max so we can find the 2nd min
+                lmin[ub] = np.amax(umin)
+                lb = np.argmin(lmin)
+                # Fractional distance of dose plane between upper and lower bound
+                fz = (z - planes[lb]) / (planes[ub] - planes[lb])
+                plane = self.InterpolateDosePlanes(
+                    self.ds.pixel_array[ub], self.ds.pixel_array[lb], fz)
+
+                return plane
+        else:
+            return []
+
+    def DoseRegularGridInterpolator(self):
+
+        # Get the dose to pixel LUT
+        doselut = self.GetPatientToPixelLUT()
+
+        # Get the initial self grid position (z) in patient coordinates
+        imagepatpos = self.ds.ImagePositionPatient[2]
+        orientation = self.ds.ImageOrientationPatient[0]
+        # Add the position to the offset vector to determine the
+
+        # z coordinate of each dose plane
+        z = orientation * np.array(self.ds.GridFrameOffsetVector) + \
+            imagepatpos
+
+        values = self.ds.pixel_array * float(self.ds.DoseGridScaling) * 100  # 3D dose matrix in cGy
+        x = doselut[0]
+        y = doselut[1]
+
+        return RegularGridInterpolator((z, y, x), values), values
+
+
+def test_rtss_eclipse(f):
+    ds = dicom.read_file(f)
+    print('SpecificCharacterSet: %s' % ds.SpecificCharacterSet)
+    print('Manufacturer: %s' % ds.Manufacturer)
+    print('ManufacturersModelName: %s' % ds.ManufacturersModelName)
+    print('SoftwareVersions: %s' % ds.SoftwareVersions)
+    print('Modality: %s' % ds.Modality)
+    print('StructureSetDescription: %s' % ds.StructureSetDescription)
+    print('StructureSetROISequence length: %i' % len(ds.StructureSetROISequence))
+    print('ROIContours length: %i' % len(ds.ROIContours))
+
+    rois = []
+    for roi in ds.ROIContours:
+        rois.append(roi)
+
+    print(rois)
+
+
+if __name__ == '__main__':
+    f = r'D:\Dropbox\Plan_Competition_Project\FantomaPQRT\RS.PQRT END TO END.dcm'
+
+    f = r'/home/victor/Downloads/RS.PQRT END TO END.dcm'
+    ds = dicom.read_file(f)
+    print('SpecificCharacterSet: %s' % ds.SpecificCharacterSet)
+    print('Manufacturer: %s' % ds.Manufacturer)
+    print('ManufacturersModelName: %s' % ds.ManufacturersModelName)
+    print('SoftwareVersions: %s' % ds.SoftwareVersions)
+    print('Modality: %s' % ds.Modality)
+    print('StructureSetDescription: %s' % ds.StructureSetDescription)
+    print('StructureSetROISequence length: %i' % len(ds.StructureSetROISequence))
+    print('ROIContours length: %i' % len(ds.ROIContours))
+
+    rois = [roi for roi in ds.ROIContours]
+    rc = [roi for roi in ds.StructureSetROISequence]
+    print(rois)
+    # print(rois)
+
+
+
+
+    # number = roi.ReferencedROINumber
+    # print(number)
+
+    # for roi in obj1.ds.ROIContours:
+    #     number = roi.ReferencedROINumber
+    #     print(number)
