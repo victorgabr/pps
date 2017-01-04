@@ -8,18 +8,20 @@
 #    See the file license.txt included with this distribution, also
 #    available at http://code.google.com/p/dicompyler/
 
+import bz2
 import logging
-from joblib import Parallel
-from joblib import delayed
-from numba import njit
-from dicomparser import ScoringDicomParser
-from dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean
+import sys
 
 import numpy as np
 import numpy.ma as ma
+from joblib import Parallel
+from joblib import delayed
 from matplotlib.path import Path
-import bz2
-import sys
+from numba import njit
+
+from dev.geometry import calc_area
+from dicomparser import ScoringDicomParser
+from dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean
 
 if sys.version_info[0] == 3:
     import pickle
@@ -138,6 +140,7 @@ def calculate_dvh(structure, dose, limit=None, callback=None):
     logger.debug("Calculating DVH of %s %s", structure['id'], structure['name'])
 
     # Get the dose to pixel LUT
+    # print(dose.PixelSpacing)
     doselut = dose.GetPatientToPixelLUT()
 
     # Generate a 2d mesh grid to create a polygon mask in dose coordinates
@@ -175,7 +178,6 @@ def calculate_dvh(structure, dose, limit=None, callback=None):
 
         # Get the dose plane for the current structure plane
         doseplane = dose.GetDoseGrid(z)
-
         # If there is no dose for the current plane, go to the next plane
         if not len(doseplane):
             break
@@ -264,7 +266,6 @@ def calculate_dvh_numba(structure, dose, limit=None, callback=None):
 
         # Get the dose plane for the current structure plane
         doseplane = dose.GetDoseGrid(z)
-
         # If there is no dose for the current plane, go to the next plane
         if not len(doseplane):
             break
@@ -370,22 +371,11 @@ def calculate_contour_areas_numba(plane):
         contours.append({'area': cArea, 'data': data})
 
         # Determine which contour is the largest
-        if (cArea > largest):
+        if cArea > largest:
             largest = cArea
             largestIndex = c
 
     return contours, largestIndex
-
-
-@njit
-def calc_area(x, y):
-    cArea = 0
-    # Calculate the area based on the Surveyor's formula
-    for i in range(0, len(x) - 1):
-        cArea = cArea + x[i] * y[i + 1] - x[i + 1] * y[i]
-    cArea = abs(cArea / 2.0)
-
-    return cArea
 
 
 def get_contour_mask(doselut, dosegridpoints, contour):
@@ -407,6 +397,10 @@ def calculate_contour_dvh(mask, doseplane, maxdose, dd, id, structure):
     hist, edges = np.histogram(mask.compressed(),
                                bins=maxdose,
                                range=(0, maxdose))
+
+    # hist, edges = np.histogram(mask.compressed(),
+    #                            bins=10000,
+    #                            range=(0, maxdose))
 
     # Calculate the volume for the contour for the given dose plane
     vol = sum(hist) * ((id['pixelspacing'][0]) *

@@ -55,3 +55,10 @@ scores = {'PTV_TOT_EVAL': scores_ptv_tot,
           'LUNG_RIGHT': scores_lr,
           'LUNG_LEFT': scores_ll,
           'BODY': scores_BODY}
+
+if __name__ == '__main__':
+    import pandas as pd
+    sc = pd.DataFrame.from_dict(scores)
+    import json
+
+    jsonarray = json.dumps(scores, ensure_ascii=False)

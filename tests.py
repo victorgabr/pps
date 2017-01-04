@@ -1,5 +1,8 @@
 import unittest
 import matplotlib.pyplot as plt
+
+from dev.contours3d import plot_contours
+from dev.dvhcalculation import Structure
 from dicomparser import DicomParser, ScoringDicomParser
 import matplotlib.pylab as pl
 import numpy as np
@@ -276,18 +279,18 @@ def debug_dvh_calculation():
 
     structure = structures[26]
 
-    rd_file = r'I:\ntfsck.00000000\AHMED-~1.COM\DOSE.Z0100.1_FINAL3DCRT.dcm'
-    # rd_file = r'I:\ntfsck.00000000\ARNAUD~1.COM\DOSE.LTBREASTAG.31_prop.dcm'
+    # rd_file = r'I:\ntfsck.00000000\AHMED-~1.COM\DOSE.Z0100.1_FINAL3DCRT.dcm'
+    rd_file = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RD.PQRT END TO END.Dose_PLAN.dcm'
 
-    rp_file = r'I:\ntfsck.00000000\AHMED-~1.COM\RTXPLAN.Z0100.1_FINAL3DCRT.dcm'
+    # rp_file = r'I:\ntfsck.00000000\AHMED-~1.COM\RTXPLAN.Z0100.1_FINAL3DCRT.dcm'
     # rp_file = r'I:\ntfsck.00000000\ARNAUD~1.COM\DOSE.LTBREASTAG.31_prop.dcm\RTXPLAN.LTBREASTAG.31_prop.dcm'
     # dvh_file = r'I:\ntfsck.00000000\AHMED-~1.COM\DOSE.Z0100.1_FINAL3DCRT.dvh'
     obj = ScoringDicomParser(filename=rd_file)
     # test_plot_calc_dvh(rs_file, rd_file=rd_file)
-    rd = r'I:\ntfsck.00000000\ARNAUD~1.COM\DOSE.LTBREASTAG.31_prop.dcm'
+    # rd = r'I:\ntfsck.00000000\ARNAUD~1.COM\DOSE.LTBREASTAG.31_prop.dcm'
 
     ## EVAL SCORE
-    obj_xio_ok = ScoringDicomParser(filename=rd)
+    # obj_xio_ok = ScoringDicomParser(filename=rd)
 
     # dose = obj_xio_ok
     dose = obj
@@ -404,27 +407,49 @@ def debug_dvh_calculation():
     # id1 = obj.GetImageData()
 
 
-if __name__ == '__main__':
-    pass
+def test_3d_dose_interpolation():
+    # rd_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_3mm_Aligned.dcm'
+    # rd_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_AntPost_3mm_Aligned.dcm'
+    rd_file = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RD.PQRT END TO END.Dose_PLAN.dcm'
+    # DVH ORIGINAL
+    dose = ScoringDicomParser(filename=rd_file)
 
-    # rs_file = r'/home/victor/Dropbox/Plan_Competition_Project/Competition Package/DICOM Sets/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
-    rs_file = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\Competition Package\DICOM Sets\RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
-    struc = ScoringDicomParser(filename=rs_file)
-    structures = struc.GetStructures()
-    # PTV EVAL
+
+    # Get the dose to pixel LUT
+    doselut = dose.GetPatientToPixelLUT()
+    x = doselut[0]
+    y = doselut[1]
+    # UPSAMPLING
+    xx = np.linspace(doselut[0][0], doselut[0][-1], 1024)
+    yy = np.linspace(doselut[1][0], doselut[1][-1], 1024)
+
+    my_interpolating_function, values = dose.DoseRegularGridInterpolator()
+
+    # GENERATE MESH XY TO GET INTERPOLATED PLANE
+    xx, yy = np.meshgrid(xx, yy, indexing='xy', sparse=True)
+    res = my_interpolating_function((0.8, yy, xx))
+    plt.imshow(res)
+    plt.title('interpolated')
+    plt.figure()
+    original = values[41, :, :]
+    plt.imshow(original)
+    plt.title('original')
+    plt.show()
+
+
+if __name__ == '__main__':
+    test_3d_dose_interpolation()
     from matplotlib.path import Path
 
-    structure = structures[26]
+    rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_30_0.dcm'
+    struc = ScoringDicomParser(filename=rs_file)
+    structures = struc.GetStructures()
 
-    rd_file = r'I:\PLAN_TESTING_DATA\Jelle -DONE VMAT jelle.scheurleer@inholland.nl\LTBREAST_VMAT5longlos1_Dose.dcm'
-    # rd_file = r'I:\ntfsck.00000000\ARNAUD~1.COM\DOSE.LTBREASTAG.31_prop.dcm'
+    st = 2
+    structure = structures[st]
+    rd_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_3mm_Aligned.dcm'
 
-    rp_file = r'I:\ntfsck.00000000\AHMED-~1.COM\RTXPLAN.Z0100.1_FINAL3DCRT.dcm'
-    # rp_file = r'I:\ntfsck.00000000\ARNAUD~1.COM\DOSE.LTBREASTAG.31_prop.dcm\RTXPLAN.LTBREASTAG.31_prop.dcm'
-    # dvh_file = r'I:\ntfsck.00000000\AHMED-~1.COM\DOSE.Z0100.1_FINAL3DCRT.dvh'
     obj = ScoringDicomParser(filename=rd_file)
-    # test_plot_calc_dvh(rs_file, rd_file=rd_file)
-    rd = r'I:\ntfsck.00000000\ARNAUD~1.COM\DOSE.LTBREASTAG.31_prop.dcm'
 
     dose = obj
     # test_plot_calc_dvh(rs_file, rd_file=rd_file)
@@ -460,19 +485,30 @@ if __name__ == '__main__':
         if not (limit is None):
             if limit < maxdose:
                 maxdose = limit
-        hist = np.zeros(maxdose)
+        hist = np.zeros(10000)
     else:
         hist = np.array([0])
     volume = 0
 
     plane = 0
     # Iterate over each plane in the structure
+    zval = np.array([z for z, sPlane in sPlanes.items()], dtype=float)
+    zval.sort()
+    sp = []
     for z, sPlane in sPlanes.items():
+        sp += [sPlane, sPlane, sPlane, sPlane, sPlane, sPlane]
+    zval = np.linspace(zval.min(), zval.max(), len(sp))
+
+    # for z, sPlane in sPlanes.items():
+    for z, sPlane in zip(zval, sp):
+
         # Get the contours with calculated areas and the largest contour index
         contours, largestIndex = calculate_contour_areas(sPlane)
 
         # Get the dose plane for the current structure plane
         doseplane = dose.GetDoseGrid(z)
+        # plt.figure()
+        # plt.imshow(doseplane * dd['dosegridscaling'] * 100)
         # If there is no dose for the current plane, go to the next plane
         if not len(doseplane):
             break
@@ -482,7 +518,7 @@ if __name__ == '__main__':
             m = get_contour_mask(doselut, dosegridpoints, contour['data'])
             h, vol = calculate_contour_dvh(m, doseplane, maxdose,
                                            dd, id, structure)
-            # If this is the largest contour, just add to the total histogram
+            # If this is the largest contour, just add to thttp://oglobo.globo.com/he total histogram
             if (i == largestIndex):
                 hist += h
                 volume += vol
@@ -517,10 +553,41 @@ if __name__ == '__main__':
     tst = get_cdvh(hist)
 
     chist = get_cdvh_numba(hist)
-    plt.plot(chist / chist[0])
-    plt.title(structure['name'] + ' volume: %1.1f' % volume)
-    plt.show()
-    # for k, v in structures.items():
-    #     print(k, v['name'])
-    # return hist
 
+    import pandas as pd
+
+    df = pd.read_excel('/home/victor/Dropbox/Plan_Competition_Project/testdata/dvh_sphere.xlsx')
+
+    adose = df['Dose (cGy)'].values
+    advh = df['3.0 mm slice'].values
+
+    plt.plot(chist / chist[0])
+    plt.hold(True)
+    plt.plot(adose, advh / advh[0])
+
+    # plt.plot(chist)
+    plt.title(structure['name'] + ' volume: %1.1f' % volume)
+
+    plt.show()
+
+    # for c, contour in enumerate(sPlane):
+    #     # Create arrays for the x,y coordinate pair for the triangulation
+    #     x = []
+    #     y = []
+    #     for point in contour['contourData']:
+    #         x.append(point[0])
+    #         y.append(point[1])
+
+
+def test_roi_expansion():
+    rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_30_0.dcm'
+    struc = ScoringDicomParser(filename=rs_file)
+    structures = struc.GetStructures()
+    st = 2
+    structure = structures[st]
+    struc_teste = Structure(structure)
+    planes_expanded = struc_teste.get_expanded_roi(delta_mm=2)
+    ex = np.concatenate(planes_expanded)
+    pl = np.concatenate(struc_teste.planes)
+    data = np.concatenate([ex, pl])
+    plot_contours(data)

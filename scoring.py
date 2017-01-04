@@ -376,17 +376,24 @@ class Participant(object):
 
 
 if __name__ == '__main__':
-    root_path = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\Eclipse Plans\Saad RapidArc Eclipse\Saad RapidArc Eclipse'
+    # root_path = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\Eclipse Plans\Saad RapidArc Eclipse\Saad RapidArc Eclipse'
     # root_path = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\Eclipse Plans\Venessa IMRT Eclipse'
-    dt, val = get_participant_folder_data('test', root_path)
+    # dt, val = get_participant_folder_data('test', root_path)
 
-    #
-    # rs = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\Competition Package\DICOM Sets\RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
-    # rd = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\Eclipse Plans\Saad RapidArc Eclipse\Saad RapidArc Eclipse\RD.Saad-Eclipse-RapidArc.dcm'
-    # rp = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\Eclipse Plans\Saad RapidArc Eclipse\Saad RapidArc Eclipse\RP.Saad-Eclipse-RapidArc.dcm'
+    rs = r'D:\Dropbox\Plan_Competition_Project\testdata\RTSS.dcm'
+    rd = r'D:\Dropbox\Plan_Competition_Project\testdata\RTDOSE.dcm'
+    rp = r'D:\Dropbox\Plan_Competition_Project\testdata\RTPLAN.dcm'
+
+    rs = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RS.PQRT END TO END.dcm'
+    rd = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RD.PQRT END TO END.Dose_PLAN.dcm'
+    rp = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RP.PQRT END TO END.RA.dcm'
+
+
+
+
     # dvh_file = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\Eclipse Plans\Saad RapidArc Eclipse\Saad RapidArc Eclipse\RD.Saad-Eclipse-RapidArc.dvh'
     #
-    # obj = Participant(rp, rs, rd, dvh_file)
-    # obj.set_participant_data('Saad')
+    obj = Participant(rp, rs, rd)
+    obj.set_participant_data('PQRT')
     # val = obj.eval_score(constrains_dict=constrains, scores_dict=scores)
     # print(val)

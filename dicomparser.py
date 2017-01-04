@@ -827,6 +827,13 @@ class ScoringDicomParser(DicomParser):
     def __init__(self, dataset=None, filename=None):
         DicomParser.__init__(self, dataset=dataset, filename=filename)
         self.interp_dose_plane = None
+        # self._set_dose_interpolator()
+
+    def set_dose_interpolator(self):
+
+        self.interp_dose_plane, _ = self.DoseRegularGridInterpolator()
+
+        return self.interp_dose_plane
 
     def get_tps_data(self):
         """
@@ -1052,7 +1059,7 @@ class ScoringDicomParser(DicomParser):
         else:
             return []
 
-    def DoseRegularGridInterpolator(self):
+    def get_grid_3d(self):
 
         # Get the dose to pixel LUT
         doselut = self.GetPatientToPixelLUT()
@@ -1063,12 +1070,16 @@ class ScoringDicomParser(DicomParser):
         # Add the position to the offset vector to determine the
 
         # z coordinate of each dose plane
-        z = orientation * np.array(self.ds.GridFrameOffsetVector) + \
-            imagepatpos
-
-        values = self.ds.pixel_array * float(self.ds.DoseGridScaling) * 100  # 3D dose matrix in cGy
+        z = orientation * np.array(self.ds.GridFrameOffsetVector) + imagepatpos
         x = doselut[0]
         y = doselut[1]
+
+        return x, y, z
+
+    def DoseRegularGridInterpolator(self):
+
+        x, y, z = self.get_grid_3d()
+        values = self.ds.pixel_array * float(self.ds.DoseGridScaling) * 100  # 3D dose matrix in cGy
 
         return RegularGridInterpolator((z, y, x), values), values
 
@@ -1109,13 +1120,3 @@ if __name__ == '__main__':
     rc = [roi for roi in ds.StructureSetROISequence]
     print(rois)
     # print(rois)
-
-
-
-
-    # number = roi.ReferencedROINumber
-    # print(number)
-
-    # for roi in obj1.ds.ROIContours:
-    #     number = roi.ReferencedROINumber
-    #     print(number)

@@ -1,429 +1,357 @@
-from matplotlib.path import Path
-from numba import jit, njit
-from scipy.interpolate import RegularGridInterpolator
-
-from dicomparser import ScoringDicomParser
+import matplotlib.pyplot as plt
 import numpy as np
 import numpy.ma as ma
-from dvhcalc import get_contour_mask, get_cdvh, get_cdvh_numba, get_dvh
-import matplotlib.pyplot as plt
 
-from mpl_toolkits.mplot3d import Axes3D
+import time
+from dev.geometry import get_contour_mask_wn, check_contour_inside, get_structure_planes, \
+    expand_roi, calculate_planes_contour_areas, get_dose_grid_3d, get_z_planes, get_axis_grid, get_dose_grid
+from dicomparser import ScoringDicomParser, lazyproperty
+from dvhcalc import get_cdvh_numba, get_dvh, calculate_contour_areas
 
 '''
 
 http://dicom.nema.org/medical/Dicom/2016b/output/chtml/part03/sect_C.8.8.html
-
+http://dicom.nema.org/medical/Dicom/2016b/output/chtml/part03/sect_C.7.6.2.html#sect_C.7.6.2.1.1
 '''
 
 
-def poly_area(x, y):
-    """
-         Calculate the area based on the Surveyor's formula
-    :param x: x-coordinate
-    :param y: y-coordinate
-    :return: polygon area
-    """
-    return 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
-
-
-def calculate_contour_dvh(mask, doseplane, bins, maxdose, dd, id, dz):
+def calculate_contour_dvh(mask, doseplane, bins, maxdose, grid_delta):
     """Calculate the differential DVH for the given contour and dose plane."""
 
     # Multiply the structure mask by the dose plane to get the dose mask
-    mask = ma.array(doseplane * dd['dosegridscaling'] * 100, mask=~mask)
+    mask = ma.array(doseplane, mask=~mask)
+
     # Calculate the differential dvh
     hist, edges = np.histogram(mask.compressed(),
                                bins=bins,
                                range=(0, maxdose))
 
     # Calculate the volume for the contour for the given dose plane
-    vol = sum(hist) * (id['pixelspacing'][0] * id['pixelspacing'][1] * dz)
+    vol = np.sum(hist) * grid_delta[0] * grid_delta[1] * grid_delta[2]
 
     return hist, vol
 
 
-def calculate_planes_contour_areas(planes):
-    """Calculate the area of each contour for the given plane.
-       Additionally calculate and return the largest contour index."""
-    # Calculate the area for each contour in the current plane
-    contours = []
-    largest = 0
-    largestIndex = 0
-    for c, contour in enumerate(planes):
-        x = contour[:, 0]
-        y = contour[:, 1]
-        z = contour[0, 2]
+class Structure(object):
+    def __init__(self, struc):
+        self.structure = struc
+        self.contour_spacing = struc['thickness']
+        self.contours, self.largestIndex = None, None
+        self.grid_spacing = np.zeros(3)
+        self.dose_lut = None
+        self.dose_grid_points = None
+        self.hi_res_structure = None
 
-        # Calculate the area based on the Surveyor's formula
-        cArea = poly_area(x, y)
-        # Remove the z coordinate from the xyz point tuple
-        data = list(map(lambda x: x[0:2], contour[:, :2]))
+    @lazyproperty
+    def planes(self):
+        return get_structure_planes(self.structure)
 
-        # Add the contour area and points to the list of contours
-        contours.append({'area': cArea, 'data': np.squeeze(data), 'z': z})
-        # Determine which contour is the largest
-        if cArea > largest:
-            largest = cArea
-            largestIndex = c
+    def get_expanded_roi(self, delta_mm):
+        """
+            Expand roi by 1/2 structure thickness in x,y and z axis
+        """
+        return expand_roi(self.planes, delta=delta_mm)
 
-    return contours, largestIndex
+    @lazyproperty
+    def planes_expanded(self):
+        return expand_roi(self.planes, self.contour_spacing / 2.0)
 
+    def set_contours(self, expanded=False):
+        if expanded:
+            self.contours, self.largestIndex = calculate_planes_contour_areas(self.planes)
+        else:
+            self.contours, self.largestIndex = calculate_planes_contour_areas(self.planes_expanded)
 
-def InterpolateDosePlanes(uplane, lplane, fz):
-    """Interpolates a dose plane between two bounding planes at the given relative location."""
+    def up_sampling(self, lut_grid_3d, delta_mm=(0.2, 0.2, 0.2), expanded=False):
+        if expanded:
+            planes = self.planes_expanded
+        else:
+            planes = self.planes
 
-    # uplane and lplane are the upper and lower dose plane, between which the new dose plane
-    #   will be interpolated.
-    # fz is the fractional distance from the bottom to the top, where the new plane is located.
-    #   E.g. if fz = 1, the plane is at the upper plane, fz = 0, it is at the lower plane.
+        # get structure slice position
+        ordered_z = np.unique(np.concatenate(planes)[:, 2])
 
-    # A simple linear interpolation
-    doseplane = fz * uplane + (1.0 - fz) * lplane
+        # ROI UP SAMPLING IN X, Y, Z
+        self.dose_grid_points, self.dose_lut, self.grid_spacing = get_dose_grid_3d(lut_grid_3d, delta_mm)
+        print('spacing before: ', self.grid_spacing)
 
-    return doseplane
+        zi, dz = get_axis_grid(self.grid_spacing[2], ordered_z)
+        self.grid_spacing[2] = dz
+        print('spacing after: ', self.grid_spacing)
 
+        self.hi_res_structure = get_z_planes(planes, ordered_z, zi)
 
-def interpolate_plane(ub, lb, location, ubpoints, lbpoints):
-    """Interpolates a plane between two bounding planes at the given location."""
+        return self.hi_res_structure, self.dose_grid_points, self.grid_spacing, self.dose_lut
 
-    # If the number of points in the upper bound is higher, use it as the starting bound
-    # otherwise switch the upper and lower bounds
-    # if not (len(ubpoints) >= len(lbpoints)):
-    #     lbCopy = lb
-    #     lb = ub
-    #     ub = lbCopy
+    def calculate_dvh(self, dose, bin_size=1, up_sampling=False, delta_cm=(.5, .5, .5)):
+        grid_3d = dose.get_grid_3d()
+        # ROI UP SAMPLING IN X, Y, Z
 
-    plane = []
-    # Determine the closest point in the lower bound from each point in the upper bound
-    for u, up in enumerate(ubpoints):
-        dist = 100000  # Arbitrary large number
-        # Determine the distance from each point in the upper bound to each point in the lower bound
-        for l, lp in enumerate(lbpoints):
-            newDist = np.sqrt((up[0] - lp[0]) ** 2 + (up[1] - lp[1]) ** 2 + (ub - lb) ** 2)
-            # If the distance is smaller, then linearly interpolate the point
-            if newDist < dist:
-                dist = newDist
-                x = lp[0] + (location - lb) * (up[0] - lp[0]) / (ub - lb)
-                y = lp[1] + (location - lb) * (up[1] - lp[1]) / (ub - lb)
-        if not (dist == 100000):
-            plane.append([x, y, location])
+        if up_sampling:
+            ds, grid_ds, grid_delta, dose_lut = self.up_sampling(grid_3d, delta_cm)
+            dosegrid_points = grid_ds[:, :2]
+        else:
+            ds = self.planes
+            dose_lut = [grid_3d[0], grid_3d[1]]
+            dosegrid_points = get_dose_grid(dose_lut)
+            x_delta = abs(grid_3d[0][0] - grid_3d[0][1])
+            y_delta = abs(grid_3d[1][0] - grid_3d[1][1])
+            # get structure slice position
+            ordered_z = np.unique(np.concatenate(ds)[:, 2])
+            z_delta = abs(ordered_z[0] - ordered_z[1])
+            grid_delta = [x_delta, y_delta, z_delta]
 
-    return np.squeeze(plane)
+        contours, largest_index = calculate_planes_contour_areas(ds)
+        # largest_index = 0
+        dose_interp, values = dose.DoseRegularGridInterpolator()
+        xx, yy = np.meshgrid(dose_lut[0], dose_lut[1], indexing='xy', sparse=True)
 
+        # Create an empty array of bins to store the histogram in cGy
+        # only if the structure has contour data or the dose grid exists
+        dd = dose.GetDoseData()
+        maxdose = int(dd['dosemax'] * dd['dosegridscaling'] * 100)
+        # Remove values above the limit (cGy) if specified
+        nbins = int(maxdose / bin_size)
+        hist = np.zeros(nbins)
 
-@njit
-def interpolate_plane_numba(ub, lb, location, ubpoints, lbpoints):
-    """Interpolates a plane between two bounding planes at the given location."""
+        volume = 0
+        n_voxels = []
+        # Calculate the histogram for each contour
+        calculated_z = []
+        # TODO DEGUB DVH LOOP TO GET THE LARGEST INDEX using orginal implementation SPLANES
+        st = time.time()
+        for i, contour in enumerate(contours):
+            z = contour['z']
+            if z in calculated_z:
+                print('Repeated slice z', z)
+                continue
+            print('calculating slice z', z)
 
-    # If the number of points in the upper bound is higher, use it as the starting bound
-    # otherwise switch the upper and lower bounds
-    # if not (len(ubpoints) >= len(lbpoints)):
-    #     lbCopy = lb
-    #     lb = ub
-    #     ub = lbCopy
-    tmp = np.zeros(3)
-    plane = np.zeros((len(ubpoints), 3))
-    # Determine the closest point in the lower bound from each point in the upper bound
-    # for u, up in enumerate(ubpoints):
-    for u in range(len(ubpoints)):
-        up = ubpoints[u]
-        dist = 10000000  # Arbitrary large number
-        # Determine the distance from each point in the upper bound to each point in the lower bound
-        for l in range(len(lbpoints)):
-            lp = lbpoints[l]
-            newDist = np.sqrt((up[0] - lp[0]) ** 2 + (up[1] - lp[1]) ** 2 + (ub - lb) ** 2)
-            # If the distance is smaller, then linearly interpolate the point
-            if newDist < dist:
-                dist = newDist
-                x = lp[0] + (location - lb) * (up[0] - lp[0]) / (ub - lb)
-                y = lp[1] + (location - lb) * (up[1] - lp[1]) / (ub - lb)
-                tmp[0] = x
-                tmp[1] = y
-                tmp[2] = location
-        if not (dist == 10000000):
-            plane[u] = tmp
+            doseplane = dose_interp((z, yy, xx))
+            # If there is no dose for the current plane, go to the next plane
+            if not len(doseplane):
+                break
 
-    return plane
-
-
-def interp_structure_planes(structure_dict, n_planes=5, verbose=False):
-    """
-        Interpolates all structures planes inserting interpolated planes centered exactly between
-    the original dose plane locations (sorted by z)
-
-    :param structure_dict: RS structure dict object
-    :param n_planes: Number of planes to be inserted
-    :return: list containing
-    """
-
-    # TODO IMPLEMENT ROI SUPERSAMPLING IN X Y Z
-
-    sPlanes = structure_dict['planes']
-    dz = structure_dict['thickness'] / 2
-
-    ## INTERPOLATE PLANES IN Z AXIS
-    # Iterate over each plane in the structure
-    zval = [z for z, sPlane in sPlanes.items()]
-    zval.sort(key=float)
-
-    structure_planes = []
-    for z in zval:
-        plane_i = sPlanes[z]
-        structure_planes.append(np.array(plane_i[0]['contourData']))
-
-    # extending a start-end cap slice
-    # extending end cap slice by 1/2 CT slice thickness
-    start_cap = structure_planes[0].copy()
-    start_cap[:, 2] = start_cap[:, 2] - dz
-
-    # extending end cap slice by 1/2 CT slice thickness
-    end_cap = structure_planes[-1].copy()
-    end_cap[:, 2] = end_cap[:, 2] + dz
-
-    # extending end caps to original plans
-    # structure_planes = [start_cap] + structure_planes + [end_cap]
-    structure_planes[0] = start_cap
-    structure_planes[-1] = end_cap
-
-    # TODO to estimate number of interpolated planes to reach ~ 30000 voxels
-
-    result = []
-    result += [structure_planes[0]]
-    for i in range(len(structure_planes) - 1):
-        ub = structure_planes[i + 1][0][2]
-        lb = structure_planes[i][0][2]
-        loc = np.linspace(lb, ub, num=n_planes + 2)
-        loc = loc[1:-1]
-        ubpoints = structure_planes[i + 1]
-        lbpoints = structure_planes[i]
-        interp_planes = []
-        if verbose:
-            print('bounds', lb, ub)
-            print('interpolated planes: ', loc)
-
-        if not (len(ubpoints) >= len(lbpoints)):
-            # if upper bounds does not have more points, swap planes to interpolate
-            lbCopy = lb
-            lb = ub
-            ub = lbCopy
-            ubpoints = structure_planes[i]
-            lbpoints = structure_planes[i + 1]
-
-        for l in loc:
-            pi = interpolate_plane_numba(ub, lb, l, ubpoints, lbpoints)
-            interp_planes.append(pi)
-        result += interp_planes + [ubpoints]
-
-    # adding last slice to result
-    result += [structure_planes[-1]]
-    # return planes sorted by z-axis position
-
-    return sorted(result, key=lambda p: p[0][2])
+            m = get_contour_mask_wn(dose_lut, dosegrid_points, contour['data'])
+            # plt.imshow(m)
+            # plt.show()
+            h, vol = calculate_contour_dvh(m, doseplane, nbins, maxdose, grid_delta)
+            hist += h
+            volume += vol
+            calculated_z.append(z)
 
 
-def plot_planes(planes, color='r', marker='_'):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    for c in planes:
-        ax.scatter(c[:, 0], c[:, 1], c[:, 2], c=color, marker=marker)
+            # i = 0
+            # largest_index = 0
+            n_voxels.append(np.size(m) - np.count_nonzero(m))
 
-    ax.set_xlabel('X Label')
-    ax.set_ylabel('Y Label')
-    ax.set_zlabel('Z Label')
+            # print(largest_index)
+            # TEST TIMING
+            # if z > 1.0:A
+            #     break
+            # If this is the largest contour, just add to the total histogram
+
+            #
+            # if i == largest_index:
+            #     hist += h
+            #     volume += vol
+            # # Otherwise, determine whether to add or subtract histogram
+            # # depending if the contour is within the largest contour or not
+            # else:
+            #     print('non_largest')
+            #     truth = check_contour_inside(contour['data'], contours[largest_index]['data'])
+            #     # If the contour is inside, subtract it from the total histogram
+            #     if truth:
+            #         hist -= h
+            #         volume -= vol
+            #     # Otherwise it is outside, so add it to the total histogram
+            #     else:
+            #         hist += h
+            #         volume += vol
+
+
+        # if not (callback is None):
+        #     callback(plane, len(sPlanes))
+        # Volume units are given in cm^3
+        volume /= 1000
+
+        # Rescale the histogram to reflect the total volume
+        hist = hist * volume / sum(hist)
+        # Remove the bins above the max dose for the structure
+        # hist = np.trim_zeros(hist, trim='b')
+        print('number of structure voxels: %i' % np.sum(n_voxels))
+        chist = get_cdvh_numba(hist)
+        # chist = np.trim_zeros(chist, trim='b')
+        dhist = np.linspace(0, maxdose, nbins)
+        end = time.time()
+        print('elapsed (s):', end - st)
+        return dhist, chist
 
 
 if __name__ == '__main__':
-    rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_30_0.dcm'
-    # rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_20_0.dcm'
-    # rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Cones/RtCone_10_0.dcm'
-    struc = ScoringDicomParser(filename=rs_file)
-    structures = struc.GetStructures()
-    st = 2
-    structure = structures[st]
-    # rd_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_3mm_Aligned.dcm'
-    # rd_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_AntPost_3mm_Aligned.dcm'
-    rd_file = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RD.PQRT END TO END.Dose_PLAN.dcm'
-    # DVH ORIGINAL
-    rtss = ScoringDicomParser(filename=rs_file)
-    rtdose = ScoringDicomParser(filename=rd_file)
-    dv = get_dvh(structure, rtdose)
+    # TODO IMPLEMENT DVH CALCULATION
+    import pandas as pd
+
+    sheet = 'RT_Cone'
+    df = pd.read_excel('/home/victor/Dropbox/Plan_Competition_Project/testdata/dvh_sphere.xlsx', sheetname=sheet)
+    adose = df['Dose (cGy)'].values
+    advh = df['AP 3 mm'].values
+
+    # rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_10_0.dcm'
+    # rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_02_0.dcm'
+    # rs_file = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RS.PQRT END TO END.dcm'
+    # rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_10_0.dcm'
+    # rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Cones/Cone_10_0.dcm'
+    rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Cones/RtCone_30_0.dcm'
+    # rs_file = r'D:\Dropbox\Plan_Competition_Project\FantomaPQRT\RS.PQRT END TO END.dcm'
+
+    # rd_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_2mm_Aligned.dcm'
+    # rd_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_0-4_0-2_0-4_mm_Aligned.dcm'
+    # rd_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_AntPost_0-4_0-2_0-4_mm_Aligned.dcm'
+    rd_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_AntPost_3mm_Aligned.dcm'
+    # rd_file = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RD.PQRT END TO END.Dose_PLAN.dcm'
+    # rd_file = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RD.PQRT END TO END.Dose_PLAN.dcm'
+
 
     dose = ScoringDicomParser(filename=rd_file)
+    struc = ScoringDicomParser(filename=rs_file)
+    structures = struc.GetStructures()
+    # ecl_dvh = dose.GetDVHs()[2]['data']
 
-    # TODO TEST 3D interpolation
+    st = 2
+    structure = structures[st]
+    sPlanes = structure['planes']
+    dicompyler_dvh = get_dvh(structure, dose)
 
-    # Get the dose to pixel LUT
-    doselut = dose.GetPatientToPixelLUT()
-
-    x = doselut[0]
-    y = doselut[1]
-
-    # UPSAMPLING
-    xx = np.linspace(doselut[0][0], doselut[0][-1], 1024)
-    yy = np.linspace(doselut[1][0], doselut[1][-1], 1024)
-
-    #
-    # for i in range(values.shape[0]):
-    #     plt.imshow(values[i, :, :])
-    #     plt.title('index: %i , position: %i' % (i, z[i]))
-    #     plt.show()
-
-    #
-    my_interpolating_function, values = dose.DoseRegularGridInterpolator()
-
-    # GENERATE MESH XY TO GET INTERPOLATED PLANE
-    xx, yy = np.meshgrid(xx, yy, indexing='xy', sparse=True)
-    res = my_interpolating_function((0.8, yy, xx))
-    plt.imshow(res)
-    plt.title('interpolated')
-    plt.figure()
-    original = values[41, :, :]
-    plt.imshow(original)
-    plt.title('original')
+    struc_teste = Structure(structure)
+    dhist, chist = struc_teste.calculate_dvh(dose, up_sampling=True, delta_cm=(0.2, 0.2, 0.2))
+    # dhist, chist = struc_teste.calculate_dvh(dose)
+    # plt.plot(dhist, np.abs(chist), '.')
+    plt.plot(dhist, np.abs(chist))
+    # plt.plot(np.abs(chist))
+    plt.hold(True)
+    plt.plot(adose, advh)
+    # plt.plot(ecl_dvh, '*')
+    # plt.title(structure['name'] + ' volume: %1.1f' % volume)
+    plt.plot(dicompyler_dvh['data'])
     plt.show()
-#
-#     planes_total = interp_structure_planes(structure, 25)
-#
-#     # ## TODO ENCAPSULATE DVH CALCULATION USING STRUCTURE UPSAMPLING
-#     #
-#     # CHECK PLANES DATA
-#
-#
-#
-#     # Get the contours with calculated areas and the largest contour index
-#     contours, largestIndex = calculate_planes_contour_areas(planes_total)
-#
-#     ordered_z = np.array([i['z'] for i in contours])
-#
-#     # interpolated structure tickness
-#     delta = np.diff(ordered_z)
-#     delta_z = ordered_z.copy()
-#     delta_z[:-1] = delta
-#     delta_z[-1] = delta[-1]
-#
-#     # # plot_planes(planes_orig, 'r', '^')
-#     # # plt.title('ORIGINAL')
-#     # plot_planes(planes_total, 'r', '^')
-#     # plt.title('interpolated')
-#     # plt.show()
-#
-#     limit = None
-#     sPlanes = structure['planes']
-#
-#     # Get the dose to pixel LUT
-#     doselut = dose.GetPatientToPixelLUT()
-#
-#     xx = doselut[0]
-#     yy = doselut[1]
-#
-#     # TODO SUPERSAMPING XY AXIS
-#     # xx = np.linspace(doselut[0][0], doselut[0][-1])
-#     # yy = np.linspace(doselut[1][0], doselut[1][-1])
-#     #
-#     # doselut = [xx, yy]
-#
-#     # Generate a 2d mesh grid to create a polygon mask in dose coordinates
-#     # Code taken from Stack Overflow Answer from Joe Kington:
-#     # http://stackoverflow.com/questions/3654289/scipy-create-2d-polygon-mask/3655582
-#     # Create vertex coordinates for each grid cell
-#     x, y = np.meshgrid(xx, yy)
-#     x, y = x.flatten(), y.flatten()
-#     dosegridpoints = np.vstack((x, y)).T
-#
-#     # Create an empty array of bins to store the histogram in cGy
-#     # only if the structure has contour data or the dose grid exists
-#     if (len(sPlanes)) and ("PixelData" in dose.ds):
-#         # Get the dose and image data information
-#         dd = dose.GetDoseData()
-#     id = dose.GetImageData()
-#     maxdose = int(dd['dosemax'] * dd['dosegridscaling'] * 100)
-#     # Remove values above the limit (cGy) if specified
-#     nbins = int(maxdose / 1)
-#     hist = np.zeros(nbins)
-#
-#     volume = 0
-#     plane = 0
-#
-#     n_voxels = []
-#     # Calculate the histogram for each contour
-#     calculated_z = []
-#     for i, contour in enumerate(contours):
-#         dz = delta_z[i]
-#     z = contour['z']
-#     if z in calculated_z:
-#         print('Repeated slice z', z)
-#     continue
-#     print('calculating slice z', z)
-#     doseplane = dose.GetDoseGrid(z, threshold=0.0)
-#     # If there is no dose for the current plane, go to the next plane
-#     if not len(doseplane):
-#         break
-#
-#     m = get_contour_mask(doselut, dosegridpoints, contour['data'])
-#
-#     h, vol = calculate_contour_dvh(m, doseplane, nbins, maxdose, dd, id, dz)
-#
-#     n_voxels.append(np.size(m) - np.count_nonzero(m))
-#     # plt.imshow(mask)
-#     # plt.show()
-#
-#     # If this is the largest contour, just add to the total histogram
-#     if i == largestIndex:
-#         hist += h
-#         volume += vol
-#     # Otherwise, determine whether to add or subtract histogram
-#     # depending if the contour is within the largest contour or not
-#     else:
-#         contour['inside'] = False
-#         for point in contour['data']:
-#             p = Path(np.array(contours[largestIndex]['data']))
-#             if p.contains_point(point):
-#                 contour['inside'] = True
-#                 # Assume if one point is inside, all will be inside
-#                 break
-#         # If the contour is inside, subtract it from the total histogram
-#         if contour['inside']:
-#             hist -= h
-#             volume -= vol
-#         # Otherwise it is outside, so add it to the total histogram
-#         else:
-#             hist += h
-#             volume += vol
-#     calculated_z.append(z)
-#     plane += 1
-#
-# # if not (callback is None):
-# #     callback(plane, len(sPlanes))
-#
-# # Volume units are given in cm^3
-# volume /= 1000
-# # Rescale the histogram to reflect the total volume
-# hist = hist * volume / sum(hist)
-# # Remove the bins above the max dose for the structure
-# # hist = np.trim_zeros(hist, trim='b')
-#
-# print('number of structure voxels: %i' % np.sum(n_voxels))
-# # tst = get_cdvh(hist)
-#
-# chist = get_cdvh_numba(hist)
-# dhist = np.linspace(0, maxdose, nbins)
-# import pandas as pd
-#
-# df = pd.read_excel('/home/victor/Dropbox/Plan_Competition_Project/testdata/dvh_sphere.xlsx')
-# adose = df['Dose (cGy)'].values
-# advh = df['SI 3 mm'].values
-# plt.plot(dhist, np.abs(chist))
-# plt.hold(True)
-# plt.plot(adose, advh)
-# # plt.plot(chist)
-# plt.title(structure['name'] + ' volume: %1.1f' % volume)
-# plt.plot(dv['data'])
-#
-# plt.show()  # for c, contour in enumerate(sPlane):
-# #     # Create arrays for the x,y coordinate pair for the triangulation
-# #     x = []
-# #     y = []
-# #     for point in contour['contourData']:
-# #         x.append(point[0])
-# #         y.append(point[1])
+    grid_3d = dose.get_grid_3d()
+
+    factor = 2
+    planes = struc_teste.planes_expanded
+    lut_grid_3d = grid_3d
+    ordered_z = np.unique(np.concatenate(planes)[:, 2])
+
+    # ROI UP SAMPLING IN X, Y, Z
+
+    # ds, grid_ds, grid_delta, dose_lut = struc_teste.up_sampling(grid_3d, (.2, .2, .2))
+
+    contours1, largest_index = calculate_planes_contour_areas(struc_teste.planes)
+
+    # Iterate over each plane in the structure
+    ctr = []
+    for z, sPlane in sPlanes.items():
+        # Get the contours with calculated areas and the largest contour index
+        contours, largestIndex = calculate_contour_areas(sPlane)
+        ctr.append((contours, largestIndex))
+
+
+        # dosegrid_points = grid_ds[:, :2]
+        # # dose_lut = [grid_ds[:, 0], grid_ds[:, 1]]
+        # dz = grid_delta[2]
+        #
+        # dose_interp, values = dose.DoseRegularGridInterpolator()
+        # xx, yy = np.meshgrid(dose_lut[0], dose_lut[1], indexing='xy', sparse=True)
+        #
+        # # Create an empty array of bins to store the histogram in cGy
+        # # only if the structure has contour data or the dose grid exists
+        # # if (len(ds)) and ("PixelData" in dose.ds):
+        # # Get the dose and image data information
+        # dd = dose.GetDoseData()
+        # id = dose.GetImageData()
+        # maxdose = int(dd['dosemax'] * dd['dosegridscaling'] * 100)
+        # # Remove values above the limit (cGy) if specified
+        # nbins = int(maxdose / 1)
+        # hist = np.zeros(nbins)
+        #
+        # volume = 0
+        # plane = 0
+        # n_voxels = []
+        # # Calculate the histogram for each contour
+        # calculated_z = []
+        #
+        #
+
+        #
+        # import time
+        #
+        # st = time.time()
+        # for i, contour in enumerate(contours):
+        #     z = contour['z']
+        #     if z in calculated_z:
+        #         print('Repeated slice z', z)
+        #         continue
+        #     print('calculating slice z', z)
+        #
+        #     doseplane = dose_interp((z, yy, xx))
+        #     # If there is no dose for the current plane, go to the next plane
+        #     if not len(doseplane):
+        #         continue
+        #
+        #     m = get_contour_mask_wn(dose_lut, dosegrid_points, contour['data'])
+        #     h, vol = calculate_contour_dvh(m, doseplane, nbins, maxdose, grid_delta)
+        #
+        #     n_voxels.append(np.size(m) - np.count_nonzero(m))
+        #
+        #     # TEST TIMING
+        #     # if z > 1.0:
+        #     #     break
+        #
+        #     # If this is the largest contour, just add to the total histogram
+        #     if i == largestIndex:
+        #         hist += h
+        #         volume += vol
+        #     # Otherwise, determine whether to add or subtract histogram
+        #     # depending if the contour is within the largest contour or not
+        #     else:
+        #         truth = check_contour_inside(contour['data'], contours[largestIndex]['data'])
+        #         # If the contour is inside, subtract it from the total histogram
+        #         if truth:
+        #             hist -= h
+        #             volume -= vol
+        #         # Otherwise it is outside, so add it to the total histogram
+        #         else:
+        #             hist += h
+        #             volume += vol
+        #     calculated_z.append(z)
+        #     plane += 1
+        #
+        # # if not (callback is None):
+        # #     callback(plane, len(sPlanes))
+        #
+        # # Volume units are given in cm^3
+        # volume /= 1000
+        # # Rescale the histogram to reflect the total volume
+        # hist = hist * volume / sum(hist)
+        # # Remove the bins above the max dose for the structure
+        # # hist = np.trim_zeros(hist, trim='b')
+        #
+        # print('number of structure voxels: %i' % np.sum(n_voxels))
+        # # tst = get_cdvh(hist)
+        #
+        # chist = get_cdvh_numba(hist)
+        # dhist = np.linspace(0, maxdose, nbins)
+        # end = time.time()
+        # print('elapsed (s):', end - st)
+        #
+        #
+        # plt.plot(dhist, np.abs(chist))
+        # plt.hold(True)
+        # plt.plot(adose, advh)
+        # plt.title(structure['name'] + ' volume: %1.1f' % volume)
+        # plt.plot(dicompyler_dvh['data'])
+        # plt.show()
+        #
+        # # ntests = -1
+        # contour1 = contour['data']
+        # poly = contour1
