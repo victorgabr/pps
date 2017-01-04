@@ -25,6 +25,7 @@
 
 import numba as nb
 import numpy as np
+from scipy.spatial import Delaunay, ConvexHull
 
 # ===================================================================
 
@@ -369,10 +370,6 @@ def check_contour_inside(contour, largest):
     return inside
 
 
-if __name__ == '__main__':
-    pass
-
-
 def get_structure_planes(struc):
     sPlanes = struc['planes']
 
@@ -386,6 +383,7 @@ def get_structure_planes(struc):
         plane_i = sPlanes[z]
         structure_planes.append(np.array(plane_i[0]['contourData']))
 
+    # TODO generate end cap using linear extrapolation
     cap_delta = struc['thickness'] / 2
     start_cap = structure_planes[0].copy()
     start_cap[:, 2] = start_cap[:, 2] - cap_delta
@@ -746,3 +744,24 @@ def calc_area(x, y):
     cArea = abs(cArea / 2.0)
 
     return cArea
+
+
+def tetrahedron_volume(a, b, c, d):
+    return np.abs(np.einsum('ij,ij->i', a - d, np.cross(b - d, c - d))) / 6
+
+
+def convex_hull_volume_slow(pts):
+    ch = ConvexHull(pts)
+    dt = Delaunay(pts[ch.vertices])
+    tets = dt.points[dt.simplices]
+    return np.sum(tetrahedron_volume(tets[:, 0], tets[:, 1],
+                                     tets[:, 2], tets[:, 3]))
+
+
+def convex_hull_volume(pts):
+    ch = ConvexHull(pts)
+    simplices = np.column_stack((np.repeat(ch.vertices[0], ch.nsimplex),
+                                 ch.simplices))
+    tets = ch.points[simplices]
+    return np.sum(tetrahedron_volume(tets[:, 0], tets[:, 1],
+                                     tets[:, 2], tets[:, 3]))

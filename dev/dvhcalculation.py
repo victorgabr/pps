@@ -3,8 +3,12 @@ import numpy as np
 import numpy.ma as ma
 
 import time
+
+from scipy.spatial.qhull import ConvexHull
+
 from dev.geometry import get_contour_mask_wn, check_contour_inside, get_structure_planes, \
-    expand_roi, calculate_planes_contour_areas, get_dose_grid_3d, get_z_planes, get_axis_grid, get_dose_grid
+    expand_roi, calculate_planes_contour_areas, get_dose_grid_3d, get_z_planes, get_axis_grid, get_dose_grid, \
+    convex_hull_volume
 from dicomparser import ScoringDicomParser, lazyproperty
 from dvhcalc import get_cdvh_numba, get_dvh, calculate_contour_areas
 
@@ -41,6 +45,12 @@ class Structure(object):
         self.dose_lut = None
         self.dose_grid_points = None
         self.hi_res_structure = None
+
+    @lazyproperty
+    def volume_cc(self):
+        cr = ConvexHull(np.concatenate(self.planes))
+
+        return cr.volume / 1000.0
 
     @lazyproperty
     def planes(self):
@@ -83,7 +93,7 @@ class Structure(object):
 
         return self.hi_res_structure, self.dose_grid_points, self.grid_spacing, self.dose_lut
 
-    def calculate_dvh(self, dose, bin_size=1, up_sampling=False, delta_cm=(.5, .5, .5)):
+    def calculate_dvh(self, dose, bin_size=1.0, up_sampling=False, delta_cm=(.5, .5, .5)):
         grid_3d = dose.get_grid_3d()
         # ROI UP SAMPLING IN X, Y, Z
 
@@ -114,11 +124,11 @@ class Structure(object):
         nbins = int(maxdose / bin_size)
         hist = np.zeros(nbins)
 
-        volume = 0
+        # volume = 0
         n_voxels = []
         # Calculate the histogram for each contour
         calculated_z = []
-        # TODO DEGUB DVH LOOP TO GET THE LARGEST INDEX using orginal implementation SPLANES
+        # TODO DEBUG DVH LOOP TO GET THE LARGEST INDEX using orginal implementation SPLANES
         st = time.time()
         for i, contour in enumerate(contours):
             z = contour['z']
@@ -131,15 +141,13 @@ class Structure(object):
             # If there is no dose for the current plane, go to the next plane
             if not len(doseplane):
                 break
-
             m = get_contour_mask_wn(dose_lut, dosegrid_points, contour['data'])
             # plt.imshow(m)
             # plt.show()
             h, vol = calculate_contour_dvh(m, doseplane, nbins, maxdose, grid_delta)
             hist += h
-            volume += vol
+            # volume += vol
             calculated_z.append(z)
-
 
             # i = 0
             # largest_index = 0
@@ -169,14 +177,13 @@ class Structure(object):
             #         hist += h
             #         volume += vol
 
-
         # if not (callback is None):
         #     callback(plane, len(sPlanes))
         # Volume units are given in cm^3
-        volume /= 1000
+        # Calculate accurate volume using 3D convex hull estimation
 
         # Rescale the histogram to reflect the total volume
-        hist = hist * volume / sum(hist)
+        hist = hist * self.volume_cc / sum(hist)
         # Remove the bins above the max dose for the structure
         # hist = np.trim_zeros(hist, trim='b')
         print('number of structure voxels: %i' % np.sum(n_voxels))
@@ -192,20 +199,20 @@ if __name__ == '__main__':
     # TODO IMPLEMENT DVH CALCULATION
     import pandas as pd
 
-    sheet = 'RT_Cone'
+    sheet = 'Sphere'
     df = pd.read_excel('/home/victor/Dropbox/Plan_Competition_Project/testdata/dvh_sphere.xlsx', sheetname=sheet)
     adose = df['Dose (cGy)'].values
-    advh = df['AP 3 mm'].values
+    advh = df['SI 3 mm'].values
 
-    # rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_10_0.dcm'
+    rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_30_0.dcm'
     # rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_02_0.dcm'
     # rs_file = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RS.PQRT END TO END.dcm'
     # rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_10_0.dcm'
     # rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Cones/Cone_10_0.dcm'
-    rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Cones/RtCone_30_0.dcm'
+    # rs_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Cones/RtCone_30_0.dcm'
     # rs_file = r'D:\Dropbox\Plan_Competition_Project\FantomaPQRT\RS.PQRT END TO END.dcm'
 
-    # rd_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_2mm_Aligned.dcm'
+    # rd_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_3mm_Aligned.dcm'
     # rd_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_0-4_0-2_0-4_mm_Aligned.dcm'
     # rd_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_AntPost_0-4_0-2_0-4_mm_Aligned.dcm'
     rd_file = r'/home/victor/Downloads/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_AntPost_3mm_Aligned.dcm'
@@ -224,8 +231,8 @@ if __name__ == '__main__':
     dicompyler_dvh = get_dvh(structure, dose)
 
     struc_teste = Structure(structure)
-    dhist, chist = struc_teste.calculate_dvh(dose, up_sampling=True, delta_cm=(0.2, 0.2, 0.2))
-    # dhist, chist = struc_teste.calculate_dvh(dose)
+    # dhist, chist = struc_teste.calculate_dvh(dose, bin_size=1, up_sampling=True, delta_cm=(.2, .2, 0.2))
+    dhist, chist = struc_teste.calculate_dvh(dose)
     # plt.plot(dhist, np.abs(chist), '.')
     plt.plot(dhist, np.abs(chist))
     # plt.plot(np.abs(chist))
@@ -241,6 +248,9 @@ if __name__ == '__main__':
     planes = struc_teste.planes_expanded
     lut_grid_3d = grid_3d
     ordered_z = np.unique(np.concatenate(planes)[:, 2])
+
+    pts = np.concatenate(struc_teste.planes)
+    # cv = convex_hull_volume_bis(pts)
 
     # ROI UP SAMPLING IN X, Y, Z
 
