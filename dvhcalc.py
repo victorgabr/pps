@@ -60,6 +60,7 @@ def get_dvh(structure, dose, limit=None, callback=None):
     hist = calculate_dvh(structure, dose, limit, callback)
     # Convert the differential DVH into a cumulative DVH
     dvh = get_cdvh(hist)
+    dvh = np.trim_zeros(dvh, trim='b')
 
     dvhdata = {}
     dvhdata['data'] = dvh
@@ -217,7 +218,7 @@ def calculate_dvh(structure, dose, limit=None, callback=None):
     # Rescale the histogram to reflect the total volume
     hist = hist * volume / sum(hist)
     # Remove the bins above the max dose for the structure
-    hist = np.trim_zeros(hist, trim='b')
+    # hist = np.trim_zeros(hist, trim='b')
 
     return hist
 

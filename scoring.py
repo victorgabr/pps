@@ -11,6 +11,7 @@ import pandas as pd
 import os
 import re
 from collections import OrderedDict
+import scipy.interpolate as itp
 
 logger = logging.getLogger('scoring')
 
@@ -104,6 +105,9 @@ class DVHMetrics(DVH):
         DVH.__init__(self, dvh)
         self.stats = (dvh['max'], dvh['mean'], dvh['min'])
         self.data = dvh
+        self.fv = itp.interp1d(range(len(self.dvh)), self.dvh)  # pp
+        self.fd = itp.interp1d(self.dvh, range(len(self.dvh)))  # pp
+        self.fd_cc = itp.interp1d(dvh['data'], np.arange(len(dvh['data'])) * self.scaling)  # cc
 
     def eval_constrain(self, key, value):
 
@@ -126,11 +130,20 @@ class DVHMetrics(DVH):
             D99 = self.GetDoseConstraint(99)
             HI = (D1 - D99) / value
             return HI
+        elif key[0] == 'T':
+            return self.get_volume()
+
+    def GetDoseConstraint(self, volume):
+        """ Return the maximum dose (in cGy) that a specific volume (in percent)
+            receives. i.e. D90, D20."""
+
+        return np.argmin(np.fabs(self.dvh - volume)) * self.scaling
 
     def GetDoseConstraintCC(self, volumecc):
         """ Return the maximum dose (in cGy) that a specific volume in cc."""
 
-        return np.argmin(np.fabs(self.data['data'] - volumecc)) * self.scaling
+        # return np.argmin(np.fabs(self.data['data'] - volumecc)) * self.scaling
+        return self.fd_cc(volumecc)
 
     def GetVolumeConstraint(self, dose):
 
@@ -139,7 +152,10 @@ class DVHMetrics(DVH):
 
         val = dose / self.scaling
 
-        return np.interp(val, range(len(self.dvh)), self.dvh)
+        return self.fv(val)
+
+    def get_volume(self):
+        return self.data['data'][0]
 
 
 class Scoring(object):
@@ -387,9 +403,6 @@ if __name__ == '__main__':
     rs = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RS.PQRT END TO END.dcm'
     rd = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RD.PQRT END TO END.Dose_PLAN.dcm'
     rp = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RP.PQRT END TO END.RA.dcm'
-
-
-
 
     # dvh_file = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\Eclipse Plans\Saad RapidArc Eclipse\Saad RapidArc Eclipse\RD.Saad-Eclipse-RapidArc.dvh'
     #

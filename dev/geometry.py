@@ -25,6 +25,7 @@
 
 import numba as nb
 import numpy as np
+from math import factorial
 from scipy.spatial import Delaunay, ConvexHull
 
 # ===================================================================
@@ -34,8 +35,6 @@ from scipy.spatial import Delaunay, ConvexHull
 #             V[] = vertex points of a polygon
 #     Return: 0 = outside, 1 = inside
 # This code is patterned after [Franklin, 2000]
-from numba import njit
-from scipy.ndimage import zoom
 from shapely.geometry import Polygon
 
 
@@ -370,35 +369,32 @@ def check_contour_inside(contour, largest):
     return inside
 
 
-def get_structure_planes(struc):
+def get_structure_planes(struc, end_capping=False):
     sPlanes = struc['planes']
 
-    ## INTERPOLATE PLANES IN Z AXIS
     # Iterate over each plane in the structure
     zval = [z for z, sPlane in sPlanes.items()]
     zval.sort(key=float)
+
+    # sorted Z axis planes
 
     structure_planes = []
     for z in zval:
         plane_i = sPlanes[z]
         structure_planes.append(np.array(plane_i[0]['contourData']))
 
-    # TODO generate end cap using linear extrapolation
-    cap_delta = struc['thickness'] / 2
-    start_cap = structure_planes[0].copy()
-    start_cap[:, 2] = start_cap[:, 2] - cap_delta
-    #
-    end_cap = structure_planes[-1].copy()
-    end_cap[:, 2] = end_cap[:, 2] + cap_delta
-    #
-    # # extending end caps to original plans
-    #
-    # structure_planes[0] = start_cap
-    # structure_planes[-1] = end_cap
-    #
-    res = [start_cap] + structure_planes + [end_cap]
-    # res = structure_planes
-    return res
+    if end_capping:
+        cap_delta = struc['thickness'] / 2
+        start_cap = structure_planes[0].copy()
+        start_cap[:, 2] = start_cap[:, 2] - cap_delta
+        end_cap = structure_planes[-1].copy()
+        end_cap[:, 2] = end_cap[:, 2] + cap_delta
+
+        # # extending end caps to original plans
+        structure_planes[0] = start_cap
+        structure_planes[-1] = end_cap
+
+    return structure_planes
 
 
 def k_nearest_neighbors(k, feature_train, features_query):
@@ -437,11 +433,11 @@ def expand_roi(roi_contours, delta):
 
     # extending end caps to original plans
 
-    roi_contours[0] = start_cap
-    roi_contours[-1] = end_cap
-    # contour_tmp = [start_cap] + roi_contours + [end_cap]
+    # roi_contours[0] = start_cap
+    # roi_contours[-1] = end_cap
+    contour_tmp = [start_cap] + roi_contours + [end_cap]
 
-    contour_tmp = roi_contours
+    # contour_tmp = roi_contours
     res = []
     for plane in contour_tmp:
         ctr = Polygon(plane)
@@ -467,7 +463,9 @@ def calculate_planes_contour_areas(planes):
         z = contour[0, 2]
 
         # Calculate the area based on the Surveyor's formula
+
         cArea = calc_area(x, y)
+        # cArea = poly_area(x, y)
 
         # Remove the z coordinate from the xyz point tuple
         # data = list(map(lambda x: x[0:2], contour[:, :2]))
@@ -738,30 +736,109 @@ def get_z_planes(struc_planes, ordered_z, z_interp_positions):
 @nb.njit(nb.double(nb.double[:], nb.double[:]))
 def calc_area(x, y):
     cArea = 0
+    xi = np.zeros(len(x) + 1)
+    yi = np.zeros(len(y) + 1)
+    xi[:-1] = x
+    xi[-1] = x[0]
+    yi[:-1] = y
+    yi[-1] = y[0]
+
     # Calculate the area based on the Surveyor's formula
-    for i in range(0, len(x) - 1):
-        cArea = cArea + x[i] * y[i + 1] - x[i + 1] * y[i]
+    for i in range(0, len(xi) - 1):
+        cArea = cArea + xi[i] * yi[i + 1] - xi[i + 1] * yi[i]
     cArea = abs(cArea / 2.0)
 
     return cArea
 
 
-def tetrahedron_volume(a, b, c, d):
-    return np.abs(np.einsum('ij,ij->i', a - d, np.cross(b - d, c - d))) / 6
+@nb.njit(nb.boolean(nb.double[:], nb.double[:], nb.double[:]))
+def ccw(a, b, c):
+    """Tests whether the turn formed by A, B, and C is ccw"""
+    return (b[0] - a[0]) * (c[1] - a[1]) > (b[1] - a[1]) * (c[0] - a[0])
 
 
-def convex_hull_volume_slow(pts):
-    ch = ConvexHull(pts)
-    dt = Delaunay(pts[ch.vertices])
-    tets = dt.points[dt.simplices]
-    return np.sum(tetrahedron_volume(tets[:, 0], tets[:, 1],
-                                     tets[:, 2], tets[:, 3]))
+@nb.njit(nb.boolean(nb.double[:, :]))
+def is_convex(points):
+    """
+    https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation
+        Test if a contour of points [xi,yi] - [xn, yn] is convex
+
+    :param points: Array of 2d points
+    :return: boolean
+    """
+    n = len(points)
+
+    for i in range(n):
+        # Check every triplet of points
+        ia = i % n
+        ib = (i + 1) % n
+        ic = (i + 2) % n
+        a = points[ia]
+        b = points[ib]
+        c = points[ic]
+
+        if not ccw(a, b, c):
+            return False
+
+    return True
 
 
-def convex_hull_volume(pts):
-    ch = ConvexHull(pts)
-    simplices = np.column_stack((np.repeat(ch.vertices[0], ch.nsimplex),
-                                 ch.simplices))
-    tets = ch.points[simplices]
-    return np.sum(tetrahedron_volume(tets[:, 0], tets[:, 1],
-                                     tets[:, 2], tets[:, 3]))
+def savitzky_golay(y, window_size=501, order=3, deriv=0, rate=1):
+    r"""Smooth (and optionally differentiate) data with a Savitzky-Golay filter.
+    The Savitzky-Golay filter removes high frequency noise from data.
+    It has the advantage of preserving the original shape and
+    features of the signal better than other types of filtering
+    approaches, such as moving averages techniques.
+    y : array_like, shape (N,)
+        the values of the time history of the signal.
+    window_size : int
+        the length of the window. Must be an odd integer number.
+    order : int
+        the order of the polynomial used in the filtering.
+        Must be less then `window_size` - 1.
+    deriv: int
+        the order of the derivative to compute (default = 0 means only smoothing)
+    ys : ndarray, shape (N)
+        the smoothed signal (or it's n-th derivative).
+    The Savitzky-Golay is a type of low-pass filter, particularly
+    suited for smoothing noisy data. The main idea behind this
+    approach is to make for each point a least-square fit with a
+    polynomial of high order over a odd-sized window centered at
+    the point.
+    t = np.linspace(-4, 4, 500)
+    y = np.exp( -t**2 ) + np.random.normal(0, 0.05, t.shape)
+    ysg = savitzky_golay(y, window_size=31, order=4)
+    import matplotlib.pyplot as plt
+    plt.plot(t, y, label='Noisy signal')
+    plt.plot(t, np.exp(-t**2), 'k', lw=1.5, label='Original signal')
+    plt.plot(t, ysg, 'r', label='Filtered signal')
+    plt.legend()
+    plt.show()
+    .. [1] A. Savitzky, M. J. E. Golay, Smoothing and Differentiation of
+       Data by Simplified Least Squares Procedures. Analytical
+       Chemistry, 1964, 36 (8), pp 1627-1639.
+    .. [2] Numerical Recipes 3rd Edition: The Art of Scientific Computing
+       W.H. Press, S.A. Teukolsky, W.T. Vetterling, B.P. Flannery
+       Cambridge University Press ISBN-13: 9780521880688
+    """
+
+    try:
+        window_size = np.abs(np.int(window_size))
+        order = np.abs(np.int(order))
+    except:
+        raise (ValueError("window_size and order have to be of type int"))
+    if window_size % 2 != 1 or window_size < 1:
+        raise TypeError("window_size size must be a positive odd number")
+    if window_size < order + 2:
+        raise TypeError("window_size is too small for the polynomials order")
+    order_range = range(order + 1)
+    half_window = (window_size - 1) // 2
+    # precompute coefficients
+    b = np.mat([[k ** i for i in order_range] for k in range(-half_window, half_window + 1)])
+    m = np.linalg.pinv(b).A[deriv] * rate ** deriv * factorial(deriv)
+    # pad the signal at the extremes with
+    # values taken from the signal itself
+    firstvals = y[0] - np.abs(y[1:half_window + 1][::-1] - y[0])
+    lastvals = y[-1] + np.abs(y[-half_window - 1:-1][::-1] - y[-1])
+    y = np.concatenate((firstvals, y, lastvals))
+    return np.convolve(m[::-1], y, mode='valid')
