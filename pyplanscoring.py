@@ -7,8 +7,9 @@ import numpy as np
 import pandas as pd
 from PySide import QtGui, QtCore
 import PyPlanScoringQT
-from dosimetric import constrains
-from dosimetric import scores
+# from dosimetric import constrains
+# from dosimetric import scores
+from dosimetric import read_scoring_criteria
 from scoring import Participant, get_participant_folder_data
 
 __version__ = '0.0.1'
@@ -19,6 +20,11 @@ def _sys_getenc_wrapper():
 
 
 sys.getfilesystemencoding = _sys_getenc_wrapper
+
+# SET COMPETITION 2017
+
+f_2017 = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/Linear Evaluation Criteria - PlanIQ Jan15/Linear Evaluation Criteria - PlanIQ - 15Jan 2017.txt'
+constrains, scores = read_scoring_criteria(f_2017)
 
 
 class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):

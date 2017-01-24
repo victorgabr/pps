@@ -356,17 +356,12 @@ def calculate_contour_areas_numba(plane):
     largestIndex = 0
     for c, contour in enumerate(plane):
         # Create arrays for the x,y coordinate pair for the triangulation
-        x = []
-        y = []
-        for point in contour['contourData']:
-            x.append(point[0])
-            y.append(point[1])
+        x = contour['contourData'][:, 0]
+        y = contour['contourData'][:, 1]
 
-        x = np.array(x)
-        y = np.array(y)
         cArea = calc_area(x, y)
         # Remove the z coordinate from the xyz point tuple
-        data = list(map(lambda x: x[0:2], contour['contourData']))
+        data = np.asarray(list(map(lambda x: x[0:2], contour['contourData'])))
 
         # Add the contour area and points to the list of contours
         contours.append({'area': cArea, 'data': data})

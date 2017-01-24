@@ -12,8 +12,8 @@
 import logging
 import numpy as np
 
-
 logger = logging.getLogger('dvhdata')
+
 
 class DVH:
     """Processes the dose volume histogram from DICOM DVH data."""
@@ -22,7 +22,6 @@ class DVH:
         """Take a dvh numpy array and convert it to cGy."""
         self.dvh = dvh['data'] * 100 / dvh['data'][0]
         self.scaling = dvh['scaling']
-
 
         # Instruct numpy to print the full extent of the array
         np.set_printoptions(threshold=2147483647, suppress=True)
@@ -45,7 +44,6 @@ class DVH:
             receives. i.e. D90, D20."""
 
         return np.argmin(np.fabs(self.dvh - volume)) * self.scaling
-
 
 
 def CalculateVolume(structure):
@@ -142,4 +140,3 @@ def PointInPolygon(x, y, poly):
 
 if __name__ == '__main__':
     pass
-

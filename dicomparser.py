@@ -9,6 +9,8 @@ import pandas as pd
 import numba as nb
 from scipy.interpolate import RegularGridInterpolator
 
+from dev.geometry import centroid_of_polygon
+
 logger = logging.getLogger('dicomparser')
 import numpy as np
 
@@ -347,9 +349,8 @@ class DicomParser(object):
 
                         # Determine all the plane properties
                         plane['geometricType'] = contour.ContourGeometricType
-                        plane['numContourPoints'] = contour.NumberofContourPoints
+                        plane['numContourPoints'] = contour.NumberofContourPointsF
                         plane['contourData'] = self.GetContourPoints(contour.ContourData)
-
                         # Each plane which coincides with a image slice will have a unique ID
                         if 'ContourImages' in contour:
                             plane['UID'] = contour.ContourImages[0].ReferencedSOPInstanceUID
@@ -373,7 +374,7 @@ class DicomParser(object):
     def GetContourPoints(self, array):
         """Parses an array of xyz points and returns a array of point dictionaries."""
 
-        return list(zip(*[iter(array)] * 3))
+        return np.asarray(list(zip(*[iter(array)] * 3)))
 
     def CalculatePlaneThickness(self, planesDict):
         """Calculates the plane thickness for each structure."""
@@ -973,8 +974,9 @@ class ScoringDicomParser(DicomParser):
                         # Determine all the plane properties
                         plane['geometricType'] = contour.ContourGeometricType
                         plane['numContourPoints'] = contour.NumberofContourPoints
-                        plane['contourData'] = self.GetContourPoints(contour.ContourData)
-
+                        contour_data = self.GetContourPoints(contour.ContourData)
+                        plane['contourData'] = contour_data
+                        plane['centroid'] = centroid_of_polygon(contour_data[:, 0], contour_data[:, 1])
                         # Each plane which coincides with a image slice will have a unique ID
                         if 'ContourImages' in contour:
                             plane['UID'] = contour.ContourImages[0].ReferencedSOPInstanceUID
@@ -1081,7 +1083,7 @@ class ScoringDicomParser(DicomParser):
         x, y, z = self.get_grid_3d()
         values = self.ds.pixel_array * float(self.ds.DoseGridScaling) * 100  # 3D dose matrix in cGy
 
-        return RegularGridInterpolator((z, y, x), values), values
+        return RegularGridInterpolator((z, y, x), values, bounds_error=False, fill_value=None), values
 
 
 def test_rtss_eclipse(f):

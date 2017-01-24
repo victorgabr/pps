@@ -21,20 +21,11 @@
 #           =0 for P2 on the line
 #           <0 for P2 right of the line
 #   See: the January 2001 Algorithm "Area of 2D and 3D Triangles and Polygons"
-
+from copy import deepcopy
+from math import factorial
 
 import numba as nb
 import numpy as np
-from math import factorial
-from scipy.spatial import Delaunay, ConvexHull
-
-# ===================================================================
-
-# cn_PnPoly(): crossing number test for a point in a polygon
-#     Input:  P = a point,
-#             V[] = vertex points of a polygon
-#     Return: 0 = outside, 1 = inside
-# This code is patterned after [Franklin, 2000]
 from shapely.geometry import Polygon
 
 
@@ -58,7 +49,7 @@ def cn_PnPoly(P, V):
 
 # ===================================================================
 
-# wn_PnPoly(): winding number test for a point in a polygon
+# point_in_contour(): winding number test for a point in a polygon
 #     Input:  P = a point,
 #             V[] = vertex points of a polygon
 #     Return: wn = the winding number (=0 only if P is outside V[])
@@ -131,14 +122,14 @@ def cn_PnPoly1(P, V, n):
 
 
 @nb.njit(nb.int64(nb.double[:], nb.double[:, :]))
-def wn_PnPoly(P, polygon):
+def point_in_contour(P, polygon):
     wn = 0  # the  winding number counter
     # repeat the first vertex at end
     V = np.zeros((polygon.shape[0] + 1, polygon.shape[1]))
     V[:-1] = polygon
     V[-1] = polygon[0]
     n = len(V)
-    # // loop through all edges of the polygon
+    #  loop through all edges of the polygon
     for i in range(n - 1):  # edge from V[i] to  V[i+1]
         if V[i][1] <= P[1]:  # start y <= P[1]
             if V[i + 1][1] > P[1]:  # an upward crossing
@@ -332,12 +323,12 @@ def poly_area(x, y):
     return 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
 
 
-def centroid_for_polygon(x, y):
+def centroid_of_polygon(x, y):
     """
         http://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
     :param x: x-axis coordinates
     :param y: y-axis coordinates
-    :return: centroid of polygonF
+    :return: centroid of polygon
     """
     area = poly_area(x, y)
     imax = len(x) - 1
@@ -361,40 +352,12 @@ def check_contour_inside(contour, largest):
     inside = False
     for i in range(len(contour)):
         point = contour[i]
-        p = wn_PnPoly(point, largest)
+        p = point_in_contour(point, largest)
         if p:
             inside = True
             # Assume if one point is inside, all will be inside
             break
     return inside
-
-
-def get_structure_planes(struc, end_capping=False):
-    sPlanes = struc['planes']
-
-    # Iterate over each plane in the structure
-    zval = [z for z, sPlane in sPlanes.items()]
-    zval.sort(key=float)
-
-    # sorted Z axis planes
-
-    structure_planes = []
-    for z in zval:
-        plane_i = sPlanes[z]
-        structure_planes.append(np.array(plane_i[0]['contourData']))
-
-    if end_capping:
-        cap_delta = struc['thickness'] / 2
-        start_cap = structure_planes[0].copy()
-        start_cap[:, 2] = start_cap[:, 2] - cap_delta
-        end_cap = structure_planes[-1].copy()
-        end_cap[:, 2] = end_cap[:, 2] + cap_delta
-
-        # # extending end caps to original plans
-        structure_planes[0] = start_cap
-        structure_planes[-1] = end_cap
-
-    return structure_planes
 
 
 def k_nearest_neighbors(k, feature_train, features_query):
@@ -528,10 +491,7 @@ def interpolate_plane_numba(ub, lb, location, ubpoints, lbpoints):
 
     # If the number of points in the upper bound is higher, use it as the starting bound
     # otherwise switch the upper and lower bounds
-    # if not (len(ubpoints) >= len(lbpoints)):
-    #     lbCopy = lb
-    #     lb = ub
-    #     ub = lbCopy
+
     tmp = np.zeros(3)
     plane = np.zeros((len(ubpoints), 3))
     # Determine the closest point in the lower bound from each point in the upper bound
@@ -691,57 +651,15 @@ def get_dose_grid_3d(grid_3d, delta_mm=(2, 2, 2)):
     return dose_grid_points, up_dose_lut, spacing
 
 
-def get_z_planes(struc_planes, ordered_z, z_interp_positions):
-    result = []
-    for zi in z_interp_positions:
-        if zi not in ordered_z:
-            # get grid knn
-            kn = k_nearest_neighbors(2, ordered_z, zi)
-            # define upper and lower bounds
-            if kn[1] < kn[0]:
-                l_idx = kn[1]
-                u_idx = l_idx + 1
-                if u_idx >= len(struc_planes):
-                    u_idx = -1
-                    l_idx = kn[0]
-            else:
-                l_idx = kn[0]
-                u_idx = kn[1]
-
-            # get upper and lower z values and contour points
-            ub = struc_planes[u_idx][0][2]
-            lb = struc_planes[l_idx][0][2]
-            ub_points = struc_planes[u_idx]
-            lb_points = struc_planes[l_idx]
-
-            if not (len(ub_points) >= len(lb_points)):
-                # if upper bounds does not have more points, swap planes to interpolate
-                lbCopy = lb
-                lb = ub
-                ub = lbCopy
-                ub_points = struc_planes[l_idx]
-                lb_points = struc_planes[u_idx]
-
-            interp_plane = interpolate_plane_numba(ub, lb, zi, ub_points, lb_points)
-            result += [interp_plane]
-
-        else:
-            ec_dist = abs(ordered_z - zi)
-            neighbor = ec_dist.argmin()
-            result += [struc_planes[neighbor]]
-
-    return result
-
-
 @nb.njit(nb.double(nb.double[:], nb.double[:]))
-def calc_area(x, y):
+def calc_area(xi, yi):
     cArea = 0
-    xi = np.zeros(len(x) + 1)
-    yi = np.zeros(len(y) + 1)
-    xi[:-1] = x
-    xi[-1] = x[0]
-    yi[:-1] = y
-    yi[-1] = y[0]
+    # xi = np.zeros(len(x) + 1)
+    # yi = np.zeros(len(y) + 1)
+    # xi[:-1] = x
+    # xi[-1] = x[0]
+    # yi[:-1] = y
+    # yi[-1] = y[0]
 
     # Calculate the area based on the Surveyor's formula
     for i in range(0, len(xi) - 1):
@@ -842,3 +760,284 @@ def savitzky_golay(y, window_size=501, order=3, deriv=0, rate=1):
     lastvals = y[-1] + np.abs(y[-half_window - 1:-1][::-1] - y[-1])
     y = np.concatenate((firstvals, y, lastvals))
     return np.convolve(m[::-1], y, mode='valid')
+
+
+def interp_contour(z_plane, ub_z, lb_z, ubound_contour, lb_contour):
+    if not (len(ubound_contour) >= len(lb_contour)):
+        # if upper bounds does not have more points, swap planes to interpolate
+        lbCopy = lb_z
+        lb_z = ub_z
+        ub_z = lbCopy
+        lb_contour_copy = lb_contour.copy()  # copy of original array
+
+        lb_contour = ubound_contour
+        ubound_contour = lb_contour_copy
+
+    return interpolate_plane_numba(ub_z, lb_z, z_plane, ubound_contour, lb_contour)
+
+
+def get_interpolated_structure_planes(dicom_planes, z_interp_positions):
+    s_planes = deepcopy(dicom_planes)
+    ordered_keys = [z for z, sPlane in s_planes.items()]
+    ordered_keys.sort(key=float)
+    ordered_z = np.array(ordered_keys, dtype=float)
+
+    interpolated_planes = {}
+    for zi in z_interp_positions:
+        if zi not in ordered_z:
+            # get grid knn
+            kn = k_nearest_neighbors(2, ordered_z, zi)
+
+            # Interpolate all planes contours
+            # define upper and lower bounds
+            if kn[1] < kn[0]:
+                l_idx = kn[1]
+                u_idx = l_idx + 1
+                if u_idx >= len(s_planes):
+                    u_idx = -1
+                    l_idx = kn[0]
+            else:
+                l_idx = kn[0]
+                u_idx = kn[1]
+
+            # get upper and lower z values and contour points
+            ub = ordered_z[u_idx]
+            lb = ordered_z[l_idx]
+
+            # get a list of contours per planes
+            ub_points = s_planes[ordered_keys[u_idx]]
+            lb_points = s_planes[ordered_keys[l_idx]]
+
+            if len(ub_points) == len(lb_points):
+                result = []
+
+                lb_centroids = np.array([c['centroid'] for c in lb_points])
+                ub_centroids = np.array([c['centroid'] for c in ub_points])
+                u_idx = [nearest_neighbor(ub_centroids, lbc) for lbc in lb_centroids]
+
+                for j in range(len(lb_points)):
+                    lc_contour = lb_points[j]['contourData']
+                    up_contour = ub_points[u_idx[j]]['contourData']
+                    interpolated_contour = interp_contour(zi, ub, lb, up_contour, lc_contour)
+                    result += [{'contourData': interpolated_contour}]
+
+                interpolated_planes[zi] = result
+
+    s_planes.update(interpolated_planes)
+
+    return s_planes
+
+
+def get_structure_planes(struc, end_capping=False):
+    sPlanes = struc['planes']
+
+    # Iterate over each plane in the structure
+    zval = [z for z, sPlane in sPlanes.items()]
+    zval.sort(key=float)
+
+    # sorted Z axis planes
+
+    structure_planes = []
+    zplanes = []
+    for z in zval:
+        plane_i = sPlanes[z]
+        for i in range(len(plane_i)):
+            structure_planes.append(np.asarray(plane_i[i]['contourData']))
+            zplanes.append(z)
+
+    if end_capping:
+        cap_delta = struc['thickness'] / 2
+        start_cap = structure_planes[0].copy()
+        start_cap[:, 2] = start_cap[:, 2] - cap_delta
+        end_cap = structure_planes[-1].copy()
+        end_cap[:, 2] = end_cap[:, 2] + cap_delta
+
+        # # extending end caps to original plans
+        structure_planes[0] = start_cap
+        structure_planes[-1] = end_cap
+
+    return structure_planes, np.array(zplanes, dtype=float)
+
+
+def planes2array(s_planes):
+    # Iterate over each plane in the structure
+    zval = [z for z, sPlane in s_planes.items()]
+    zval.sort(key=float)
+    # sorted Z axis planes
+    structure_planes = []
+    zplanes = []
+    for z in zval:
+        plane_i = s_planes[z]
+        for i in range(len(plane_i)):
+            structure_planes.append(np.asarray(plane_i[i]['contourData']))
+            zplanes.append(z)
+
+    return np.concatenate(structure_planes), np.asarray(zplanes, dtype=float)
+
+
+def nearest_neighbor(features_train, feature_query):
+    """
+
+    :param k: kn neighbors
+    :param feature_train: reference 1D array grid
+    :param features_query: query grid
+    :return: lower and upper neighbors
+    """
+    ec_dist = np.sqrt((np.sum(features_train - feature_query, axis=1) ** 2))
+
+    return ec_dist.argmin()
+
+
+def calculate_structure_volume(structure):
+    """Calculates the volume for the given structure."""
+
+    sPlanes = structure['planes']
+
+    # Store the total volume of the structure
+    sVolume = 0
+
+    n = 0
+    # Iterate over each plane in the structure
+    for sPlane in sPlanes.values():
+
+        # Calculate the area for each contour in the current plane
+        contours = []
+        largest = 0
+        largestIndex = 0
+        for c, contour in enumerate(sPlane):
+            # Create arrays for the x,y coordinate pair for the triangulation
+            x = []
+            y = []
+            for point in contour['contourData']:
+                x.append(point[0])
+                y.append(point[1])
+
+            # cArea = 0
+
+            # for i in range(0, len(x) - 1):
+            #     cArea = cArea + x[i] * y[i + 1] - x[i + 1] * y[i]
+            # cArea = abs(cArea / 2)
+            # # Calculate the area based on the Surveyor's formula
+            cArea = calc_area(np.asarray(x), np.asarray(y))
+
+            contours.append({'area': cArea, 'data': contour['contourData']})
+
+            # Determine which contour is the largest
+            if (cArea > largest):
+                largest = cArea
+                largestIndex = c
+
+        # See if the rest of the contours are within the largest contour
+        area = contours[largestIndex]['area']
+        for i, contour in enumerate(contours):
+            # Skip if this is the largest contour
+            if not (i == largestIndex):
+                contour['inside'] = False
+                for point in contour['data']:
+                    if point_in_contour(point, contours[largestIndex]['data']):
+                        contour['inside'] = True
+                        # Assume if one point is inside, all will be inside
+                        break
+                # If the contour is inside, subtract it from the total area
+                if contour['inside']:
+                    area = area - contour['area']
+                # Otherwise it is outside, so add it to the total area
+                else:
+                    area = area + contour['area']
+
+        # If the plane is the first or last slice
+        # only add half of the volume, otherwise add the full slice thickness
+        if (n == 0) or (n == len(sPlanes) - 1):
+            sVolume = float(sVolume) + float(area) * float(structure['thickness']) * 0.5
+        else:
+            sVolume = float(sVolume) + float(area) * float(structure['thickness'])
+        # Increment the current plane number
+        n += 1
+
+    # Since DICOM uses millimeters, convert from mm^3 to cm^3
+    volume = sVolume / 1000
+
+    return volume
+
+
+def get_z_planes(struc_planes, ordered_z, z_interp_positions):
+    result = []
+    for zi in z_interp_positions:
+        if zi not in ordered_z:
+            # get grid knn
+            kn = k_nearest_neighbors(2, ordered_z, zi)
+            # define upper and lower bounds
+            if kn[1] < kn[0]:
+                l_idx = kn[1]
+                u_idx = l_idx + 1
+                if u_idx >= len(struc_planes):
+                    u_idx = -1
+                    l_idx = kn[0]
+            else:
+                l_idx = kn[0]
+                u_idx = kn[1]
+
+            # get upper and lower z values and contour points
+            ub = struc_planes[u_idx][0][2]
+            lb = struc_planes[l_idx][0][2]
+            ub_points = struc_planes[u_idx]
+            lb_points = struc_planes[l_idx]
+
+            if not (len(ub_points) >= len(lb_points)):
+                # if upper bounds does not have more points, swap planes to interpolate
+                lbCopy = lb
+                lb = ub
+                ub = lbCopy
+                ub_points = struc_planes[l_idx]
+                lb_points = struc_planes[u_idx]
+
+            interp_plane = interpolate_plane_numba(ub, lb, zi, ub_points, lb_points)
+            result += [interp_plane]
+
+        else:
+            ec_dist = abs(ordered_z - zi)
+            neighbor = ec_dist.argmin()
+            result += [struc_planes[neighbor]]
+
+    return result
+
+
+def get_z_planes_dict(struc_planes, ordered_z, z_interp_positions):
+    result = []
+    for zi in z_interp_positions:
+        if zi not in ordered_z:
+            # get grid knn
+            kn = k_nearest_neighbors(2, ordered_z, zi)
+            # define upper and lower bounds
+            if kn[1] < kn[0]:
+                l_idx = kn[1]
+                u_idx = l_idx + 1
+                if u_idx >= len(struc_planes):
+                    u_idx = -1
+                    l_idx = kn[0]
+            else:
+                l_idx = kn[0]
+                u_idx = kn[1]
+
+            # get upper and lower z values and contour points
+            ub = struc_planes[u_idx][0][2]
+            lb = struc_planes[l_idx][0][2]
+            ub_points = struc_planes[u_idx]
+            lb_points = struc_planes[l_idx]
+            if not (len(ub_points) >= len(lb_points)):
+                # if upper bounds does not have more points, swap planes to interpolate
+                lbCopy = lb
+                lb = ub
+                ub = lbCopy
+                ub_points = struc_planes[l_idx]
+                lb_points = struc_planes[u_idx]
+            interp_plane = interpolate_plane_numba(ub, lb, zi, ub_points, lb_points)
+
+            result += [interp_plane]
+
+        else:
+            ec_dist = abs(ordered_z - zi)
+            neighbor = ec_dist.argmin()
+            result += [struc_planes[neighbor]]
+
+    return result

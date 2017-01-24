@@ -8,7 +8,7 @@ from matplotlib.path import Path
 import numpy.ma as ma
 import numpy as np
 
-
+# TODO REFACTOR CALCULATE CI to calculate up sampled structures
 def CalculateCI(rtdose, structure, lowerlimit):
     """From a selected structure and isodose line, return conformality index."""
     # Read "A simple scoring ratio to index the conformity of radiosurgical

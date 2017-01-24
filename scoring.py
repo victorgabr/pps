@@ -3,6 +3,8 @@ from joblib import Parallel
 from joblib import delayed
 import matplotlib.pyplot as plt
 from conformality import CalculateCI
+from dev.dvhcalculation import calc_dvhs_upsampled
+from dosimetric import read_scoring_criteria
 from dvhcalc import get_dvh, load, calc_dvhs
 from dvhdata import DVH, CalculateVolume
 from dicomparser import ScoringDicomParser, lazyproperty
@@ -100,16 +102,30 @@ def get_participant_folder_data(participant_name, root_path):
         return False, dcm_files.loc[~data_truth]
 
 
-class DVHMetrics(DVH):
+class DVHMetrics(object):
     def __init__(self, dvh):
-        DVH.__init__(self, dvh)
+        # Todo - interpolate DVH using 10 cGy bins
+        vpp = dvh['data'] * 100 / dvh['data'][0]
+        self.volume_pp = np.append(vpp, 0)  # add 0 volume to interpolate
+        # self.volume_pp = vpp
+        self.scaling = dvh['scaling']
+        # self.dose_axis = dvh['dose_axis'] * self.scaling
+        self.dose_axis = np.arange(len(dvh['data']) + 1) * self.scaling
+        self.volume_cc = np.append(dvh['data'], 0)
+        # self.volume_cc = dvh['data']
         self.stats = (dvh['max'], dvh['mean'], dvh['min'])
         self.data = dvh
-        self.fv = itp.interp1d(range(len(self.dvh)), self.dvh)  # pp
-        self.fd = itp.interp1d(self.dvh, range(len(self.dvh)))  # pp
-        self.fd_cc = itp.interp1d(dvh['data'], np.arange(len(dvh['data'])) * self.scaling)  # cc
+
+        self.fv = itp.interp1d(self.dose_axis, self.volume_pp, fill_value='extrapolate')  # pp
+        self.fv_cc = itp.interp1d(self.dose_axis, self.volume_pp, fill_value='extrapolate')  # pp
+        self.fd = itp.interp1d(self.volume_pp, self.dose_axis, fill_value='extrapolate')  # pp
+        self.fd_cc = itp.interp1d(self.volume_cc, self.dose_axis, fill_value='extrapolate')  # cc
 
     def eval_constrain(self, key, value):
+
+        # TODO refactor using dictionary
+        if key == 'Global Max':
+            return self.data['max']
 
         if key == 'Dmax_position' and value == 'max':
             return self.stats[0]
@@ -137,12 +153,11 @@ class DVHMetrics(DVH):
         """ Return the maximum dose (in cGy) that a specific volume (in percent)
             receives. i.e. D90, D20."""
 
-        return np.argmin(np.fabs(self.dvh - volume)) * self.scaling
+        return self.fd(volume)
 
     def GetDoseConstraintCC(self, volumecc):
         """ Return the maximum dose (in cGy) that a specific volume in cc."""
 
-        # return np.argmin(np.fabs(self.data['data'] - volumecc)) * self.scaling
         return self.fd_cc(volumecc)
 
     def GetVolumeConstraint(self, dose):
@@ -150,9 +165,14 @@ class DVHMetrics(DVH):
         """ Return the volume (in percent) of the structure that receives at
             least a specific dose in cGy. i.e. V100, V150. fix by Victor Gabriel"""
 
-        val = dose / self.scaling
+        return self.fv(dose)
 
-        return self.fv(val)
+    def GetVolumeConstraintCC(self, dose):
+
+        """ Return the volume (in percent) of the structure that receives at
+            least a specific dose in cGy. i.e. V100, V150. fix by Victor Gabriel"""
+
+        return self.fv_cc(dose)
 
     def get_volume(self):
         return self.data['data'][0]
@@ -163,8 +183,8 @@ class Scoring(object):
         self.rt_plan = ScoringDicomParser(filename=rp_file).GetPlan()
         self.structures = ScoringDicomParser(filename=rs_file).GetStructures()
         self.rtdose = ScoringDicomParser(filename=rd_file)
-        self.constrains = constrain
-        self.scores = score
+        self.constrains = dict((k.upper(), v) for k, v in constrain.items())
+        self.scores = dict((k.upper(), v) for k, v in score.items())
         self.dvhs = {}
         self.constrains_values = {}
         self.score_result = {}
@@ -197,6 +217,8 @@ class Scoring(object):
         """
         dvh_obj = load(dvh_filepath)
         self.dvhs = dvh_obj['DVH']
+        # All keys Upper
+        self.dvhs = dict((k.upper(), v) for k, v in self.dvhs.items())
         self._set_constrains_values()
 
     def set_dicom_dvh_data(self):
@@ -216,12 +238,27 @@ class Scoring(object):
         """
             Set constrains data using constrains-score protocol
         """
+
         for key, values in self.constrains.items():
-            dvh_score = DVHMetrics(self.dvhs[key])
+            if key == 'GLOBAL MAX':
+                max_dose = max([self.dvhs[k1]['max'] for k1 in self.dvhs.keys()])
+                self.dvhs['GLOBAL MAX'] = {'data': np.asarray([1, 100]),
+                                           'max': max_dose,
+                                           'mean': 0,
+                                           'min': 0,
+                                           'scaling': 1.0}
+                dvh_values = self.dvhs[key]
+
+            else:
+                dvh_values = self.dvhs[key]
+
+            # print(dvh_values)
+
+            dvh_metrics = DVHMetrics(dvh_values)
             values_constrains = {}
             for k in values.keys():
                 try:
-                    ct = dvh_score.eval_constrain(k, values[k])
+                    ct = dvh_metrics.eval_constrain(k, values[k])
                     values_constrains[k] = ct
                     if k == 'CI':
                         nk = self.dvhs[key]['key']
@@ -230,11 +267,14 @@ class Scoring(object):
                     if k == 'Dmax_position':
                         nk = self.dvhs[key]['key']
                         values_constrains[k] = self.check_dmax_inside(self.structures[nk]['name'], self.dvhs)
+                    if key == 'GLOBAL MAX':
+                        values_constrains[k] = self.dvhs['GLOBAL MAX']['max']
                 except:
                     nk = self.dvhs[key]['key']
                     sname = self.structures[nk]['name']
                     txt = 'error in constrain: %s value %1.3f on structure %s' % (k, values[k], sname)
                     logger.exception(txt)
+
             self.constrains_values[key] = values_constrains
 
     def calc_score(self):
@@ -333,7 +373,7 @@ class EvalCompetition(object):
 
 
 class Participant(object):
-    def __init__(self, rp_file, rs_file, rd_file, dvh_file=''):
+    def __init__(self, rp_file, rs_file, rd_file, dvh_file='', upsample=''):
         """
             Class to encapsulate all plan participant planning data to eval using pyplanscoring app
         :param rp_file: path to DICOM-RTPLAN file
@@ -351,22 +391,33 @@ class Participant(object):
         self.plan_data = {}
         self.score_obj = None
         self.participant_name = ''
+        self.structure_names = []
+        self.up_sample = upsample
 
     def set_participant_data(self, participant_name):
         self.participant_name = participant_name
         self.plan_data = self.rp_dcm.GetPlan()
         self.tps_info = self.rd_dcm.get_tps_data()
+        structures = self.rs_dcm.GetStructures()
+        for key, structure in structures.items():
+            self.structure_names.append(structure['name'])
+
         if not self.dvh_file:
             p = os.path.splitext(self.rd_file)
-            self.dvh_file = p[0] + '.dvh'
+            self.dvh_file = p[0] + self.up_sample + '.dvh'
             if not os.path.exists(self.dvh_file):
-                cdvh = calc_dvhs(participant_name, self.rs_file, self.rd_file, out_file=self.dvh_file)
-                self._save_dvh_fig(cdvh, self.rd_file)
+                if self.up_sample:
+                    cdvh = calc_dvhs_upsampled(participant_name, self.rs_file, self.rd_file, out_file=self.dvh_file)
+                    self._save_dvh_fig(cdvh, self.rd_file)
+                else:
+                    cdvh = calc_dvhs(participant_name, self.rs_file, self.rd_file, out_file=self.dvh_file)
+                    self._save_dvh_fig(cdvh, self.rd_file)
 
     def _save_dvh_fig(self, calc_dvhs, dest):
         p = os.path.splitext(dest)
         _, filename = os.path.split(dest)
-        fig_name = p[0] + '_RD_calc_DVH.png'
+
+        fig_name = p[0] + '_RD_calc_' + self.up_sample + 'DVH.png'
 
         fig, ax = plt.subplots()
         fig.set_figheight(12)
@@ -395,18 +446,26 @@ if __name__ == '__main__':
     # root_path = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\Eclipse Plans\Saad RapidArc Eclipse\Saad RapidArc Eclipse'
     # root_path = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\Eclipse Plans\Venessa IMRT Eclipse'
     # dt, val = get_participant_folder_data('test', root_path)
+    f_2017 = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/PlanIQ Criteria TPS PlanIQ matched str names - TXT Fromat - Last mod Jan23.txt'
+    constrains, scores = read_scoring_criteria(f_2017)
 
-    rs = r'D:\Dropbox\Plan_Competition_Project\testdata\RTSS.dcm'
-    rd = r'D:\Dropbox\Plan_Competition_Project\testdata\RTDOSE.dcm'
-    rp = r'D:\Dropbox\Plan_Competition_Project\testdata\RTPLAN.dcm'
+    # rs = r'D:\Dropbox\Plan_Competition_Project\testdata\RTSS.dcm'
+    # rd = r'D:\Dropbox\Plan_Competition_Project\testdata\RTDOSE.dcm'
+    # rp = r'D:\Dropbox\Plan_Competition_Project\testdata\RTPLAN.dcm'
 
-    rs = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RS.PQRT END TO END.dcm'
-    rd = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RD.PQRT END TO END.Dose_PLAN.dcm'
-    rp = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RP.PQRT END TO END.RA.dcm'
+    rs_file = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/RS.1.2.246.352.71.4.584747638204.248648.20170123083029.dcm'
+    rd_file = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/RD.1.2.246.352.71.7.584747638204.1750110.20170123082607.dcm'
+    rp = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/RP.1.2.246.352.71.5.584747638204.952069.20170122155706.dcm'
 
-    # dvh_file = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\Eclipse Plans\Saad RapidArc Eclipse\Saad RapidArc Eclipse\RD.Saad-Eclipse-RapidArc.dvh'
     #
-    obj = Participant(rp, rs, rd)
-    obj.set_participant_data('PQRT')
-    # val = obj.eval_score(constrains_dict=constrains, scores_dict=scores)
-    # print(val)
+    obj = Participant(rp, rs_file, rd_file)
+    obj.set_participant_data('Ahmad')
+    val = obj.eval_score(constrains_dict=constrains, scores_dict=scores)
+
+    obj = Participant(rp, rs_file, rd_file, upsample='_up_sampled_')
+    obj.set_participant_data('Ahmad')
+    val1 = obj.eval_score(constrains_dict=constrains, scores_dict=scores)
+
+    print('Radiation Knowledge Plan Competition - 2017 ')
+    print('Ahmad Score (no up-sampling):', val)
+    print('Ahmad Score:', val1)
