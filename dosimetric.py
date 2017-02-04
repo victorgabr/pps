@@ -183,13 +183,16 @@ def read_scoring_criteria(f):
 
     # get objectives
     objectives = []
+    obl = []
+    obh = []
     for row in df[['Objective(s)']].iterrows():
         cval = np.asarray(re.findall("\d+\.?\d+", row[1].to_string()), dtype=float)
         cval.sort()
         if cval[0] > 1:
             # All doses to cGy
             cval *= cGy
-
+        obl.append(cval[0])
+        obh.append(cval[1])
         objectives.append(cval)
 
     scores_arr = []
@@ -198,6 +201,8 @@ def read_scoring_criteria(f):
         scores_arr.append(score_i)
 
     df['value_score'] = objectives
+    df['value_low'] = obl
+    df['value_high'] = obh
     df['scores_array'] = scores_arr
 
     dfi = df.set_index('structures_name')
@@ -222,7 +227,9 @@ def read_scoring_criteria(f):
         scores_all[name] = scores_tmp
         constrains_all[name] = constrains_tmp
 
-    return constrains_all, scores_all
+    criteria = ['constrain', 'constrain_value', 'constrains_type', 'value_low', 'value_high', 'Max Score']
+
+    return constrains_all, scores_all, dfi[criteria]
 
 
 class Competition2017(object):
@@ -235,6 +242,7 @@ class Competition2017(object):
 
 if __name__ == '__main__':
     f = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/PlanIQ Criteria TPS PlanIQ matched str names - TXT Fromat - Last mod Jan23.txt'
+    cGy = 100.0
     df = pd.read_csv(f, sep='\t')
     df = df[['Plan Quality Metric Component', 'Objective(s)', 'Max Score']].dropna()
     df['Max Score'] = df['Max Score'].apply(lambda x: x.split('*')[0]).astype(float)
@@ -273,10 +281,12 @@ if __name__ == '__main__':
                 if 'Homogeneity' in crit[1]:
                     constrains_keys.append('HI')
                     cv = float(re.findall("\d+\.\d+", crit[2])[0])
+                    cv *= cGy
                     constrains_values.append(cv)
                 elif 'Conformation' in crit[1]:
                     constrains_keys.append('CI')
                     cv = float(re.findall("\d+\.\d+", crit[2])[0])
+                    cv *= cGy
                     constrains_values.append(cv)
             elif 'cc' in crit[2]:
                 constrains_keys.append('Dcc')
@@ -296,15 +306,17 @@ if __name__ == '__main__':
     df['constrains_type'] = constrains_types
 
     # get objectives
-    cGy = 100.0
     objectives = []
+    obl = []
+    obh = []
     for row in df[['Objective(s)']].iterrows():
         cval = np.asarray(re.findall("\d+\.?\d+", row[1].to_string()), dtype=float)
         cval.sort()
         if cval[0] > 1:
             # All doses to cGy
             cval *= cGy
-
+        obl.append(cval[0])
+        obh.append(cval[1])
         objectives.append(cval)
 
     scores_arr = []
@@ -313,6 +325,8 @@ if __name__ == '__main__':
         scores_arr.append(score_i)
 
     df['value_score'] = objectives
+    df['value_low'] = obl
+    df['value_high'] = obh
     df['scores_array'] = scores_arr
 
     dfi = df.set_index('structures_name')
@@ -336,3 +350,7 @@ if __name__ == '__main__':
 
         scores_all[name] = scores_tmp
         constrains_all[name] = constrains_tmp
+
+    criteria = ['constrain', 'constrain_value', 'constrains_type', 'value_low', 'value_high', 'Max Score']
+
+    # dfi[criteria].to_excel('criteria_2017.xlsx')

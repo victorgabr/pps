@@ -19,7 +19,7 @@ from joblib import delayed
 from matplotlib.path import Path
 from numba import njit
 
-from dev.geometry import calc_area
+from dev.geometry import calculate_contour_areas_numba
 from dicomparser import ScoringDicomParser
 from dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean
 
@@ -334,34 +334,6 @@ def calculate_contour_areas(plane):
         cArea = abs(cArea / 2.0)
         # Remove the z coordinate from the xyz point tuple
         data = list(map(lambda x: x[0:2], contour['contourData']))
-
-        # Add the contour area and points to the list of contours
-        contours.append({'area': cArea, 'data': data})
-
-        # Determine which contour is the largest
-        if cArea > largest:
-            largest = cArea
-            largestIndex = c
-
-    return contours, largestIndex
-
-
-def calculate_contour_areas_numba(plane):
-    """Calculate the area of each contour for the given plane.
-       Additionally calculate and return the largest contour index."""
-
-    # Calculate the area for each contour in the current plane
-    contours = []
-    largest = 0
-    largestIndex = 0
-    for c, contour in enumerate(plane):
-        # Create arrays for the x,y coordinate pair for the triangulation
-        x = contour['contourData'][:, 0]
-        y = contour['contourData'][:, 1]
-
-        cArea = calc_area(x, y)
-        # Remove the z coordinate from the xyz point tuple
-        data = np.asarray(list(map(lambda x: x[0:2], contour['contourData'])))
 
         # Add the contour area and points to the list of contours
         contours.append({'area': cArea, 'data': data})

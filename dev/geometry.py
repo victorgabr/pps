@@ -26,7 +26,9 @@ from math import factorial
 
 import numba as nb
 import numpy as np
-from shapely.geometry import Polygon
+
+
+# from shapely.geometry import Polygon
 
 
 def cn_PnPoly(P, V):
@@ -378,39 +380,41 @@ def k_nearest_neighbors(k, feature_train, features_query):
     return neighbors
 
 
-def expand_roi(roi_contours, delta):
-    """
-        Expand ROI contours by delta in X, Y and Z axis.
-
-
-    :param roi_contours: list of each plane's x,y,z points
-    :param delta: delta isotropic expansion
-    :return: expanded ROI
-    """
-
-    start_cap = roi_contours[0].copy()
-    start_cap[:, 2] = start_cap[:, 2] - delta
-
-    end_cap = roi_contours[-1].copy()
-    end_cap[:, 2] = end_cap[:, 2] + delta
-
-    # extending end caps to original plans
-
-    # roi_contours[0] = start_cap
-    # roi_contours[-1] = end_cap
-    contour_tmp = [start_cap] + roi_contours + [end_cap]
-
-    # contour_tmp = roi_contours
-    res = []
-    for plane in contour_tmp:
-        ctr = Polygon(plane)
-        dilated = ctr.buffer(delta)
-        dilated_xy = np.array(dilated.exterior.coords)
-        zaxis = np.ones((len(dilated_xy), 1)) * plane[0, 2]
-        tmp = np.concatenate([dilated_xy, zaxis], axis=1)
-        res.append(tmp)
-
-    return res
+#
+#
+# def expand_roi(roi_contours, delta):
+#     """
+#         Expand ROI contours by delta in X, Y and Z axis.
+#
+#
+#     :param roi_contours: list of each plane's x,y,z points
+#     :param delta: delta isotropic expansion
+#     :return: expanded ROI
+#     """
+#
+#     start_cap = roi_contours[0].copy()
+#     start_cap[:, 2] = start_cap[:, 2] - delta
+#
+#     end_cap = roi_contours[-1].copy()
+#     end_cap[:, 2] = end_cap[:, 2] + delta
+#
+#     # extending end caps to original plans
+#
+#     # roi_contours[0] = start_cap
+#     # roi_contours[-1] = end_cap
+#     contour_tmp = [start_cap] + roi_contours + [end_cap]
+#
+#     # contour_tmp = roi_contours
+#     res = []
+#     for plane in contour_tmp:
+#         ctr = Polygon(plane)
+#         dilated = ctr.buffer(delta)
+#         dilated_xy = np.array(dilated.exterior.coords)
+#         zaxis = np.ones((len(dilated_xy), 1)) * plane[0, 2]
+#         tmp = np.concatenate([dilated_xy, zaxis], axis=1)
+#         res.append(tmp)
+#
+#     return res
 
 
 def calculate_planes_contour_areas(planes):
@@ -652,14 +656,14 @@ def get_dose_grid_3d(grid_3d, delta_mm=(2, 2, 2)):
 
 
 @nb.njit(nb.double(nb.double[:], nb.double[:]))
-def calc_area(xi, yi):
+def calc_area(x, y):
     cArea = 0
-    # xi = np.zeros(len(x) + 1)
-    # yi = np.zeros(len(y) + 1)
-    # xi[:-1] = x
-    # xi[-1] = x[0]
-    # yi[:-1] = y
-    # yi[-1] = y[0]
+    xi = np.zeros(len(x) + 1)
+    yi = np.zeros(len(y) + 1)
+    xi[:-1] = x
+    xi[-1] = x[0]
+    yi[:-1] = y
+    yi[-1] = y[0]
 
     # Calculate the area based on the Surveyor's formula
     for i in range(0, len(xi) - 1):
@@ -906,17 +910,8 @@ def calculate_structure_volume(structure):
         largestIndex = 0
         for c, contour in enumerate(sPlane):
             # Create arrays for the x,y coordinate pair for the triangulation
-            x = []
-            y = []
-            for point in contour['contourData']:
-                x.append(point[0])
-                y.append(point[1])
-
-            # cArea = 0
-
-            # for i in range(0, len(x) - 1):
-            #     cArea = cArea + x[i] * y[i + 1] - x[i + 1] * y[i]
-            # cArea = abs(cArea / 2)
+            x = contour['contourData'][:, 0]
+            y = contour['contourData'][:, 1]
             # # Calculate the area based on the Surveyor's formula
             cArea = calc_area(np.asarray(x), np.asarray(y))
 
@@ -1041,3 +1036,32 @@ def get_z_planes_dict(struc_planes, ordered_z, z_interp_positions):
             result += [struc_planes[neighbor]]
 
     return result
+
+
+def calculate_contour_areas_numba(plane):
+    """Calculate the area of each contour for the given plane.
+       Additionally calculate and return the largest contour index."""
+
+    # Calculate the area for each contour in the current plane
+    contours = []
+    largest = 0
+    largestIndex = 0
+    for c, contour in enumerate(plane):
+        # Create arrays for the x,y coordinate pair for the triangulation
+        x = contour['contourData'][:, 0]
+        y = contour['contourData'][:, 1]
+
+        cArea = calc_area(x, y)
+        # cArea = poly_area(x, y)
+        # Remove the z coordinate from the xyz point tuple
+        data = np.asarray(list(map(lambda x: x[0:2], contour['contourData'])))
+
+        # Add the contour area and points to the list of contours
+        contours.append({'area': cArea, 'data': data})
+
+        # Determine which contour is the largest
+        if cArea > largest:
+            largest = cArea
+            largestIndex = c
+
+    return contours, largestIndex

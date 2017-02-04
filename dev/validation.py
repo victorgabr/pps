@@ -21,7 +21,6 @@ from scoring import DVHMetrics
 def test_real_dvh():
     # rs_file = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RS.PQRT END TO END.dcm'
     # rd_file = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RD.PQRT END TO END.Dose_PLAN.dcm'
-    up = (0.5, 0.5, 0.5)
     # rd_file = r'/home/victor/Dropbox/Plan_Competition_Project/Eclipse Plans/Venessa IMRT Eclipse/RD-Eclipse-Venessa-IMRTDose.dcm'
     # rs_file = r'/home/victor/Dropbox/Plan_Competition_Project/Competition Package/DICOM Sets/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
 
@@ -44,7 +43,7 @@ def test_real_dvh():
                 struc_teste = Structure(structure)
 
                 ecl_dvh = ecl_DVH[structure['id']]['data']
-                dhist, chist = struc_teste.calculate_dvh(dose, upsample=True, delta_cm=up)
+                dhist, chist = struc_teste.calculate_dvh(dose, upsample=True)
                 plt.figure()
                 plt.plot(chist, label='Up Sampled Structure')
                 plt.hold(True)
@@ -178,7 +177,6 @@ def test1():
     constrains['Dcc'] = 0.03
 
     st = 2
-    up = (0.4, 0.4, 0.1)
     df_concat = []
     sname = []
     # GET CALCULATED DATA
@@ -199,7 +197,8 @@ def test1():
 
         # set up sampled structure
         struc_teste = Structure(structure, end_cap=True)
-        dhist, chist = struc_teste.calculate_dvh(dicom_dose, upsample=True, delta_cm=up)
+        struc_teste.set_delta((0.2, 0.2, 0.1))
+        dhist, chist = struc_teste.calculate_dvh(dicom_dose, upsample=True)
         dvh_data = prepare_dvh_data(dhist, chist)
 
         # Setup DVH metrics class and get DVH DATA
@@ -239,7 +238,6 @@ def test1():
         res[col] = {'count': count, 'range': rg}
 
     test_table = pd.DataFrame(res).T
-    print(test_table)
 
     return test_table
 
@@ -260,7 +258,6 @@ def test2():
     # dose_grid_dir = r'D:\Dropbox\Plan_Competition_Project\testdata\DVH-Analysis-Data-Etc\DOSE GRIDS'
 
     st = 2
-    up = (0.1, 0.1, 0.1)
 
     snames = ['Sphere_10_0', 'Sphere_20_0', 'Sphere_30_0',
               'Cylinder_10_0', 'Cylinder_20_0', 'Cylinder_30_0',
@@ -336,7 +333,7 @@ def test2():
 
         # set up sampled structure
         struc_teste = Structure(structure, end_cap=True)
-        dhist, chist = struc_teste.calculate_dvh(dicom_dose, upsample=True, delta_cm=up)
+        dhist, chist = struc_teste.calculate_dvh(dicom_dose, upsample=True)
         dvh_data = prepare_dvh_data(dhist, chist)
         # dvh_data['Dmin'] = dmin
         # Setup DVH metrics class and get DVH DATA
@@ -381,10 +378,11 @@ def test2():
     test_table = pd.DataFrame(res).T
     print(test_table)
 
-    mask = np.logical_or(delta > lim, delta < -lim)
-    result.index = mask.index
-    print(result.loc[mask['D0.03cc']])
-    print(result.loc[mask['D95']])
+    return test_table
+    # mask = np.logical_or(delta > lim, delta < -lim)
+    # result.index = mask.index
+    # print(result.loc[mask['D0.03cc']])
+    # print(result.loc[mask['D95']])
 
 
 def test3(plot_curves=True):
@@ -393,7 +391,6 @@ def test3(plot_curves=True):
     struc_dir = '/home/victor/Dropbox/Plan_Competition_Project/testdata/DVH-Analysis-Data-Etc/STRUCTURES'
     dose_grid_dir = '/home/victor/Dropbox/Plan_Competition_Project/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS'
     st = 2
-    up = (0.5, 0.5, 0.5)
 
     snames = ['Sphere_10_0', 'Sphere_30_0',
               'Cylinder_10_0', 'Cylinder_30_0',
@@ -442,7 +439,7 @@ def test3(plot_curves=True):
             # get dose
             dose_file = test_data[k]
             dicom_dose = ScoringDicomParser(filename=dose_file)
-            dhist, chist = struc_teste.calculate_dvh(dicom_dose, upsample=True, delta_cm=up)
+            dhist, chist = struc_teste.calculate_dvh(dicom_dose, upsample=True)
             dvh_data = prepare_dvh_data(dhist, chist)
             str_result[k] = dvh_data
 
@@ -484,8 +481,8 @@ def test3(plot_curves=True):
                 adata = an_data[s_key][grad]
                 calc_data = result[s_key][grad]
                 plt.figure()
-                plt.plot(adata['dose_axis'], adata['data'], '.', label='Analytical DVH')
-                plt.plot(calc_data['dose_axis'], calc_data['data'], '.', label='Software DVH')
+                plt.plot(adata['dose_axis'], adata['data'], label='Analytical DVH')
+                plt.plot(calc_data['dose_axis'], calc_data['data'], label='Software DVH')
                 plt.legend(loc='best')
                 plt.xlabel('Dose (cGy)')
                 plt.ylabel('Volume (cc)')
@@ -495,10 +492,7 @@ def test3(plot_curves=True):
 
 
 if __name__ == '__main__':
-    # rs_file = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RS.PQRT END TO END.dcm'
-    # rd_file = r'/home/victor/Dropbox/Plan_Competition_Project/FantomaPQRT/RD.PQRT END TO END.Dose_PLAN.dcm'
-    up = (0.83, 0.83, 1)
-    # up = (2.5, 2.5, 1)
+
     # rd_file = r'/home/victor/Dropbox/Plan_Competition_Project/Eclipse Plans/Venessa IMRT Eclipse/RD-Eclipse-Venessa-IMRTDose.dcm'
     # rs_file = r'/home/victor/Dropbox/Plan_Competition_Project/Competition Package/DICOM Sets/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
 
@@ -508,7 +502,7 @@ if __name__ == '__main__':
     # dvh_file = r'/media/victor/TOURO Mobile/COMPETITION 2017/Send to Victor - Jan10 2017/Norm Res with CT Images/RD.1.2.246.352.71.7.584747638204.1746016.20170110164605.dvh'
 
     f = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/PlanIQ Criteria TPS PlanIQ matched str names - TXT Fromat - Last mod Jan23.txt'
-    constrains_all, scores_all = read_scoring_criteria(f)
+    constrains_all, scores_all, criteria = read_scoring_criteria(f)
 
     dose = ScoringDicomParser(filename=rd_file)
     struc = ScoringDicomParser(filename=rs_file)
@@ -526,40 +520,34 @@ if __name__ == '__main__':
                 if structure['name'] in list(scores_all.keys()):
                     ecl_dvh = ecl_DVH[structure['id']]['data']
                     ecl_dmax = ecl_DVH[structure['id']]['max'] * 100  # to cGy
-                    # if ecl_dvh[0] < 50.0:
-                    # struc = deepcopy(structure)
                     struc_teste = Structure(structure, end_cap=end_cap)
                     # struc['planes'] = struc_teste.planes
                     # dicompyler_dvh = get_dvh(structure, dose)
-
-                    dhist, chist = struc_teste.calculate_dvh(dose, upsample=True, delta_cm=up)
+                    fig, ax = plt.subplots()
+                    fig.set_figheight(12)
+                    fig.set_figwidth(20)
+                    dhist, chist = struc_teste.calculate_dvh(dose, upsample=True)
                     max_dose = get_dvh_max(chist)
-                    plt.figure()
-                    plt.plot(dhist, chist, label='Up sampled - Dmax: %1.1f cGy' % max_dose)
-                    plt.hold(True)
-                    plt.plot(ecl_dvh, label='Eclipse - Dmax: %1.1f cGy' % ecl_dmax)
+
+                    ax.plot(dhist, chist, label='Up sampled - Dmax: %1.1f cGy' % max_dose)
+                    fig.hold(True)
+                    ax.plot(ecl_dvh, label='Eclipse - Dmax: %1.1f cGy' % ecl_dmax)
                     dvh_data = prepare_dvh_data(dhist, chist)
 
                     txt = structure['name'] + ' volume (cc): %1.1f - end_cap: %s ' % (
                         ecl_dvh[0], str(end_cap))
-                    plt.title(txt)
+                    ax.set_title(txt)
                     # nup = get_dvh_max(dicompyler_dvh['data'])
                     # plt.plot(dicompyler_dvh['data'], label='Software DVH - Dmax: %1.1f cGy' % nup)
-                    plt.legend(loc='best')
-                    plt.xlabel('Dose (cGy)')
-                    plt.ylabel('Volume (cc)')
-
+                    ax.legend(loc='best')
+                    ax.set_xlabel('Dose (cGy)')
+                    ax.set_ylabel('Volume (cc)')
+                    fname = txt + '.png'
+                    fig.savefig(fname, format='png', dpi=100)
                     dvhs[structure['name']] = dvh_data
-
-        plt.show()
 
     end = time.time()
 
     print('Total elapsed Time (min):  ', (end - st) / 60)
 
     # print(dvhs)
-
-
-
-    # for structure in structures.values():
-    #     print(structure['id'], structure['name'])

@@ -22,9 +22,10 @@ def _sys_getenc_wrapper():
 sys.getfilesystemencoding = _sys_getenc_wrapper
 
 # SET COMPETITION 2017
-
-f_2017 = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/Linear Evaluation Criteria - PlanIQ Jan15/Linear Evaluation Criteria - PlanIQ - 15Jan 2017.txt'
-constrains, scores = read_scoring_criteria(f_2017)
+folder = os.getcwd()
+f_2017 = 'PlanIQ Criteria TPS PlanIQ matched str names - TXT Fromat - Last mod Jan23.txt'
+path = os.path.join(folder, f_2017)
+constrains, scores, _ = read_scoring_criteria(path)
 
 
 class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):
@@ -66,7 +67,7 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):
         rd = self.files_data.reset_index().set_index(1).ix['rtdose']['index']
         rp = self.files_data.reset_index().set_index(1).ix['rtplan']['index']
         rs = self.files_data.reset_index().set_index(1).ix['rtss']['index']
-        self.participant = Participant(rp, rs, rd)
+        self.participant = Participant(rp, rs, rd, upsample='_up_sampled_')
         self.participant.set_participant_data(self.name)
         val = self.participant.eval_score(constrains_dict=constrains, scores_dict=scores)
         return val
@@ -75,15 +76,15 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):
         self.listWidget.addItem(str('-------------Calculating score--------------'))
         sc = self._calc_score()
         self.listWidget.addItem(str('Plan Score: %1.3f' % sc))
-        out_file = os.path.join(self.folder_root, self.name + 'plan_scoring_report.xls')
+        out_file = os.path.join(self.folder_root, self.name + '_plan_scoring_report.xls')
         self.participant.save_score(out_file)
         self.listWidget.addItem(str('Saving report on %s ' % out_file))
 
     def about(self):
-        txt = "<b> PyPlanScoring - Right Breast Planning: %s </b>" \
+        txt = "<b> PyPlanScoring - H&N Cancer: %s </b>" \
               "<p> https://radiationknowledge.org/" \
               "<p>Developer: Dr. Victor Gabriel Leandro Alves, D.Sc." \
-              "<p> Copyright &copy; 2016 Victor Gabriel Leandro Alves, " \
+              "<p> Copyright &copy; 2017 Victor Gabriel Leandro Alves, " \
               "All rights reserved" \
               " <p>Platform details:<p> Python %s - PySide version %s - Qt version %s on %s" % (
                   __version__, platform.python_version(), PySide.__version__, PySide.QtCore.__version__,

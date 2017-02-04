@@ -1085,6 +1085,13 @@ class ScoringDicomParser(DicomParser):
 
         return RegularGridInterpolator((z, y, x), values, bounds_error=False, fill_value=None), values
 
+    @property
+    def global_max(self):
+
+        dose_matrix = self.ds.pixel_array * float(self.ds.DoseGridScaling) * 100  # 3D dose matrix in cGy
+
+        return np.max(dose_matrix)  # 3D dose matrix in cGy
+
 
 def test_rtss_eclipse(f):
     ds = dicom.read_file(f)
