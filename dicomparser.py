@@ -5,8 +5,9 @@
 # available at http://code.google.com/p/dicompyler/
 
 import logging
-import pandas as pd
+
 import numba as nb
+import pandas as pd
 from scipy.interpolate import RegularGridInterpolator
 
 from dev.geometry import centroid_of_polygon

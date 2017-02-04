@@ -4,12 +4,11 @@
 """dicompyler plugin that calculates congruence between selected structure and an isodose line.
     Python 3.4 port Victor Alves"""
 
-from matplotlib.path import Path
-import numpy.ma as ma
 import numpy as np
+import numpy.ma as ma
+from matplotlib.path import Path
 
 
-# TODO REFACTOR CALCULATE CI to calculate up sampled structures
 # def calc_conformation_index(rtdose, structure, lowerlimit):
 #     """From a selected structure and isodose line, return conformality index."""
 #     # Read "A simple scoring ratio to index the conformity of radiosurgical
@@ -171,6 +170,6 @@ def calculate_volume(mask, doseplane, lowerlimit, dd, id, structure):
                                                  (id['pixelspacing'][1]) *
                                                  (structure['thickness']))
     CV_vol = np.sum(mask.compressed() > lowerlimit) * ((id['pixelspacing'][0]) *
-                                          (id['pixelspacing'][1]) *
-                                          (structure['thickness']))
+                                                       (id['pixelspacing'][1]) *
+                                                       (structure['thickness']))
     return PITV_vol, CV_vol

@@ -531,8 +531,6 @@ def interp_structure_planes(structure_dict, n_planes=5, verbose=False):
     :return: list containing
     """
 
-    # TODO IMPLEMENT ROI SUPERSAMPLING IN X Y Z
-
     sPlanes = structure_dict['planes']
     dz = structure_dict['thickness'] / 2
 
@@ -559,8 +557,6 @@ def interp_structure_planes(structure_dict, n_planes=5, verbose=False):
     # structure_planes = [start_cap] + structure_planes + [end_cap]
     structure_planes[0] = start_cap
     structure_planes[-1] = end_cap
-
-    # TODO to estimate number of interpolated planes to reach ~ 30000 voxels
 
     result = []
     result += [structure_planes[0]]

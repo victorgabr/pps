@@ -18,8 +18,6 @@ np.set_printoptions(formatter={'float_kind': float_formatter})
 # np.set_printoptions(formatter={'str_kind': str_formatter})
 
 
-import matplotlib.pyplot as plt
-
 '''
 
 http://dicom.nema.org/medical/Dicom/2016b/output/chtml/part03/sect_C.8.8.html
@@ -125,7 +123,6 @@ def get_capped_structure(structure):
 
 
 class Structure(object):
-    # TODO REFACTOR STRUCTURE CLASS TO UPSAMPLE OR NOT SMALL STRUCTURES.
     def __init__(self, dicom_structure, end_cap=False):
         self.structure = dicom_structure
         self.end_cap = end_cap
@@ -186,7 +183,6 @@ class Structure(object):
     def _prepare_data(self, grid_3d, upsample):
 
         if upsample:
-            # TODO auto select upsampling delta from dose and structure grids
             if self.volume_cc < 25:
                 x_delta = abs(grid_3d[0][0] - grid_3d[0][1])
                 y_delta = abs(grid_3d[1][0] - grid_3d[1][1])
@@ -455,7 +451,7 @@ class Structure(object):
         return volume
 
 
-# TODO implement DVH calc only on scored structures
+# TODO implement DVH calc only on scored structures ?
 def get_dvh_upsampled(structure, dose, key, end_cap=False):
     """Get a calculated cumulative DVH along with the associated parameters."""
 

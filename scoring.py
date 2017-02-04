@@ -1,19 +1,19 @@
 import logging
-from joblib import Parallel
-from joblib import delayed
-import matplotlib.pyplot as plt
-from conformality import CalculateCI
-from dev.dvhcalculation import calc_dvhs_upsampled, Structure
-from dosimetric import read_scoring_criteria
-from dvhcalc import get_dvh, load, calc_dvhs
-from dvhdata import DVH, CalculateVolume
-from dicomparser import ScoringDicomParser, lazyproperty
-import numpy as np
-import pandas as pd
 import os
 import re
 from collections import OrderedDict
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import scipy.interpolate as itp
+from joblib import Parallel
+from joblib import delayed
+
+from dev.dvhcalculation import calc_dvhs_upsampled, Structure
+from dicomparser import ScoringDicomParser, lazyproperty
+from dosimetric import read_scoring_criteria
+from dvhcalc import load, calc_dvhs
 
 logger = logging.getLogger('scoring')
 
@@ -181,7 +181,7 @@ class DVHMetrics(object):
 
 
 class Scoring(object):
-    def __init__(self, rd_file, rs_file, rp_file, constrain, score):
+    def __init__(self, rd_file, rs_file, rp_file, constrain, score, criteria=None):
         self.rt_plan = ScoringDicomParser(filename=rp_file).GetPlan()
         self.structures = ScoringDicomParser(filename=rs_file).GetStructures()
         self.rtdose = ScoringDicomParser(filename=rd_file)
@@ -191,6 +191,7 @@ class Scoring(object):
         self.constrains_values = {}
         self.score_result = {}
         self.score = 0
+        self.criteria = criteria
 
     @lazyproperty
     def scoring_result(self):
@@ -205,10 +206,25 @@ class Scoring(object):
         if self.dvhs:
             score_results = pd.DataFrame(self.scoring_result).T
             constrains_results = pd.DataFrame(self.constrains_values).T
-            writer = pd.ExcelWriter(out_file)
-            score_results.to_excel(writer, 'scores')
-            constrains_results.to_excel(writer, 'constrains')
-            writer.save()
+            self.criteria.index = [name.upper() for name in self.criteria.index]
+
+            # saving results report on spreadsheet
+            s_names = self.criteria.index.unique()
+            report = []
+            for name in s_names:
+                sc_tmp = self.criteria.loc[[name]]
+                ctr_tmp = constrains_results.loc[[name]].dropna(axis=1)
+                score_tmp = score_results.loc[[name]].dropna(axis=1)
+                for res in ctr_tmp.columns:
+                    mask = sc_tmp['constrain'] == res
+                    tmp = sc_tmp.loc[mask].copy()
+                    tmp['Result'] = ctr_tmp[res].values[0]
+                    tmp['Raw Score'] = score_tmp[res].values[0]
+                    report.append(tmp)
+
+            df_report = pd.concat(report)
+            df_report.to_excel(out_file)
+
         else:
             print('You need to set DVH data first!')
 
@@ -398,7 +414,7 @@ class Participant(object):
         self.end_cap = end_cap
 
     def set_participant_data(self, participant_name):
-        # TODO IMPLEMENT CALCULATING ONLY SCORED STRUCTURES DVH
+        # TODO IMPLEMENT CALCULATING ONLY SCORED STRUCTURES DVH ?
         self.participant_name = participant_name
         self.plan_data = self.rp_dcm.GetPlan()
         self.tps_info = self.rd_dcm.get_tps_data()
@@ -443,8 +459,8 @@ class Participant(object):
             ax.set_title(filename)
             fig.savefig(fig_name, format='png', dpi=100)
 
-    def eval_score(self, constrains_dict, scores_dict):
-        self.score_obj = Scoring(self.rd_file, self.rs_file, self.rp_file, constrains_dict, scores_dict)
+    def eval_score(self, constrains_dict, scores_dict, criteria_df):
+        self.score_obj = Scoring(self.rd_file, self.rs_file, self.rp_file, constrains_dict, scores_dict, criteria_df)
         self.score_obj.set_dvh_data(self.dvh_file)
         return self.score_obj.total_score()
 
@@ -453,7 +469,6 @@ class Participant(object):
 
 
 if __name__ == '__main__':
-
     rs_file = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/RS.1.2.246.352.71.4.584747638204.248648.20170123083029.dcm'
     rd_file = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/RD.1.2.246.352.71.7.584747638204.1750110.20170123082607.dcm'
     rp = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/RP.1.2.246.352.71.5.584747638204.952069.20170122155706.dcm'
@@ -469,37 +484,3 @@ if __name__ == '__main__':
     # print('Radiation Knowledge Plan Competition - 2017 ')
     # print('Ahmad Score (no up-sampling):', val)
     print('Ahmad Score end capped:', val1)
-
-    # TODO ENCAPSULATE ON SAVE REPORT FUNCTION
-
-    crt_values = obj.score_obj.constrains_values.copy()
-    score_results = pd.DataFrame(obj.score_obj.scoring_result).T
-    constrains_results = pd.DataFrame(obj.score_obj.constrains_values).T
-
-    criteria.index = [name.upper() for name in criteria.index]
-
-    s_names = criteria.index.unique()
-    constrains_all = {}
-    scores_all = {}
-    new_idx = []
-    new_results = []
-    scores_tmp = []
-    ctr = []
-    report = []
-    for name in s_names:
-        # if name == 'PTV56':
-        sc_tmp = criteria.loc[[name]]
-        ctr_tmp = constrains_results.loc[[name]].dropna(axis=1)
-        score_tmp = score_results.loc[[name]].dropna(axis=1)
-
-        for res in ctr_tmp.columns:
-            mask = sc_tmp['constrain'] == res
-            tmp = sc_tmp.loc[mask].copy()
-            tmp['Result'] = ctr_tmp[res].values[0]
-            tmp['Raw Score'] = score_tmp[res].values[0]
-            report.append(tmp)
-
-    df_report = pd.concat(report)
-
-    out = '/home/victor/Dropbox/Plan_Competition_Project/Results_ahmad_small_end_capped.xlsx'
-    df_report.to_excel(out)

@@ -3,12 +3,9 @@ import platform
 import sys
 
 import PySide
-import numpy as np
-import pandas as pd
 from PySide import QtGui, QtCore
+
 import PyPlanScoringQT
-# from dosimetric import constrains
-# from dosimetric import scores
 from dosimetric import read_scoring_criteria
 from scoring import Participant, get_participant_folder_data
 
@@ -25,7 +22,7 @@ sys.getfilesystemencoding = _sys_getenc_wrapper
 folder = os.getcwd()
 f_2017 = 'PlanIQ Criteria TPS PlanIQ matched str names - TXT Fromat - Last mod Jan23.txt'
 path = os.path.join(folder, f_2017)
-constrains, scores, _ = read_scoring_criteria(path)
+constrains, scores, criteria = read_scoring_criteria(path)
 
 
 class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):
@@ -67,9 +64,10 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):
         rd = self.files_data.reset_index().set_index(1).ix['rtdose']['index']
         rp = self.files_data.reset_index().set_index(1).ix['rtplan']['index']
         rs = self.files_data.reset_index().set_index(1).ix['rtss']['index']
-        self.participant = Participant(rp, rs, rd, upsample='_up_sampled_')
+        # end cap and upsample only small structures
+        self.participant = Participant(rp, rs, rd, upsample='_up_sampled_', end_cap=True)
         self.participant.set_participant_data(self.name)
-        val = self.participant.eval_score(constrains_dict=constrains, scores_dict=scores)
+        val = self.participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria)
         return val
 
     def on_save(self):
