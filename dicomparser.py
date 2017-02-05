@@ -1092,9 +1092,9 @@ class ScoringDicomParser(DicomParser):
         z_coord = np.arange(len(z))
 
         # mapped coordinates
-        fx = interp1d(x, x_coord)
-        fy = interp1d(y, y_coord)
-        fz = interp1d(z, z_coord)
+        fx = interp1d(x, x_coord, fill_value='extrapolate')
+        fy = interp1d(y, y_coord, fill_value='extrapolate')
+        fz = interp1d(z, z_coord, fill_value='extrapolate')
 
         dose_interp = RegularGridInterpolator((z_coord, y_coord, x_coord), values, bounds_error=False, fill_value=None)
 
