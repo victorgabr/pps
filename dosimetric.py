@@ -1,10 +1,17 @@
-import pandas as pd
+import logging
+import os
 import re
+from collections import OrderedDict
+
 import numpy as np
+import pandas as pd
+
+from dicomparser import ScoringDicomParser
+
+logger = logging.getLogger('dosimetric')
 
 """
 File to hold dosimetric 2. Dosimetric Criteria Sheet.pdf  from 2016 Competition Criteria;
-
 
 """
 # Plan competition constrains
@@ -61,6 +68,52 @@ scores0 = {'PTV_TOT_EVAL': scores_ptv_tot,
            'BODY': scores_BODY}
 
 
+class PlanCompetition(object):
+    def __init__(self, constrains_data, scores):
+        self.constrains = constrains_data
+        self.scores = scores
+
+    @staticmethod
+    def get_competition_data(root_path):
+
+        files = [os.path.join(root, name) for root, dirs, files in os.walk(root_path) for name in files if
+                 name.endswith(('.dcm', '.DCM'))]
+
+        report_files = [os.path.join(root, name) for root, dirs, files in os.walk(root_path) for name in files if
+                        name.endswith(('.pdf', '.PDF'))]
+
+        filtered_files = OrderedDict()
+        for f in files:
+            try:
+                obj = ScoringDicomParser(filename=f)
+                rt_type = obj.GetSOPClassUID()
+                if rt_type == 'rtdose':
+                    tmp = f.split(os.path.sep)[-2].split()
+                    name = tmp[0].split('-')[0]
+                    participant_data = [name, rt_type]
+                    filtered_files[f] = participant_data
+                if rt_type == 'rtplan':
+                    tmp = f.split(os.path.sep)[-2].split()
+                    name = tmp[0].split('-')[0]
+                    participant_data = [name, rt_type]
+                    filtered_files[f] = participant_data
+            except:
+                logger.exception('Error in file %s' % f)
+
+        data = pd.DataFrame(filtered_files).T
+
+        plan_iq_scores = []
+        for f in report_files:
+            p, r = os.path.split(f)
+            s = re.findall('\d+\.\d+', r)
+            plan_iq_scores.append(s * 2)
+
+        plan_iq_scores = np.ravel(plan_iq_scores).astype(float)
+        data['plan_iq_scores'] = plan_iq_scores
+
+        return data.reset_index()
+
+
 class Competition2016(object):
     def __init__(self):
         # Plan competition constrains
@@ -115,6 +168,9 @@ class Competition2016(object):
                        'LUNG_RIGHT': scores_lr,
                        'LUNG_LEFT': scores_ll,
                        'BODY': scores_BODY}
+
+    def set_competiton_data(self, root_path):
+        pass
 
 
 def read_scoring_criteria(f):

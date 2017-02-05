@@ -1,6 +1,5 @@
 import logging
 import os
-import re
 from collections import OrderedDict
 
 import matplotlib.pyplot as plt
@@ -27,45 +26,6 @@ def get_dvh_files(root_path):
                  for name in files
                  if name.endswith('.dvh')]
     return dvh_files
-
-
-def get_competition_data(root_path):
-    files = [os.path.join(root, name) for root, dirs, files in os.walk(root_path) for name in files if
-             name.endswith(('.dcm', '.DCM'))]
-
-    report_files = [os.path.join(root, name) for root, dirs, files in os.walk(root_path) for name in files if
-                    name.endswith(('.pdf', '.PDF'))]
-
-    filtered_files = OrderedDict()
-    for f in files:
-        try:
-            obj = ScoringDicomParser(filename=f)
-            rt_type = obj.GetSOPClassUID()
-            if rt_type == 'rtdose':
-                tmp = f.split(os.path.sep)[-2].split()
-                name = tmp[0].split('-')[0]
-                participant_data = [name, rt_type]
-                filtered_files[f] = participant_data
-            if rt_type == 'rtplan':
-                tmp = f.split(os.path.sep)[-2].split()
-                name = tmp[0].split('-')[0]
-                participant_data = [name, rt_type]
-                filtered_files[f] = participant_data
-        except:
-            logger.exception('Error in file %s' % f)
-
-    data = pd.DataFrame(filtered_files).T
-
-    plan_iq_scores = []
-    for f in report_files:
-        p, r = os.path.split(f)
-        s = re.findall('\d+\.\d+', r)
-        plan_iq_scores.append(s * 2)
-
-    plan_iq_scores = np.ravel(plan_iq_scores).astype(float)
-    data['plan_iq_scores'] = plan_iq_scores
-
-    return data.reset_index()
 
 
 def get_participant_folder_data(participant_name, root_path):
@@ -348,6 +308,9 @@ class EvalCompetition(object):
         self.dvh_files = []
         self.results = []
 
+    def calc_dvh_all(self):
+        pass
+
     def set_data(self):
         self.comp_data = get_competition_data(self.root_path)
         self.dvh_files = [os.path.join(root, name) for root, dirs, files in os.walk(self.root_path) for name in files if
@@ -429,7 +392,9 @@ class Participant(object):
                 self.dvh_file = p[0] + self.up_sample + 'end_cap.dvh'
             if not os.path.exists(self.dvh_file):
                 if self.up_sample:
-                    cdvh = calc_dvhs_upsampled(participant_name, self.rs_file, self.rd_file, out_file=self.dvh_file,
+                    cdvh = calc_dvhs_upsampled(participant_name, self.rs_file, self.rd_file,
+                                               self.structure_names,
+                                               out_file=self.dvh_file,
                                                end_cap=self.end_cap)
                     self._save_dvh_fig(cdvh, self.rd_file)
                 else:

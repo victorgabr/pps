@@ -217,18 +217,31 @@ class Structure(object):
             grid_delta = [x_delta, y_delta, z_delta]
             return self.planes, dose_lut, dosegrid_points, grid_delta
 
+    @staticmethod
+    def wrap_coordinates(x, y, z):
+        pass
+
     def calculate_dvh(self, dicom_dose, bin_size=1.0, upsample=False):
 
         print(' ----- DVH Calculation -----')
         print('Structure Name: %s - volume (cc) %1.3f' % (self.name, self.volume_cc))
-        grid_3d = dicom_dose.get_grid_3d()
-        sPlanes, dose_lut, dosegrid_points, grid_delta = self._prepare_data(grid_3d, upsample)
-        print('End caping:  ' + str(self.end_cap))
-        print('Grid delta (mm): ', grid_delta)
 
         # 3D DOSE TRI-LINEAR INTERPOLATION
-        dose_interp, values = dicom_dose.DoseRegularGridInterpolator()
+        dose_interp, grid_3d, mapped_coord = dicom_dose.DoseRegularGridInterpolator()
+        sPlanes, dose_lut, dosegrid_points, grid_delta = self._prepare_data(grid_3d, upsample)
+
+        print('End caping:  ' + str(self.end_cap))
+        print('Grid delta (mm): ', grid_delta)
         xx, yy = np.meshgrid(dose_lut[0], dose_lut[1], indexing='xy', sparse=True)
+
+        # Iterate over each plane in the structure
+        # wrap coordinates
+        fx, fy, fz = mapped_coord
+        ordered_keys = [z for z, sPlane in sPlanes.items()]
+        ordered_keys.sort(key=float)
+        x_cord = fx(xx)
+        y_cord = fy(yy)
+        z_cord = fz(ordered_keys)
 
         # Create an empty array of bins to store the histogram in cGy
         # only if the structure has contour data or the dose grid exists
@@ -242,14 +255,8 @@ class Structure(object):
         n_voxels = []
         st = time.time()
         volume = 0
-        # Iterate over each plane in the structure
-        # planes_dz = get_planes_thickness(sPlanes)
-        # ordered keys
-        ordered_keys = [z for z, sPlane in sPlanes.items()]
-        ordered_keys.sort(key=float)
-
-        for z in ordered_keys:
-            # for z, sPlane in sPlanes.items():
+        for i in range(len(ordered_keys)):
+            z = ordered_keys[i]
             sPlane = sPlanes[z]
             print('calculating slice z: %.1f' % float(z))
             # grid_delta[2] = planes_dz[z]
@@ -257,9 +264,9 @@ class Structure(object):
             contours, largestIndex = calculate_contour_areas_numba(sPlane)
 
             # Get the dose plane for the current structure plane
-            doseplane = dose_interp((z, yy, xx))
-            # If there is no dose for the current plane, go to the next plane
+            doseplane = dose_interp((z_cord[i], y_cord, x_cord))
 
+            # If there is no dose for the current plane, go to the next plane
             if not len(doseplane):
                 break
 
@@ -328,29 +335,34 @@ class Structure(object):
         print('Structure Name: %s - volume (cc) %1.3f - lower_limit (cGy):  %1.2f' % (
             self.name, self.volume_cc, lowerlimit))
 
-        grid_3d = rtdose.get_grid_3d()
+        # 3D DOSE TRI-LINEAR INTERPOLATION
+        dose_interp, grid_3d, mapped_coord = rtdose.DoseRegularGridInterpolator()
 
         sPlanes, dose_lut, dosegrid_points, grid_delta = self._prepare_data(grid_3d, upsample)
 
-        # 3D trilinear DOSE INTERPOLATION
-        dose_interp, values = rtdose.DoseRegularGridInterpolator()
         xx, yy = np.meshgrid(dose_lut[0], dose_lut[1], indexing='xy', sparse=True)
+
+        # Iterate over each plane in the structure
+        # wrap coordinates
+        fx, fy, fz = mapped_coord
+        ordered_keys = [z for z, sPlane in sPlanes.items()]
+        ordered_keys.sort(key=float)
+        x_cord = fx(xx)
+        y_cord = fy(yy)
+        z_cord = fz(ordered_keys)
 
         PITV = 0  # Rx isodose volume in cc
         CV = 0  # coverage volume
 
-        ordered_keys = [z for z, sPlane in sPlanes.items()]
-        ordered_keys.sort(key=float)
-
-        # Iterate over each plane in the structure
-        # for z, sPlane in sPlanes.items():
-        for z in ordered_keys:
+        for i in range(len(ordered_keys)):
+            z = ordered_keys[i]
             sPlane = sPlanes[z]
-            # print('calculating plane:', z)
+
             # Get the contours with calculated areas and the largest contour index
             contours, largestIndex = calculate_contour_areas_numba(sPlane)
+
             # Get the dose plane for the current structure plane
-            doseplane = dose_interp((z, yy, xx))
+            doseplane = dose_interp((z_cord[i], y_cord, x_cord))
 
             # If there is no dose for the current plane, go to the next plane
             if not len(doseplane):
@@ -463,7 +475,7 @@ def get_dvh_upsampled(structure, dose, key, end_cap=False):
     return dvh_data
 
 
-def calc_dvhs_upsampled(name, rs_file, rd_file, out_file=False, end_cap=False):
+def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, end_cap=False):
     """
         Computes structures DVH using a RS-DICOM and RD-DICOM diles
     :param rs_file: path to RS dicom-file
@@ -475,7 +487,8 @@ def calc_dvhs_upsampled(name, rs_file, rd_file, out_file=False, end_cap=False):
     # Obtain the structures and DVHs from the DICOM data
     structures = rtss.GetStructures()
     res = Parallel(n_jobs=-1, verbose=11)(
-        delayed(get_dvh_upsampled)(structure, rtdose, key, end_cap) for key, structure in structures.items())
+        delayed(get_dvh_upsampled)(structure, rtdose, key, end_cap) for key, structure in structures.items() if
+        structure['name'] in struc_names)
     cdvh = {}
     for k in res:
         key = k['key']
@@ -490,33 +503,4 @@ def calc_dvhs_upsampled(name, rs_file, rd_file, out_file=False, end_cap=False):
 
 
 if __name__ == '__main__':
-    rs_file = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/RS.1.2.246.352.71.4.584747638204.248648.20170123083029.dcm'
-    rd_file = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/RD.1.2.246.352.71.7.584747638204.1750110.20170123082607.dcm'
-    rp = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/RP.1.2.246.352.71.5.584747638204.952069.20170122155706.dcm'
-    #
-    # #
-
-    f_2017 = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/PlanIQ Criteria TPS PlanIQ matched str names - TXT Fromat - Last mod Jan23.txt'
-
-    rs_dicom = ScoringDicomParser(filename=rs_file)
-    rt_dose = ScoringDicomParser(filename=rd_file)
-    structures = rs_dicom.GetStructures()
-    ptv56 = structures[27]
-
-    struc_teste = Structure(ptv56)
-    lower = 5320.00
-
-    ci = struc_teste.calc_conformation_index(rt_dose, lower)
-    print(ci)
-
-
-    # f_2017 = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\competition_2017\All Required Files - 23 Jan2017\PlanIQ Criteria TPS PlanIQ matched str names - TXT Fromat - Last mod Jan23.txt'
-    # constrains, scores, criteria = read_scoring_criteria(f_2017)
-
-    # rs_file = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\competition_2017\All Required Files - 23 Jan2017\RS.1.2.246.352.71.4.584747638204.248648.20170123083029.dcm'
-    # rp = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\competition_2017\All Required Files - 23 Jan2017\RP.1.2.246.352.71.5.584747638204.952069.20170122155706.dcm'
-    # rd_file = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\competition_2017\All Required Files - 23 Jan2017\RD.1.2.246.352.71.7.584747638204.1750110.20170123082607.dcm'
-
-    # obj = Participant(rp, rs_file, rd_file)
-    # obj.set_participant_data('Ahmad')
-    # val = obj.eval_score(constrains_dict=constrains, scores_dict=scores)
+    pass

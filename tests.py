@@ -1,21 +1,16 @@
-import unittest
+import matplotlib.pylab as pl
 import matplotlib.pyplot as plt
+import numpy as np
+from joblib import Parallel, delayed
 
 from dev.contours3d import plot_contours
 from dev.dvhcalculation import Structure
 from dicomparser import DicomParser, ScoringDicomParser
-import matplotlib.pylab as pl
-import numpy as np
-import os
-# RDOSE
 from dosimetric import constrains
 from dosimetric import scores
 from dvhcalc import get_dvh, get_dvh_pp, calc_dvhs, get_contour_mask, calculate_contour_dvh, calculate_contour_areas, \
     get_cdvh_numba, get_cdvh
-
-from joblib import Parallel, delayed
-
-from scoring import Scoring, get_competition_data, EvalCompetition
+from scoring import Scoring
 
 
 def test_getting_data():
@@ -184,78 +179,6 @@ def test_calc_score():
     obj.save_score_results('saad_results.xlsx')
     # obj.calc_dvh_data()
     print(obj.total_score)
-
-
-def batch_call_dvh(root_path, rs_file, clean_files=False):
-    # manager = plt.get_current_fig_manager()
-    # manager.window.showMaximized()
-
-    data = get_competition_data(root_path)
-
-    if clean_files:
-        dvh_files = [os.path.join(root, name) for root, dirs, files in os.walk(root_path) for name in files if
-                     name.endswith('.dvh')]
-        for dv in dvh_files:
-            os.remove(dv)
-
-    mask = data[1] == 'rtdose'
-    rd_files = data['index'][mask].values
-    names = data[0][mask].values
-
-    rtss = ScoringDicomParser(filename=rs_file)
-    structures = rtss.GetStructures()
-
-    i = 0
-    for f, n in zip(rd_files, names):
-        p = os.path.splitext(f)
-        out_file = p[0] + '.dvh'
-        dest, df = os.path.split(f)
-        if not os.path.exists(out_file):
-            print('Iteration: %i' % i)
-            print('processing file: %s' % f)
-            calcdvhs = calc_dvhs(n, rs_file, f, out_file=out_file)
-            i += 1
-            print('processing file done %s' % f)
-
-            fig, ax = plt.subplots()
-            fig.set_figheight(12)
-            fig.set_figwidth(20)
-
-            for key, structure in structures.items():
-                sname = structure['name']
-                ax.plot(calcdvhs[sname]['data'] / calcdvhs[sname]['data'][0] * 100,
-                        label=sname, linewidth=2.0, color=np.array(structure['color'], dtype=float) / 255)
-                ax.legend(loc=7, borderaxespad=-5)
-                ax.set_ylabel('Vol (%)')
-                ax.set_xlabel('Dose (cGy)')
-                ax.set_title(n + ':' + df)
-                fig_name = os.path.join(dest, n + '_RD_calc_DVH.png')
-                fig.savefig(fig_name, format='png', dpi=100)
-
-            plt.close('all')
-
-
-def test_eval_competition_data():
-    # TODO EVAL FILE ERRORS
-    root_path = r'I:\Plan_competition_data\Final Reports'
-    rs_file = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\Competition Package\DICOM Sets\RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
-
-    obj = EvalCompetition(root_path, rs_file, constrains, scores)
-    obj.set_data()
-    res = obj.calc_scores()
-    data = obj.comp_data
-    sc = [i for i in res if isinstance(i, tuple)]
-    import pandas as pd
-
-    data_name = data.set_index(0)
-    data_name = data_name.groupby(data_name.index).first()
-    df = pd.DataFrame(sc).set_index(0)
-    plan_iq = data_name.ix[df.index]['plan_iq_scores']
-
-    comp = pd.concat([plan_iq, df], axis=1)
-    comp['delta'] = comp[1] - comp['plan_iq_scores']
-    comp = comp.rename(columns={1: 'py_score'})
-    comp.to_excel('Plan_IQ_versus_Python_BODY_DMAX.xls')
 
 
 def test_plot_calc_dvh(rs_file, rd_file):

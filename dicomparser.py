@@ -8,7 +8,7 @@ import logging
 
 import numba as nb
 import pandas as pd
-from scipy.interpolate import RegularGridInterpolator
+from scipy.interpolate import RegularGridInterpolator, interp1d
 
 from dev.geometry import centroid_of_polygon
 
@@ -1070,21 +1070,35 @@ class ScoringDicomParser(DicomParser):
         # Get the initial self grid position (z) in patient coordinates
         imagepatpos = self.ds.ImagePositionPatient[2]
         orientation = self.ds.ImageOrientationPatient[0]
+
         # Add the position to the offset vector to determine the
 
         # z coordinate of each dose plane
         z = orientation * np.array(self.ds.GridFrameOffsetVector) + imagepatpos
-        x = doselut[0]
-        y = doselut[1]
+        x = np.asarray(doselut[0])
+        y = np.asarray(doselut[1])
 
         return x, y, z
 
     def DoseRegularGridInterpolator(self):
 
         x, y, z = self.get_grid_3d()
+
         values = self.ds.pixel_array * float(self.ds.DoseGridScaling) * 100  # 3D dose matrix in cGy
 
-        return RegularGridInterpolator((z, y, x), values, bounds_error=False, fill_value=None), values
+        # ascending x,y z coordinates
+        x_coord = np.arange(len(x))
+        y_coord = np.arange(len(y))
+        z_coord = np.arange(len(z))
+
+        # mapped coordinates
+        fx = interp1d(x, x_coord)
+        fy = interp1d(y, y_coord)
+        fz = interp1d(z, z_coord)
+
+        dose_interp = RegularGridInterpolator((z_coord, y_coord, x_coord), values, bounds_error=False, fill_value=None)
+
+        return dose_interp, (x, y, z), (fx, fy, fz)
 
     @property
     def global_max(self):
