@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>Form</class>
+    <widget class="QWidget" name="Form">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>1161</width>
+                <height>691</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Optimization</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+            <item row="12" column="1">
+                <widget class="QPushButton" name="optimize_button">
+                    <property name="text">
+                        <string>Optimize</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="7" column="0">
+                <widget class="QSpinBox" name="pop_spin">
+                    <property name="maximum">
+                        <number>5000</number>
+                    </property>
+                    <property name="value">
+                        <number>200</number>
+                    </property>
+                </widget>
+            </item>
+            <item row="6" column="0">
+                <widget class="QLabel" name="label_5">
+                    <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot;
+                            font-weight:600;&quot;&gt;Population
+                            size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="4" column="1">
+                <widget class="QDoubleSpinBox" name="crop_border_spin">
+                    <property name="singleStep">
+                        <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                        <double>5.000000000000000</double>
+                    </property>
+                </widget>
+            </item>
+            <item row="3" column="0">
+                <widget class="QLabel" name="label_2">
+                    <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot;
+                            font-weight:600;&quot;&gt;Optimization pixel size (mm)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="9" column="0">
+                <widget class="QComboBox" name="eq_combo">
+                    <item>
+                        <property name="text">
+                            <string>Equation 1 - Inverse Log poly</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Equation 2 - Inverse poly</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Equation 3 - Inverse arctan poly</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Equation 4 - 4th Degree Poly</string>
+                        </property>
+                    </item>
+                </widget>
+            </item>
+            <item row="9" column="1">
+                <widget class="QComboBox" name="mode_combo">
+                    <item>
+                        <property name="text">
+                            <string>Polynomial curve fitting</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Lateral correction</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Poly fit and correction</string>
+                        </property>
+                    </item>
+                </widget>
+            </item>
+            <item row="2" column="0">
+                <widget class="QLabel" name="label_8">
+                    <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot;
+                            font-weight:600;&quot;&gt;Color
+                            Channel:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="12" column="0">
+                <widget class="QPushButton" name="setup_button">
+                    <property name="text">
+                        <string>Setup optimization</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="8" column="0">
+                <widget class="QLabel" name="label_4">
+                    <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot;
+                            font-weight:600;&quot;&gt;Select
+                            Equation&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="2" column="1">
+                <widget class="QComboBox" name="color_combo">
+                    <item>
+                        <property name="text">
+                            <string>Red</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Green</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Blue</string>
+                        </property>
+                    </item>
+                </widget>
+            </item>
+            <item row="6" column="1">
+                <widget class="QLabel" name="label_6">
+                    <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot;
+                            font-weight:600;&quot;&gt;Poly bounds
+                            (+-)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="4" column="0">
+                <widget class="QDoubleSpinBox" name="pixel_size_spin">
+                    <property name="value">
+                        <double>1.000000000000000</double>
+                    </property>
+                </widget>
+            </item>
+            <item row="3" column="1">
+                <widget class="QLabel" name="label">
+                    <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot;
+                            font-weight:600;&quot;&gt;Crop border
+                            (mm)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="7" column="1">
+                <widget class="QDoubleSpinBox" name="poly_range_spin">
+                    <property name="maximum">
+                        <double>1000000.000000000000000</double>
+                    </property>
+                    <property name="value">
+                        <double>1.000000000000000</double>
+                    </property>
+                </widget>
+            </item>
+            <item row="8" column="1">
+                <widget class="QLabel" name="label_3">
+                    <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot;
+                            font-weight:600;&quot;&gt;Method&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="13" column="1">
+                <widget class="QPushButton" name="save_cal">
+                    <property name="text">
+                        <string>Save optimized calibration object</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="14" column="0">
+                <widget class="QLabel" name="label_7">
+                    <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot;
+                            font-weight:600;&quot;&gt;Random generator seed:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="14" column="1">
+                <widget class="QSpinBox" name="seed_spin">
+                    <property name="value">
+                        <number>1</number>
+                    </property>
+                </widget>
+            </item>
+            <item row="10" column="1">
+                <widget class="QWidget" name="image_widget" native="true"/>
+            </item>
+            <item row="10" column="0">
+                <widget class="QWidget" name="ref_widget" native="true"/>
+            </item>
+            <item row="1" column="0">
+                <widget class="QCheckBox" name="bg_checkBox">
+                    <property name="text">
+                        <string>Background compensation</string>
+                    </property>
+                    <property name="checked">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>

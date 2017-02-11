@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>DoseCompAbs</class>
+    <widget class="QWidget" name="DoseCompAbs">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>800</width>
+                <height>488</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Film2Dose - Dose Difference</string>
+        </property>
+        <property name="windowIcon">
+            <iconset resource="icons.qrc">
+                <normaloff>:/icons/compare.png</normaloff>:/icons/compare.png
+            </iconset>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+                <layout class="QHBoxLayout" name="horizontalLayout">
+                    <item>
+                        <widget class="QRadioButton" name="abs_radio">
+                            <property name="text">
+                                <string>Absolute Difference</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QRadioButton" name="rel_radio">
+                            <property name="text">
+                                <string>Relative Difference (%)</string>
+                            </property>
+                            <property name="checked">
+                                <bool>true</bool>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="open_images">
+                            <property name="text">
+                                <string>Open Images</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="profiles_button">
+                            <property name="text">
+                                <string>Profiles</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="compare_button">
+                            <property name="text">
+                                <string>Dose</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="save_images">
+                            <property name="text">
+                                <string>Save Images</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item>
+                <layout class="QGridLayout" name="gridLayout">
+                    <item row="1" column="0">
+                        <widget class="QWidget" name="dose_diff_widget" native="true"/>
+                    </item>
+                    <item row="1" column="1">
+                        <widget class="QWidget" name="hist_widget" native="true"/>
+                    </item>
+                    <item row="0" column="1">
+                        <widget class="QWidget" name="film_widget" native="true"/>
+                    </item>
+                    <item row="0" column="0">
+                        <widget class="QWidget" name="tps_widget" native="true"/>
+                    </item>
+                </layout>
+            </item>
+        </layout>
+    </widget>
+    <resources>
+        <include location="icons.qrc"/>
+    </resources>
+    <connections/>
+</ui>

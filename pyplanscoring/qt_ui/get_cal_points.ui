@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>GetCalPoints</class>
+    <widget class="QWidget" name="GetCalPoints">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>988</width>
+                <height>681</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Select calibration data acquisition mode</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+            <item row="5" column="2">
+                <widget class="QWidget" name="film_od_widget" native="true"/>
+            </item>
+            <item row="5" column="1">
+                <widget class="QWidget" name="reference_widget" native="true"/>
+            </item>
+            <item row="2" column="1">
+                <widget class="QPushButton" name="load_data_button">
+                    <property name="text">
+                        <string>Load data</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="4" column="1">
+                <widget class="QPushButton" name="get_points_Button">
+                    <property name="text">
+                        <string>get points</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="2" column="2">
+                <widget class="QPushButton" name="register_button">
+                    <property name="text">
+                        <string>Register Images</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="3" column="1">
+                <widget class="QRadioButton" name="point_radio">
+                    <property name="text">
+                        <string>Point based acquisition</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+            </item>
+            <item row="3" column="2">
+                <widget class="QRadioButton" name="grid_radio">
+                    <property name="text">
+                        <string>Grid based acquisition</string>
+                    </property>
+                    <property name="checked">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+            </item>
+            <item row="4" column="2">
+                <widget class="QPushButton" name="save_button">
+                    <property name="text">
+                        <string>Save calibration data</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="6" column="2">
+                <widget class="QWidget" name="result_widget" native="true"/>
+            </item>
+            <item row="6" column="1">
+                <widget class="QWidget" name="table_widget" native="true"/>
+            </item>
+        </layout>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>

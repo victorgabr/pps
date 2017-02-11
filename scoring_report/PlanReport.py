@@ -57,3 +57,7 @@ def main():
     participant.save_score(out_file, banner_path=banner_path)
     print('Report saved: %s' % out_file)
     input("Press enter to exit.")
+
+
+if __name__ == '__main__':
+    main()

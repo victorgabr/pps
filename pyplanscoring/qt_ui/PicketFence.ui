@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>DoseComp</class>
+    <widget class="QWidget" name="DoseComp">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>1055</width>
+                <height>578</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Picket Fence Analysis</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+                <layout class="QVBoxLayout" name="vert_layout">
+                    <item>
+                        <layout class="QGridLayout" name="gridLayout">
+                            <item row="0" column="1">
+                                <widget class="QLabel" name="label_2">
+                                    <property name="text">
+                                        <string>Number of Strips</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="0" column="2">
+                                <widget class="QLabel" name="label_3">
+                                    <property name="text">
+                                        <string>Strips Sizes (mm)</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="0" column="0">
+                                <widget class="QLabel" name="label">
+                                    <property name="text">
+                                        <string>MLC Model</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="2" column="2">
+                                <widget class="QDoubleSpinBox" name="strsize_spinBox"/>
+                            </item>
+                            <item row="2" column="3">
+                                <widget class="QDoubleSpinBox" name="separation_spinBox"/>
+                            </item>
+                            <item row="0" column="4">
+                                <widget class="QLabel" name="label_5">
+                                    <property name="text">
+                                        <string>Tolerance (mm)</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="2" column="1">
+                                <widget class="QSpinBox" name="nstrips_spinBox"/>
+                            </item>
+                            <item row="0" column="3">
+                                <widget class="QLabel" name="label_4">
+                                    <property name="text">
+                                        <string>Separation (mm)</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="2" column="0">
+                                <widget class="QComboBox" name="comboBox">
+                                    <item>
+                                        <property name="text">
+                                            <string>Millenium 120</string>
+                                        </property>
+                                    </item>
+                                    <item>
+                                        <property name="text">
+                                            <string>HD 120</string>
+                                        </property>
+                                    </item>
+                                    <item>
+                                        <property name="text">
+                                            <string>MLCi</string>
+                                        </property>
+                                    </item>
+                                    <item>
+                                        <property name="text">
+                                            <string>Beam Modulator mMLC</string>
+                                        </property>
+                                    </item>
+                                </widget>
+                            </item>
+                            <item row="2" column="4">
+                                <widget class="QDoubleSpinBox" name="tolerance_SpinBox"/>
+                            </item>
+                            <item row="2" column="5">
+                                <widget class="QPushButton" name="analyse_button">
+                                    <property name="text">
+                                        <string>Analyse</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="0" column="5">
+                                <widget class="QLabel" name="label_6">
+                                    <property name="text">
+                                        <string>Results</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="3" column="5">
+                                <widget class="QPushButton" name="save_results_button">
+                                    <property name="text">
+                                        <string>Save Results</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="3" column="3">
+                                <widget class="QDoubleSpinBox" name="trim_x_spin"/>
+                            </item>
+                            <item row="3" column="4">
+                                <widget class="QDoubleSpinBox" name="trim_y_spin"/>
+                            </item>
+                            <item row="3" column="0">
+                                <widget class="QPushButton" name="restore_button">
+                                    <property name="text">
+                                        <string>Restore Image</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="3" column="2">
+                                <widget class="QPushButton" name="trim_button">
+                                    <property name="text">
+                                        <string>Trim Image xy (mm)</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="3" column="1">
+                                <widget class="QPushButton" name="thresh_button">
+                                    <property name="text">
+                                        <string>Image Thresholding</string>
+                                    </property>
+                                </widget>
+                            </item>
+                        </layout>
+                    </item>
+                </layout>
+            </item>
+        </layout>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>

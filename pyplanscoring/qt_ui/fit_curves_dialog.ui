@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>Dialog</class>
+    <widget class="QDialog" name="Dialog">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>1065</width>
+                <height>391</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Dialog</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+                <layout class="QVBoxLayout" name="verticalLayout_8">
+                    <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_5">
+                            <item>
+                                <widget class="QComboBox" name="comboBox">
+                                    <item>
+                                        <property name="text">
+                                            <string>Red Channel</string>
+                                        </property>
+                                    </item>
+                                    <item>
+                                        <property name="text">
+                                            <string>Green Channel</string>
+                                        </property>
+                                    </item>
+                                    <item>
+                                        <property name="text">
+                                            <string>Blue Channel</string>
+                                        </property>
+                                    </item>
+                                </widget>
+                            </item>
+                            <item>
+                                <spacer name="horizontalSpacer">
+                                    <property name="orientation">
+                                        <enum>Qt::Horizontal</enum>
+                                    </property>
+                                    <property name="sizeHint" stdset="0">
+                                        <size>
+                                            <width>40</width>
+                                            <height>20</height>
+                                        </size>
+                                    </property>
+                                </spacer>
+                            </item>
+                            <item>
+                                <widget class="QRadioButton" name="radioButton_eq1">
+                                    <property name="text">
+                                        <string>Equation 1</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QRadioButton" name="RadioButton_eq2">
+                                    <property name="text">
+                                        <string>Equation 2</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QRadioButton" name="radioButton_3">
+                                    <property name="text">
+                                        <string>Equation 3</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <spacer name="horizontalSpacer_2">
+                                    <property name="orientation">
+                                        <enum>Qt::Horizontal</enum>
+                                    </property>
+                                    <property name="sizeHint" stdset="0">
+                                        <size>
+                                            <width>40</width>
+                                            <height>20</height>
+                                        </size>
+                                    </property>
+                                </spacer>
+                            </item>
+                            <item>
+                                <widget class="QPushButton" name="select_curve">
+                                    <property name="text">
+                                        <string>Select</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QPushButton" name="finish_button">
+                                    <property name="text">
+                                        <string>Finish</string>
+                                    </property>
+                                </widget>
+                            </item>
+                        </layout>
+                    </item>
+                </layout>
+            </item>
+        </layout>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>
