@@ -1,3 +1,4 @@
+from __future__ import division
 #!/usr/bin/env python
 # -*- coding: ISO-8859-1 -*-
 # Conformality.py

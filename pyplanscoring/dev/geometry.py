@@ -1,26 +1,5 @@
-#
-# routine for performing the "point in polygon" inclusion test
+from __future__ import division
 
-# Copyright 2001, softSurfer (www.softsurfer.com)
-# This code may be freely used and modified for any purpose
-# providing that this copyright notice is included with it.
-# SoftSurfer makes no warranty for this code, and cannot be held
-# liable for any real or imagined damage resulting from its use.
-# Users of this code must verify correctness for their application.
-
-# translated to Python by Maciej Kalisiak <mac@dgp.toronto.edu>
-# Numba compilations by Victor Alves <victorgabr@gmail.com>
-#   a Point is represented as a tuple: (x,y)
-
-# ===================================================================
-
-# is_left(): tests if a point is Left|On|Right of an infinite line.
-
-#   Input: three points P0, P1, and P2
-#   Return: >0 for P2 left of the line through P0 and P1
-#           =0 for P2 on the line
-#           <0 for P2 right of the line
-#   See: the January 2001 Algorithm "Area of 2D and 3D Triangles and Polygons"
 from copy import deepcopy
 from math import factorial
 
@@ -1093,7 +1072,7 @@ def contour_rasterization(dose_lut, dosegrid_points, contour, fx, fy, y_cord):
 
             j = i
 
-        # Sort the nodes, via a simple “Bubble” sort.
+        # Sort the nodes, via a simple "Bubble" sort.
         i = 0
         while i < nodes - 1:
             if nodeX[i] > nodeX[i + 1]:
@@ -1149,7 +1128,7 @@ def raster(out, polyX, polyY, y_cord):
 
             j = i
 
-        # Sort the nodes, via a simple “Bubble” sort.
+        # Sort the nodes, via a simple "Bubble" sort.
         i = 0
         while i < nodes - 1:
             if nodeX[i] > nodeX[i + 1]:

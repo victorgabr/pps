@@ -1,3 +1,5 @@
+from __future__ import division
+
 import matplotlib.pylab as pl
 import matplotlib.pyplot as plt
 import numpy as np

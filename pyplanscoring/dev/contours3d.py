@@ -1,3 +1,4 @@
+from __future__ import division
 # -*- coding: utf-8 -*-
 # vispy: gallery 10
 # Copyright (c) 2015, Vispy Development Team.

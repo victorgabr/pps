@@ -1,8 +1,4 @@
-# Copyright (c) 2009-2012 Aditya Panchal
-# Copyright (c) 2009-2010 Roy Keyes
-# This file is part of dicompyler, released under a BSD license.
-# See the file license.txt included with this distribution, also
-# available at http://code.google.com/p/dicompyler/
+from __future__ import division
 
 import logging
 

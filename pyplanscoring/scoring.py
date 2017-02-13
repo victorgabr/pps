@@ -1,3 +1,5 @@
+from __future__ import division
+
 import logging
 import os
 from collections import OrderedDict
@@ -10,7 +12,7 @@ from xlsxwriter.utility import xl_rowcol_to_cell
 
 from pyplanscoring.dev.dvhcalculation import calc_dvhs_upsampled, Structure
 from pyplanscoring.dicomparser import ScoringDicomParser, lazyproperty
-from pyplanscoring.dvhcalc import load, calc_dvhs
+from pyplanscoring.dvhcalc import load
 
 logger = logging.getLogger('scoring')
 
@@ -357,15 +359,11 @@ class Participant(object):
             if self.end_cap:
                 self.dvh_file = p[0] + self.up_sample + 'end_cap.dvh'
             if not os.path.exists(self.dvh_file):
-                if self.up_sample:
-                    cdvh = calc_dvhs_upsampled(self.participant_name, self.rs_file, self.rd_file,
-                                               structure_names,
-                                               out_file=self.dvh_file,
-                                               end_cap=self.end_cap)
-                    self._save_dvh_fig(cdvh, self.rd_file)
-                else:
-                    cdvh = calc_dvhs(self.participant_name, self.rs_file, self.rd_file, out_file=self.dvh_file)
-                    self._save_dvh_fig(cdvh, self.rd_file)
+                cdvh = calc_dvhs_upsampled(self.participant_name, self.rs_file, self.rd_file,
+                                           structure_names,
+                                           out_file=self.dvh_file,
+                                           end_cap=self.end_cap, upsample=self.up_sample)
+                self._save_dvh_fig(cdvh, self.rd_file)
 
     def eval_score(self, constrains_dict, scores_dict, criteria_df):
         self._save_dvh(criteria_df.index.unique())

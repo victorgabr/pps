@@ -47,7 +47,7 @@ def main():
     rs = files_data.reset_index().set_index(1).ix['rtss']['index']
 
     print('------------- Calculating DVH and score --------------')
-    participant = Participant(rp, rs, rd, upsample='_up_sampled_', end_cap=True)
+    participant = Participant(rp, rs, rd, upsample='_up_sampled', end_cap=False)
     participant.set_participant_data(participant_name)
     val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria)
 

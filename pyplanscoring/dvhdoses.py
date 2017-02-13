@@ -1,3 +1,4 @@
+from __future__ import division
 # dvhdoses.py
 """Functions to calculate minimum, maximum, and mean dose to ROI from a cDVH."""
 

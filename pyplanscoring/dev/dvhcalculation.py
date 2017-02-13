@@ -1,3 +1,5 @@
+from __future__ import division
+
 from copy import deepcopy
 
 import numpy as np
@@ -31,7 +33,7 @@ def prepare_dvh_data(dhist, dvh):
     dvhdata['bins'] = len(dvh)
     dvhdata['type'] = 'CUMULATIVE'
     dvhdata['doseunits'] = 'cGY'
-    dvhdata['volumeunits'] = 'CM3'
+    dvhdata['volumeunits'] = 'cm3'
     # dvhdata['scaling'] = np.diff(dhist)[0]
     dvhdata['scaling'] = 1.0  # standard 1 cGy bins
     dvhdata['min'] = get_dvh_min(dvh)
@@ -142,6 +144,7 @@ class Structure(object):
     def name(self):
         return self.structure['name']
 
+    # @poperty Fix python 2.7 compatibility but it is very ineficient
     @lazyproperty
     def planes(self):
         if self.end_cap and self.volume_original < self.vol_lim:
@@ -163,8 +166,10 @@ class Structure(object):
 
         return vol_cc
 
+    # Fix python 2.7 compatibility
     @lazyproperty
     def ordered_planes(self):
+
         ordered_keys = [z for z, sPlane in self.planes.items()]
         ordered_keys.sort(key=float)
         return np.array(ordered_keys, dtype=float)
@@ -229,7 +234,6 @@ class Structure(object):
 
         # Iterate over each plane in the structure
         # wrap coordinates
-
         xx, yy = np.meshgrid(dose_lut[0], dose_lut[1], indexing='xy', sparse=True)
         fx, fy, fz = mapped_coord
         ordered_keys = [z for z, sPlane in sPlanes.items()]
@@ -537,18 +541,18 @@ class Structure(object):
 
 
 # TODO implement DVH calc only on scored structures ?
-def get_dvh_upsampled(structure, dose, key, end_cap=False):
+def get_dvh_upsampled(structure, dose, key, end_cap=False, upsample=True):
     """Get a calculated cumulative DVH along with the associated parameters."""
 
     struc_teste = Structure(structure, end_cap=end_cap)
-    dhist, chist = struc_teste.calculate_dvh(dose, upsample=True)
+    dhist, chist = struc_teste.calculate_dvh(dose, upsample=upsample)
     dvh_data = prepare_dvh_data(dhist, chist)
     dvh_data['key'] = key
 
     return dvh_data
 
 
-def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, end_cap=False):
+def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, end_cap=False, upsample=True):
     """
         Computes structures DVH using a RS-DICOM and RD-DICOM diles
     :param rs_file: path to RS dicom-file
@@ -559,8 +563,15 @@ def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, end
     rtdose = ScoringDicomParser(filename=rd_file)
     # Obtain the structures and DVHs from the DICOM data
     structures = rtss.GetStructures()
+
+    if upsample:
+        upsample = True
+    else:
+        upsample = False
+
     res = Parallel(n_jobs=-1, verbose=11, backend='threading')(
-        delayed(get_dvh_upsampled)(structure, rtdose, key, end_cap) for key, structure in structures.items() if
+        delayed(get_dvh_upsampled)(structure, rtdose, key, end_cap, upsample) for key, structure in structures.items()
+        if
         structure['name'] in struc_names)
     cdvh = {}
     for k in res:
