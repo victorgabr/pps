@@ -637,6 +637,8 @@ def calc_area(x, y):
     xi[-1] = x[0]
     yi[:-1] = y
     yi[-1] = y[0]
+    # xi = x
+    # yi = y
 
     # Calculate the area based on the Surveyor's formula
     for i in range(0, len(xi) - 1):
@@ -761,21 +763,11 @@ def get_interpolated_structure_planes(dicom_planes, z_interp_positions):
 
     interpolated_planes = {}
     for zi in z_interp_positions:
-        if zi not in ordered_z:
+        # TODO FIX interlopation between original planes
+        if not np.isclose(zi, ordered_z).any():
             # get grid knn
-            kn = k_nearest_neighbors(2, ordered_z, zi)
-
-            # Interpolate all planes contours
-            # define upper and lower bounds
-            if kn[1] < kn[0]:
-                l_idx = kn[1]
-                u_idx = l_idx + 1
-                if u_idx >= len(s_planes):
-                    u_idx = -1
-                    l_idx = kn[0]
-            else:
-                l_idx = kn[0]
-                u_idx = kn[1]
+            u_idx = ordered_z.searchsorted(zi)
+            l_idx = u_idx - 1
 
             # get upper and lower z values and contour points
             ub = ordered_z[u_idx]
@@ -785,8 +777,18 @@ def get_interpolated_structure_planes(dicom_planes, z_interp_positions):
             ub_points = s_planes[ordered_keys[u_idx]]
             lb_points = s_planes[ordered_keys[l_idx]]
 
-            if len(ub_points) == len(lb_points):
-                result = []
+            # if 1 contour per slice
+            result = []
+            truth = len(ub_points) == 1 and len(lb_points) == 1
+            if truth:
+
+                lc_contour = lb_points[0]['contourData']
+                up_contour = ub_points[0]['contourData']
+                interpolated_contour = interp_contour(zi, ub, lb, up_contour, lc_contour)
+                result += [{'contourData': interpolated_contour}]
+                interpolated_planes[str(zi)] = result
+
+            elif not (truth and len(ub_points) == len(lb_points)):
 
                 lb_centroids = np.array([c['centroid'] for c in lb_points])
                 ub_centroids = np.array([c['centroid'] for c in ub_points])
@@ -798,11 +800,25 @@ def get_interpolated_structure_planes(dicom_planes, z_interp_positions):
                     interpolated_contour = interp_contour(zi, ub, lb, up_contour, lc_contour)
                     result += [{'contourData': interpolated_contour}]
 
-                interpolated_planes[zi] = result
+                interpolated_planes[str(zi)] = result
 
     s_planes.update(interpolated_planes)
 
     return s_planes
+
+
+def set_interp_bounds(s_planes, kn):
+    if kn[1] < kn[0]:
+        l_idx = kn[1]
+        u_idx = l_idx + 1
+        if u_idx >= len(s_planes):
+            u_idx = -1
+            l_idx = kn[0]
+    else:
+        l_idx = kn[0]
+        u_idx = kn[1]
+
+    return l_idx, u_idx
 
 
 def get_structure_planes(struc, end_capping=False):
@@ -1025,7 +1041,9 @@ def calculate_contour_areas_numba(plane):
         y = contour['contourData'][:, 1]
 
         cArea = calc_area(x, y)
-        # cArea = poly_area(x, y)
+        # cArea1 = poly_area(x, y)
+        # np.testing.assert_almost_equal(cArea, cArea1)
+
         # Remove the z coordinate from the xyz point tuple
         data = np.asarray(list(map(lambda x: x[0:2], contour['contourData'])))
 

@@ -18,7 +18,7 @@ float_formatter = lambda x: "%.2f" % x
 np.set_printoptions(formatter={'float_kind': float_formatter})
 # np.set_printoptions(formatter={'str_kind': str_formatter})
 
-
+# TODO DEBUG HI RES STRUCRURES volume calculation z-slices spacing error.
 '''
 
 http://dicom.nema.org/medical/Dicom/2016b/output/chtml/part03/sect_C.8.8.html
@@ -134,8 +134,10 @@ class Structure(object):
         self.dose_grid_points = None
         self.hi_res_structure = None
         self.dvh = np.array([])
-        self.delta_mm = np.asarray([1, 1, 0.5])
+        self.delta_mm = np.asarray([0.2, 0.2, 0.1])
         self.vol_lim = 25
+        self.organ2dvh = None
+        self.dvh_data = None
 
     def set_delta(self, delta_mm):
         self.delta_mm = delta_mm
@@ -180,7 +182,7 @@ class Structure(object):
         self.dose_grid_points, self.dose_lut, self.grid_spacing = get_dose_grid_3d(lut_grid_3d, delta_mm)
         zi, dz = get_axis_grid(self.grid_spacing[2], self.ordered_planes)
         self.grid_spacing[2] = dz
-        # print('Upsampling ON')
+        print('Upsampling ON')
 
         self.hi_res_structure = get_interpolated_structure_planes(self.planes, zi)
 
@@ -224,6 +226,116 @@ class Structure(object):
             return self.planes, dose_lut, dosegrid_points, grid_delta
 
     def calculate_dvh(self, dicom_dose, bin_size=1.0, upsample=False):
+        print(' ----- DVH Calculation -----')
+        print('Structure Name: %s - volume (cc) %1.3f' % (self.name, self.volume_cc))
+        # 3D DOSE TRI-LINEAR INTERPOLATION
+        dose_interp, grid_3d, mapped_coord = dicom_dose.DoseRegularGridInterpolator()
+        sPlanes, dose_lut, dosegrid_points, grid_delta = self._prepare_data(grid_3d, upsample)
+        print('End caping:  ' + str(self.end_cap))
+        print('Grid delta (mm): ', grid_delta)
+
+        # Iterate over each plane in the structure
+        # wrap coordinates
+        xx, yy = np.meshgrid(dose_lut[0], dose_lut[1], indexing='xy', sparse=True)
+        fx, fy, fz = mapped_coord
+        ordered_keys = [z for z, sPlane in sPlanes.items()]
+        ordered_keys.sort(key=float)
+        x_cord = fx(xx)
+        y_cord = fy(yy)
+        z_cord = fz(ordered_keys)
+
+        # Create an empty array of bins to store the histogram in cGy
+        # only if the structure has contour data or the dose grid exists
+        maxdose = dicom_dose.global_max
+        # Remove values above the limit (cGy) if specified
+
+        nbins = int(maxdose / bin_size)
+        organ_dose = np.zeros((len(ordered_keys), len(y_cord), len(x_cord.flatten())))
+        for i in range(len(ordered_keys)):
+            z = ordered_keys[i]
+            sPlane = sPlanes[z]
+            # print('calculating slice z: %.1f' % float(z))
+            # Get the contours with calculated areas and the largest contour index
+            contours, largestIndex = calculate_contour_areas_numba(sPlane)
+
+            # Get the dose plane for the current structure plane
+            doseplane = dose_interp((z_cord[i], y_cord, x_cord))
+
+            # If there is no dose for the current plane, go to the next plane
+            if not len(doseplane):
+                break
+
+            # Calculate the histogram for each contour
+            dose_i = np.zeros(doseplane.shape)
+            for j, contour in enumerate(contours):
+                m = get_contour_mask_wn(dose_lut, dosegrid_points, contour['data'])
+
+                # If this is the largest contour, just add to the total histogram
+                if j == largestIndex:
+                    dose_i += doseplane * m
+                # Otherwise, determine whether to add or subtract histogram
+                # depending if the contour is within the largest contour or not
+                else:
+                    inside = False
+                    for point in contour['data']:
+                        poly = contours[largestIndex]['data']
+                        if point_in_contour(point, poly):
+                            inside = True
+                            # Assume if one point is inside, all will be inside
+                            break
+                    # If the contour is inside, subtract it from the total histogram
+                    if inside:
+                        dose_i -= doseplane * m
+                    # Otherwise it is outside, so add it to the total histogram
+                    else:
+                        dose_i += doseplane * m
+
+            # ADD z plane dose
+            organ_dose[i, :, :] = dose_i
+
+        # get volume flattened array doses
+        self.organ2dvh = organ_dose[np.nonzero(organ_dose)]
+
+        # Calculate the differential dvh
+        hist, edges = np.histogram(self.organ2dvh,
+                                   bins=nbins,
+                                   range=(0, maxdose))
+
+        # Calculate the volume for the contour for the given dose plane (cc)
+        volume = np.sum(hist) * grid_delta[0] * grid_delta[1] * grid_delta[2] / 1000.0
+        # volume = len(self.organ2dvh) * grid_delta[0] * grid_delta[1] * grid_delta[2] / 1000.0
+
+        # Rescale the histogram to reflect the total volume
+        hist = hist * volume / sum(hist)
+
+        chist = get_cdvh_numba(hist)
+        dhist = (np.arange(0, nbins) / nbins) * maxdose
+        idx = np.nonzero(chist)  # remove 0 volumes from DVH
+        dose_range, cdvh = dhist[idx], chist[idx]
+        # dose_range, cdvh = dhist, chist
+        self.dvh_data = self.prepare_dvh_data(dose_range, cdvh)
+
+        return dose_range, cdvh
+
+    def get_dvh_data(self):
+        return self.dvh_data
+
+    def prepare_dvh_data(self, dhist, dvh):
+        dvhdata = dict()
+        dvhdata['dose_axis'] = dhist
+        dvhdata['data'] = dvh
+        dvhdata['bins'] = len(dvh)
+        dvhdata['type'] = 'CUMULATIVE'
+        dvhdata['doseunits'] = 'cGY'
+        dvhdata['volumeunits'] = 'cm3'
+        # dvhdata['scaling'] = np.diff(dhist)[0]
+        dvhdata['scaling'] = 1.0  # standard 1 cGy bins
+        dvhdata['min'] = self.organ2dvh.min()
+        dvhdata['max'] = self.organ2dvh.max()
+        dvhdata['mean'] = self.organ2dvh.mean()
+        return dvhdata
+
+    def calculate_dvh_bkp(self, dicom_dose, bin_size=1.0, upsample=False):
         # print(' ----- DVH Calculation -----')
         # print('Structure Name: %s - volume (cc) %1.3f' % (self.name, self.volume_cc))
         # 3D DOSE TRI-LINEAR INTERPOLATION
@@ -266,12 +378,12 @@ class Structure(object):
                 break
 
             # Calculate the histogram for each contour
-            for i, contour in enumerate(contours):
+            for j, contour in enumerate(contours):
                 m = get_contour_mask_wn(dose_lut, dosegrid_points, contour['data'])
                 h, vol = calculate_contour_dvh(m, doseplane, nbins, maxdose, grid_delta)
 
                 # If this is the largest contour, just add to the total histogram
-                if i == largestIndex:
+                if j == largestIndex:
                     hist += h
                     volume += vol
                 # Otherwise, determine whether to add or subtract histogram
@@ -569,7 +681,8 @@ def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, end
     else:
         upsample = False
 
-    res = Parallel(n_jobs=-1, verbose=11, backend='threading')(
+    # backend = 'threading'
+    res = Parallel(n_jobs=-1, verbose=11)(
         delayed(get_dvh_upsampled)(structure, rtdose, key, end_cap, upsample) for key, structure in structures.items()
         if
         structure['name'] in struc_names)

@@ -17,6 +17,18 @@ from pyplanscoring.dvhcalc import load
 logger = logging.getLogger('scoring')
 
 
+# from interpolation.splines import CubicSpline, LinearSpline
+#
+#
+# def get_cubic_interp(dose_range, cdvh):
+#     a = np.asarray([dose_range[0]])
+#     b = np.asarray([dose_range[-1]])
+#     orders = np.asarray([len(cdvh)])
+#     interp = CubicSpline(a, b, orders, cdvh)
+#
+#     return interp
+
+
 def get_dvh_files(root_path):
     dvh_files = [os.path.join(root, name)
                  for root, dirs, files in os.walk(root_path)
@@ -77,11 +89,23 @@ class DVHMetrics(object):
         self.data = dvh
 
         self.fv = itp.interp1d(self.dose_axis, self.volume_pp, fill_value='extrapolate')  # pp
-        self.fv_cc = itp.interp1d(self.dose_axis, self.volume_pp, fill_value='extrapolate')  # pp
+        self.fv_cc = itp.interp1d(self.dose_axis, self.volume_cc, fill_value='extrapolate')  # pp
         self.fd = itp.interp1d(self.volume_pp, self.dose_axis, fill_value='extrapolate')  # pp
         self.fd_cc = itp.interp1d(self.volume_cc, self.dose_axis, fill_value='extrapolate')  # cc
+        #
+        # self.fv = get_cubic_interp(self.dose_axis, self.volume_pp)
+        # self.fv_cc = get_cubic_interp(self.dose_axis, self.volume_cc)
+        # self.fd = get_cubic_interp(self.volume_pp, self.dose_axis)
+        # self.fd_cc = get_cubic_interp(self.volume_cc, self.dose_axis)
+
+
+        # self.fv = itp.interp1d(self.dose_axis, self.volume_pp, kind='cubic')  # , fill_value='extrapolate')  # pp
+        # self.fv_cc = itp.interp1d(self.dose_axis, self.volume_pp, kind='cubic')  # ,, fill_value='extrapolate')  # pp
+        # self.fd = itp.interp1d(self.volume_pp, self.dose_axis, kind='cubic')  # ,, fill_value='extrapolate')  # pp
+        # self.fd_cc = itp.interp1d(self.volume_cc, self.dose_axis, kind='cubic')  # ,, fill_value='extrapolate')  # cc
 
     def eval_constrain(self, key, value):
+
         # TODO refactor using dictionary
         if key == 'Global Max':
             return self.data['max']
@@ -89,10 +113,13 @@ class DVHMetrics(object):
         if key == 'Dmax_position' and value == 'max':
             return self.stats[0]
         elif key[0] == 'Dcc':
+            value = np.asarray([value])
             return self.GetDoseConstraintCC(value)
         elif key[0] == 'D':
+            value = np.asarray([value])
             return self.GetDoseConstraint(value)
         elif key[0] == 'V':
+            value = np.asarray([value])
             return self.GetVolumeConstraint(value)
         elif value == 'min':
             return self.stats[2]
