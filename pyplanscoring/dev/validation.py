@@ -25,6 +25,8 @@ from pyplanscoring.scoring import DVHMetrics, Scoring
 logger = logging.getLogger('validation')
 
 
+# TODO extract constrains from analytical curves
+
 class CurveCompare(object):
     """
         Statistical analysis of the DVH volume (%) error histograms. volume (cm 3 ) differences (numerical–analytical)
@@ -44,6 +46,9 @@ class CurveCompare(object):
         self.calc_dvh = itp.interp1d(calc_dose, calc_dvh, fill_value='extrapolate')
         self.delta_dvh = self.calc_dvh(self.dose_samples) - self.ref_dvh(self.dose_samples)
         self.delta_dvh_pp = (self.delta_dvh / a_dvh[0]) * 100
+        # prepare data dict
+        self.calc_dvh_dict = prepare_dvh_data(self.dose_samples, self.calc_dvh(self.dose_samples))
+        self.ref_dvh_dict = prepare_dvh_data(self.dose_samples, self.ref_dvh(self.dose_samples))
 
     def stats(self):
         df = pd.DataFrame(self.delta_dvh_pp, columns=['delta_pp'])
@@ -57,6 +62,12 @@ class CurveCompare(object):
         stats['mean'] = self.delta_dvh_pp.mean()
         stats['std'] = self.delta_dvh_pp.std(ddof=1)
         return stats
+
+    def get_constrains(self, constrains_dict):
+        ref_constrains = eval_constrains_dict(self.ref_dvh_dict, constrains_dict)
+        calc_constrains = eval_constrains_dict(self.calc_dvh_dict, constrains_dict)
+
+        return ref_constrains, calc_constrains
 
     def eval_range(self, lim=0.2):
         t1 = self.delta_dvh < -lim
@@ -190,7 +201,28 @@ def test_upsampled_z_spacing(sPlanes):
     assert t is False
 
 
-def calc_data(row, dose_files_dict, structure_dict, constrains):
+def eval_constrains_dict(dvh_data_tmp, constrains_dict):
+    mtk = DVHMetrics(dvh_data_tmp)
+    values_tmp = OrderedDict()
+    for ki in constrains_dict.keys():
+        cti = mtk.eval_constrain(ki, constrains_dict[ki])
+        values_tmp[ki] = cti
+
+    return values_tmp
+
+
+def get_analytical_curve(an_curves_obj, file_structure_name, column):
+    an_curve_i = an_curves_obj[file_structure_name.split('_')[0]]
+    dose_an = an_curve_i['Dose (cGy)'].values
+    an_dvh = an_curve_i[column].values  # check nonzero
+
+    idx = np.nonzero(an_dvh)  # remove 0 volumes from DVH
+    dose_range, cdvh = dose_an[idx], an_dvh[idx]
+
+    return dose_range, cdvh
+
+
+def calc_data(row, dose_files_dict, structure_dict, constrains, delta_mm=(0.2, 0.2, 0.1), end_cap=True):
     idx, values = row[0], row[1]
     s_name = values['Structure name']
     voxel = str(values['Dose Voxel (mm)'])
@@ -206,8 +238,8 @@ def calc_data(row, dose_files_dict, structure_dict, constrains):
     structure = structures[2]
 
     # set up sampled structure
-    struc_teste = Structure(structure, end_cap=False)
-    struc_teste.set_delta((0.2, 0.2, 0.1))
+    struc_teste = Structure(structure, end_cap=end_cap)
+    struc_teste.set_delta(delta_mm)
     dhist, chist = struc_teste.calculate_dvh(dicom_dose, upsample=True)
     dvh_data = struc_teste.get_dvh_data()
 
@@ -222,6 +254,142 @@ def calc_data(row, dose_files_dict, structure_dict, constrains):
     # Get data
 
     return pd.Series(values_constrains, name=voxel), s_name
+
+
+def calc_data_all(row, dose_files_dict, structure_dict, constrains, an_curves, delta_mm=(0.2, 0.2, 0.1), end_cap=True):
+    idx, values = row[0], row[1]
+    s_name = values['Structure name']
+    voxel = str(values['Dose Voxel (mm)'])
+    gradient = values['Gradient direction']
+
+    dose_file = dose_files_dict[gradient][voxel]
+    struc_file = structure_dict[s_name]
+
+    # get structure and dose
+    dicom_dose = ScoringDicomParser(filename=dose_file)
+    struc = ScoringDicomParser(filename=struc_file)
+    structures = struc.GetStructures()
+    structure = structures[2]
+
+    # set up sampled structure
+    struc_teste = Structure(structure, end_cap=end_cap)
+    struc_teste.set_delta(delta_mm)
+    dhist, chist = struc_teste.calculate_dvh(dicom_dose, upsample=True)
+
+    # get its columns from spreadsheet
+    column = col_grad_dict[gradient][voxel]
+    adose_range, advh = get_analytical_curve(an_curves, s_name, column)
+
+    # use CurveCompare class to eval similarity from calculated and analytical curves
+
+    cmp = CurveCompare(adose_range, advh, dhist, chist)
+    ref_constrains, calc_constrains = cmp.get_constrains(constrains)
+
+    ref_constrains['Gradient direction'] = gradient
+    calc_constrains['Gradient direction'] = gradient
+    ref_series = pd.Series(ref_constrains, name=voxel)
+    calc_series = pd.Series(calc_constrains, name=voxel)
+
+    return ref_series, calc_series, s_name
+
+
+def test11():
+    ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/dvh_sphere.xlsx'
+    df = pd.read_excel(ref_data)
+
+    # TEST DICOM DATA
+    structure_files = ['/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_02_0.dcm',
+                       '/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Cylinders/Cylinder_02_0.dcm',
+                       '/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Cylinders/RtCylinder_02_0.dcm',
+                       '/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Cones/Cone_02_0.dcm',
+                       '/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Cones/RtCone_02_0.dcm']
+
+    structure_name = ['Sphere_02_0', 'Cylinder_02_0', 'RtCylinder_02_0', 'Cone__02_0', 'RtCone_02_0']
+
+    dose_files = [
+        r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_AntPost_0-4_0-2_0-4_mm_Aligned.dcm',
+        r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_AntPost_1mm_Aligned.dcm',
+        r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_AntPost_2mm_Aligned.dcm',
+        r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_AntPost_3mm_Aligned.dcm',
+        r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_0-4_0-2_0-4_mm_Aligned.dcm',
+        r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_1mm_Aligned.dcm',
+        r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_2mm_Aligned.dcm',
+        r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_3mm_Aligned.dcm']
+
+    # Structure Dict
+
+    structure_dict = dict(zip(structure_name, structure_files))
+
+    # dose dict
+    dose_files_dict = {
+        'Z(AP)': {'0.4x0.2x0.4': dose_files[0], '1': dose_files[1], '2': dose_files[2], '3': dose_files[3]},
+        'Y(SI)': {'0.4x0.2x0.4': dose_files[4], '1': dose_files[5], '2': dose_files[6], '3': dose_files[7]}}
+
+    sheets = ['Sphere', 'Cylinder', 'RtCylinder', 'Cone', 'RtCone']
+    sheets_dict = dict(zip(structure_name, sheets))
+
+    col_grad = ['SI 0.2 mm', 'SI 1 mm', 'SI 2 mm', 'SI 3 mm', 'AP 0.2 mm', 'AP 1 mm', 'AP 2 mm', 'AP 3 mm']
+    col_grad_dict = {'Z(AP)': {'0.4x0.2x0.4': 'AP 0.2 mm', '1': 'AP 1 mm', '2': 'AP 2 mm', '3': 'AP 3 mm'},
+                     'Y(SI)': {'0.4x0.2x0.4': 'SI 0.2 mm', '1': 'SI 1 mm', '2': 'SI 2 mm', '3': 'SI 3 mm'}}
+
+    # grab analytical data
+    sheet = 'Analytical'
+    ref_path = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/dvh_sphere.xlsx'
+    df = pd.read_excel(ref_path, sheetname=sheet)
+    mask = df['CT slice spacing (mm)'] == '0.2mm'
+    df = df.loc[mask]
+
+    # Constrains to get data
+
+    # Constrains
+
+    constrains = OrderedDict()
+    constrains['Total_Volume'] = True
+    constrains['min'] = 'min'
+    constrains['max'] = 'max'
+    constrains['mean'] = 'mean'
+    constrains['D99'] = 99
+    constrains['D95'] = 95
+    constrains['D5'] = 5
+    constrains['D1'] = 1
+    constrains['Dcc'] = 0.03
+
+    end_cap = True
+    delta_mm = (0.4, 0.4, 0.2)
+    for row in df.iterrows():
+        pass
+
+    # Get all analytical curves
+    out = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/analytical_dvh.obj'
+    an_curves = load(out)
+
+    res = Parallel(n_jobs=-1, verbose=11)(
+        delayed(calc_data_all)(row, dose_files_dict, structure_dict, constrains, an_curves, delta_mm=(0.4, 0.4, 0.1))
+        for row in df.iterrows())
+
+    ref_results = [d[0] for d in res]
+    calc_results = [d[1] for d in res]
+    sname = [d[2] for d in res]
+
+    df_ref_results = pd.concat(ref_results, axis=1).T.reset_index()
+    df_calc_results = pd.concat(calc_results, axis=1).T.reset_index()
+    df_ref_results['Structure name'] = sname
+    df_calc_results['Structure name'] = sname
+
+    ref_num = df_ref_results[df_ref_results.columns[1:-2]]
+    calc_num = df_calc_results[df_calc_results.columns[1:-2]]
+
+    delta = ((calc_num - ref_num) / ref_num) * 100
+
+    res = OrderedDict()
+    lim = 3
+    for col in delta:
+        count = np.sum(np.abs(delta[col]) > lim)
+        rg = np.array([round(delta[col].min(), 2), round(delta[col].max(), 2)])
+        res[col] = {'count': count, 'range': rg}
+
+    test_table = pd.DataFrame(res).T
+    print(test_table)
 
 
 def test1():
@@ -246,7 +414,23 @@ def test1():
     Results of Test 1. Dose grid resolution is varied while axial contour
     spacing is kept at 0.2 mm. Numbers of points (n) exceeding 3% difference
     (∆) from analytical are presented along with the range of % ∆. Total number
-    of structure/dose combinations is N = 40 (20 for V )."""
+    of structure/dose combinations is N = 40 (20 for V ).
+
+    Rasterization: 2.6 min
+    VOXEl = (0.2, 0.2, 0.1)
+                      count           range
+    Total Volume (cc)    32  [-4.46, -0.03]
+    Dmin                 16     [-0.0, 5.0]
+    Dmax                  0    [-0.71, 0.0]
+    Dmean                 0   [-0.63, 1.29]
+    D99                   0   [-2.55, 0.93]
+    D95                   0   [-1.52, 2.56]
+    D5                    0   [-0.39, 0.23]
+    D1                    0    [-0.3, 0.25]
+    D0.03cc               8   [-0.49, 5.76]
+
+
+    """
 
     # TEST DICOM DATA
     structure_files = ['/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_02_0.dcm',
@@ -263,7 +447,7 @@ def test1():
         r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_AntPost_2mm_Aligned.dcm',
         r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_AntPost_3mm_Aligned.dcm',
         r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_0-4_0-2_0-4_mm_Aligned.dcm',
-        r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_1mm_Aligned.dcm',
+        r'/home/victor/Dropbox/Plan_Competi-tion_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_1mm_Aligned.dcm',
         r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_2mm_Aligned.dcm',
         r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_3mm_Aligned.dcm']
 
@@ -301,7 +485,8 @@ def test1():
     # GET CALCULATED DATA
     # backend = 'threading'
     res = Parallel(n_jobs=-1, verbose=11)(
-        delayed(calc_data)(row, dose_files_dict, structure_dict, constrains) for row in df.iterrows())
+        delayed(calc_data)(row, dose_files_dict, structure_dict, constrains, delta_mm=(0.2, 0.2, 0.1)) for row in
+        df.iterrows())
 
     # aggregating data
     df_concat = [d[0] for d in res]
@@ -334,11 +519,63 @@ def test1():
 
 
 def test2():
-    """
-ion_Project\testdata\dvh_sphere.xlsx'
+    """  (0.2,0.2,0.2) voxel
 
-    # struc_dir = r'D:\Dropbox\Plan_Competition_Project\testdata\DVH-Analysis-Data-Etc\STRUCTURES'
-    # dose_grid_dir = r'D:\Dropbox\Plan_Competition_Project\testdata\DVH-Analysis-Data-Etc\DOSE GRIDS'
+                          count                                range
+        Total Volume (cc)    20     [-0.836364028788, 20.4398388678]
+        Dmin                 18  [-2.34295680294e-05, 7.99997469607]
+        Dmax                  0   [-0.7143089765, 2.25594440216e-05]
+        Dmean                 0      [-0.745443253859, 1.1222539427]
+        D99                   9      [-13.2036176269, 5.32799261807]
+        D95                   3      [-4.05023645333, 3.56111645813]
+        D5                    0    [-0.685731799321, 0.763452648735]
+        D1                    0      [-1.06545439265, 2.36923544843]
+        D0.03cc              10      [0.208698606864, 10.2052573631]
+
+
+        Normal 1.4 min
+        Voxel = (0.2,0.2,0.1)
+
+
+        Time= 2.5 min
+                              count                                range
+        Total Volume (cc)     0     [-2.30870744356, 0.623460939993]
+        Dmin                 17  [-2.34295680294e-05, 5.00002368742]
+        Dmax                  0   [-0.7143089765, 2.25594440216e-05]
+        Dmean                 0     [-0.773822165555, 1.17616531524]
+        D99                   8      [-14.5241235182, 5.64822718302]
+        D95                   3       [-4.1876197993, 3.87101141549]
+        D5                    0    [-0.724005656079, 0.868330967688]
+        D1                    0        [-1.28356043219, 2.634731146]
+        D0.03cc              11      [0.210227658852, 10.0695761079]
+
+
+
+        Rasterization 1.2 min
+
+                          count                                range
+        Total Volume (cc)    20      [-3.03706234966, 19.9294405383]
+        Dmin                 15  [-2.34295680315e-05, 7.99997469607]
+        Dmax                  0   [-0.7143089765, 2.25594440216e-05]
+        Dmean                 0    [-0.739088580375, 0.552542701378]
+        D99                   9      [-13.2036176269, 4.81043710506]
+        D95                   2      [-4.03095463253, 3.01555155051]
+        D5                    0     [-0.72931642965, 0.755875472771]
+        D1                    0      [-1.39745234391, 2.36923544843]
+        D0.03cc              10     [-0.491228070175, 10.2383539774]
+
+        Voxel = (0.2,0.2,0.1)
+
+                              count                                range
+        Total Volume (cc)     4     [-4.37794273217, 0.623460939993]
+        Dmin                 14  [-2.34295680315e-05, 5.00002368742]
+        Dmax                  0   [-0.7143089765, 2.25594440216e-05]
+        Dmean                 0    [-0.767198671242, 0.610077076797]
+        D99                   9      [-14.5241235182, 5.36085315134]
+        D95                   4        [-4.1876197993, 3.3093184441]
+        D5                    0    [-0.797912759806, 0.868330967688]
+        D1                    0        [-1.32507451815, 2.634731146]
+        D0.03cc              11     [-0.491228070175, 10.1056493256]
 
 
     """
@@ -373,14 +610,14 @@ ion_Project\testdata\dvh_sphere.xlsx'
         'Z(AP)': {'1': dose_files[0], '2': dose_files[1], '3': dose_files[2]},
         'Y(SI)': {'1': dose_files[3], '2': dose_files[4], '3': dose_files[5]}}
 
-    test_files = {}
-    for s_name in structure_dict:
-        grad_files = {}
-        for grad in dose_files_dict:
-            tick = str(int(int(re.findall(r'\d+', s_name)[0]) / 10))
-            grad_files[grad] = dose_files_dict[grad][tick]
-
-        test_files[s_name] = grad_files
+    # test_files = {}
+    # for s_name in structure_dict:
+    #     grad_files = {}
+    #     for grad in dose_files_dict:
+    #         tick = str(int(int(re.findall(r'\d+', s_name)[0]) / 10))
+    #         grad_files[grad] = dose_files_dict[grad][tick]
+    #
+    #     test_files[s_name] = grad_files
 
     # grab analytical data
 
@@ -404,41 +641,15 @@ ion_Project\testdata\dvh_sphere.xlsx'
     constrains['D1'] = 1
     constrains['Dcc'] = 0.03
 
-    df_concat = []
-    sname = []
     # GET CALCULATED DATA
-    for row in dfi.iterrows():
-        idx, values = row[0], row[1]
-        s_name = values['Structure name']
-        voxel = str(values['Dose Voxel (mm)'])
-        gradient = values['Gradient direction']
+    # backend = 'threading'
+    res = Parallel(n_jobs=-1, verbose=11)(
+        delayed(calc_data)(row, dose_files_dict, structure_dict, constrains, delta_mm=(0.2, 0.2, 0.1)) for row in
+        dfi.iterrows())
 
-        dose_file = dose_files_dict[gradient][voxel]
-        struc_file = structure_dict[s_name]
-
-        # get structure and dose
-        dicom_dose = ScoringDicomParser(filename=dose_file)
-        struc = ScoringDicomParser(filename=struc_file)
-        structures = struc.GetStructures()
-        structure = structures[st]
-
-        # set up sampled structure
-        struc_teste = Structure(structure, end_cap=True)
-        struc_teste.set_delta((0.2, 0.2, 0.1))
-        dhist, chist = struc_teste.calculate_dvh(dicom_dose, upsample=True)
-        dvh_data = prepare_dvh_data(dhist, chist)
-        # dvh_data['Dmin'] = dmin
-        # Setup DVH metrics class and get DVH DATA
-        metrics = DVHMetrics(dvh_data)
-        values_constrains = OrderedDict()
-        for k in constrains.keys():
-            ct = metrics.eval_constrain(k, constrains[k])
-            values_constrains[k] = ct
-        values_constrains['Gradient direction'] = gradient
-
-        # Get data
-        df_concat.append(pd.Series(values_constrains, name=voxel))
-        sname.append(s_name)
+    # aggregating data
+    df_concat = [d[0] for d in res]
+    sname = [d[1] for d in res]
 
     result = pd.concat(df_concat, axis=1).T.reset_index()
     result['Structure name'] = sname
@@ -469,12 +680,6 @@ ion_Project\testdata\dvh_sphere.xlsx'
 
     test_table = pd.DataFrame(res).T
     print(test_table)
-
-    return test_table
-    # mask = np.logical_or(delta > lim, delta < -lim)
-    # result.index = mask.index
-    # print(result.loc[mask['D0.03cc']])
-    # print(result.loc[mask['D95']])
 
 
 def test3(plot_curves=True):
@@ -525,7 +730,7 @@ def test3(plot_curves=True):
         structure = structures[st]
         # set up sampled structure
         struc_teste = Structure(structure, end_cap=True)
-        struc_teste.set_delta([0.1, 0.1, 0.1])
+        struc_teste.set_delta([0.2, 0.2, 0.1])
         str_result = {}
         test_data = test_files[sname]
         for k in test_data:
@@ -541,16 +746,6 @@ def test3(plot_curves=True):
     dest = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/test3_ref_dvh.obj'
     # save(an_data, dest)
     an_data = load(dest)
-    adata = an_data['Cone_30_0']['Z(AP)']
-    calc_data = result['Cone_30_0']['Z(AP)']
-
-    cmp = CurveCompare(adata['dose_axis'], adata['data'], calc_data['dose_axis'], calc_data['data'])
-
-    stats = OrderedDict()
-    stats['min'] = cmp.delta_dvh_pp.min()
-    stats['max'] = cmp.delta_dvh_pp.max()
-    stats['mean'] = cmp.delta_dvh_pp.mean()
-    stats['std'] = cmp.delta_dvh_pp.std(ddof=1)
 
     teste = []
     curve_compare = []
@@ -821,4 +1016,27 @@ def read_planiq_dvh(f):
 
 
 if __name__ == '__main__':
-    test2()
+    pass
+
+
+
+
+
+
+    # cmp.stats_paper
+
+
+
+    #
+    #
+    # # Setup DVH metrics class and get DVH DATA
+    # metrics = DVHMetrics(dvh_data)
+    # values_constrains = OrderedDict()
+    # for k in constrains.keys():
+    #     ct = metrics.eval_constrain(k, constrains[k])
+    #     values_constrains[k] = ct
+    # values_constrains['Gradient direction'] = gradient
+    #
+    # # Get data
+    #
+    # a, b = pd.Series(values_constrains, name=voxel), s_name

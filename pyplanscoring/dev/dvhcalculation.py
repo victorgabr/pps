@@ -34,8 +34,8 @@ def prepare_dvh_data(dhist, dvh):
     dvhdata['type'] = 'CUMULATIVE'
     dvhdata['doseunits'] = 'cGY'
     dvhdata['volumeunits'] = 'cm3'
-    # dvhdata['scaling'] = np.diff(dhist)[0]
-    dvhdata['scaling'] = 1.0  # standard 1 cGy bins
+    dvhdata['scaling'] = np.diff(dhist)[0]
+    # dvhdata['scaling'] = 1.0  # standard 1 cGy bins
     dvhdata['min'] = get_dvh_min(dvh)
     dvhdata['max'] = get_dvh_max(dvh)
     dvhdata['mean'] = get_dvh_mean(dvh)
@@ -182,7 +182,7 @@ class Structure(object):
         self.dose_grid_points, self.dose_lut, self.grid_spacing = get_dose_grid_3d(lut_grid_3d, delta_mm)
         zi, dz = get_axis_grid(self.grid_spacing[2], self.ordered_planes)
         self.grid_spacing[2] = dz
-        print('Upsampling ON')
+        # print('Upsampling ON')
 
         self.hi_res_structure = get_interpolated_structure_planes(self.planes, zi)
 
@@ -441,17 +441,12 @@ class Structure(object):
         y_cord = fy(yy)
         z_cord = fz(ordered_keys)
 
-        # Create an empty array of bins to store the histogram in cGy
         # only if the structure has contour data or the dose grid exists
-        dd = dicom_dose.GetDoseData()
-        maxdose = int(dd['dosemax'] * dd['dosegridscaling'] * 100)
-
+        maxdose = dicom_dose.global_max
         # Remove values above the limit (cGy) if specified
         nbins = int(maxdose / bin_size)
-        hist = np.zeros(nbins)
 
-        # st = time.time()
-        volume = 0
+        organ_dose = np.zeros((len(ordered_keys), len(y_cord), len(x_cord.flatten())))
         for i in range(len(ordered_keys)):
             z = ordered_keys[i]
             sPlane = sPlanes[z]
@@ -467,14 +462,12 @@ class Structure(object):
                 break
 
             # Calculate the histogram for each contour
-            for i, contour in enumerate(contours):
+            dose_i = np.zeros(doseplane.shape)
+            for j, contour in enumerate(contours):
                 m = contour_rasterization_numba(dose_lut, dosegrid_points, contour, xx, yy)
-                h, vol = calculate_contour_dvh(m, doseplane, nbins, maxdose, grid_delta)
-
                 # If this is the largest contour, just add to the total histogram
-                if i == largestIndex:
-                    hist += h
-                    volume += vol
+                if j == largestIndex:
+                    dose_i += doseplane * m
                 # Otherwise, determine whether to add or subtract histogram
                 # depending if the contour is within the largest contour or not
                 else:
@@ -487,17 +480,24 @@ class Structure(object):
                             break
                     # If the contour is inside, subtract it from the total histogram
                     if inside:
-                        hist -= h
-                        volume -= vol
+                        dose_i -= doseplane * m
                     # Otherwise it is outside, so add it to the total histogram
                     else:
-                        hist += h
-                        volume += vol
+                        dose_i += doseplane * m
+
+            # ADD z plane dose
+            organ_dose[i, :, :] = dose_i
 
         # Volume units are given in cm^3
-        volume /= 1000
-        # volume = self.volume_cc
+        self.organ2dvh = organ_dose[np.nonzero(organ_dose)]
 
+        # Calculate the differential dvh
+        hist, edges = np.histogram(self.organ2dvh,
+                                   bins=nbins,
+                                   range=(0, maxdose))
+
+        # Calculate the volume for the contour for the given dose plane (cc)
+        volume = np.sum(hist) * grid_delta[0] * grid_delta[1] * grid_delta[2] / 1000.0
         # Rescale the histogram to reflect the total volume
         hist = hist * volume / sum(hist)
 
@@ -508,6 +508,8 @@ class Structure(object):
         # remove 0 volumes from DVH
         idx = np.nonzero(chist)
         dose_range, cdvh = dhist[idx], chist[idx]
+
+        self.dvh_data = self.prepare_dvh_data(dose_range, cdvh)
 
         return dose_range, cdvh
 
