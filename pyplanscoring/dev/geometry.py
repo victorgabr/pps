@@ -802,9 +802,15 @@ def get_interpolated_structure_planes(dicom_planes, z_interp_positions):
 
                 interpolated_planes[str(zi)] = result
 
-    s_planes.update(interpolated_planes)
+        else:
+            # Add original not interpolated plane
+            ec_dist = abs(ordered_z - zi)
+            neighbor = ec_dist.argmin()
+            interpolated_planes[str(zi)] = s_planes[ordered_keys[neighbor]]
 
-    return s_planes
+    # s_planes.update(interpolated_planes)
+
+    return interpolated_planes
 
 
 def set_interp_bounds(s_planes, kn):

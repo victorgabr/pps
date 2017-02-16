@@ -34,7 +34,7 @@ class CurveCompare(object):
         the structure's total volume (cm 3 ) to give the error in volume (%)
     """
 
-    def __init__(self, a_dose, a_dvh, calc_dose, calc_dvh):
+    def __init__(self, a_dose, a_dvh, calc_dose, calc_dvh, structure_name='', dose_grid='', gradient=''):
         self.calc_data = ''
         self.ref_data = ''
         self.a_dose = a_dose
@@ -49,6 +49,10 @@ class CurveCompare(object):
         # prepare data dict
         self.calc_dvh_dict = prepare_dvh_data(self.dose_samples, self.calc_dvh(self.dose_samples))
         self.ref_dvh_dict = prepare_dvh_data(self.dose_samples, self.ref_dvh(self.dose_samples))
+        # title data
+        self.structure_name = structure_name
+        self.dose_grid = dose_grid
+        self.gradient = gradient
 
     def stats(self):
         df = pd.DataFrame(self.delta_dvh_pp, columns=['delta_pp'])
@@ -79,16 +83,15 @@ class CurveCompare(object):
 
     def plot_results(self):
         fig, ax = plt.subplots()
-        fig.set_figheight(12)
-        fig.set_figwidth(20)
         ref = self.ref_dvh(self.dose_samples)
         calc = self.calc_dvh(self.dose_samples)
         ax.plot(self.dose_samples, ref, label='Analytical')
-        ax.plot(self.dose_samples, calc, label='Analytical')
+        ax.plot(self.dose_samples, calc, label='Python')
         ax.set_ylabel('Volume (cc)')
         ax.set_xlabel('Dose (cGy)')
-        ax.set_title('Analytical versus Python')
-        plt.show()
+        txt = self.structure_name + ' ' + self.dose_grid + ' mm ' + self.gradient
+        ax.set_title(txt)
+        ax.legend(loc='best')
 
 
 def test_real_dvh():
@@ -256,7 +259,8 @@ def calc_data(row, dose_files_dict, structure_dict, constrains, delta_mm=(0.2, 0
     return pd.Series(values_constrains, name=voxel), s_name
 
 
-def calc_data_all(row, dose_files_dict, structure_dict, constrains, an_curves, delta_mm=(0.2, 0.2, 0.1), end_cap=True):
+def calc_data_all(row, dose_files_dict, structure_dict, constrains, an_curves, col_grad_dict, delta_mm=(0.2, 0.2, 0.1),
+                  end_cap=True):
     idx, values = row[0], row[1]
     s_name = values['Structure name']
     voxel = str(values['Dose Voxel (mm)'])
@@ -282,7 +286,8 @@ def calc_data_all(row, dose_files_dict, structure_dict, constrains, an_curves, d
 
     # use CurveCompare class to eval similarity from calculated and analytical curves
 
-    cmp = CurveCompare(adose_range, advh, dhist, chist)
+    cmp = CurveCompare(adose_range, advh, dhist, chist, s_name, voxel, gradient)
+
     ref_constrains, calc_constrains = cmp.get_constrains(constrains)
 
     ref_constrains['Gradient direction'] = gradient
@@ -290,10 +295,10 @@ def calc_data_all(row, dose_files_dict, structure_dict, constrains, an_curves, d
     ref_series = pd.Series(ref_constrains, name=voxel)
     calc_series = pd.Series(calc_constrains, name=voxel)
 
-    return ref_series, calc_series, s_name
+    return ref_series, calc_series, s_name, cmp
 
 
-def test11():
+def test11(plot_curves=False):
     ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/dvh_sphere.xlsx'
     df = pd.read_excel(ref_data)
 
@@ -364,12 +369,18 @@ def test11():
     an_curves = load(out)
 
     res = Parallel(n_jobs=-1, verbose=11)(
-        delayed(calc_data_all)(row, dose_files_dict, structure_dict, constrains, an_curves, delta_mm=(0.4, 0.4, 0.1))
-        for row in df.iterrows())
+        delayed(calc_data_all)(row,
+                               dose_files_dict,
+                               structure_dict,
+                               constrains,
+                               an_curves,
+                               col_grad_dict,
+                               delta_mm=(0.2, 0.2, 0.1)) for row in df.iterrows())
 
     ref_results = [d[0] for d in res]
     calc_results = [d[1] for d in res]
     sname = [d[2] for d in res]
+    curves = [d[3] for d in res]
 
     df_ref_results = pd.concat(ref_results, axis=1).T.reset_index()
     df_calc_results = pd.concat(calc_results, axis=1).T.reset_index()
@@ -390,6 +401,114 @@ def test11():
 
     test_table = pd.DataFrame(res).T
     print(test_table)
+
+    if plot_curves:
+        for c in curves:
+            c.plot_results()
+    plt.show()
+
+
+def test22(plot_curves=True):
+    ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/dvh_sphere.xlsx'
+
+    struc_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/STRUCTURES'
+    dose_grid_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS'
+    #
+    # ref_data = r'D:\Dropbox\Plan_Competit
+    st = 2
+
+    snames = ['Sphere_10_0', 'Sphere_20_0', 'Sphere_30_0',
+              'Cylinder_10_0', 'Cylinder_20_0', 'Cylinder_30_0',
+              'RtCylinder_10_0', 'RtCylinder_20_0', 'RtCylinder_30_0',
+              'Cone_10_0', 'Cone_20_0', 'Cone_30_0',
+              'RtCone_10_0', 'RtCone_20_0', 'RtCone_30_0']
+
+    structure_path = [os.path.join(struc_dir, f + '.dcm') for f in snames]
+
+    structure_dict = dict(zip(snames, structure_path))
+
+    dose_files = [os.path.join(dose_grid_dir, f) for f in [
+        'Linear_AntPost_1mm_Aligned.dcm',
+        'Linear_AntPost_2mm_Aligned.dcm',
+        'Linear_AntPost_3mm_Aligned.dcm',
+        'Linear_SupInf_1mm_Aligned.dcm',
+        'Linear_SupInf_2mm_Aligned.dcm',
+        'Linear_SupInf_3mm_Aligned.dcm']]
+
+    # dose dict
+    dose_files_dict = {
+        'Z(AP)': {'1': dose_files[0], '2': dose_files[1], '3': dose_files[2]},
+        'Y(SI)': {'1': dose_files[3], '2': dose_files[4], '3': dose_files[5]}}
+
+    col_grad_dict = {'Z(AP)': {'0.4x0.2x0.4': 'AP 0.2 mm', '1': 'AP 1 mm', '2': 'AP 2 mm', '3': 'AP 3 mm'},
+                     'Y(SI)': {'0.4x0.2x0.4': 'SI 0.2 mm', '1': 'SI 1 mm', '2': 'SI 2 mm', '3': 'SI 3 mm'}}
+
+    # grab analytical data
+    out = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/analytical_dvh.obj'
+    an_curves = load(out)
+
+    df = pd.read_excel(ref_data, sheetname='Analytical')
+
+    dfi = df.ix[40:]
+    mask0 = dfi['Structure Shift'] == 0
+    dfi = dfi.loc[mask0]
+
+    # Constrains to get data
+    # Constrains
+
+    constrains = OrderedDict()
+    constrains['Total_Volume'] = True
+    constrains['min'] = 'min'
+    constrains['max'] = 'max'
+    constrains['mean'] = 'mean'
+    constrains['D99'] = 99
+    constrains['D95'] = 95
+    constrains['D5'] = 5
+    constrains['D1'] = 1
+    constrains['Dcc'] = 0.03
+
+    # GET CALCULATED DATA
+    # backend = 'threading'
+    res = Parallel(n_jobs=-1, verbose=11)(
+        delayed(calc_data_all)(row,
+                               dose_files_dict,
+                               structure_dict,
+                               constrains,
+                               an_curves,
+                               col_grad_dict,
+                               delta_mm=(0.2, 0.2, 0.2)) for row in dfi.iterrows())
+
+    ref_results = [d[0] for d in res]
+    calc_results = [d[1] for d in res]
+    sname = [d[2] for d in res]
+    curves = [d[3] for d in res]
+
+    df_ref_results = pd.concat(ref_results, axis=1).T.reset_index()
+    df_calc_results = pd.concat(calc_results, axis=1).T.reset_index()
+    df_ref_results['Structure name'] = sname
+    df_calc_results['Structure name'] = sname
+
+    ref_num = df_ref_results[df_ref_results.columns[1:-2]]
+    calc_num = df_calc_results[df_calc_results.columns[1:-2]]
+
+    delta = ((calc_num - ref_num) / ref_num) * 100
+
+    res = OrderedDict()
+    lim = 3
+    for col in delta:
+        count = np.sum(np.abs(delta[col]) > lim)
+        rg = np.array([round(delta[col].min(), 2), round(delta[col].max(), 2)])
+        res[col] = {'count': count, 'range': rg}
+
+    test_table = pd.DataFrame(res).T
+    print(test_table)
+
+    plot_curves = True
+    if plot_curves:
+        for c in curves:
+            c.plot_results()
+
+    plt.show()
 
 
 def test1():
@@ -1016,13 +1135,8 @@ def read_planiq_dvh(f):
 
 
 if __name__ == '__main__':
-    pass
-
-
-
-
-
-
+    test11(True)
+    # test22()
     # cmp.stats_paper
 
 
