@@ -357,43 +357,6 @@ def k_nearest_neighbors(k, feature_train, features_query):
     return neighbors
 
 
-#
-#
-# def expand_roi(roi_contours, delta):
-#     """
-#         Expand ROI contours by delta in X, Y and Z axis.
-#
-#
-#     :param roi_contours: list of each plane's x,y,z points
-#     :param delta: delta isotropic expansion
-#     :return: expanded ROI
-#     """
-#
-#     start_cap = roi_contours[0].copy()
-#     start_cap[:, 2] = start_cap[:, 2] - delta
-#
-#     end_cap = roi_contours[-1].copy()
-#     end_cap[:, 2] = end_cap[:, 2] + delta
-#
-#     # extending end caps to original plans
-#
-#     # roi_contours[0] = start_cap
-#     # roi_contours[-1] = end_cap
-#     contour_tmp = [start_cap] + roi_contours + [end_cap]
-#
-#     # contour_tmp = roi_contours
-#     res = []
-#     for plane in contour_tmp:
-#         ctr = Polygon(plane)
-#         dilated = ctr.buffer(delta)
-#         dilated_xy = np.array(dilated.exterior.coords)
-#         zaxis = np.ones((len(dilated_xy), 1)) * plane[0, 2]
-#         tmp = np.concatenate([dilated_xy, zaxis], axis=1)
-#         res.append(tmp)
-#
-#     return res
-
-
 def calculate_planes_contour_areas(planes):
     """Calculate the area of each contour for the given plane.
        Additionally calculate and return the largest contour index."""
@@ -1200,3 +1163,19 @@ def contour_rasterization_numba(dose_lut, dosegrid_points, contour, xx, yy):
     out = out.reshape((len(dose_lut[1]), len(dose_lut[0])))
 
     return raster(out, poly_x, poly_y, raster_y_coord)
+
+
+def planes_point_cloud(sPlanes_dict):
+    """
+        Get point cloud from structure planes dict
+    :param sPlanes_dict: DICOM Structure planes z dictionary
+    :return: point cloud (x,y,z)
+    """
+    contour_data_planes = [plane for k, plane in sPlanes_dict.items()]
+    ctr = []
+    for p in contour_data_planes:
+        for ctri in p:
+            ctr.append(ctri['contourData'])
+    point_cloud = np.concatenate(ctr)
+
+    return point_cloud

@@ -9,7 +9,7 @@ from joblib import delayed
 
 from pyplanscoring.dev.geometry import get_contour_mask_wn, get_dose_grid_3d, \
     get_axis_grid, get_dose_grid, \
-    get_interpolated_structure_planes, point_in_contour, contour_rasterization_numba
+    get_interpolated_structure_planes, point_in_contour, contour_rasterization_numba, check_contour_inside
 from pyplanscoring.dicomparser import ScoringDicomParser, lazyproperty
 from pyplanscoring.dvhcalc import get_cdvh_numba, calculate_contour_areas_numba, save
 from pyplanscoring.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean
@@ -226,7 +226,7 @@ class Structure(object):
             return self.planes, dose_lut, dosegrid_points, grid_delta
 
     def calculate_dvh(self, dicom_dose, bin_size=1.0, upsample=False):
-        print(' ----- DVH Calculation -----')
+        # print(' ----- DVH Calculation -----')
         print('Structure Name: %s - volume (cc) %1.3f' % (self.name, self.volume_cc))
         # 3D DOSE TRI-LINEAR INTERPOLATION
         dose_interp, grid_3d, mapped_coord = dicom_dose.DoseRegularGridInterpolator()
@@ -273,16 +273,11 @@ class Structure(object):
                 # If this is the largest contour, just add to the total histogram
                 if j == largestIndex:
                     dose_i += doseplane * m
+
                 # Otherwise, determine whether to add or subtract histogram
                 # depending if the contour is within the largest contour or not
                 else:
-                    inside = False
-                    for point in contour['data']:
-                        poly = contours[largestIndex]['data']
-                        if point_in_contour(point, poly):
-                            inside = True
-                            # Assume if one point is inside, all will be inside
-                            break
+                    inside = check_contour_inside(contour['data'], contours[largestIndex]['data'])
                     # If the contour is inside, subtract it from the total histogram
                     if inside:
                         dose_i -= doseplane * m
@@ -389,13 +384,7 @@ class Structure(object):
                 # Otherwise, determine whether to add or subtract histogram
                 # depending if the contour is within the largest contour or not
                 else:
-                    inside = False
-                    for point in contour['data']:
-                        poly = contours[largestIndex]['data']
-                        if point_in_contour(point, poly):
-                            inside = True
-                            # Assume if one point is inside, all will be inside
-                            break
+                    inside = check_contour_inside(contour['data'], contours[largestIndex]['data'])
                     # If the contour is inside, subtract it from the total histogram
                     if inside:
                         hist -= h
@@ -471,13 +460,7 @@ class Structure(object):
                 # Otherwise, determine whether to add or subtract histogram
                 # depending if the contour is within the largest contour or not
                 else:
-                    inside = False
-                    for point in contour['data']:
-                        poly = contours[largestIndex]['data']
-                        if point_in_contour(point, poly):
-                            inside = True
-                            # Assume if one point is inside, all will be inside
-                            break
+                    inside = check_contour_inside(contour['data'], contours[largestIndex]['data'])
                     # If the contour is inside, subtract it from the total histogram
                     if inside:
                         dose_i -= doseplane * m

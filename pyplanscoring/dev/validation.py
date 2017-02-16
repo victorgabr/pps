@@ -259,7 +259,7 @@ def calc_data(row, dose_files_dict, structure_dict, constrains, delta_mm=(0.2, 0
     return pd.Series(values_constrains, name=voxel), s_name
 
 
-def calc_data_all(row, dose_files_dict, structure_dict, constrains, an_curves, col_grad_dict, delta_mm=(0.2, 0.2, 0.1),
+def calc_data_all(row, dose_files_dict, structure_dict, constrains, an_curves, col_grad_dict, delta_mm=(0.2, 0.2, 0.2),
                   end_cap=True):
     idx, values = row[0], row[1]
     s_name = values['Structure name']
@@ -298,10 +298,7 @@ def calc_data_all(row, dose_files_dict, structure_dict, constrains, an_curves, c
     return ref_series, calc_series, s_name, cmp
 
 
-def test11(plot_curves=False):
-    ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/dvh_sphere.xlsx'
-    df = pd.read_excel(ref_data)
-
+def test11(delta_mm=(0.2, 0.2, 0.1), plot_curves=False):
     # TEST DICOM DATA
     structure_files = ['/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_02_0.dcm',
                        '/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Cylinders/Cylinder_02_0.dcm',
@@ -331,9 +328,6 @@ def test11(plot_curves=False):
         'Y(SI)': {'0.4x0.2x0.4': dose_files[4], '1': dose_files[5], '2': dose_files[6], '3': dose_files[7]}}
 
     sheets = ['Sphere', 'Cylinder', 'RtCylinder', 'Cone', 'RtCone']
-    sheets_dict = dict(zip(structure_name, sheets))
-
-    col_grad = ['SI 0.2 mm', 'SI 1 mm', 'SI 2 mm', 'SI 3 mm', 'AP 0.2 mm', 'AP 1 mm', 'AP 2 mm', 'AP 3 mm']
     col_grad_dict = {'Z(AP)': {'0.4x0.2x0.4': 'AP 0.2 mm', '1': 'AP 1 mm', '2': 'AP 2 mm', '3': 'AP 3 mm'},
                      'Y(SI)': {'0.4x0.2x0.4': 'SI 0.2 mm', '1': 'SI 1 mm', '2': 'SI 2 mm', '3': 'SI 3 mm'}}
 
@@ -347,7 +341,6 @@ def test11(plot_curves=False):
     # Constrains to get data
 
     # Constrains
-
     constrains = OrderedDict()
     constrains['Total_Volume'] = True
     constrains['min'] = 'min'
@@ -358,11 +351,6 @@ def test11(plot_curves=False):
     constrains['D5'] = 5
     constrains['D1'] = 1
     constrains['Dcc'] = 0.03
-
-    end_cap = True
-    delta_mm = (0.4, 0.4, 0.2)
-    for row in df.iterrows():
-        pass
 
     # Get all analytical curves
     out = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/analytical_dvh.obj'
@@ -375,7 +363,7 @@ def test11(plot_curves=False):
                                constrains,
                                an_curves,
                                col_grad_dict,
-                               delta_mm=(0.2, 0.2, 0.1)) for row in df.iterrows())
+                               delta_mm=delta_mm) for row in df.iterrows())
 
     ref_results = [d[0] for d in res]
     calc_results = [d[1] for d in res]
@@ -408,7 +396,7 @@ def test11(plot_curves=False):
     plt.show()
 
 
-def test22(plot_curves=True):
+def test22(delta_mm=(0.2, 0.2, 0.1), plot_curves=True):
     ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/dvh_sphere.xlsx'
 
     struc_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/STRUCTURES'
@@ -476,7 +464,7 @@ def test22(plot_curves=True):
                                constrains,
                                an_curves,
                                col_grad_dict,
-                               delta_mm=(0.2, 0.2, 0.2)) for row in dfi.iterrows())
+                               delta_mm=delta_mm) for row in dfi.iterrows())
 
     ref_results = [d[0] for d in res]
     calc_results = [d[1] for d in res]
@@ -503,7 +491,7 @@ def test22(plot_curves=True):
     test_table = pd.DataFrame(res).T
     print(test_table)
 
-    plot_curves = True
+    # plot_curves = True
     if plot_curves:
         for c in curves:
             c.plot_results()
@@ -551,7 +539,6 @@ def test1():
 
     """
 
-    # TEST DICOM DATA
     structure_files = ['/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Spheres/Sphere_02_0.dcm',
                        '/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Cylinders/Cylinder_02_0.dcm',
                        '/home/victor/Downloads/DVH-Analysis-Data-Etc/STRUCTURES/Cylinders/RtCylinder_02_0.dcm',
@@ -566,7 +553,7 @@ def test1():
         r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_AntPost_2mm_Aligned.dcm',
         r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_AntPost_3mm_Aligned.dcm',
         r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_0-4_0-2_0-4_mm_Aligned.dcm',
-        r'/home/victor/Dropbox/Plan_Competi-tion_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_1mm_Aligned.dcm',
+        r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_1mm_Aligned.dcm',
         r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_2mm_Aligned.dcm',
         r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS/Linear_SupInf_3mm_Aligned.dcm']
 
@@ -637,7 +624,7 @@ def test1():
     return test_table
 
 
-def test2():
+def test2(delta_mm=(0.2, 0.2, 0.1)):
     """  (0.2,0.2,0.2) voxel
 
                           count                                range
@@ -763,7 +750,7 @@ def test2():
     # GET CALCULATED DATA
     # backend = 'threading'
     res = Parallel(n_jobs=-1, verbose=11)(
-        delayed(calc_data)(row, dose_files_dict, structure_dict, constrains, delta_mm=(0.2, 0.2, 0.1)) for row in
+        delayed(calc_data)(row, dose_files_dict, structure_dict, constrains, delta_mm=delta_mm) for row in
         dfi.iterrows())
 
     # aggregating data
@@ -801,7 +788,7 @@ def test2():
     print(test_table)
 
 
-def test3(plot_curves=True):
+def test3(delta_mm=(0.2, 0.2, 0.1), plot_curves=True):
     ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/dvh_sphere.xlsx'
 
     struc_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/STRUCTURES'
@@ -849,7 +836,7 @@ def test3(plot_curves=True):
         structure = structures[st]
         # set up sampled structure
         struc_teste = Structure(structure, end_cap=True)
-        struc_teste.set_delta([0.2, 0.2, 0.1])
+        struc_teste.set_delta(delta_mm=delta_mm)
         str_result = {}
         test_data = test_files[sname]
         for k in test_data:
@@ -884,6 +871,8 @@ def test3(plot_curves=True):
     print(df_final)
 
     if plot_curves:
+        # for c in curve_compare:
+        #     c.plot_results()
         for grad in ['Z(AP)', 'Y(SI)']:
             for s_key in result:
                 adata = an_data[s_key][grad]
@@ -1135,22 +1124,24 @@ def read_planiq_dvh(f):
 
 
 if __name__ == '__main__':
-    test11(True)
-    # test22()
-    # cmp.stats_paper
+    # test3()
+    # test2((0.5, 0.5, 0.5))
+    test22(delta_mm=(0.5, 0.5, 0.5), plot_curves=True)
+    # cmp.stat
+# s_paper
 
 
 
-    #
-    #
-    # # Setup DVH metrics class and get DVH DATA
-    # metrics = DVHMetrics(dvh_data)
-    # values_constrains = OrderedDict()
-    # for k in constrains.keys():
-    #     ct = metrics.eval_constrain(k, constrains[k])
-    #     values_constrains[k] = ct
-    # values_constrains['Gradient direction'] = gradient
-    #
-    # # Get data
-    #
-    # a, b = pd.Series(values_constrains, name=voxel), s_name
+#
+#
+# # Setup DVH metrics class and get DVH DATA
+# metrics = DVHMetrics(dvh_data)
+# values_constrains = OrderedDict()
+# for k in constrains.keys():
+#     ct = metrics.eval_constrain(k, constrains[k])
+#     values_constrains[k] = ct
+# values_constrains['Gradient direction'] = gradient
+#
+# # Get data
+#
+# a, b = pd.Series(values_constrains, name=voxel), s_name
