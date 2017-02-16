@@ -980,7 +980,9 @@ class ScoringDicomParser(DicomParser):
 
                         # Add each plane to the planes dictionary of the current ROI
                         if 'geometricType' in plane:
-                            z = ('%.2f' % plane['contourData'][0][2]).replace('-0', '0')
+
+                            # Fixed bug on import z position on -1.0 < z < 0.0 not using #.replace('-0', '0')
+                            z = ('%.2f' % plane['contourData'][0][2])
                             if z not in planes.keys():
                                 planes[z] = []
                             planes[z].append(plane)
