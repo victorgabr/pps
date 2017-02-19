@@ -47,9 +47,9 @@ def main():
     rs = files_data.reset_index().set_index(1).ix['rtss']['index']
 
     print('------------- Calculating DVH and score --------------')
-    participant = Participant(rp, rs, rd, upsample='_up_sampled', end_cap=False)
+    participant = Participant(rp, rs, rd, upsample='', end_cap=True)
     participant.set_participant_data(participant_name)
-    val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria)
+    val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria, dicom_dvh=False)
 
     print('Plan Score: %1.3f' % val)
     out_file = os.path.join(dicom_dir, 'plan_scoring_report.xls')

@@ -179,7 +179,10 @@ def read_scoring_criteria(f):
     cGy = 100.0
     df = pd.read_csv(f, sep='\t')
     df = df[['Plan Quality Metric Component', 'Objective(s)', 'Max Score']].dropna()
-    df['Max Score'] = df['Max Score'].apply(lambda x: x.split('*')[0]).astype(float)
+    try:
+        df['Max Score'] = df['Max Score'].apply(lambda x: x.split('*')[0]).astype(float)
+    except:
+        pass
 
     constrains_types = []
     for ob in df[['Objective(s)']].iterrows():

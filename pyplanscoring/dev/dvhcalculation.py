@@ -134,7 +134,8 @@ class Structure(object):
         self.dose_grid_points = None
         self.hi_res_structure = None
         self.dvh = np.array([])
-        self.delta_mm = np.asarray([0.2, 0.2, 0.1])
+        # TODO CHECK MEMORY MANGMENT ISSUES
+        self.delta_mm = np.asarray([0.5, 0.5, 0.5])
         self.vol_lim = 25
         self.organ2dvh = None
         self.dvh_data = None
@@ -679,6 +680,37 @@ def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, end
     if out_file:
         out_obj = {'participant': name,
                    'DVH': cdvh}
+        save(out_obj, out_file)
+
+    return cdvh
+
+
+def save_dicom_dvhs(name, rs_file, rd_file, out_file=False):
+    """
+        Computes structures DVH using a RS-DICOM and RD-DICOM diles
+    :param rs_file: path to RS dicom-file
+    :param rd_file: path to RD dicom-file
+    :return: dict - computed DVHs
+    """
+    rtss = ScoringDicomParser(filename=rs_file)
+
+    rtdose = ScoringDicomParser(filename=rd_file)
+    # Obtain the structures and DVHs from the DICOM data
+    structures = rtss.GetStructures()
+
+    cdvh = rtdose.GetDVHs()
+
+    out_dvh = {}
+    for k, item in cdvh.items():
+        cdvh_i = item['data']
+        dose_cdvh = np.arange(cdvh_i.size) * item['scaling']
+        dvh_data = prepare_dvh_data(dose_cdvh, cdvh_i)
+        dvh_data['key'] = k
+        out_dvh[structures[k]['name']] = dvh_data
+
+    if out_file:
+        out_obj = {'participant': name,
+                   'DVH': out_dvh}
         save(out_obj, out_file)
 
     return cdvh

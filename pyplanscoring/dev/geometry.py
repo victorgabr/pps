@@ -560,6 +560,9 @@ def get_axis_grid(delta_mm, grid_axis):
 
     up_sampled_axis, dt = np.linspace(grid_axis[0], grid_axis[-1], n_grid, retstep=True)
 
+    # avoid inverted axis swap.  Always absolute step
+    dt = abs(dt)
+
     return up_sampled_axis, dt
 
 

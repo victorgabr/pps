@@ -13,16 +13,18 @@ from joblib import Parallel
 from joblib import delayed
 from matplotlib import pyplot as plt
 
-from pyplanscoring.dev.dvhcalculation import Structure, prepare_dvh_data, calc_dvhs_upsampled
+from pyplanscoring.dev.dvhcalculation import Structure, prepare_dvh_data, calc_dvhs_upsampled, save_dicom_dvhs
 from pyplanscoring.dev.geometry import get_axis_grid, get_interpolated_structure_planes
 from pyplanscoring.dicomparser import ScoringDicomParser
-from pyplanscoring.dosimetric import read_scoring_criteria, constrains
+from pyplanscoring.dosimetric import read_scoring_criteria, constrains, Competition2016
 from pyplanscoring.dvhcalc import calc_dvhs
 from pyplanscoring.dvhcalc import load
 from pyplanscoring.dvhdoses import get_dvh_max
 from pyplanscoring.scoring import DVHMetrics, Scoring
 
 logger = logging.getLogger('validation')
+
+logging.basicConfig(filename='plan_competition_2016_no_dicom_DVH.log', level=logging.DEBUG)
 
 
 # TODO extract constrains from analytical curves
@@ -1011,7 +1013,8 @@ class EvalCompetition(object):
         self.dvh_files = []
         self.results = []
 
-    def calc_dvh_all(self, clean_files=False, end_cap=False):
+    def save_dvh_all(self, clean_files=False, end_cap=False, dicom_dvh=False):
+
         # TODO implement saving TPS information, constrain and scoring report on dvh file encapsulated on Participant Class
         data = get_competition_data(self.root_path)
         self.comp_data = data
@@ -1037,28 +1040,38 @@ class EvalCompetition(object):
             if not os.path.exists(out_file):
                 print('Iteration: %i' % i)
                 print('processing file: %s' % f)
-                calcdvhs = calc_dvhs_upsampled(n, self.rs_file, f, self.scores.keys(), out_file=out_file,
-                                               end_cap=end_cap)
+                if dicom_dvh:
+                    try:
+                        calcdvhs = save_dicom_dvhs(n, self.rs_file, f, out_file=out_file)
+                    except:
+                        rt_dose = ScoringDicomParser(filename=f)
+                        k = rt_dose.get_tps_data()
+                        txt = 'No DVH in file %s \n TPS info:' % f
+                        txt += ', '.join("{!s}={!r}".format(key, val) for (key, val) in k.items())
+                        logger.debug(txt)
+                else:
+                    calcdvhs = calc_dvhs_upsampled(n, self.rs_file, f, self.scores.keys(), out_file=out_file,
+                                                   end_cap=end_cap)
                 i += 1
                 print('processing file done %s' % f)
 
-                fig, ax = plt.subplots()
-                fig.set_figheight(12)
-                fig.set_figwidth(20)
-
-                for key, structure in structures.items():
-                    sname = structure['name']
-                    if sname in self.scores.keys():
-                        ax.plot(calcdvhs[sname]['data'] / calcdvhs[sname]['data'][0] * 100,
-                                label=sname, linewidth=2.0, color=np.array(structure['color'], dtype=float) / 255)
-                        ax.legend(loc=7, borderaxespad=-5)
-                        ax.set_ylabel('Vol (%)')
-                        ax.set_xlabel('Dose (cGy)')
-                        ax.set_title(n + ':' + df)
-                        fig_name = os.path.join(dest, n + '_RD_calc_DVH.png')
-                        fig.savefig(fig_name, format='png', dpi=100)
-
-                plt.close('all')
+                # fig, ax = plt.subplots()
+                # fig.set_figheight(12)
+                # fig.set_figwidth(20)
+                #
+                # for key, structure in structures.items():
+                #     sname = structure['name']
+                #     if sname in self.scores.keys():
+                #         ax.plot(calcdvhs[sname]['data'] / calcdvhs[sname]['data'][0] * 100,
+                #                 label=sname, linewidth=2.0, color=np.array(structure['color'], dtype=float) / 255)
+                #         ax.legend(loc=7, borderaxespad=-5)
+                #         ax.set_ylabel('Vol (%)')
+                #         ax.set_xlabel('Dose (cGy)')
+                #         ax.set_title(n + ':' + df)
+                #         fig_name = os.path.join(dest, n + '_RD_calc_DVH.png')
+                #         fig.savefig(fig_name, format='png', dpi=100)
+                #
+                # plt.close('all')
 
     def set_data(self):
         self.comp_data = get_competition_data(self.root_path)
@@ -1092,15 +1105,18 @@ class EvalCompetition(object):
 
     @staticmethod
     def get_dicom_data(data, dvh_file):
-        try:
-            dvh = load(dvh_file)
-            name = dvh['participant']
-            p_files = data[data[0] == name].set_index(1)
-            rd_file = p_files.ix['rtdose']['index']
-            rp_file = p_files.ix['rtplan']['index']
-            return rd_file, rp_file, name
-        except:
-            logger.exception('error on file %s' % dvh_file)
+        if __name__ == '__main__':
+            try:
+                dvh = load(dvh_file)
+                name = dvh['participant']
+                p_files = data[data[0] == name].set_index(1)
+                rd_file = p_files.ix['rtdose']['index']
+                rp_file = p_files.ix['rtplan']['index']
+                return rd_file, rp_file, name
+            except:
+                logger.exception('error on file %s' % dvh_file)
+
+                # TODO wrap DICOM-RT data to eval scores
 
 
 def read_planiq_dvh(f):
@@ -1123,25 +1139,86 @@ def read_planiq_dvh(f):
     return plan_iq
 
 
+def test_eval_scores():
+    cdata = Competition2016()
+    root = r'D:\PLAN_TESTING_DATA'
+    rs = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\Competition Package\DICOM Sets\RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
+    obj = EvalCompetition(root_path=root, rs_file=rs, constrains=cdata.constrains, scores=cdata.scores)
+    # obj.save_dvh_all(clean_files=True, end_cap=True)
+    obj.set_data()
+    res = obj.calc_scores()
+    df_new = pd.DataFrame(res, columns=['name', 'py_score_new']).set_index('name')
+
+    # val = r'/home/victor/Dropbox/Plan_Competition_Project/validation/Python_2016_last_update.xls'
+    # df = pd.DataFrame(sc, columns=['name', 'py_score_new'])
+    # df.set_index('name').sort_index().to_excel(val)
+    # dfi = df.set_index(0).sort_index()
+
+    ref = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\validation\Plan_IQ_versus_Python_DONE_diff_greater_than_4_TPS.xls'
+    ndata = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\validation\Python_2016_last_update.xls'
+    df_ref = pd.read_excel(ref)
+    df_new = pd.read_excel(ndata).set_index('name')
+    df_comp = df_ref.join(df_new)
+    df_comp['delta'] = df_comp['py_score_new'] - df_comp['PLANIQ_DMAX_BODY_SCORE']
+    df_comp['delta_py'] = df_comp['py_score_new'] - df_comp['py_score']
+
+    mask = df_comp['delta'].abs() > 4
+
+    result_col = ['PLANIQ_DMAX_BODY_SCORE', 'py_score_new', 'delta', 'TPS']
+    print(df_comp[result_col].loc[mask])
+
+
 if __name__ == '__main__':
-    # test3()
-    # test2((0.5, 0.5, 0.5))
-    test22(delta_mm=(0.5, 0.5, 0.5), plot_curves=True)
-    # cmp.stat
-# s_paper
+    # rd = r'/media/victor/TOURO Mobile/PLAN_TESTING_DATA/Ali-DONE IMRT alidogan@hacettepe.edu.tr/RD.1.2.246.352.71.7.2126303291.952274.20160217093713.dcm'
+    # rs = r'/home/victor/Dropbox/Plan_Competition_Project/Competition Package/DICOM Sets/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
+    #
+    # # rd = r'/media/victor/TOURO Mobile/PLAN_TESTING_DATA/PERUMAL - DONE perumal.medphy@gmail.com/RD.Breast.Dose_PLAN.dcm'
+    #
+    # rtss = ScoringDicomParser(filename=rs)
+    #
+    # rtdose = ScoringDicomParser(filename=rd)
+    # # Obtain the structures and DVHs from the DICOM data
+    # structures = rtss.GetStructures()
+    # cdvh = rtdose.GetDVHs()
+    #
+    # out_dvh = {}
+    # for k, item in cdvh.items():
+    #     cdvh_i = item['data']
+    #     dose_cdvh = np.arange(cdvh_i.size) * item['scaling']
+    #     dvh_data = prepare_dvh_data(dose_cdvh, cdvh_i)
+    #     dvh_data['key'] = k
+    #     out_dvh[structures[k]['name']] = dvh_data
+    #
+    # # prepare data to avoid miss-calculations
+    #
+    # print(out_dvh)
+
+    cdata = Competition2016()
+    root = r'/media/victor/TOURO Mobile/PLAN_TESTING_DATA'
+    rs = r'/home/victor/Dropbox/Plan_Competition_Project/Competition Package/DICOM Sets/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
+
+    obj = EvalCompetition(root_path=root, rs_file=rs, constrains=cdata.constrains, scores=cdata.scores)
+    obj.save_dvh_all(clean_files=True, dicom_dvh=True)
+    # obj.set_data()
+    # res = obj.calc_scores()
+    # df_new = pd.DataFrame(res, columns=['name', 'py_score_new']).set_index('name')
+    #
+    # val = r'/home/victor/Dropbox/Plan_Competition_Project/validation/Python_2016_TPS_DATA.xls'
+    # df = pd.DataFrame(res, columns=['name', 'py_score_new'])
+    # df.set_index('name').sort_index().to_excel(val)
+    # dfi = df.set_index(0).sort_index()
 
 
 
-#
-#
-# # Setup DVH metrics class and get DVH DATA
-# metrics = DVHMetrics(dvh_data)
-# values_constrains = OrderedDict()
-# for k in constrains.keys():
-#     ct = metrics.eval_constrain(k, constrains[k])
-#     values_constrains[k] = ct
-# values_constrains['Gradient direction'] = gradient
-#
-# # Get data
-#
-# a, b = pd.Series(values_constrains, name=voxel), s_name
+    # ref = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\validation\Plan_IQ_versus_Python_DONE_diff_greater_than_4_TPS.xls'
+    # ndata = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\validation\Python_2016_last_update.xls'
+    # df_ref = pd.read_excel(ref)
+    # df_new = pd.read_excel(ndata).set_index('name')
+    # df_comp = df_ref.join(df_new)
+    # df_comp['delta'] = df_comp['py_score_new'] - df_comp['PLANIQ_DMAX_BODY_SCORE']
+    # df_comp['delta_py'] = df_comp['py_score_new'] - df_comp['py_score']
+    #
+    # mask = df_comp['delta'].abs() > 4
+    #
+    # result_col = ['PLANIQ_DMAX_BODY_SCORE', 'py_score_new', 'delta', 'TPS']
+    # print(df_comp[result_col].loc[mask])

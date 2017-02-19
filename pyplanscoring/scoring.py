@@ -155,7 +155,7 @@ class DVHMetrics(object):
 
     def GetVolumeConstraintCC(self, dose):
 
-        """ Return the volume (in percent) of the structure that receives at
+        """ Return the volume (in cc) of the structure that receives at
             least a specific dose in cGy. i.e. V100, V150. fix by Victor Gabriel"""
 
         return float(self.fv_cc(dose))
@@ -176,6 +176,7 @@ class Scoring(object):
         self.score_result = {}
         self.score = 0
         self.criteria = criteria
+        self.is_dicom_dvh = False
 
     @lazyproperty
     def scoring_result(self):
@@ -228,6 +229,8 @@ class Scoring(object):
         """
             Getting DHV data from RT-DOSE file or calculate it.
         """
+        self.is_dicom_dvh = True
+
         dvhs = self.rtdose.GetDVHs()
         temp_dvh = {}
         for key, structure in self.structures.items():
@@ -235,7 +238,9 @@ class Scoring(object):
             tmp['key'] = key
             tmp['name'] = structure['name']
             temp_dvh[structure['name']] = dvhs[key]
-        self.dvhs = temp_dvh
+
+        self.dvhs = dict((k.upper(), v) for k, v in temp_dvh.items())
+        self._set_constrains_values()
 
     def _set_constrains_values(self):
         """
@@ -265,8 +270,11 @@ class Scoring(object):
                     ct = dvh_metrics.eval_constrain(k, values[k])
                     values_constrains[k] = ct
                     if k == 'CI':
-                        nk = self.dvhs[key]['key']
-                        ct = self.get_conformity(nk, values[k])
+                        if self.is_dicom_dvh:
+                            ct = self.calc_conformity(key, values[k])
+                        else:
+                            nk = self.dvhs[key]['key']
+                            ct = self.get_conformity(nk, values[k])
                         values_constrains[k] = ct
                     if k == 'Dmax_position':
                         nk = self.dvhs[key]['key']
@@ -293,9 +301,35 @@ class Scoring(object):
         return self.score_result
 
     def get_conformity(self, nk, value):
+
         stmp = Structure(self.structures[nk])
         cindex = stmp.calc_conformation_index(self.rtdose, value)
         return cindex
+
+    def calc_conformity(self, k, values):
+
+        """
+            Calculates CI using only DVH curves from TPS.
+        :param k: Structure name
+        :param values: Value in cGy to calculate CV
+
+        :return:
+        """
+        max_volume_key = max(self.dvhs, key=lambda i: self.dvhs[i]['data'][0])
+
+        metrics = DVHMetrics(self.dvhs[max_volume_key])
+
+        PITV = metrics.GetVolumeConstraintCC(values)
+        target_metrics = DVHMetrics(self.dvhs[k])
+        CV = target_metrics.GetVolumeConstraintCC(values)
+        TV = target_metrics.get_volume()
+        CI = CV ** 2 / (TV * PITV)
+
+        return CI
+
+
+
+        # CI = CV * CV / (TV * PITV)
 
     @staticmethod
     def check_dmax_inside(structure_name, dvhs):
@@ -392,10 +426,14 @@ class Participant(object):
                                            end_cap=self.end_cap, upsample=self.up_sample)
                 self._save_dvh_fig(cdvh, self.rd_file)
 
-    def eval_score(self, constrains_dict, scores_dict, criteria_df):
-        self._save_dvh(criteria_df.index.unique())
+    def eval_score(self, constrains_dict, scores_dict, criteria_df, dicom_dvh=False):
         self.score_obj = Scoring(self.rd_file, self.rs_file, self.rp_file, constrains_dict, scores_dict, criteria_df)
-        self.score_obj.set_dvh_data(self.dvh_file)
+        if dicom_dvh:
+            self.score_obj.set_dicom_dvh_data()
+        else:
+            self._save_dvh(criteria_df.index.unique())
+            self.score_obj.set_dvh_data(self.dvh_file)
+
         return self.score_obj.get_total_score()
 
     def save_score(self, out_file, banner_path=None):
@@ -499,4 +537,43 @@ def save_formatted_report(df, out_file, banner_path=None):
 
 
 if __name__ == '__main__':
-    pass
+    from pyplanscoring.dosimetric import read_scoring_criteria
+
+    rd = r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/RD.1.2.246.352.71.7.584747638204.1758320.20170210154830.dcm'
+    rs = r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/RS.1.2.246.352.71.4.584747638204.248648.20170209152429.dcm'
+    rp = r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/RP.1.2.246.352.71.5.584747638204.955801.20170210152428.dcm'
+    participant_name = 'test_CI'
+
+    f_2017 = r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/Scoring Criteria.txt'
+    constrains, scores, criteria = read_scoring_criteria(f_2017)
+
+    print('------------- Calculating DVH and score --------------')
+    participant = Participant(rp, rs, rd, upsample='_up_sampled', end_cap=True)
+    participant.set_participant_data(participant_name)
+    val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria, dicom_dvh=True)
+
+    # # DVH DATA
+    # dvhs = deepcopy(participant.score_obj.dvhs)
+    #
+    # max_volume_key = max(dvhs, key=lambda i: dvhs[i]['data'][0])
+    #
+    # metrics = DVHMetrics(dvhs[max_volume_key])
+    #
+    # val_test = 5320  # cGy
+    #
+    # PITV = metrics.GetVolumeConstraintCC(val_test)
+    #
+    # # calculating coverage volume
+    # target_metrics = DVHMetrics(dvhs['PTV56'])
+    # CV = target_metrics.GetVolumeConstraintCC(val_test)
+    # TV = target_metrics.get_volume()
+    # CI = CV ** 2 / (TV * PITV)
+    #
+    # # print('Plan Score: %1.3f' % val)
+    # # out_file = os.path.join(dicom_dir, 'plan_scoring_report.xls')
+    # # banner_path = os.path.join(wd, '2017 Plan Comp Banner.jpg')
+    # # participant.save_score(out_file, banner_path=banner_path)
+    # # print('Report saved: %s' % out_file)
+    # app = 0.8460
+    # PLANIQ = 0.8360
+    # CI_from_eclipse_DVH = 0.844

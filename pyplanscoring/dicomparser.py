@@ -299,7 +299,7 @@ class DicomParser(object):
                 number = item.ROINumber
                 data['id'] = number
                 data['name'] = item.ROIName
-                logger.debug("Found ROI #%s: %s", str(number), data['name'])
+                # logger.debug("Found ROI #%s: %s", str(number), data['name'])
                 structures[number] = data
 
         # Determine the type of each structure (PTV, organ, external, etc)
@@ -416,7 +416,7 @@ class DicomParser(object):
                 if not 'DVHReferencedROIs' in item:
                     continue
                 number = item.DVHReferencedROIs[0].ReferencedROINumber
-                logger.debug("Found DVH for ROI #%s", str(number))
+                # logger.debug("Found DVH for ROI #%s", str(number))
                 dvhitem = {}
                 # If the DVH is differential, convert it to a cumulative DVH
                 if self.ds.DVHs[0].DVHType == 'DIFFERENTIAL':
@@ -923,7 +923,7 @@ class ScoringDicomParser(DicomParser):
                 number = item.ROINumber
                 data['id'] = number
                 data['name'] = item.ROIName
-                logger.debug("Found ROI #%s: %s", str(number), data['name'])
+                # logger.debug("Found ROI #%s: %s", str(number), data['name'])
                 structures[number] = data
 
         # Determine the type of each structure (PTV, organ, external, etc)
@@ -957,9 +957,12 @@ class ScoringDicomParser(DicomParser):
                             np.array(color, dtype=float)
                     # Otherwise fail and fallback on the random color
                     except:
-                        logger.debug(
-                            "Unable to decode display color for ROI #%s",
-                            str(number))
+                        pass
+
+
+                        # logger.debug(
+                        #     "Unable to decode display color for ROI #%s",
+                        #     str(number))
 
                 planes = {}
                 if 'Contours' in roi:
@@ -1104,6 +1107,60 @@ class ScoringDicomParser(DicomParser):
         dose_matrix = self.ds.pixel_array * float(self.ds.DoseGridScaling) * 100  # 3D dose matrix in cGy
 
         return np.max(dose_matrix)  # 3D dose matrix in cGy
+
+    def GetDVHs(self):
+        """Returns the dose-volume histograms (DVHs)."""
+
+        self.dvhs = {}
+
+        if self.HasDVHs():
+            cGy = 100
+            for item in self.ds.DVHs:
+                # Make sure that the DVH has a referenced structure / ROI
+                if not 'DVHReferencedROIs' in item:
+                    continue
+                number = item.DVHReferencedROIs[0].ReferencedROINumber
+                # logger.debug("Found DVH for ROI #%s", str(number))
+                dvhitem = {}
+                # If the DVH is differential, convert it to a cumulative DVH
+                if self.ds.DVHs[0].DVHType == 'DIFFERENTIAL':
+                    dvhitem['data'] = self.GenerateCDVH(item.DVHData)
+                    dvhitem['bins'] = len(dvhitem['data'])
+                # Otherwise the DVH is cumulative
+                # Remove "filler" values from DVH data array (even values are DVH values)
+                else:
+                    dvhitem['data'] = np.array(item.DVHData[1::2])
+                    dvhitem['bins'] = int(item.DVHNumberofBins)
+                dvhitem['type'] = 'CUMULATIVE'
+
+                if item.DoseUnits == 'GY':
+                    # print(item.DoseUnits)
+                    dvhitem['doseunits'] = 'cGy'
+                else:
+                    cGy = 1.0
+
+                dvhitem['volumeunits'] = item.DVHVolumeUnits
+                dvhitem['scaling'] = item.DVHDoseScaling
+                # Convert all point doses to cGy
+
+                if "DVHMinimumDose" in item:
+                    dvhitem['min'] = item.DVHMinimumDose * cGy
+                else:
+                    # save the min dose as -1 so we can calculate it later
+                    dvhitem['min'] = -1
+                if "DVHMaximumDose" in item:
+                    dvhitem['max'] = item.DVHMaximumDose * cGy
+                else:
+                    # save the max dose as -1 so we can calculate it later
+                    dvhitem['max'] = -1
+                if "DVHMeanDose" in item:
+                    dvhitem['mean'] = item.DVHMeanDose * cGy
+                else:
+                    # save the mean dose as -1 so we can calculate it later
+                    dvhitem['mean'] = -1
+                self.dvhs[number] = dvhitem
+
+        return self.dvhs
 
 
 def test_rtss_eclipse(f):
