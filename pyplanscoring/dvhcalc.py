@@ -1,5 +1,6 @@
 from __future__ import division
-#!/usr/bin/env python
+
+# !/usr/bin/env python
 # -*- coding: ISO-8859-1 -*-
 # dvhcalc.py
 """Calculate dose volume histogram (DVH) from DICOM RT Structure / Dose data."""
@@ -18,7 +19,7 @@ import numpy.ma as ma
 from joblib import Parallel
 from joblib import delayed
 from matplotlib.path import Path
-from numba import njit
+import numba as nb
 
 from pyplanscoring.dev.geometry import calculate_contour_areas_numba
 from pyplanscoring.dicomparser import ScoringDicomParser
@@ -392,7 +393,7 @@ def get_cdvh(ddvh):
     return cdvh
 
 
-@njit
+@nb.njit
 def get_cdvh_numba(ddvh):
     """Calculate the cumulative DVH from a differential DVH array."""
 

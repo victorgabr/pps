@@ -1,7 +1,6 @@
 from __future__ import division
-# dvhdoses.py
-"""Functions to calculate minimum, maximum, and mean dose to ROI from a cDVH."""
 
+"""Functions to calculate minimum, maximum, and mean dose to ROI from a cDVH."""
 # Copyright (c) 2009 Roy Keyes (roy.coding)
 # Copyright (c) 2011 Aditya Panchal
 # This file is part of dicompyler, relased under a BSD license.
@@ -12,7 +11,7 @@ from __future__ import division
 # It is assumed that the bin width of the cDVH is fixed at 1 cGy.
 # speed up numba by victor
 import numpy as np
-from numba import njit
+import numba as nb
 
 
 def get_dvh_min_slow(dvh):
@@ -34,7 +33,7 @@ def get_dvh_min_slow(dvh):
     return mindose
 
 
-@njit
+@nb.njit
 def get_dvh_min(dvh):
     '''Return minimum dose to ROI derived from cDVH.'''
 
@@ -72,7 +71,7 @@ def get_dvh_max_slow(dvh):
     return maxdose
 
 
-@njit
+@nb.njit
 def get_dvh_max(dvh):
     '''Return maximum dose to ROI derived from cDVH.'''
 
@@ -109,7 +108,7 @@ def get_dvh_median_slow(dvh):
     return mediandose
 
 
-@njit
+@nb.njit
 def get_dvh_median(dvh):
     '''Return median dose to ROI derived from cDVH.'''
 
@@ -152,7 +151,7 @@ def get_dvh_mean_slow(dvh):
     return meandose
 
 
-@njit
+@nb.njit
 def get_dvh_mean(dvh):
     '''Return mean dose to ROI derived from cDVH.'''
 
@@ -191,7 +190,7 @@ def get_ddvh_slow(cdvh):
     return ddvh
 
 
-@njit
+@nb.njit
 def get_ddvh(cdvh):
     '''Return dDVH from cDVH array.'''
 

@@ -825,13 +825,6 @@ class ScoringDicomParser(DicomParser):
     def __init__(self, dataset=None, filename=None):
         DicomParser.__init__(self, dataset=dataset, filename=filename)
         self.interp_dose_plane = None
-        # self._set_dose_interpolator()
-
-    def set_dose_interpolator(self):
-
-        self.interp_dose_plane, _ = self.DoseRegularGridInterpolator()
-
-        return self.interp_dose_plane
 
     def get_tps_data(self):
         """

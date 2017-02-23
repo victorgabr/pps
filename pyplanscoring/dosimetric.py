@@ -175,7 +175,146 @@ class Competition2016(object):
         pass
 
 
-def read_scoring_criteria(f):
+def read_scoring_criteria(f, cGy=100):
+    # cGy = 100.0
+    df = pd.read_csv(f, sep='\t')
+    df = df[['Plan Quality Metric Component', 'Objective(s)', 'Max Score']].dropna()
+    try:
+        df['Max Score'] = df['Max Score'].apply(lambda x: x.split('*')[0]).astype(float)
+    except:
+        pass
+
+    constrains_types = []
+    for ob in df[['Objective(s)']].iterrows():
+        if ob[1][0][0] == '<':
+            constrains_types.append('upper')
+        elif ob[1][0][0] == '>':
+            constrains_types.append('lower')
+
+    test = []
+    for pq in df[['Plan Quality Metric Component']].iterrows():
+        tmp = list(filter(None, re.split("\[(.*?)\].?", pq[1][0])))
+        test.append(tmp)
+
+    structures_names = []
+    constrains_keys = []
+    constrains_values = []
+    for crit in test:
+        if len(crit) == 1:
+            structures_names.append('Global Max')
+            constrains_keys.append('max')
+            constrains_values.append('max')
+        if len(crit) == 2:
+            structures_names.append(crit[0])
+            if 'Max' in crit[1]:
+                constrains_keys.append('max')
+                constrains_values.append('max')
+            elif 'Mean' in crit[1]:
+                constrains_keys.append('mean_value')
+                constrains_values.append('mean')
+        if len(crit) > 2:
+            structures_names.append(crit[0])
+            if len(crit) == 3:
+                if 'Homogeneity' in crit[1]:
+                    constrains_keys.append('HI')
+                    cv = float(re.findall("\d+\.\d+", crit[2])[0])
+                    cv *= cGy
+                    constrains_values.append(cv)
+                elif 'Conformation' in crit[1]:
+                    constrains_keys.append('CI')
+                    cv = float(re.findall("\d+\.\d+", crit[2])[0])
+                    cv *= cGy
+                    constrains_values.append(cv)
+            elif 'cc' in crit[2]:
+                constrains_keys.append('Dcc')
+                constrains_values.append(float(re.findall("\d+\.\d+", crit[2])[0]))
+            elif '%' in crit[2] and 'D' in crit[1]:
+                cv = int(float(re.findall("\d+\.\d+", crit[2])[0]))
+                constrains_keys.append('D' + str(cv))
+                constrains_values.append(cv)
+            elif '%' in crit[2] and 'V' in crit[1]:
+                cv = int(float(re.findall("\d+\.\d+", crit[2])[0]))
+                constrains_keys.append('V' + str(cv))
+                constrains_values.append(cv)
+
+    df['structures_name'] = structures_names
+    df['constrain'] = constrains_keys
+    df['constrain_value'] = constrains_values
+    df['constrains_type'] = constrains_types
+
+    # get objectives
+    objectives = []
+    obl = []
+    obh = []
+    for row in df[['Objective(s)']].iterrows():
+        cval = np.asarray(re.findall("\d+\.?\d+", row[1].to_string()), dtype=float)
+        cval.sort()
+        if cval[0] > 1:
+            # All doses to cGy
+            cval *= cGy
+        obl.append(cval[0])
+        obh.append(cval[1])
+        objectives.append(cval)
+
+    scores_arr = []
+    for row in df[['Max Score']].iterrows():
+        score_i = np.array([0.0, row[1]])
+        scores_arr.append(score_i)
+
+    df['value_score'] = objectives
+    df['value_low'] = obl
+    df['value_high'] = obh
+    df['scores_array'] = scores_arr
+
+    dfi = df.set_index('structures_name')
+
+    # # DIVIDE DMAX TOTAL SCORES
+    #
+    # mask_cc = dfi['constrain'] == 'Dcc'
+    # mask_max = dfi['constrain'] == 'max'
+    # mask_small = np.logical_or(mask_cc, mask_max)
+    # dfi.loc[mask_small, 'Max Score'] -= 2
+    # dfi.loc[~mask_small, 'Max Score'] += 2.4617
+    # dfi.loc[mask_small, 'scores_array'] = dfi.loc[mask_small, 'scores_array'].apply(lambda x: [x[0], x[1] - 2])
+    # dfi.loc[~mask_small, 'scores_array'] = dfi.loc[~mask_small, 'scores_array'].apply(lambda x: [x[0], x[1] + 2.4617])
+
+    s_names = dfi.index.unique()
+    constrains_all = {}
+    scores_all = {}
+    for name in s_names:
+        df_tmp = dfi.loc[[name]]
+        constrains_tmp = {}
+        scores_tmp = {}
+        for i in range(len(df_tmp.index)):
+            key = df_tmp['constrain'].values[i]
+            val = df_tmp['constrain_value'].values[i]
+            constrains_tmp[key] = val
+
+            c_type = df_tmp['constrains_type'].values[i]
+            v_s = df_tmp['value_score'].values[i]
+            s_a = df_tmp['scores_array'].values[i]
+            scores_tmp[key] = [c_type, v_s, s_a]
+
+        scores_all[name] = scores_tmp
+        constrains_all[name] = constrains_tmp
+
+    criteria = ['constrain', 'constrain_value', 'constrains_type', 'value_low', 'value_high', 'Max Score']
+
+    return constrains_all, scores_all, dfi[criteria]
+
+
+class Competition2017(object):
+    def __init__(self, path_to_criteria):
+        self.f = path_to_criteria
+
+    def competition_criteria(self):
+        read_scoring_criteria(self.f)
+
+
+if __name__ == '__main__':
+    f = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/PlanIQ Criteria TPS PlanIQ matched str names - TXT Fromat - Last mod Jan23.txt'
+    # read_scoring_criteria(f)
+
     cGy = 100.0
     df = pd.read_csv(f, sep='\t')
     df = df[['Plan Quality Metric Component', 'Objective(s)', 'Max Score']].dropna()
@@ -268,9 +407,29 @@ def read_scoring_criteria(f):
 
     dfi = df.set_index('structures_name')
 
+    mask_cc = dfi['constrain'] == 'Dcc'
+    mask_max = dfi['constrain'] == 'max'
+    mask_small = np.logical_or(mask_cc, mask_max)
+    print('Points on Dmax and Dcc - Small volume doses')
+    print(dfi.loc[mask_small, 'Max Score'].to_string())
+    p0 = (dfi.loc[mask_small, 'Max Score']).sum()
+    print('Max points on Dmax and Dcc:', p0)
+    print('Points on Volume/CI/Hi constrains:')
+    print(dfi.loc[~mask_small, 'Max Score'].to_string())
+    p1 = (dfi.loc[~mask_small, 'Max Score']).sum()
+    print('Max points on volumes:', p1)
+    total = p0 + p1
+    print('Total points', total)
+
+    dfi.loc[mask_small, 'Max Score'] -= 2
+    dfi.loc[~mask_small, 'Max Score'] += 2.4617
+    dfi.loc[mask_small, 'scores_array'] = dfi.loc[mask_small, 'scores_array'].apply(lambda x: [x[0], x[1] - 2])
+    dfi.loc[~mask_small, 'scores_array'] = dfi.loc[~mask_small, 'scores_array'].apply(lambda x: [x[0], x[1] + 2.4617])
+
     s_names = dfi.index.unique()
     constrains_all = {}
     scores_all = {}
+
     for name in s_names:
         df_tmp = dfi.loc[[name]]
         constrains_tmp = {}
@@ -289,129 +448,3 @@ def read_scoring_criteria(f):
         constrains_all[name] = constrains_tmp
 
     criteria = ['constrain', 'constrain_value', 'constrains_type', 'value_low', 'value_high', 'Max Score']
-
-    return constrains_all, scores_all, dfi[criteria]
-
-
-class Competition2017(object):
-    def __init__(self, path_to_criteria):
-        self.f = path_to_criteria
-
-    def competition_criteria(self):
-        read_scoring_criteria(self.f)
-
-
-if __name__ == '__main__':
-    f = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/All Required Files - 23 Jan2017/PlanIQ Criteria TPS PlanIQ matched str names - TXT Fromat - Last mod Jan23.txt'
-    cGy = 100.0
-    df = pd.read_csv(f, sep='\t')
-    df = df[['Plan Quality Metric Component', 'Objective(s)', 'Max Score']].dropna()
-    df['Max Score'] = df['Max Score'].apply(lambda x: x.split('*')[0]).astype(float)
-
-    constrains_types = []
-    for ob in df[['Objective(s)']].iterrows():
-        if ob[1][0][0] == '<':
-            constrains_types.append('upper')
-        elif ob[1][0][0] == '>':
-            constrains_types.append('lower')
-
-    test = []
-    for pq in df[['Plan Quality Metric Component']].iterrows():
-        tmp = list(filter(None, re.split("\[(.*?)\].?", pq[1][0])))
-        test.append(tmp)
-
-    structures_names = []
-    constrains_keys = []
-    constrains_values = []
-    for crit in test:
-        if len(crit) == 1:
-            structures_names.append('Global Max')
-            constrains_keys.append('max')
-            constrains_values.append('max')
-        if len(crit) == 2:
-            structures_names.append(crit[0])
-            if 'Max' in crit[1]:
-                constrains_keys.append('max')
-                constrains_values.append('max')
-            elif 'Mean' in crit[1]:
-                constrains_keys.append('mean_value')
-                constrains_values.append('mean')
-        if len(crit) > 2:
-            structures_names.append(crit[0])
-            if len(crit) == 3:
-                if 'Homogeneity' in crit[1]:
-                    constrains_keys.append('HI')
-                    cv = float(re.findall("\d+\.\d+", crit[2])[0])
-                    cv *= cGy
-                    constrains_values.append(cv)
-                elif 'Conformation' in crit[1]:
-                    constrains_keys.append('CI')
-                    cv = float(re.findall("\d+\.\d+", crit[2])[0])
-                    cv *= cGy
-                    constrains_values.append(cv)
-            elif 'cc' in crit[2]:
-                constrains_keys.append('Dcc')
-                constrains_values.append(float(re.findall("\d+\.\d+", crit[2])[0]))
-            elif '%' in crit[2] and 'D' in crit[1]:
-                cv = int(float(re.findall("\d+\.\d+", crit[2])[0]))
-                constrains_keys.append('D' + str(cv))
-                constrains_values.append(cv)
-            elif '%' in crit[2] and 'V' in crit[1]:
-                cv = int(float(re.findall("\d+\.\d+", crit[2])[0]))
-                constrains_keys.append('V' + str(cv))
-                constrains_values.append(cv)
-
-    df['structures_name'] = structures_names
-    df['constrain'] = constrains_keys
-    df['constrain_value'] = constrains_values
-    df['constrains_type'] = constrains_types
-
-    # get objectives
-    objectives = []
-    obl = []
-    obh = []
-    for row in df[['Objective(s)']].iterrows():
-        cval = np.asarray(re.findall("\d+\.?\d+", row[1].to_string()), dtype=float)
-        cval.sort()
-        if cval[0] > 1:
-            # All doses to cGy
-            cval *= cGy
-        obl.append(cval[0])
-        obh.append(cval[1])
-        objectives.append(cval)
-
-    scores_arr = []
-    for row in df[['Max Score']].iterrows():
-        score_i = np.array([0.0, row[1]])
-        scores_arr.append(score_i)
-
-    df['value_score'] = objectives
-    df['value_low'] = obl
-    df['value_high'] = obh
-    df['scores_array'] = scores_arr
-
-    dfi = df.set_index('structures_name')
-
-    s_names = dfi.index.unique()
-    constrains_all = {}
-    scores_all = {}
-    for name in s_names:
-        df_tmp = dfi.loc[[name]]
-        constrains_tmp = {}
-        scores_tmp = {}
-        for i in range(len(df_tmp.index)):
-            key = df_tmp['constrain'].values[i]
-            val = df_tmp['constrain_value'].values[i]
-            constrains_tmp[key] = val
-
-            c_type = df_tmp['constrains_type'].values[i]
-            v_s = df_tmp['value_score'].values[i]
-            s_a = df_tmp['scores_array'].values[i]
-            scores_tmp[key] = [c_type, v_s, s_a]
-
-        scores_all[name] = scores_tmp
-        constrains_all[name] = constrains_tmp
-
-    criteria = ['constrain', 'constrain_value', 'constrains_type', 'value_low', 'value_high', 'Max Score']
-
-    # dfi[criteria].to_excel('criteria_2017.xlsx')

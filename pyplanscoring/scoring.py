@@ -12,24 +12,18 @@ from xlsxwriter.utility import xl_rowcol_to_cell
 
 from pyplanscoring.dev.dvhcalculation import calc_dvhs_upsampled, Structure
 from pyplanscoring.dicomparser import ScoringDicomParser, lazyproperty
+from pyplanscoring.dosimetric import read_scoring_criteria
 from pyplanscoring.dvhcalc import load
 
 logger = logging.getLogger('scoring')
 
 
-# from interpolation.splines import CubicSpline, LinearSpline
-#
-#
-# def get_cubic_interp(dose_range, cdvh):
-#     a = np.asarray([dose_range[0]])
-#     b = np.asarray([dose_range[-1]])
-#     orders = np.asarray([len(cdvh)])
-#     interp = CubicSpline(a, b, orders, cdvh)
-#
-#     return interp
-
-
 def get_dvh_files(root_path):
+    """
+        List all *.dvh files inside a root path and its subfolders
+    :param root_path:
+    :return: List of *.dvh files
+    """
     dvh_files = [os.path.join(root, name)
                  for root, dirs, files in os.walk(root_path)
                  for name in files
@@ -38,6 +32,12 @@ def get_dvh_files(root_path):
 
 
 def get_participant_folder_data(participant_name, root_path):
+    """
+        Provide all participant required files (RP,RS an RD DICOM FILES)
+    :param participant_name: Participant string name
+    :param root_path: participant folder
+    :return: Pandas DataFrame containing path to files
+    """
     files = [os.path.join(root, name) for root, dirs, files in os.walk(root_path) for name in files if
              name.endswith(('.dcm', '.DCM'))]
 
@@ -76,37 +76,33 @@ def get_participant_folder_data(participant_name, root_path):
 
 class DVHMetrics(object):
     def __init__(self, dvh):
-        # Todo - interpolate DVH using 10 cGy bins
+        """
+            Class to encapsulate DVH constrains metrics
+
+        :param dvh: DVH dictionary
+        """
         vpp = dvh['data'] * 100 / dvh['data'][0]
         self.volume_pp = np.append(vpp, 0)  # add 0 volume to interpolate
         # self.volume_pp = vpp
         self.scaling = dvh['scaling']
-        # self.dose_axis = dvh['dose_axis'] * self.scaling
         self.dose_axis = np.arange(len(dvh['data']) + 1) * self.scaling
         self.volume_cc = np.append(dvh['data'], 0)
-        # self.volume_cc = dvh['data']
         self.stats = (dvh['max'], dvh['mean'], dvh['min'])
         self.data = dvh
 
+        # setting constrain interpolation functions
         self.fv = itp.interp1d(self.dose_axis, self.volume_pp, fill_value='extrapolate')  # pp
         self.fv_cc = itp.interp1d(self.dose_axis, self.volume_cc, fill_value='extrapolate')  # pp
         self.fd = itp.interp1d(self.volume_pp, self.dose_axis, fill_value='extrapolate')  # pp
         self.fd_cc = itp.interp1d(self.volume_cc, self.dose_axis, fill_value='extrapolate')  # cc
-        #
-        # self.fv = get_cubic_interp(self.dose_axis, self.volume_pp)
-        # self.fv_cc = get_cubic_interp(self.dose_axis, self.volume_cc)
-        # self.fd = get_cubic_interp(self.volume_pp, self.dose_axis)
-        # self.fd_cc = get_cubic_interp(self.volume_cc, self.dose_axis)
-
-
-        # self.fv = itp.interp1d(self.dose_axis, self.volume_pp, kind='cubic')  # , fill_value='extrapolate')  # pp
-        # self.fv_cc = itp.interp1d(self.dose_axis, self.volume_pp, kind='cubic')  # ,, fill_value='extrapolate')  # pp
-        # self.fd = itp.interp1d(self.volume_pp, self.dose_axis, kind='cubic')  # ,, fill_value='extrapolate')  # pp
-        # self.fd_cc = itp.interp1d(self.volume_cc, self.dose_axis, kind='cubic')  # ,, fill_value='extrapolate')  # cc
 
     def eval_constrain(self, key, value):
-
-        # TODO refactor using dictionary
+        """
+            Eval constrain helper function
+        :param key: Structure name key.
+        :param value: Constrain metric
+        :return: Constrain value
+        """
         if key == 'Global Max':
             return self.data['max']
 
@@ -114,13 +110,13 @@ class DVHMetrics(object):
             return self.stats[0]
         elif key[0] == 'Dcc':
             value = np.asarray([value])
-            return self.GetDoseConstraintCC(value)
+            return self.get_dose_constrain_cc(value)
         elif key[0] == 'D':
             value = np.asarray([value])
-            return self.GetDoseConstraint(value)
+            return self.get_dose_constraint(value)
         elif key[0] == 'V':
             value = np.asarray([value])
-            return self.GetVolumeConstraint(value)
+            return self.get_volume_constrain(value)
         elif value == 'min':
             return self.stats[2]
         elif value == 'mean':
@@ -128,36 +124,48 @@ class DVHMetrics(object):
         elif value == 'max':
             return self.stats[0]
         elif key == 'HI':
-            D1 = self.GetDoseConstraint(1)
-            D99 = self.GetDoseConstraint(99)
+            # calculating homogeneity index
+            D1 = self.get_dose_constraint(1)
+            D99 = self.get_dose_constraint(99)
             HI = (D1 - D99) / value
             return HI
         elif key[0] == 'T':
+            # total volume
             return self.get_volume()
 
-    def GetDoseConstraint(self, volume):
+    def get_dose_constraint(self, volume):
         """ Return the maximum dose (in cGy) that a specific volume (in percent)
-            receives. i.e. D90, D20."""
+            receives. i.e. D90, D20.
 
+            :param volume: Volume constrain in %
+            :return: Dose in cGy
+            """
         return float(self.fd(volume))
 
-    def GetDoseConstraintCC(self, volumecc):
-        """ Return the maximum dose (in cGy) that a specific volume in cc."""
+    def get_dose_constrain_cc(self, volumecc):
+        """ Return the maximum dose (in cGy) that a specific volume in cc.
+        :param volumecc: Volume in cc
+        :return: Dose in cGy
+        """
 
         return float(self.fd_cc(volumecc))
 
-    def GetVolumeConstraint(self, dose):
-
+    def get_volume_constrain(self, dose):
         """ Return the volume (in percent) of the structure that receives at
-            least a specific dose in cGy. i.e. V100, V150. fix by Victor Gabriel"""
+            least a specific dose in cGy.
+            i.e. V100, V150.
+            :param dose:  Dose value in cGy
+            :return: Percentage volume constrain (%)
+            """
 
         return float(self.fv(dose))
 
-    def GetVolumeConstraintCC(self, dose):
-
+    def get_volume_constrain_cc(self, dose):
         """ Return the volume (in cc) of the structure that receives at
-            least a specific dose in cGy. i.e. V100, V150. fix by Victor Gabriel"""
-
+            least a specific dose in cGy. i.e. Vcc, Vcc.
+            :param dose:  Dose value in cGy
+            :return: Volume in cc
+            """
         return float(self.fv_cc(dose))
 
     def get_volume(self):
@@ -166,6 +174,15 @@ class DVHMetrics(object):
 
 class Scoring(object):
     def __init__(self, rd_file, rs_file, rp_file, constrain, score, criteria=None):
+        """
+            Scoring class to encapsulate methods to extract constrains from DICOM-RP/RS/RD
+        :param rd_file: DICOM-RT Dose file path
+        :param rs_file: DICOM-RT Structures file path
+        :param rp_file: DICOM-RT Plan file path
+        :param constrain: Constrain dict {"Structure Name": {Metric:Value}}
+        :param score: Scores dict {"Structure Name": {Metric: [type, (constrain_min, constrain_max), (point_min, point_max)}
+        :param criteria: Scores DataFrame
+        """
         self.rt_plan = ScoringDicomParser(filename=rp_file).GetPlan()
         self.structures = ScoringDicomParser(filename=rs_file).GetStructures()
         self.rtdose = ScoringDicomParser(filename=rd_file)
@@ -182,12 +199,20 @@ class Scoring(object):
     def scoring_result(self):
         return self.calc_score()
 
+    def set_constrains_values(self, values_dict):
+        self.constrains_values = values_dict
+
     def get_total_score(self):
         if self.dvhs:
             self.score = pd.DataFrame(self.scoring_result).sum().sum()
             return self.score
 
     def save_score_results(self, out_file, banner_path=None):
+        """
+            Save detailed scoring results on spreadsheet
+        :param out_file: File path to excel report (*.xls file)
+        :param banner_path: Path the competition banner *.png
+        """
         if self.dvhs:
             score_results = pd.DataFrame(self.scoring_result).T
             constrains_results = pd.DataFrame(self.constrains_values).T
@@ -209,10 +234,109 @@ class Scoring(object):
 
             df_report = pd.concat(report)
             df_report['Performance'] = df_report['Raw Score'] / df_report['Max Score']
-            #
-            save_formatted_report(df_report, out_file, banner_path)
+            self.save_formatted_report(df_report, out_file, banner_path)
         else:
             print('You need to set DVH data first!')
+
+    @staticmethod
+    def save_formatted_report(df, out_file, banner_path=None):
+
+        """
+            Save an formated report using pandas and xlsxwriter
+        :param df: Results dataframe
+        :param out_file: filename path
+        :param banner_path: banner path
+        """
+        number_rows = len(df.index)
+        writer = pd.ExcelWriter(out_file, engine='xlsxwriter')
+        df.to_excel(writer, sheet_name='report')
+
+        # Get access to the workbook and sheet
+        workbook = writer.book
+        worksheet = writer.sheets['report']
+
+        # Reduce the zoom a little
+        worksheet.set_zoom(65)
+        # constrain_fmt = workbook.add_format({'align': 'center'})
+        constrain_fmt = workbook.add_format({'align': 'center'})
+
+        # # Total formatting
+        number_format = workbook.add_format({'align': 'right', 'num_format': '0.00'})
+        # # Total percent format
+        total_percent_fmt = workbook.add_format({'align': 'right', 'num_format': '0.0%', 'bold': True})
+
+        # Add a format. Light red fill with dark red text.
+        format1 = workbook.add_format({'bg_color': '#FFC7CE',
+                                       'font_color': '#9C0006'})
+
+        # Add a format. Green fill with dark green text.
+        format2 = workbook.add_format({'bg_color': '#C6EFCE',
+                                       'font_color': '#006100'})
+
+        # Format the columns by width and include number formats
+
+        # Structure name
+        sname = "A2:A{}".format(number_rows + 1)
+        worksheet.set_column(sname, 24)
+        # constrain
+        constrain = "B2:B{}".format(number_rows + 1)
+        worksheet.set_column(constrain, 20, constrain_fmt)
+
+        # constrain value
+        constrain_value = "C2:C{}".format(number_rows + 1)
+        worksheet.set_column(constrain_value, 20, constrain_fmt)
+
+        # constrain type
+        constrain_type = "D2:D{}".format(number_rows + 1)
+        worksheet.set_column(constrain_type, 20, constrain_fmt)
+
+        worksheet.conditional_format(constrain_type, {'type': 'text',
+                                                      'criteria': 'containing',
+                                                      'value': 'upper',
+                                                      'format': format1})
+
+        # Highlight the bottom 5 values in Red
+        worksheet.conditional_format(constrain_type, {'type': 'text',
+                                                      'criteria': 'containing',
+                                                      'value': 'lower',
+                                                      'format': format2})
+
+        # value low and high
+        worksheet.set_column('E:I', 20, number_format)
+
+        # Define our range for the color formatting
+        color_range = "J2:J{}".format(number_rows + 1)
+        worksheet.set_column(color_range, 20, total_percent_fmt)
+
+        # Highlight the top 5 values in Green
+        worksheet.conditional_format(color_range, {'type': 'data_bar'})
+
+        # write total score rows
+        total_fmt = workbook.add_format({'align': 'right', 'num_format': '0.00',
+                                         'bold': True, 'bottom': 6})
+        # Determine where we will place the formula
+        for i in [6, 8]:
+            cell_location = xl_rowcol_to_cell(number_rows + 1, i)
+            # Get the range to use for the sum formula
+            start_range = xl_rowcol_to_cell(1, i)
+            end_range = xl_rowcol_to_cell(number_rows, i)
+            # Construct and write the formula
+            formula = "=SUM({:s}:{:s})".format(start_range, end_range)
+            worksheet.write_formula(cell_location, formula, total_fmt)
+
+        worksheet.write_string(number_rows + 1, 5, "Max Score:", total_fmt)
+        worksheet.write_string(number_rows + 1, 7, "Total Score:", total_fmt)
+
+        # performance format
+        performance_format = workbook.add_format({'align': 'right', 'num_format': '0.0%', 'bold': True, 'bottom': 6})
+        percent_formula = "=I{0}/G{0}".format(number_rows + 2)
+        worksheet.write_formula(number_rows + 1, 9, percent_formula, performance_format)
+
+        # SAVE BANNER
+        if banner_path is not None:
+            worksheet.insert_image('K1', banner_path)
+
+        writer.save()
 
     def set_dvh_data(self, dvh_filepath):
         """
@@ -319,17 +443,13 @@ class Scoring(object):
 
         metrics = DVHMetrics(self.dvhs[max_volume_key])
 
-        PITV = metrics.GetVolumeConstraintCC(values)
+        PITV = metrics.get_volume_constrain_cc(values)
         target_metrics = DVHMetrics(self.dvhs[k])
-        CV = target_metrics.GetVolumeConstraintCC(values)
+        CV = target_metrics.get_volume_constrain_cc(values)
         TV = target_metrics.get_volume()
         CI = CV ** 2 / (TV * PITV)
 
         return CI
-
-
-
-        # CI = CV * CV / (TV * PITV)
 
     @staticmethod
     def check_dmax_inside(structure_name, dvhs):
@@ -440,103 +560,31 @@ class Participant(object):
         self.score_obj.save_score_results(out_file, banner_path)
 
 
-def save_formatted_report(df, out_file, banner_path=None):
-    # Create a Pandas Excel writer using XlsxWriter as the engine.
-    number_rows = len(df.index)
-    writer = pd.ExcelWriter(out_file, engine='xlsxwriter')
-    df.to_excel(writer, sheet_name='report')
-
-    # Get access to the workbook and sheet
-    workbook = writer.book
-    worksheet = writer.sheets['report']
-
-    # Reduce the zoom a little
-    worksheet.set_zoom(65)
-    # constrain_fmt = workbook.add_format({'align': 'center'})
-    constrain_fmt = workbook.add_format({'align': 'center'})
-
-    # # Total formatting
-    number_format = workbook.add_format({'align': 'right', 'num_format': '0.00'})
-    # # Total percent format
-    total_percent_fmt = workbook.add_format({'align': 'right', 'num_format': '0.0%', 'bold': True})
-
-    # Add a format. Light red fill with dark red text.
-    format1 = workbook.add_format({'bg_color': '#FFC7CE',
-                                   'font_color': '#9C0006'})
-
-    # Add a format. Green fill with dark green text.
-    format2 = workbook.add_format({'bg_color': '#C6EFCE',
-                                   'font_color': '#006100'})
-
-    # Format the columns by width and include number formats
-
-    # Structure name
-    sname = "A2:A{}".format(number_rows + 1)
-    worksheet.set_column(sname, 24)
-    # constrain
-    constrain = "B2:B{}".format(number_rows + 1)
-    worksheet.set_column(constrain, 20, constrain_fmt)
-
-    # constrain value
-    constrain_value = "C2:C{}".format(number_rows + 1)
-    worksheet.set_column(constrain_value, 20, constrain_fmt)
-
-    # constrain type
-    constrain_type = "D2:D{}".format(number_rows + 1)
-    worksheet.set_column(constrain_type, 20, constrain_fmt)
-
-    worksheet.conditional_format(constrain_type, {'type': 'text',
-                                                  'criteria': 'containing',
-                                                  'value': 'upper',
-                                                  'format': format1})
-
-    # Highlight the bottom 5 values in Red
-    worksheet.conditional_format(constrain_type, {'type': 'text',
-                                                  'criteria': 'containing',
-                                                  'value': 'lower',
-                                                  'format': format2})
-
-    # value low and high
-
-    worksheet.set_column('E:I', 20, number_format)
-
-    # Define our range for the color formatting
-    color_range = "J2:J{}".format(number_rows + 1)
-    worksheet.set_column(color_range, 20, total_percent_fmt)
-
-    # Highlight the top 5 values in Green
-
-    worksheet.conditional_format(color_range, {'type': 'data_bar'})
-
-    # write total score rows
-    total_fmt = workbook.add_format({'align': 'right', 'num_format': '0.00',
-                                     'bold': True, 'bottom': 6})
-    # Determine where we will place the formula
-    for i in [6, 8]:
-        cell_location = xl_rowcol_to_cell(number_rows + 1, i)
-        # Get the range to use for the sum formula
-        start_range = xl_rowcol_to_cell(1, i)
-        end_range = xl_rowcol_to_cell(number_rows, i)
-        # Construct and write the formula
-        formula = "=SUM({:s}:{:s})".format(start_range, end_range)
-        worksheet.write_formula(cell_location, formula, total_fmt)
-
-    worksheet.write_string(number_rows + 1, 5, "Max Score:", total_fmt)
-    worksheet.write_string(number_rows + 1, 7, "Total Score:", total_fmt)
-
-    # performance format
-    performance_format = workbook.add_format({'align': 'right', 'num_format': '0.0%', 'bold': True, 'bottom': 6})
-    percent_formula = "=I{0}/G{0}".format(number_rows + 2)
-    worksheet.write_formula(number_rows + 1, 9, percent_formula, performance_format)
-
-    # SAVE BANNER
-    if banner_path is not None:
-        worksheet.insert_image('K1', banner_path)
-
-    writer.save()
-
-
 if __name__ == '__main__':
+    f = r'/home/victor/Dropbox/Plan_Competition_Project/Send to Victor Feb18/6F RA 2.0mm DoseGrid Feb10/PlanIQ SCORE Details 74 score/PlanIQ TEXT DVH Format for the 74 score Feb 18 2017.txt'
+    dfn = pd.read_csv(f, sep='\t')
+    df = dfn[['Plan Quality Metric Component', 'Objective(s)', 'Max Score', 'Result']].dropna()
+    constrains, scores, criteria = read_scoring_criteria(f, cGy=1)
+    criteria['Result'] = df['Result'].values
+    s_names = criteria.index.unique()
+    constrains_result = {}
+
+    for name in s_names:
+        df_tmp = criteria.loc[[name]]
+        constrains_tmp = {}
+        scores_tmp = {}
+        for i in range(len(df_tmp.index)):
+            key = df_tmp['constrain'].values[i]
+            val = df_tmp['Result'].values[i]
+            constrains_tmp[key] = val
+
+        constrains_result[name] = constrains_tmp
+
+    # df.index = criteria.index
+    # df['constrain'] = criteria['constrain']
+
+    # constrains_values = df[]
+
     from pyplanscoring.dosimetric import read_scoring_criteria
 
     rd = r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/RD.1.2.246.352.71.7.584747638204.1758320.20170210154830.dcm'
@@ -544,13 +592,23 @@ if __name__ == '__main__':
     rp = r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/RP.1.2.246.352.71.5.584747638204.955801.20170210152428.dcm'
     participant_name = 'test_CI'
 
-    f_2017 = r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/Scoring Criteria.txt'
-    constrains, scores, criteria = read_scoring_criteria(f_2017)
+    constrains, scores, criteria = read_scoring_criteria(f, cGy=100)
 
     print('------------- Calculating DVH and score --------------')
     participant = Participant(rp, rs, rd, upsample='_up_sampled', end_cap=True)
     participant.set_participant_data(participant_name)
-    val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria, dicom_dvh=True)
+    val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria, dicom_dvh=False)
+    print(val)
+
+    constrains, scores, criteria = read_scoring_criteria(f, cGy=1)
+    sc_obj = Scoring(rd, rs, rp, constrains, scores, criteria)
+    sc_obj.set_constrains_values(constrains_result)
+    sc_obj.dvhs = {1: 1}
+    s = sc_obj.calc_score()
+    print(pd.DataFrame(s).sum().sum())
+    # out_file = '/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/Scoring_using_planIQ_constrains_values.xls'
+    # banner = '/home/victor/Dropbox/Plan_Competition_Project/scoring_report/2017 Plan Comp Banner.jpg'
+    # sc_obj.save_score_results(out_file, banner)
 
     # # DVH DATA
     # dvhs = deepcopy(participant.score_obj.dvhs)
@@ -561,11 +619,11 @@ if __name__ == '__main__':
     #
     # val_test = 5320  # cGy
     #
-    # PITV = metrics.GetVolumeConstraintCC(val_test)
+    # PITV = metrics.get_volume_constrain_cc(val_test)
     #
     # # calculating coverage volume
     # target_metrics = DVHMetrics(dvhs['PTV56'])
-    # CV = target_metrics.GetVolumeConstraintCC(val_test)
+    # CV = target_metrics.get_volume_constrain_cc(val_test)
     # TV = target_metrics.get_volume()
     # CI = CV ** 2 / (TV * PITV)
     #

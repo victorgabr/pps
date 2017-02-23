@@ -43,7 +43,9 @@ class CurveCompare(object):
         self.a_dvh = a_dvh
         self.cal_dose = calc_dose
         self.calc_dvh = calc_dvh
-        self.dose_samples = np.arange(0, len(calc_dvh) + 10, 10)  # The DVH curve sampled at every 10 cGy
+        self.sampling_size = 1
+        self.dose_samples = np.arange(0, len(calc_dvh) + self.sampling_size,
+                                      self.sampling_size)  # The DVH curve sampled at every 10 cGy
         self.ref_dvh = itp.interp1d(a_dose, a_dvh, fill_value='extrapolate')
         self.calc_dvh = itp.interp1d(calc_dose, calc_dvh, fill_value='extrapolate')
         self.delta_dvh = self.calc_dvh(self.dose_samples) - self.ref_dvh(self.dose_samples)
@@ -63,10 +65,10 @@ class CurveCompare(object):
     @property
     def stats_paper(self):
         stats = {}
-        stats['min'] = self.delta_dvh_pp.min()
-        stats['max'] = self.delta_dvh_pp.max()
-        stats['mean'] = self.delta_dvh_pp.mean()
-        stats['std'] = self.delta_dvh_pp.std(ddof=1)
+        stats['min'] = self.delta_dvh_pp.min().round(1)
+        stats['max'] = self.delta_dvh_pp.max().round(1)
+        stats['mean'] = self.delta_dvh_pp.mean().round(1)
+        stats['std'] = self.delta_dvh_pp.std(ddof=1).round(1)
         return stats
 
     def get_constrains(self, constrains_dict):
@@ -127,7 +129,7 @@ def test_real_dvh():
                     fig, ax = plt.subplots()
                     fig.set_figheight(12)
                     fig.set_figwidth(20)
-                    dhist, chist = struc_teste.calculate_dvh(dose, upsample=True)
+                    dhist, chist = struc_teste.calculate_dvh(dose, up_sample=True)
                     max_dose = get_dvh_max(chist)
 
                     ax.plot(dhist, chist, label='Up sampled - Dmax: %1.1f cGy' % max_dose)
@@ -227,7 +229,7 @@ def get_analytical_curve(an_curves_obj, file_structure_name, column):
     return dose_range, cdvh
 
 
-def calc_data(row, dose_files_dict, structure_dict, constrains, delta_mm=(0.2, 0.2, 0.1), end_cap=True):
+def calc_data(row, dose_files_dict, structure_dict, constrains, delta_mm=(0.2, 0.2, 0.1), end_cap=True, up_sample=True):
     idx, values = row[0], row[1]
     s_name = values['Structure name']
     voxel = str(values['Dose Voxel (mm)'])
@@ -245,7 +247,7 @@ def calc_data(row, dose_files_dict, structure_dict, constrains, delta_mm=(0.2, 0
     # set up sampled structure
     struc_teste = Structure(structure, end_cap=end_cap)
     struc_teste.set_delta(delta_mm)
-    dhist, chist = struc_teste.calculate_dvh(dicom_dose, upsample=True)
+    dhist, chist = struc_teste.calculate_dvh(dicom_dose, up_sample=up_sample)
     dvh_data = struc_teste.get_dvh_data()
 
     # Setup DVH metrics class and get DVH DATA
@@ -262,7 +264,7 @@ def calc_data(row, dose_files_dict, structure_dict, constrains, delta_mm=(0.2, 0
 
 
 def calc_data_all(row, dose_files_dict, structure_dict, constrains, an_curves, col_grad_dict, delta_mm=(0.2, 0.2, 0.2),
-                  end_cap=True):
+                  end_cap=True, up_sample=True):
     idx, values = row[0], row[1]
     s_name = values['Structure name']
     voxel = str(values['Dose Voxel (mm)'])
@@ -280,7 +282,7 @@ def calc_data_all(row, dose_files_dict, structure_dict, constrains, an_curves, c
     # set up sampled structure
     struc_teste = Structure(structure, end_cap=end_cap)
     struc_teste.set_delta(delta_mm)
-    dhist, chist = struc_teste.calculate_dvh(dicom_dose, upsample=True)
+    dhist, chist = struc_teste.calculate_dvh(dicom_dose, up_sample=up_sample)
 
     # get its columns from spreadsheet
     column = col_grad_dict[gradient][voxel]
@@ -335,7 +337,7 @@ def test11(delta_mm=(0.2, 0.2, 0.1), plot_curves=False):
 
     # grab analytical data
     sheet = 'Analytical'
-    ref_path = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/dvh_sphere.xlsx'
+    ref_path = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/analytical_data.xlsx'
     df = pd.read_excel(ref_path, sheetname=sheet)
     mask = df['CT slice spacing (mm)'] == '0.2mm'
     df = df.loc[mask]
@@ -398,8 +400,8 @@ def test11(delta_mm=(0.2, 0.2, 0.1), plot_curves=False):
     plt.show()
 
 
-def test22(delta_mm=(0.2, 0.2, 0.1), plot_curves=True):
-    ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/dvh_sphere.xlsx'
+def test22(delta_mm=(0.2, 0.2, 0.1), up_sample=True, plot_curves=True):
+    ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/analytical_data.xlsx'
 
     struc_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/STRUCTURES'
     dose_grid_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS'
@@ -466,7 +468,8 @@ def test22(delta_mm=(0.2, 0.2, 0.1), plot_curves=True):
                                constrains,
                                an_curves,
                                col_grad_dict,
-                               delta_mm=delta_mm) for row in dfi.iterrows())
+                               delta_mm=delta_mm,
+                               up_sample=up_sample) for row in dfi.iterrows())
 
     ref_results = [d[0] for d in res]
     calc_results = [d[1] for d in res]
@@ -501,7 +504,7 @@ def test22(delta_mm=(0.2, 0.2, 0.1), plot_curves=True):
     plt.show()
 
 
-def test1():
+def test1(delta_mm=(0.1, 0.1, 0.1), end_cap=True, up_sample=True, lim=3):
     """
     In Test 1, the axial contour spacing was kept constant at
     0.2 mm to essentially eliminate the variation and/or errors
@@ -570,15 +573,12 @@ def test1():
 
     # grab analytical data
     sheet = 'Analytical'
-    df = pd.read_excel('/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/dvh_sphere.xlsx',
+    df = pd.read_excel('/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/analytical_data.xlsx',
                        sheetname=sheet)
     mask = df['CT slice spacing (mm)'] == '0.2mm'
     df = df.loc[mask]
 
     # Constrains to get data
-
-    # Constrains
-
     constrains = OrderedDict()
     constrains['Total_Volume'] = True
     constrains['min'] = 'min'
@@ -593,7 +593,14 @@ def test1():
     # GET CALCULATED DATA
     # backend = 'threading'
     res = Parallel(n_jobs=-1, verbose=11)(
-        delayed(calc_data)(row, dose_files_dict, structure_dict, constrains, delta_mm=(0.2, 0.2, 0.1)) for row in
+        delayed(calc_data)(row,
+                           dose_files_dict,
+                           structure_dict,
+                           constrains,
+                           delta_mm,
+                           end_cap=end_cap,
+                           up_sample=up_sample)
+        for row in
         df.iterrows())
 
     # aggregating data
@@ -615,7 +622,6 @@ def test1():
     # print table
 
     res = OrderedDict()
-    lim = 3
     for col in delta:
         count = np.sum(np.abs(delta[col]) > lim)
         rg = np.array([round(delta[col].min(), 2), round(delta[col].max(), 2)])
@@ -626,7 +632,7 @@ def test1():
     return test_table
 
 
-def test2(delta_mm=(0.2, 0.2, 0.1)):
+def test2(delta_mm=(0.1, 0.1, 0.1), end_cap=True, lim=3):
     """  (0.2,0.2,0.2) voxel
 
                           count                                range
@@ -687,13 +693,9 @@ def test2(delta_mm=(0.2, 0.2, 0.1)):
 
 
     """
-    ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/dvh_sphere.xlsx'
-
+    ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/analytical_data.xlsx'
     struc_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/STRUCTURES'
     dose_grid_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS'
-    #
-    # ref_data = r'D:\Dropbox\Plan_Competit
-    st = 2
 
     snames = ['Sphere_10_0', 'Sphere_20_0', 'Sphere_30_0',
               'Cylinder_10_0', 'Cylinder_20_0', 'Cylinder_30_0',
@@ -718,15 +720,6 @@ def test2(delta_mm=(0.2, 0.2, 0.1)):
         'Z(AP)': {'1': dose_files[0], '2': dose_files[1], '3': dose_files[2]},
         'Y(SI)': {'1': dose_files[3], '2': dose_files[4], '3': dose_files[5]}}
 
-    # test_files = {}
-    # for s_name in structure_dict:
-    #     grad_files = {}
-    #     for grad in dose_files_dict:
-    #         tick = str(int(int(re.findall(r'\d+', s_name)[0]) / 10))
-    #         grad_files[grad] = dose_files_dict[grad][tick]
-    #
-    #     test_files[s_name] = grad_files
-
     # grab analytical data
 
     df = pd.read_excel(ref_data, sheetname='Analytical')
@@ -750,10 +743,13 @@ def test2(delta_mm=(0.2, 0.2, 0.1)):
     constrains['Dcc'] = 0.03
 
     # GET CALCULATED DATA
-    # backend = 'threading'
     res = Parallel(n_jobs=-1, verbose=11)(
-        delayed(calc_data)(row, dose_files_dict, structure_dict, constrains, delta_mm=delta_mm) for row in
-        dfi.iterrows())
+        delayed(calc_data)(row,
+                           dose_files_dict,
+                           structure_dict,
+                           constrains,
+                           delta_mm=delta_mm,
+                           end_cap=end_cap) for row in dfi.iterrows())
 
     # aggregating data
     df_concat = [d[0] for d in res]
@@ -778,11 +774,9 @@ def test2(delta_mm=(0.2, 0.2, 0.1)):
     pcol = ['Total Volume (cc)', 'Dmax', 'Dmean', 'D99', 'D95', 'D5', 'D1']
 
     res = OrderedDict()
-    lim = 3.0
+
     for col in delta:
-        t0 = delta[col] > lim
-        t1 = delta[col] < -lim
-        count = np.logical_or(t0, t1).sum()
+        count = np.sum(np.abs(delta[col]) > lim)
         rg = np.array([delta[col].min(), delta[col].max()])
         res[col] = {'count': count, 'range': rg}
 
@@ -790,8 +784,8 @@ def test2(delta_mm=(0.2, 0.2, 0.1)):
     print(test_table)
 
 
-def test3(delta_mm=(0.2, 0.2, 0.1), plot_curves=True):
-    ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/dvh_sphere.xlsx'
+def test3(delta_mm=(0.25, 0.25, 0.25), plot_curves=True):
+    ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/analytical_data.xlsx'
 
     struc_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/STRUCTURES'
     dose_grid_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS'
@@ -845,7 +839,7 @@ def test3(delta_mm=(0.2, 0.2, 0.1), plot_curves=True):
             # get dose
             dose_file = test_data[k]
             dicom_dose = ScoringDicomParser(filename=dose_file)
-            dhist, chist = struc_teste.calculate_dvh(dicom_dose, upsample=True)
+            dhist, chist = struc_teste.calculate_dvh(dicom_dose, up_sample=True)
             dvh_data = struc_teste.get_dvh_data()
             str_result[k] = dvh_data
 
@@ -870,7 +864,42 @@ def test3(delta_mm=(0.2, 0.2, 0.1), plot_curves=True):
             teste.append(tmp)
 
     df_final = pd.concat(teste)
-    print(df_final)
+
+    mask0 = np.logical_and(df_final['Resolution (mm)'] == '1', df_final['Gradient'] == 'Y(SI)')
+    mask1 = np.logical_and(df_final['Resolution (mm)'] == '1', df_final['Gradient'] == 'Z(AP)')
+    mask2 = np.logical_and(df_final['Resolution (mm)'] == '3', df_final['Gradient'] == 'Y(SI)')
+    mask3 = np.logical_and(df_final['Resolution (mm)'] == '3', df_final['Gradient'] == 'Z(AP)')
+
+    # Row 0
+    r0 = pd.DataFrame(['Y(SI)'], index=['Average (N = 5)'], columns=['Gradient'])
+    r0['Resolution (mm)'] = '1'
+    ri = pd.DataFrame(df_final[mask0].mean().round(1)).T
+    ri.index = ['Average (N = 5)']
+    r0 = r0.join(ri)
+
+    # Row 1
+    r1 = pd.DataFrame(['Z(AP)'], index=['Average (N = 5)'], columns=['Gradient'])
+    r1['Resolution (mm)'] = '1'
+    ri = pd.DataFrame(df_final[mask1].mean().round(1)).T
+    ri.index = ['Average (N = 5)']
+    r1 = r1.join(ri)
+
+    # Row 2
+    r2 = pd.DataFrame(['Y(SI)'], index=['Average (N = 5)'], columns=['Gradient'])
+    r2['Resolution (mm)'] = '3'
+    ri = pd.DataFrame(df_final[mask2].mean().round(1)).T
+    ri.index = ['Average (N = 5)']
+    r2 = r2.join(ri)
+
+    # Row 3
+    r3 = pd.DataFrame(['Z(AP)'], index=['Average (N = 5)'], columns=['Gradient'])
+    r3['Resolution (mm)'] = '3'
+    ri = pd.DataFrame(df_final[mask3].mean().round(1)).T
+    ri.index = ['Average (N = 5)']
+    r3 = r3.join(ri)
+    result_df = pd.concat([df_final, r0, r1, r2, r3])
+
+    print(result_df)
 
     if plot_curves:
         # for c in curve_compare:
@@ -889,7 +918,7 @@ def test3(delta_mm=(0.2, 0.2, 0.1), plot_curves=True):
 
         plt.show()
 
-    return curve_compare, df_final
+    return curve_compare, result_df
 
 
 def test_eval_competition_data():
@@ -1169,6 +1198,47 @@ def test_eval_scores():
 
 
 if __name__ == '__main__':
+    # test_table = test1(delta_mm=(0.1, 0.1, 0.1))
+    test_table = test2(delta_mm=(0.25, 0.25, 0.1))
+
+
+    # print(df_final.to_string())
+    # mask0 = np.logical_and(df_final['Resolution (mm)'] == '1', df_final['Gradient'] == 'Y(SI)')
+    # mask1 = np.logical_and(df_final['Resolution (mm)'] == '1', df_final['Gradient'] == 'Z(AP)')
+    # mask2 = np.logical_and(df_final['Resolution (mm)'] == '3', df_final['Gradient'] == 'Y(SI)')
+    # mask3 = np.logical_and(df_final['Resolution (mm)'] == '3', df_final['Gradient'] == 'Z(AP)')
+    #
+    # # Row 0
+    # r0 = pd.DataFrame(['Y(SI)'], index=['Average (N = 5)'], columns=['Gradient'])
+    # r0['Resolution (mm)'] = '1'
+    # ri = pd.DataFrame(df_final[mask0].mean()).T
+    # ri.index = ['Average (N = 5)']
+    # r0 = r0.join(ri)
+    #
+    # # Row 1
+    # r1 = pd.DataFrame(['Z(AP)'], index=['Average (N = 5)'], columns=['Gradient'])
+    # r1['Resolution (mm)'] = '1'
+    # ri = pd.DataFrame(df_final[mask1].mean()).T
+    # ri.index = ['Average (N = 5)']
+    # r1 = r1.join(ri)
+    #
+    # # Row 2
+    # r2 = pd.DataFrame(['Y(SI)'], index=['Average (N = 5)'], columns=['Gradient'])
+    # r2['Resolution (mm)'] = '3'
+    # ri = pd.DataFrame(df_final[mask2].mean()).T
+    # ri.index = ['Average (N = 5)']
+    # r2 = r2.join(ri)
+    #
+    # # Row 3
+    # r3 = pd.DataFrame(['Z(AP)'], index=['Average (N = 5)'], columns=['Gradient'])
+    # r3['Resolution (mm)'] = '3'
+    # ri = pd.DataFrame(df_final[mask3].mean()).T
+    # ri.index = ['Average (N = 5)']
+    # r3 = r3.join(ri)
+    # result = pd.concat([df_final, r0, r1, r2, r3])
+    #
+    #
+
     # rd = r'/media/victor/TOURO Mobile/PLAN_TESTING_DATA/Ali-DONE IMRT alidogan@hacettepe.edu.tr/RD.1.2.246.352.71.7.2126303291.952274.20160217093713.dcm'
     # rs = r'/home/victor/Dropbox/Plan_Competition_Project/Competition Package/DICOM Sets/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
     #
@@ -1193,12 +1263,12 @@ if __name__ == '__main__':
     #
     # print(out_dvh)
 
-    cdata = Competition2016()
-    root = r'/media/victor/TOURO Mobile/PLAN_TESTING_DATA'
-    rs = r'/home/victor/Dropbox/Plan_Competition_Project/Competition Package/DICOM Sets/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
-
-    obj = EvalCompetition(root_path=root, rs_file=rs, constrains=cdata.constrains, scores=cdata.scores)
-    obj.save_dvh_all(clean_files=True, dicom_dvh=True)
+    # cdata = Competition2016()
+    # root = r'/media/victor/TOURO Mobile/PLAN_TESTING_DATA'
+    # rs = r'/home/victor/Dropbox/Plan_Competition_Project/Competition Package/DICOM Sets/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
+    #
+    # obj = EvalCompetition(root_path=root, rs_file=rs, constrains=cdata.constrains, scores=cdata.scores)
+    # obj.save_dvh_all(clean_files=True, dicom_dvh=True)
     # obj.set_data()
     # res = obj.calc_scores()
     # df_new = pd.DataFrame(res, columns=['name', 'py_score_new']).set_index('name')

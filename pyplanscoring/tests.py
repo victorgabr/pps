@@ -483,7 +483,7 @@ if __name__ == '__main__':
 
     import pandas as pd
 
-    df = pd.read_excel('/home/victor/Dropbox/Plan_Competition_Project/testdata/dvh_sphere.xlsx')
+    df = pd.read_excel('/home/victor/Dropbox/Plan_Competition_Project/testdata/analytical_data.xlsx')
 
     adose = df['Dose (cGy)'].values
     advh = df['3.0 mm slice'].values

@@ -28,12 +28,18 @@ def cn_PnPoly(P, V):
 
 # ===================================================================
 
-# point_in_contour(): winding number test for a point in a polygon
-#     Input:  P = a point,
-#             V[] = vertex points of a polygon
-#     Return: wn = the winding number (=0 only if P is outside V[])
 
 def wn_PnPoly1(P, V):
+    """
+        # point_in_contour(): winding number test for a point in a polygon
+     Input:  P = a point,
+             V[] = vertex points of a polygon
+     Return: wn = the winding number (=0 only if P is outside V[])
+
+    :param P: a point [x,y] array
+    :param V: V[] = vertex points of a polygon
+    :return:  winding number test for a point in a polygon
+    """
     wn = 0  # the winding number counter
 
     # repeat the first vertex at end
@@ -73,35 +79,14 @@ def is_left(p0, p1, p2):
     return v
 
 
-def cn_PnPoly1(P, V, n):
-    """
-        cn_PnPoly(): crossing number test for a point in a polygon
-             Input:   P = a point,
-                       V[] = vertex points of a polygon V[n+1] with V[n]=V[0]
-              Return:  0 = outside, 1 = inside
-         This code is patterned after [Franklin, 2000]
-    :param P:
-    :param V:
-    :param n:
-    :return:
-    """
-    cn = 0  # the  crossing number counter
-
-    # // loop through all edges of the polygon
-    for i in range(n):  # edge from V[i]  to V[i+1]
-        if (((V[i][1] <= P[1]) and (V[i + 1][1] > P[1]))  ## an upward crossing
-            or ((V[i][1] > P[1]) and (V[i + 1][1] <= P[1]))):  # a downward crossing
-            # // compute  the actual edge-ray intersect x-coordinate
-            vt = (P[1] - V[i][1]) / (V[i + 1][1] - V[i][1])
-
-            if P[0] < V[i][0] + vt * (V[i + 1][0] - V[i][0]):  # P[0] < intersect
-                cn += 1  # a valid crossing of y=P[1] right of P[0]
-
-    return cn % 2 == 0  # 0 if even (out), and 1 if  odd (in)
-
-
 @nb.njit(nb.int64(nb.double[:], nb.double[:, :]))
 def point_in_contour(P, polygon):
+    """
+
+    :param P:
+    :param polygon:
+    :return:
+    """
     wn = 0  # the  winding number counter
     # repeat the first vertex at end
     V = np.zeros((polygon.shape[0] + 1, polygon.shape[1]))
@@ -126,7 +111,7 @@ def point_in_contour(P, polygon):
 def wn_contains_points(out, poly, points):
     """
         Winding number test for a list of point in a polygon
-        Numba implementation 8 - 10 x times faster than matplotlib Path.contains_points()
+        Numba implementation 8 - 10 x times faster than Matplotlib Path.contains_points()
     :param out: output boolean array
     :param poly: polygon (list of points/vertex)
     :param points: list of points to check inside polygon
@@ -256,17 +241,6 @@ def numba_contains_points(out, poly, points):
         out[i] = inside
 
     return out
-
-
-def get_contour_mask_numba(doselut, dosegrid_points, poly):
-    """Get the mask for the contour with respect to the dose plane."""
-
-    n = len(dosegrid_points)
-    out = np.zeros(n, dtype=bool)
-    grid = numba_contains_points(out, poly, dosegrid_points)
-    grid = grid.reshape((len(doselut[1]), len(doselut[0])))
-
-    return grid
 
 
 def get_contour_mask_wn(doselut, dosegrid_points, poly):
@@ -567,17 +541,19 @@ def get_axis_grid(delta_mm, grid_axis):
 
 
 def get_dose_grid_3d(grid_3d, delta_mm=(2, 2, 2)):
-    # Generate a 3d mesh grid to create a polygon mask in dose coordinates
-    # adapted from Stack Overflow Answer from Joe Kington:
-    # http://stackoverflow.com/questions/3654289/scipy-create-2d-polygon-mask/3655582
-    # Create vertex coordinates for each grid cell
+    """
+     Generate a 3d mesh grid to create a polygon mask in dose coordinates
+     adapted from Stack Overflow Answer from Joe Kington:
+     http://stackoverflow.com/questions/3654289/scipy-create-2d-polygon-mask/3655582
+    Create vertex coordinates for each grid cell
+
+    :param grid_3d: X,Y,Z grid coordinates (mm)
+    :param delta_mm: Desired grid delta (dx,dy,dz) mm
+    :return: dose_grid_points, up_dose_lut, grid_delta
+    """
     xi = grid_3d[0]
     yi = grid_3d[1]
     zi = grid_3d[2]
-
-    # x_lut = np.linspace(xi[0], xi[-1], len(xi) * super_sampling_fator)
-    # y_lut = np.linspace(yi[0], yi[-1], len(yi) * super_sampling_fator)
-    # z_lut = np.linspace(zi[0], zi[-1], len(zi) * super_sampling_fator)
 
     x_lut, x_delta = get_axis_grid(delta_mm[0], xi)
     y_lut, y_delta = get_axis_grid(delta_mm[1], yi)
@@ -596,17 +572,21 @@ def get_dose_grid_3d(grid_3d, delta_mm=(2, 2, 2)):
 
 @nb.njit(nb.double(nb.double[:], nb.double[:]))
 def calc_area(x, y):
+    """
+        Calculate the area based on the Surveyor's formula
+    :param x: x vertex coordinates array
+    :param y: x vertex coordinates array
+    :return: Polygon area
+    """
     cArea = 0
     xi = np.zeros(len(x) + 1)
     yi = np.zeros(len(y) + 1)
+    # Fix by adding end points vertex
     xi[:-1] = x
     xi[-1] = x[0]
     yi[:-1] = y
     yi[-1] = y[0]
-    # xi = x
-    # yi = y
 
-    # Calculate the area based on the Surveyor's formula
     for i in range(0, len(xi) - 1):
         cArea = cArea + xi[i] * yi[i + 1] - xi[i + 1] * yi[i]
     cArea = abs(cArea / 2.0)
@@ -825,7 +805,11 @@ def get_structure_planes(struc, end_capping=False):
 
 
 def planes2array(s_planes):
-    # Iterate over each plane in the structure
+    """
+        Return all structure contour points as Point cloud array (x,y,z) points
+    :param s_planes: Structure planes dict
+    :return: points cloud contour points
+    """
     zval = [z for z, sPlane in s_planes.items()]
     zval.sort(key=float)
     # sorted Z axis planes
@@ -1113,7 +1097,7 @@ def raster(out, polyX, polyY, y_cord):
                 f1 = pixelY - polyY[i]
                 f2 = polyY[j] - polyY[i]
                 f3 = polyX[j] - polyX[i]
-                nodeX[nodes] = int(polyX[i] + (f1 / f2) * f3)  # TODO add 0.5 ?
+                nodeX[nodes] = int(polyX[i] + (f1 / f2) * f3 + 0.5)  # TODO add 0.5 ?
                 nodes += 1
 
             j = i
@@ -1182,3 +1166,57 @@ def planes_point_cloud(sPlanes_dict):
     point_cloud = np.concatenate(ctr)
 
     return point_cloud
+
+
+def get_contour_roi_grid(contour_points, delta_mm=(0, 0), fac=1):
+    x = contour_points[:, 0]
+    y = contour_points[:, 1]
+    x_min = x.min() - delta_mm[0] * fac
+    x_max = x.max() + delta_mm[0] * fac
+    y_min = y.min() - delta_mm[1] * fac
+    y_max = y.max() + delta_mm[1] * fac
+    x_lut, x_delta = get_axis_grid(delta_mm[0], [x_min, x_max])
+    y_lut, y_delta = get_axis_grid(delta_mm[1], [y_min, y_max])
+    xg, yg = np.meshgrid(x_lut, y_lut)
+    xf, yf = xg.flatten(), yg.flatten()
+    contour_dose_grid = np.vstack((xf, yf)).T
+    up_dose_lut = [x_lut, y_lut]
+
+    return contour_dose_grid, up_dose_lut
+
+
+def wrap_xy_coordinates(dose_lut, mapped_coord):
+    """
+        Wrap 3D structure and dose grid coordinates to regular ascending grid (x,y,z)
+    :rtype: array,array,array,  string array
+    :param structure_planes: Structure planes dict
+    :param dose_lut: Dose look up table (XY plane)
+    :param mapped_coord: Mapped
+    :return: x,y x, coordinates and structure planes z ordered
+    """
+    xx, yy = np.meshgrid(dose_lut[0], dose_lut[1], indexing='xy', sparse=True)
+    fx, fy, fz = mapped_coord
+    x_c = fx(xx)
+    y_c = fy(yy)
+
+    return x_c, y_c
+
+
+def wrap_coordinates(structure_planes, dose_lut, mapped_coord):
+    """
+        Wrap 3D structure and dose grid coordinates to regular ascending grid (x,y,z)
+    :rtype: array,array,array,  string array
+    :param structure_planes: Structure planes dict
+    :param dose_lut: Dose look up table (XY plane)
+    :param mapped_coord: Mapped
+    :return: x,y x, coordinates and structure planes z ordered
+    """
+    xx, yy = np.meshgrid(dose_lut[0], dose_lut[1], indexing='xy', sparse=True)
+    fx, fy, fz = mapped_coord
+    ordered_keys = [z for z, sPlane in structure_planes.items()]
+    ordered_keys.sort(key=float)
+    x_c = fx(xx)
+    y_c = fy(yy)
+    z_c = fz(ordered_keys)
+
+    return x_c, y_c, z_c, ordered_keys
