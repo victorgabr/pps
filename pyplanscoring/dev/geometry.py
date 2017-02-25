@@ -10,9 +10,9 @@ from scipy.interpolate import interp1d
 
 # add fast-math
 if int(nb.__version__.split('.')[1]) >= 31:
-    njit = functools.partial(nb.njit, fastmath=True)
+    njit = functools.partial(nb.njit, fastmath=True, cache=True, nogil=True)
 else:
-    njit = nb.njit
+    njit = nb.njit(cache=True, nogil=True)
 
 
 def cn_PnPoly(P, V):
@@ -283,6 +283,7 @@ def poly_area(x, y):
     return 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
 
 
+@njit
 def centroid_of_polygon(x, y):
     """
         http://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
@@ -290,7 +291,7 @@ def centroid_of_polygon(x, y):
     :param y: y-axis coordinates
     :return: centroid of polygon
     """
-    area = poly_area(x, y)
+    area = calc_area(x, y)
     imax = len(x) - 1
 
     result_x = 0
@@ -1085,6 +1086,8 @@ def contour_rasterization(dose_lut, dosegrid_points, contour, fx, fy, y_cord):
 
 @njit
 def raster(out, polyX, polyY, y_cord):
+    # /  public-domain code by Darel Rex Finley, 2007
+
     IMAGE_TOP = 0
     IMAGE_BOT = out.shape[0]
     IMAGE_RIGHT = out.shape[1] - 1
