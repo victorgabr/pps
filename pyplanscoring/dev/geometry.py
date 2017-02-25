@@ -1,11 +1,18 @@
 from __future__ import division
 
+import functools
 from copy import deepcopy
 from math import factorial
 
 import numba as nb
 import numpy as np
 from scipy.interpolate import interp1d
+
+# add fast-math
+if int(nb.__version__.split('.')[1]) >= 31:
+    njit = functools.partial(nb.njit, fastmath=True)
+else:
+    njit = nb.njit
 
 
 def cn_PnPoly(P, V):
@@ -58,7 +65,7 @@ def wn_PnPoly1(P, V):
     return wn
 
 
-@nb.njit(nb.double(nb.double[:], nb.double[:], nb.double[:]))
+@njit(nb.double(nb.double[:], nb.double[:], nb.double[:]))
 def is_left(p0, p1, p2):
     """
 
@@ -79,7 +86,7 @@ def is_left(p0, p1, p2):
     return v
 
 
-@nb.njit(nb.int64(nb.double[:], nb.double[:, :]))
+@njit(nb.int64(nb.double[:], nb.double[:, :]))
 def point_in_contour(P, polygon):
     """
 
@@ -107,7 +114,7 @@ def point_in_contour(P, polygon):
     return wn
 
 
-@nb.njit(nb.boolean[:](nb.boolean[:], nb.double[:, :], nb.double[:, :]))
+@njit(nb.boolean[:](nb.boolean[:], nb.double[:, :], nb.double[:, :]))
 def wn_contains_points(out, poly, points):
     """
         Winding number test for a list of point in a polygon
@@ -146,7 +153,7 @@ def wn_contains_points(out, poly, points):
     return out
 
 
-@nb.njit(nb.boolean(nb.double, nb.double, nb.double[:, :]))
+@njit(nb.boolean(nb.double, nb.double, nb.double[:, :]))
 def point_inside_polygon(x, y, poly):
     n = len(poly)
     # determine if a point is inside a given polygon or not
@@ -185,7 +192,7 @@ def point_inside_polygon(x, y, poly):
     return inside
 
 
-@nb.njit(nb.boolean[:](nb.boolean[:], nb.double[:, :], nb.double[:, :]))
+@njit(nb.boolean[:](nb.boolean[:], nb.double[:, :], nb.double[:, :]))
 def contains_points(out, poly, points):
     n = len(points)
     for i in range(n):
@@ -195,7 +202,7 @@ def contains_points(out, poly, points):
     return out
 
 
-@nb.njit(nb.boolean[:](nb.boolean[:], nb.double[:, :], nb.double[:, :]))
+@njit(nb.boolean[:](nb.boolean[:], nb.double[:, :], nb.double[:, :]))
 def numba_contains_points(out, poly, points):
     n = len(points)
     p1x = 0.0
@@ -300,7 +307,7 @@ def centroid_of_polygon(x, y):
     return result_x, result_y
 
 
-@nb.njit(nb.boolean(nb.double[:, :], nb.double[:, :]))
+@njit(nb.boolean(nb.double[:, :], nb.double[:, :]))
 def check_contour_inside(contour, largest):
     inside = False
     for i in range(len(contour)):
@@ -403,7 +410,7 @@ def interpolate_plane(ub, lb, location, ubpoints, lbpoints):
     return np.squeeze(plane)
 
 
-@nb.njit
+@njit
 def interpolate_plane_numba(ub, lb, location, ubpoints, lbpoints):
     """Interpolates a plane between two bounding planes at the given location."""
 
@@ -570,7 +577,7 @@ def get_dose_grid_3d(grid_3d, delta_mm=(2, 2, 2)):
     return dose_grid_points, up_dose_lut, spacing
 
 
-@nb.njit(nb.double(nb.double[:], nb.double[:]))
+@njit(nb.double(nb.double[:], nb.double[:]))
 def calc_area(x, y):
     """
         Calculate the area based on the Surveyor's formula
@@ -594,13 +601,13 @@ def calc_area(x, y):
     return cArea
 
 
-@nb.njit(nb.boolean(nb.double[:], nb.double[:], nb.double[:]))
+@njit(nb.boolean(nb.double[:], nb.double[:], nb.double[:]))
 def ccw(a, b, c):
     """Tests whether the turn formed by A, B, and C is ccw"""
     return (b[0] - a[0]) * (c[1] - a[1]) > (b[1] - a[1]) * (c[0] - a[0])
 
 
-@nb.njit(nb.boolean(nb.double[:, :]))
+@njit(nb.boolean(nb.double[:, :]))
 def is_convex(points):
     """
     https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation
@@ -1076,7 +1083,7 @@ def contour_rasterization(dose_lut, dosegrid_points, contour, fx, fy, y_cord):
 
 # @nb.njit(nb.boolean[:, :](nb.boolean[:, :], nb.double[:], nb.double[:], nb.int64[:]))
 
-@nb.njit
+@njit
 def raster(out, polyX, polyY, y_cord):
     IMAGE_TOP = 0
     IMAGE_BOT = out.shape[0]
@@ -1220,3 +1227,21 @@ def wrap_coordinates(structure_planes, dose_lut, mapped_coord):
     z_c = fz(ordered_keys)
 
     return x_c, y_c, z_c, ordered_keys
+
+
+def wrap_z_coordinates(structure_planes, mapped_coord):
+    """
+        Wrap 3D structure and dose grid coordinates to regular ascending grid (x,y,z)
+    :rtype: array,array,array,  string array
+    :param structure_planes: Structure planes dict
+    :param dose_lut: Dose look up table (XY plane)
+    :param mapped_coord: Mapped
+    :return: x,y x, coordinates and structure planes z ordered
+    """
+
+    ordered_keys = [z for z, sPlane in structure_planes.items()]
+    ordered_keys.sort(key=float)
+    fx, fy, fz = mapped_coord
+    z_c = fz(ordered_keys)
+
+    return z_c, ordered_keys

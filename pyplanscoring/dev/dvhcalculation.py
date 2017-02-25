@@ -4,16 +4,17 @@ from copy import deepcopy
 
 import numpy as np
 import numpy.ma as ma
+import pandas as pd
 from joblib import Parallel
 from joblib import delayed
 
 from pyplanscoring.dev.geometry import get_contour_mask_wn, get_dose_grid_3d, \
     get_axis_grid, get_dose_grid, \
     get_interpolated_structure_planes, contour_rasterization_numba, check_contour_inside, \
-    wrap_coordinates, get_contour_roi_grid, wrap_xy_coordinates
+    get_contour_roi_grid, wrap_xy_coordinates, wrap_z_coordinates
 from pyplanscoring.dicomparser import ScoringDicomParser, lazyproperty
-from pyplanscoring.dvhcalc import get_cdvh_numba, calculate_contour_areas_numba, save
-from pyplanscoring.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean
+from pyplanscoring.dvhcalc import calculate_contour_areas_numba, save
+from pyplanscoring.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean, get_cdvh_numba
 
 float_formatter = lambda x: "%.2f" % x
 np.set_printoptions(formatter={'float_kind': float_formatter})
@@ -114,6 +115,66 @@ def get_capped_structure(structure):
     return out_Dict
 
 
+def get_bounding_lut(xmin, xmax, ymin, ymax, delta_mm, grid_delta):
+    if delta_mm[0] != 0 and delta_mm[1] != 0:
+        xmin -= delta_mm[0]
+        xmax += delta_mm[0]
+        ymin -= delta_mm[1]
+        ymax += delta_mm[1]
+        x_lut, x_delta = get_axis_grid(abs(delta_mm[0]), [xmin, xmax])
+        y_lut, y_delta = get_axis_grid(abs(delta_mm[1]), [ymin, ymax])
+        roi_lut = [x_lut, y_lut]
+        return roi_lut
+    else:
+        x_lut, x_delta = get_axis_grid(abs(grid_delta[0]), [xmin, xmax])
+        y_lut, y_delta = get_axis_grid(abs(grid_delta[1]), [ymin, ymax])
+        roi_lut = [x_lut, y_lut]
+    return roi_lut
+
+
+def test_contour_roi_grid(contour_points, grid_delta, fac=1.0):
+    x = contour_points[:, 0]
+    y = contour_points[:, 1]
+
+    deltas = [(-grid_delta[0] * fac, -grid_delta[1] * fac), (0, 0), (grid_delta[0] * fac, grid_delta[1] * fac)]
+
+    xmin, xmax, ymin, ymax = x.min(), x.max(), y.min(), y.max()
+
+    bound_rectangles = [get_bounding_lut(xmin, xmax, ymin, ymax, delta, grid_delta) for delta in deltas]
+
+    return bound_rectangles
+
+
+def gradient_info_boundary(contour, grid_delta, mapped_coord, dose_interp, z_c):
+    br = test_contour_roi_grid(contour, grid_delta)
+    st = {}
+    columns = ['internal', 'bounding', 'external']
+    for i in range(len(br)):
+        xi, yi = wrap_xy_coordinates(br[i], mapped_coord)
+        doseplane = dose_interp((z_c, yi, xi))
+        sts = doseplane.max() - doseplane.min()
+        st[columns[i]] = sts
+    return st
+
+
+def rms_gradient(df):
+    """
+        Mean gradient difference between 3 rectangles (internal, bounding and external at contour z)
+        Gradient is defined by D_max - D_min (cGy)
+    :param df: df_rectangles Pandas DataFrame
+    :return: Mean gradient Difference
+    """
+    rms = (df['internal'] - df['bounding']) ** 2 + \
+          (df['internal'] - df['external']) ** 2 + \
+          (df['bounding'] - df['external']) ** 2
+    return np.sqrt(rms / 3.0)
+
+    # rms = (df['internal'] - df['bounding']) ** 2 + \
+    #       (df['internal'] - df['external']) ** 2 + \
+    #       (df['bounding'] - df['external']) ** 2
+    # return abs(df['bounding'] - df['external'])
+
+
 class Structure(object):
     def __init__(self, dicom_structure, end_cap=False):
         """
@@ -129,8 +190,8 @@ class Structure(object):
         self.dose_grid_points = None
         self.hi_res_structure = None
         self.dvh = np.array([])
-        self.delta_mm = np.asarray([0.25, 0.25, 0.1])
-        self.vol_lim = 100
+        self.delta_mm = np.asarray([0.25, 0.25, 0.25])
+        self.vol_lim = 1000000
         self.organ2dvh = None
         self.dvh_data = None
 
@@ -223,12 +284,12 @@ class Structure(object):
         x_delta = abs(grid_3d[0][0] - grid_3d[0][1])
         y_delta = abs(grid_3d[1][0] - grid_3d[1][1])
         # get structure slice position
-        ordered_z = self.ordered_planes
-        z_delta = abs(ordered_z[1] - ordered_z[2])
+        # ordered_z = self.ordered_planes
+        z_delta = self.structure['thickness']
         grid_delta = [x_delta, y_delta, z_delta]
         return self.planes, dose_lut, dose_grid_points, grid_delta
 
-    def calculate_dvh(self, dicom_dose, bin_size=1.0, up_sample=False):
+    def calculate_dvh(self, dicom_dose, bin_size=1.0, up_sample=False, timing=False):
         """
             Calculates structure DVH using Winding Number(wn) method to check contour boundaries
         :param dicom_dose: DICOM-RT dose ScoringDicomParser object
@@ -244,8 +305,8 @@ class Structure(object):
         print('End caping:  ' + str(self.end_cap))
         print('Grid delta (mm): ', grid_delta)
 
-        # wrap coordinates
-        _, __, z_c, ordered_keys = wrap_coordinates(sPlanes, dose_lut, mapped_coord)
+        # wrap z axis
+        z_c, ordered_keys = wrap_z_coordinates(sPlanes, mapped_coord)
 
         # Create an empty array of bins to store the histogram in cGy
         # only if the structure has contour data or the dose grid exists
@@ -255,6 +316,7 @@ class Structure(object):
         volume = 0
         import time
         st = time.time()
+        tested_voxels = []
         for i in range(len(ordered_keys)):
             z = ordered_keys[i]
             sPlane = sPlanes[z]
@@ -274,6 +336,7 @@ class Structure(object):
                 x_c, y_c = wrap_xy_coordinates(ctr_dose_lut, mapped_coord)
 
                 doseplane = dose_interp((z_c[i], y_c, x_c))
+                tested_voxels.append(doseplane.size)
 
                 m = get_contour_mask_wn(ctr_dose_lut, contour_dose_grid, contour['data'])
 
@@ -300,98 +363,19 @@ class Structure(object):
         volume /= 1000
         # Rescale the histogram to reflect the total volume
         hist = hist * volume / sum(hist)
-
+        self.hist = hist
         chist = get_cdvh_numba(hist)
         dhist = (np.arange(0, nbins) / nbins) * maxdose
         idx = np.nonzero(chist)  # remove 0 volumes from DVH
         dose_range, cdvh = dhist[idx], chist[idx]
         end = time.time()
-        print('elapsed original (s)', end - st)
-
-        # dose_range, cdvh = dhist, chist
-        self.dvh_data = prepare_dvh_data(dose_range, cdvh)
-
-        return dose_range, cdvh
-
-    def calculate_dvh_slow(self, dicom_dose, bin_size=1.0, up_sample=False):
-        """
-            Calculates structure DVH using Winding Number(wn) method to check contour boundaries
-        :param dicom_dose: DICOM-RT dose ScoringDicomParser object
-        :param bin_size: histogram bin size in cGy
-        :param up_sample: True/False
-        :return: dose_range (cGy), cumulative dvh (cc)
-        """
-        print(' ----- DVH Calculation -----')
-        print('Structure Name: %s - volume (cc) %1.3f' % (self.name, self.volume_cc))
-        # 3D DOSE TRI-LINEAR INTERPOLATION
-        dose_interp, grid_3d, mapped_coord = dicom_dose.DoseRegularGridInterpolator()
-        sPlanes, dose_lut, dosegrid_points, grid_delta = self._prepare_data(grid_3d, up_sample)
-        print('End caping:  ' + str(self.end_cap))
-        print('Grid delta (mm): ', grid_delta)
-
-        # wrap coordinates
-        x_c, y_c, z_c, ordered_keys = wrap_coordinates(sPlanes, dose_lut, mapped_coord)
-
-        # Create an empty array of bins to store the histogram in cGy
-        # only if the structure has contour data or the dose grid exists
-        maxdose = dicom_dose.global_max
-        nbins = int(maxdose / bin_size)
-        hist = np.zeros(nbins)
-        volume = 0
-        import time
-        st = time.time()
-        for i in range(len(ordered_keys)):
-            z = ordered_keys[i]
-            sPlane = sPlanes[z]
-            print('calculating slice z: %.1f' % float(z))
-            # Get the contours with calculated areas and the largest contour index
-            contours, largestIndex = calculate_contour_areas_numba(sPlane)
-
-            # Get the dose plane for the current structure plane
-            doseplane = dose_interp((z_c[i], y_c, x_c))
-
-            # # If there is no dose for the current plane, go to the next plane
-            # if not len(doseplane):
-            #     break
-
-            # Calculate the histogram for each contour
-            for j, contour in enumerate(contours):
-                m = get_contour_mask_wn(dose_lut, dosegrid_points, contour['data'])
-                h, vol = calculate_contour_dvh(m, doseplane, nbins, maxdose, grid_delta)
-
-                # If this is the largest contour, just add to the total histogram
-                if j == largestIndex:
-                    hist += h
-                    volume += vol
-                # Otherwise, determine whether to add or subtract histogram
-                # depending if the contour is within the largest contour or not
-                else:
-                    inside = check_contour_inside(contour['data'], contours[largestIndex]['data'])
-                    # If the contour is inside, subtract it from the total histogram
-                    if inside:
-                        hist -= h
-                        volume -= vol
-                    # Otherwise it is outside, so add it to the total histogram
-                    else:
-                        hist += h
-                        volume += vol
-
-        # Volume units are given in cm^3
-        volume /= 1000
-        # Rescale the histogram to reflect the total volume
-        hist = hist * volume / sum(hist)
-
-        chist = get_cdvh_numba(hist)
-        dhist = (np.arange(0, nbins) / nbins) * maxdose
-        idx = np.nonzero(chist)  # remove 0 volumes from DVH
-        dose_range, cdvh = dhist[idx], chist[idx]
-        end = time.time()
-        print('elapsed original (s)', end - st)
-
-        # dose_range, cdvh = dhist, chist
-        self.dvh_data = prepare_dvh_data(dose_range, cdvh)
-
-        return dose_range, cdvh
+        el = end - st
+        print('elapsed (s):', el)
+        if timing:
+            return self.name, self.volume_original, np.sum(tested_voxels), self.delta_mm[0], el
+        else:
+            self.dvh_data = prepare_dvh_data(dose_range, cdvh)
+            return dose_range, cdvh
 
     def get_dvh_data(self):
         return self.dvh_data
@@ -415,8 +399,8 @@ class Structure(object):
         # print('Grid delta (mm): ', grid_delta)
 
 
-        # wrap coordinates
-        x_c, y_c, z_c, ordered_keys = wrap_coordinates(sPlanes, dose_lut, mapped_coord)
+        # wrap z axis
+        z_c, ordered_keys = wrap_z_coordinates(sPlanes, mapped_coord)
 
         # only if the structure has contour data or the dose grid exists
         maxdose = dicom_dose.global_max
@@ -498,8 +482,8 @@ class Structure(object):
 
         sPlanes, dose_lut, dosegrid_points, grid_delta = self._prepare_data(grid_3d, upsample)
 
-        # wrap coordinates
-        x_c, y_c, z_c, ordered_keys = wrap_coordinates(sPlanes, dose_lut, mapped_coord)
+        # wrap z axis
+        z_c, ordered_keys = wrap_z_coordinates(sPlanes, mapped_coord)
 
         PITV = 0  # Rx isodose volume in cc
         CV = 0  # coverage volume
@@ -610,6 +594,41 @@ class Structure(object):
         volume = sVolume / 1000
 
         return volume
+
+    def boundary_rectangles(self, dicom_dose, up_sample=False):
+        print(' ----- Boundary Gradient Calculation -----')
+        print('Structure Name: %s - volume (cc) %1.3f' % (self.name, self.volume_cc))
+        # 3D DOSE TRI-LINEAR INTERPOLATOR
+        dose_interp, grid_3d, mapped_coord = dicom_dose.DoseRegularGridInterpolator()
+        planes_dict, dose_lut, dosegrid_points, grid_delta = self._prepare_data(grid_3d, up_sample)
+        print('End caping:  ' + str(self.end_cap))
+        print('Grid delta (mm): ', grid_delta)
+        # wrap z axis
+        z_c, ordered_keys = wrap_z_coordinates(planes_dict, mapped_coord)
+        internal = []
+        bounding = []
+        external = []
+        for i in range(len(ordered_keys)):
+            z = ordered_keys[i]
+            s_plane = planes_dict[z]
+            # Get the contours with calculated areas and the largest contour index
+            contours, largest_index = calculate_contour_areas_numba(s_plane)
+
+            # Calculate the histogram for each contour
+            for j, contour in enumerate(contours):
+                # Get only the largest rectangle.
+                if j == largest_index:
+                    dfc = gradient_info_boundary(contour['data'], grid_delta, mapped_coord, dose_interp, z_c[i])
+                    internal.append(dfc['internal'])
+                    bounding.append(dfc['bounding'])
+                    external.append(dfc['external'])
+
+        df_rectangles = pd.DataFrame(internal, index=ordered_keys, columns=['internal'])
+        df_rectangles['bounding'] = bounding
+        df_rectangles['external'] = external
+        df_rectangles['Boundary gradient'] = rms_gradient(df_rectangles)
+
+        return df_rectangles
 
 
 def get_dvh_upsampled(structure, dose, key, end_cap=False, upsample=True):

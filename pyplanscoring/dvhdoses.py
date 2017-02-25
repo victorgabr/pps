@@ -1,5 +1,7 @@
 from __future__ import division
 
+import functools
+
 """Functions to calculate minimum, maximum, and mean dose to ROI from a cDVH."""
 # Copyright (c) 2009 Roy Keyes (roy.coding)
 # Copyright (c) 2011 Aditya Panchal
@@ -13,7 +15,14 @@ from __future__ import division
 import numpy as np
 import numba as nb
 
+# add fast-math
+if int(nb.__version__.split('.')[1]) >= 31:
+    njit = functools.partial(nb.njit, fastmath=True)
+else:
+    njit = nb.njit
 
+
+@njit
 def get_dvh_min_slow(dvh):
     '''Return minimum dose to ROI derived from cDVH.'''
 
@@ -33,7 +42,7 @@ def get_dvh_min_slow(dvh):
     return mindose
 
 
-@nb.njit
+@njit
 def get_dvh_min(dvh):
     '''Return minimum dose to ROI derived from cDVH.'''
 
@@ -53,6 +62,7 @@ def get_dvh_min(dvh):
     return mindose
 
 
+@njit
 def get_dvh_max_slow(dvh):
     '''Return maximum dose to ROI derived from cDVH.'''
 
@@ -71,7 +81,7 @@ def get_dvh_max_slow(dvh):
     return maxdose
 
 
-@nb.njit
+@njit
 def get_dvh_max(dvh):
     '''Return maximum dose to ROI derived from cDVH.'''
 
@@ -90,6 +100,7 @@ def get_dvh_max(dvh):
     return maxdose
 
 
+@njit
 def get_dvh_median_slow(dvh):
     '''Return median dose to ROI derived from cDVH.'''
 
@@ -108,7 +119,7 @@ def get_dvh_median_slow(dvh):
     return mediandose
 
 
-@nb.njit
+@njit
 def get_dvh_median(dvh):
     '''Return median dose to ROI derived from cDVH.'''
 
@@ -128,6 +139,7 @@ def get_dvh_median(dvh):
     return mediandose
 
 
+@njit
 def get_dvh_mean_slow(dvh):
     '''Return mean dose to ROI derived from cDVH.'''
 
@@ -151,7 +163,7 @@ def get_dvh_mean_slow(dvh):
     return meandose
 
 
-@nb.njit
+@njit
 def get_dvh_mean(dvh):
     '''Return mean dose to ROI derived from cDVH.'''
 
@@ -175,22 +187,39 @@ def get_dvh_mean(dvh):
     return meandose
 
 
+@njit
 def get_ddvh_slow(cdvh):
     '''Return dDVH from cDVH array.'''
 
     # dDVH is the negative "slope" of the cDVH
+
     j = 0
     jmax = len(cdvh) - 1
-    ddvh = []
+    ddvh = np.zeros(jmax + 1)
     while j < jmax:
-        ddvh += [cdvh[j] - cdvh[j + 1]]
+        ddvh[j] = cdvh[j] - cdvh[j + 1]
         j += 1
-    ddvh += [cdvh[j]]
+    ddvh[j] = cdvh[j]
 
     return ddvh
 
 
-@nb.njit
+# def get_ddvh_slow(cdvh):
+#     '''Return dDVH from cDVH array.'''
+#
+#     # dDVH is the negative "slope" of the cDVH
+#     j = 0
+#     jmax = len(cdvh) - 1
+#     ddvh = []
+#     while j < jmax:
+#         ddvh += [cdvh[j] - cdvh[j + 1]]
+#         j += 1
+#     ddvh += [cdvh[j]]
+#
+#     return ddvh
+
+
+@njit
 def get_ddvh(cdvh):
     '''Return dDVH from cDVH array.'''
 
@@ -205,6 +234,20 @@ def get_ddvh(cdvh):
     ddvh[j] = cdvh[j]
 
     return ddvh
+
+
+@nb.njit
+def get_cdvh_numba(ddvh):
+    """Calculate the cumulative DVH from a differential DVH array."""
+
+    # cDVH(x) is Sum (Integral) of dDVH with x as lower limit
+    # cdvh = np.zeros_like()
+    jmax = len(ddvh)
+    cdvh = np.zeros(jmax)
+    for j in range(jmax):
+        cdvh[j] = np.sum(ddvh[j:])
+
+    return cdvh
 
 
 def test_all():
@@ -231,4 +274,23 @@ def test_all():
 
 
 if __name__ == '__main__':
-    test_all()
+    doses = np.arange(150, 1000004)
+    a = get_ddvh_slow(doses)
+    b = get_ddvh(doses)
+    np.testing.assert_array_almost_equal(b, a)
+
+    a = get_dvh_min_slow(doses)
+    b = get_dvh_min(doses)
+    np.testing.assert_array_almost_equal(b, a)
+
+    a = get_dvh_max_slow(doses)
+    b = get_dvh_max(doses)
+    np.testing.assert_array_almost_equal(b, a)
+
+    a = get_dvh_median_slow(doses)
+    b = get_dvh_median(doses)
+    np.testing.assert_array_almost_equal(b, a)
+
+    a = get_dvh_mean_slow(doses)
+    b = get_dvh_mean(doses)
+    np.testing.assert_array_almost_equal(b, a)

@@ -19,11 +19,10 @@ import numpy.ma as ma
 from joblib import Parallel
 from joblib import delayed
 from matplotlib.path import Path
-import numba as nb
 
 from pyplanscoring.dev.geometry import calculate_contour_areas_numba
 from pyplanscoring.dicomparser import ScoringDicomParser
-from pyplanscoring.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean
+from pyplanscoring.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean, get_cdvh_numba
 
 if sys.version_info[0] == 3:
     import pickle
@@ -390,20 +389,6 @@ def get_cdvh(ddvh):
         cdvh += [np.sum(ddvh[j:])]
         j += 1
     cdvh = np.array(cdvh)
-    return cdvh
-
-
-@nb.njit
-def get_cdvh_numba(ddvh):
-    """Calculate the cumulative DVH from a differential DVH array."""
-
-    # cDVH(x) is Sum (Integral) of dDVH with x as lower limit
-    # cdvh = np.zeros_like()
-    jmax = len(ddvh)
-    cdvh = np.zeros(jmax)
-    for j in range(jmax):
-        cdvh[j] = np.sum(ddvh[j:])
-
     return cdvh
 
 

@@ -43,9 +43,8 @@ class CurveCompare(object):
         self.a_dvh = a_dvh
         self.cal_dose = calc_dose
         self.calc_dvh = calc_dvh
-        self.sampling_size = 1
-        self.dose_samples = np.arange(0, len(calc_dvh) + self.sampling_size,
-                                      self.sampling_size)  # The DVH curve sampled at every 10 cGy
+        self.sampling_size = 10
+        self.dose_samples = np.arange(0, len(calc_dvh), self.sampling_size)  # The DVH curve sampled at every 10 cGy
         self.ref_dvh = itp.interp1d(a_dose, a_dvh, fill_value='extrapolate')
         self.calc_dvh = itp.interp1d(calc_dose, calc_dvh, fill_value='extrapolate')
         self.delta_dvh = self.calc_dvh(self.dose_samples) - self.ref_dvh(self.dose_samples)
@@ -90,10 +89,10 @@ class CurveCompare(object):
         ref = self.ref_dvh(self.dose_samples)
         calc = self.calc_dvh(self.dose_samples)
         ax.plot(self.dose_samples, ref, label='Analytical')
-        ax.plot(self.dose_samples, calc, label='Python')
+        ax.plot(self.dose_samples, calc, label='App')
         ax.set_ylabel('Volume (cc)')
         ax.set_xlabel('Dose (cGy)')
-        txt = self.structure_name + ' ' + self.dose_grid + ' mm ' + self.gradient
+        txt = self.structure_name + ' ' + self.doseF_grid + ' mm ' + self.gradient
         ax.set_title(txt)
         ax.legend(loc='best')
 
@@ -400,7 +399,7 @@ def test11(delta_mm=(0.2, 0.2, 0.1), plot_curves=False):
     plt.show()
 
 
-def test22(delta_mm=(0.2, 0.2, 0.1), up_sample=True, plot_curves=True):
+def test22(delta_mm=(0.1, 0.1, 0.1), up_sample=True, plot_curves=True):
     ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/analytical_data.xlsx'
 
     struc_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/STRUCTURES'
@@ -528,19 +527,22 @@ def test1(delta_mm=(0.1, 0.1, 0.1), end_cap=True, up_sample=True, lim=3):
     (∆) from analytical are presented along with the range of % ∆. Total number
     of structure/dose combinations is N = 40 (20 for V ).
 
-    Rasterization: 2.6 min
-    VOXEl = (0.2, 0.2, 0.1)
-                      count           range
-    Total Volume (cc)    32  [-4.46, -0.03]
-    Dmin                 16     [-0.0, 5.0]
-    Dmax                  0    [-0.71, 0.0]
-    Dmean                 0   [-0.63, 1.29]
-    D99                   0   [-2.55, 0.93]
-    D95                   0   [-1.52, 2.56]
-    D5                    0   [-0.39, 0.23]
-    D1                    0    [-0.3, 0.25]
-    D0.03cc               8   [-0.49, 5.76]
+    [Parallel(n_jobs=-1)]: Done  40 out of  40 | elapsed:  2.2min finished
 
+    voxel (0.1, 0.1, 0.1) mm
+
+                      count        range
+    Total Volume (cc)     0  [-0.7, 0.5]
+    Dmin                  0  [-0.1, 2.6]
+    Dmax                  0  [-0.4, 0.0]
+    Dmean                 0  [-0.2, 0.3]
+    D99                   0  [-1.9, 1.9]
+    D95                   0  [-1.3, 0.4]
+    D5                    0  [-0.3, 0.2]
+    D1                    0  [-0.1, 0.2]
+    D0.03cc               8  [-0.1, 5.8]
+
+    #TODO Check interpotion at small D(0.03) cc
 
     """
 
@@ -624,7 +626,7 @@ def test1(delta_mm=(0.1, 0.1, 0.1), end_cap=True, up_sample=True, lim=3):
     res = OrderedDict()
     for col in delta:
         count = np.sum(np.abs(delta[col]) > lim)
-        rg = np.array([round(delta[col].min(), 2), round(delta[col].max(), 2)])
+        rg = np.array([round(delta[col].min(), 1), round(delta[col].max(), 1)])
         res[col] = {'count': count, 'range': rg}
 
     test_table = pd.DataFrame(res).T
@@ -633,63 +635,17 @@ def test1(delta_mm=(0.1, 0.1, 0.1), end_cap=True, up_sample=True, lim=3):
 
 
 def test2(delta_mm=(0.1, 0.1, 0.1), end_cap=True, lim=3):
-    """  (0.2,0.2,0.2) voxel
-
-                          count                                range
-        Total Volume (cc)    20     [-0.836364028788, 20.4398388678]
-        Dmin                 18  [-2.34295680294e-05, 7.99997469607]
-        Dmax                  0   [-0.7143089765, 2.25594440216e-05]
-        Dmean                 0      [-0.745443253859, 1.1222539427]
-        D99                   9      [-13.2036176269, 5.32799261807]
-        D95                   3      [-4.05023645333, 3.56111645813]
-        D5                    0    [-0.685731799321, 0.763452648735]
-        D1                    0      [-1.06545439265, 2.36923544843]
-        D0.03cc              10      [0.208698606864, 10.2052573631]
-
-
-        Normal 1.4 min
-        Voxel = (0.2,0.2,0.1)
-
-
-        Time= 2.5 min
-                              count                                range
-        Total Volume (cc)     0     [-2.30870744356, 0.623460939993]
-        Dmin                 17  [-2.34295680294e-05, 5.00002368742]
-        Dmax                  0   [-0.7143089765, 2.25594440216e-05]
-        Dmean                 0     [-0.773822165555, 1.17616531524]
-        D99                   8      [-14.5241235182, 5.64822718302]
-        D95                   3       [-4.1876197993, 3.87101141549]
-        D5                    0    [-0.724005656079, 0.868330967688]
-        D1                    0        [-1.28356043219, 2.634731146]
-        D0.03cc              11      [0.210227658852, 10.0695761079]
-
-
-
-        Rasterization 1.2 min
-
-                          count                                range
-        Total Volume (cc)    20      [-3.03706234966, 19.9294405383]
-        Dmin                 15  [-2.34295680315e-05, 7.99997469607]
-        Dmax                  0   [-0.7143089765, 2.25594440216e-05]
-        Dmean                 0    [-0.739088580375, 0.552542701378]
-        D99                   9      [-13.2036176269, 4.81043710506]
-        D95                   2      [-4.03095463253, 3.01555155051]
-        D5                    0     [-0.72931642965, 0.755875472771]
-        D1                    0      [-1.39745234391, 2.36923544843]
-        D0.03cc              10     [-0.491228070175, 10.2383539774]
-
-        Voxel = (0.2,0.2,0.1)
-
-                              count                                range
-        Total Volume (cc)     4     [-4.37794273217, 0.623460939993]
-        Dmin                 14  [-2.34295680315e-05, 5.00002368742]
-        Dmax                  0   [-0.7143089765, 2.25594440216e-05]
-        Dmean                 0    [-0.767198671242, 0.610077076797]
-        D99                   9      [-14.5241235182, 5.36085315134]
-        D95                   4        [-4.1876197993, 3.3093184441]
-        D5                    0    [-0.797912759806, 0.868330967688]
-        D1                    0        [-1.32507451815, 2.634731146]
-        D0.03cc              11     [-0.491228070175, 10.1056493256]
+    """
+                              count         range
+        Total Volume (cc)     2   [-3.9, 0.6]
+        Dmin                  0   [-0.2, 2.6]
+        Dmax                  0   [-0.4, 0.0]
+        Dmean                 0   [-0.8, 0.7]
+        D99                   8  [-14.4, 5.2]
+        D95                   2   [-4.2, 3.2]
+        D5                    0   [-0.7, 0.9]
+        D1                    0   [-1.1, 2.7]
+        D0.03cc              11   [0.2, 10.0]
 
 
     """
@@ -777,14 +733,45 @@ def test2(delta_mm=(0.1, 0.1, 0.1), end_cap=True, lim=3):
 
     for col in delta:
         count = np.sum(np.abs(delta[col]) > lim)
-        rg = np.array([delta[col].min(), delta[col].max()])
+        rg = np.array([round(delta[col].min(), 1), round(delta[col].max(), 1)])
         res[col] = {'count': count, 'range': rg}
 
     test_table = pd.DataFrame(res).T
     print(test_table)
 
 
-def test3(delta_mm=(0.25, 0.25, 0.25), plot_curves=True):
+def test3(delta_mm=(0.1, 0.1, 0.1), plot_curves=True):
+    """
+                       Gradient Resolution (mm)  max  mean  min  std
+    Sphere_10_0        Z(AP)               1 -0.0  -0.2 -0.3  0.1
+    Sphere_10_0        Y(SI)               1  0.0  -0.2 -0.4  0.2
+    Sphere_30_0        Z(AP)               3 -0.0  -1.1 -1.9  0.6
+    Sphere_30_0        Y(SI)               3  0.3  -1.0 -2.1  0.7
+    Cylinder_10_0      Z(AP)               1  0.5   0.3 -0.1  0.2
+    Cylinder_10_0      Y(SI)               1  0.3   0.2 -0.0  0.1
+    Cylinder_30_0      Z(AP)               3  0.3   0.1  0.0  0.1
+    Cylinder_30_0      Y(SI)               3  0.3   0.2 -0.0  0.1
+    RtCylinder_10_0    Z(AP)               1  0.5   0.3  0.0  0.1
+    RtCylinder_10_0    Y(SI)               1  0.3   0.0 -0.2  0.1
+    RtCylinder_30_0    Z(AP)               3  0.7   0.5  0.3  0.1
+    RtCylinder_30_0    Y(SI)               3  1.1   0.3 -0.5  0.4
+    Cone_10_0          Z(AP)               1  0.3   0.1 -0.1  0.2
+    Cone_10_0          Y(SI)               1  1.0   0.3  0.2  0.2
+    Cone_30_0          Z(AP)               3 -0.0  -0.8 -1.4  0.4
+    Cone_30_0          Y(SI)               3  0.9  -1.3 -1.5  0.5
+    RtCone_10_0        Z(AP)               1  0.0  -1.1 -1.4  0.3
+    RtCone_10_0        Y(SI)               1  0.0  -1.0 -1.4  0.5
+    RtCone_30_0        Z(AP)               3 -0.1  -2.5 -3.9  1.3
+    RtCone_30_0        Y(SI)               3  0.5  -2.5 -4.4  1.8
+    Average (N = 5)    Y(SI)               1  0.3  -0.1 -0.4  0.2
+    Average (N = 5)    Z(AP)               1  0.3  -0.1 -0.4  0.2
+    Average (N = 5)    Y(SI)               3  0.6  -0.9 -1.7  0.7
+    Average (N = 5)    Z(AP)               3  0.2  -0.8 -1.4  0.5
+
+    """
+
+
+
     ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/analytical_data.xlsx'
 
     struc_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/STRUCTURES'
@@ -1197,98 +1184,94 @@ def test_eval_scores():
     print(df_comp[result_col].loc[mask])
 
 
+def test_upsampling_paper(plot_grads=False):
+    rd = '/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/Ahmad/6F RA 2.0mm DoseGrid Feb10/RD.1.2.246.352.71.7.584747638204.1758320.20170210154830.dcm'
+    rs = '/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/Ahmad/6F RA 2.0mm DoseGrid Feb10/RS.1.2.246.352.71.4.584747638204.248648.20170209152429.dcm'
+    rd1 = '/home/victor/Dropbox/Plan_Competition_Project/Competition_2016/Eclipse Plans/Saad RapidArc Eclipse/Saad RapidArc Eclipse/RD.Saad-Eclipse-RapidArc.dcm'
+    rs1 = '/home/victor/Dropbox/Plan_Competition_Project/Competition_2016/Eclipse Plans/Saad RapidArc Eclipse/Saad RapidArc Eclipse/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
+
+    dicom_data = [(rd, rs), (rd1, rs1)]
+
+    gradient_stats = []
+    for data in dicom_data:
+        rdi = data[0]
+        rsi = data[1]
+
+        rtss = ScoringDicomParser(filename=rsi)
+        dicom_dose = ScoringDicomParser(filename=rdi)
+        structures = rtss.GetStructures()
+
+        for key, structure in structures.items():
+            struc = Structure(structure)
+            df_rectangles = struc.boundary_rectangles(dicom_dose)
+            med = df_rectangles['Boundary gradient'].median()
+            # get stats
+            sts = [structure['name'], struc.volume_original, med]
+            gradient_stats.append(sts)
+
+            if plot_grads:
+                rec = ['internal', 'bounding', 'external']
+                fig, ax = plt.subplots()
+                df_rectangles[rec].plot(ax=ax)
+                ax.set_ylabel('Dmax - Dmin (cGy)')
+                ax.set_xlabel('Z - slice position (mm)')
+                ax.set_title(structure['name'])
+                fig, ax = plt.subplots()
+                df_rectangles['Boundary gradient'].plot(ax=ax)
+                ax.set_ylabel('Boundary gradient (cGy)')
+                ax.set_xlabel('Z - slice position (mm)')
+
+                title = 'Boundary gradient ' + structure['name'] + \
+                        ' Median: %1.2f (cGy)' % med
+                ax.set_title(title)
+                plt.show()
+
+    gradient_df = pd.DataFrame(gradient_stats, columns=['Name', 'Volume', 'Median'])
+    fig, ax = plt.subplots()
+    ax.plot(gradient_df['Volume'], np.log10(gradient_df['Median']), '.')
+    ax.set_xlabel('Volume (cc)')
+    ax.set_ylabel('Median boundary gradient (cGy)')
+    ax.set_xlim([0, 1000])
+    plt.show()
+
+
+def calc_gradients_pp(structure_dict, dose):
+    structure_obj = Structure(structure_dict)
+    df_rect = structure_obj.boundary_rectangles(dose, up_sample=True)
+    # get stats
+    return [structure_dict['name'], structure_obj.volume_original, df_rect['Boundary gradient'].median()]
+
+
+def upsampling_paper_pp():
+    rd = '/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/Ahmad/6F RA 2.0mm DoseGrid Feb10/RD.1.2.246.352.71.7.584747638204.1758320.20170210154830.dcm'
+    rs = '/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/Ahmad/6F RA 2.0mm DoseGrid Feb10/RS.1.2.246.352.71.4.584747638204.248648.20170209152429.dcm'
+    rd1 = '/home/victor/Dropbox/Plan_Competition_Project/Competition_2016/Eclipse Plans/Saad RapidArc Eclipse/Saad RapidArc Eclipse/RD.Saad-Eclipse-RapidArc.dcm'
+    rs1 = '/home/victor/Dropbox/Plan_Competition_Project/Competition_2016/Eclipse Plans/Saad RapidArc Eclipse/Saad RapidArc Eclipse/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
+    rd2 = '/home/victor/Dropbox/Plan_Competition_Project/Competition_2016/Eclipse Plans/Venessa IMRT Eclipse/RD-Eclipse-Venessa-IMRTDose.dcm'
+    dicom_data = [(rd, rs), (rd1, rs1), (rd2, rs1)]
+
+    gradient_stats = []
+    for data in dicom_data:
+        rdi = data[0]
+        rsi = data[1]
+        rtss = ScoringDicomParser(filename=rsi)
+        dicom_dose = ScoringDicomParser(filename=rdi)
+        structures = rtss.GetStructures()
+        res = Parallel(n_jobs=4, verbose=11)(
+            delayed(calc_gradients_pp)(structure, dicom_dose) for key, structure in structures.items())
+
+        gradient_stats += res
+
+    gradient_df = pd.DataFrame(gradient_stats, columns=['Name', 'Volume', 'Median'])
+    fig, ax = plt.subplots()
+    ax.plot(gradient_df['Volume'], gradient_df['Median'], '.')
+    ax.set_xlabel('Volume (cc)')
+    ax.set_ylabel('Median boundary gradient (cGy)')
+    ax.set_xlim([0, 2000])
+    plt.show()
+
+
 if __name__ == '__main__':
-    # test_table = test1(delta_mm=(0.1, 0.1, 0.1))
-    test_table = test2(delta_mm=(0.25, 0.25, 0.1))
-
-
-    # print(df_final.to_string())
-    # mask0 = np.logical_and(df_final['Resolution (mm)'] == '1', df_final['Gradient'] == 'Y(SI)')
-    # mask1 = np.logical_and(df_final['Resolution (mm)'] == '1', df_final['Gradient'] == 'Z(AP)')
-    # mask2 = np.logical_and(df_final['Resolution (mm)'] == '3', df_final['Gradient'] == 'Y(SI)')
-    # mask3 = np.logical_and(df_final['Resolution (mm)'] == '3', df_final['Gradient'] == 'Z(AP)')
-    #
-    # # Row 0
-    # r0 = pd.DataFrame(['Y(SI)'], index=['Average (N = 5)'], columns=['Gradient'])
-    # r0['Resolution (mm)'] = '1'
-    # ri = pd.DataFrame(df_final[mask0].mean()).T
-    # ri.index = ['Average (N = 5)']
-    # r0 = r0.join(ri)
-    #
-    # # Row 1
-    # r1 = pd.DataFrame(['Z(AP)'], index=['Average (N = 5)'], columns=['Gradient'])
-    # r1['Resolution (mm)'] = '1'
-    # ri = pd.DataFrame(df_final[mask1].mean()).T
-    # ri.index = ['Average (N = 5)']
-    # r1 = r1.join(ri)
-    #
-    # # Row 2
-    # r2 = pd.DataFrame(['Y(SI)'], index=['Average (N = 5)'], columns=['Gradient'])
-    # r2['Resolution (mm)'] = '3'
-    # ri = pd.DataFrame(df_final[mask2].mean()).T
-    # ri.index = ['Average (N = 5)']
-    # r2 = r2.join(ri)
-    #
-    # # Row 3
-    # r3 = pd.DataFrame(['Z(AP)'], index=['Average (N = 5)'], columns=['Gradient'])
-    # r3['Resolution (mm)'] = '3'
-    # ri = pd.DataFrame(df_final[mask3].mean()).T
-    # ri.index = ['Average (N = 5)']
-    # r3 = r3.join(ri)
-    # result = pd.concat([df_final, r0, r1, r2, r3])
-    #
-    #
-
-    # rd = r'/media/victor/TOURO Mobile/PLAN_TESTING_DATA/Ali-DONE IMRT alidogan@hacettepe.edu.tr/RD.1.2.246.352.71.7.2126303291.952274.20160217093713.dcm'
-    # rs = r'/home/victor/Dropbox/Plan_Competition_Project/Competition Package/DICOM Sets/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
-    #
-    # # rd = r'/media/victor/TOURO Mobile/PLAN_TESTING_DATA/PERUMAL - DONE perumal.medphy@gmail.com/RD.Breast.Dose_PLAN.dcm'
-    #
-    # rtss = ScoringDicomParser(filename=rs)
-    #
-    # rtdose = ScoringDicomParser(filename=rd)
-    # # Obtain the structures and DVHs from the DICOM data
-    # structures = rtss.GetStructures()
-    # cdvh = rtdose.GetDVHs()
-    #
-    # out_dvh = {}
-    # for k, item in cdvh.items():
-    #     cdvh_i = item['data']
-    #     dose_cdvh = np.arange(cdvh_i.size) * item['scaling']
-    #     dvh_data = prepare_dvh_data(dose_cdvh, cdvh_i)
-    #     dvh_data['key'] = k
-    #     out_dvh[structures[k]['name']] = dvh_data
-    #
-    # # prepare data to avoid miss-calculations
-    #
-    # print(out_dvh)
-
-    # cdata = Competition2016()
-    # root = r'/media/victor/TOURO Mobile/PLAN_TESTING_DATA'
-    # rs = r'/home/victor/Dropbox/Plan_Competition_Project/Competition Package/DICOM Sets/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
-    #
-    # obj = EvalCompetition(root_path=root, rs_file=rs, constrains=cdata.constrains, scores=cdata.scores)
-    # obj.save_dvh_all(clean_files=True, dicom_dvh=True)
-    # obj.set_data()
-    # res = obj.calc_scores()
-    # df_new = pd.DataFrame(res, columns=['name', 'py_score_new']).set_index('name')
-    #
-    # val = r'/home/victor/Dropbox/Plan_Competition_Project/validation/Python_2016_TPS_DATA.xls'
-    # df = pd.DataFrame(res, columns=['name', 'py_score_new'])
-    # df.set_index('name').sort_index().to_excel(val)
-    # dfi = df.set_index(0).sort_index()
-
-
-
-    # ref = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\validation\Plan_IQ_versus_Python_DONE_diff_greater_than_4_TPS.xls'
-    # ndata = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\validation\Python_2016_last_update.xls'
-    # df_ref = pd.read_excel(ref)
-    # df_new = pd.read_excel(ndata).set_index('name')
-    # df_comp = df_ref.join(df_new)
-    # df_comp['delta'] = df_comp['py_score_new'] - df_comp['PLANIQ_DMAX_BODY_SCORE']
-    # df_comp['delta_py'] = df_comp['py_score_new'] - df_comp['py_score']
-    #
-    # mask = df_comp['delta'].abs() > 4
-    #
-    # result_col = ['PLANIQ_DMAX_BODY_SCORE', 'py_score_new', 'delta', 'TPS']
-    # print(df_comp[result_col].loc[mask])
+    test1()
+    test2()
+    test3()
