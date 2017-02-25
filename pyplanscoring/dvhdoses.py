@@ -17,12 +17,11 @@ import numba as nb
 
 # add fast-math
 if int(nb.__version__.split('.')[1]) >= 31:
-    njit = functools.partial(nb.njit, fastmath=True)
+    njit = functools.partial(nb.njit, fastmath=True, cache=True, nogil=True)
 else:
-    njit = nb.njit
+    njit = nb.njit(cache=True, nogil=True)
 
 
-@njit
 def get_dvh_min_slow(dvh):
     '''Return minimum dose to ROI derived from cDVH.'''
 
@@ -62,7 +61,6 @@ def get_dvh_min(dvh):
     return mindose
 
 
-@njit
 def get_dvh_max_slow(dvh):
     '''Return maximum dose to ROI derived from cDVH.'''
 
@@ -100,7 +98,6 @@ def get_dvh_max(dvh):
     return maxdose
 
 
-@njit
 def get_dvh_median_slow(dvh):
     '''Return median dose to ROI derived from cDVH.'''
 
@@ -139,7 +136,6 @@ def get_dvh_median(dvh):
     return mediandose
 
 
-@njit
 def get_dvh_mean_slow(dvh):
     '''Return mean dose to ROI derived from cDVH.'''
 
@@ -187,7 +183,6 @@ def get_dvh_mean(dvh):
     return meandose
 
 
-@njit
 def get_ddvh_slow(cdvh):
     '''Return dDVH from cDVH array.'''
 
@@ -236,7 +231,7 @@ def get_ddvh(cdvh):
     return ddvh
 
 
-@nb.njit
+@njit
 def get_cdvh_numba(ddvh):
     """Calculate the cumulative DVH from a differential DVH array."""
 

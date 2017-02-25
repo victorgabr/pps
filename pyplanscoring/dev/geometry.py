@@ -744,8 +744,12 @@ def get_interpolated_structure_planes(dicom_planes, z_interp_positions):
 
             elif not (truth and len(ub_points) == len(lb_points)):
 
-                lb_centroids = np.array([c['centroid'] for c in lb_points])
-                ub_centroids = np.array([c['centroid'] for c in ub_points])
+                lb_centroids = np.asarray([c['centroid'] for c in lb_points])
+                ub_centroids = np.asarray([c['centroid'] for c in ub_points])
+
+                # lb_centroids = [c['centroid'] for c in lb_points]
+                # ub_centroids = [c['centroid'] for c in ub_points]
+
                 u_idx = [nearest_neighbor(ub_centroids, lbc) for lbc in lb_centroids]
 
                 for j in range(len(lb_points)):
@@ -840,7 +844,7 @@ def nearest_neighbor(features_train, feature_query):
     :param features_query: query grid
     :return: lower and upper neighbors
     """
-    ec_dist = np.sqrt((np.sum(features_train - feature_query, axis=1) ** 2))
+    ec_dist = np.sqrt((np.sum(features_train - feature_query, axis=1) ** 2.0))
 
     return ec_dist.argmin()
 

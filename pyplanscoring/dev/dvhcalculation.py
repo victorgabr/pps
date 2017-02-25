@@ -1,5 +1,6 @@
 from __future__ import division
 
+import time
 from copy import deepcopy
 
 import numpy as np
@@ -190,8 +191,8 @@ class Structure(object):
         self.dose_grid_points = None
         self.hi_res_structure = None
         self.dvh = np.array([])
-        self.delta_mm = np.asarray([0.25, 0.25, 0.25])
-        self.vol_lim = 1000000
+        self.delta_mm = np.asarray([0.25, 0.25, 0.1])
+        self.vol_lim = 100
         self.organ2dvh = None
         self.dvh_data = None
 
@@ -262,11 +263,14 @@ class Structure(object):
         """
         if upsample:
             # upsample only small size structures
-            if self.volume_cc < self.vol_lim:
-                # get structure slice position
+            # get structure slice position
+            # set up-sample only small size structures
+            if self.volume_original < self.vol_lim:
+
                 hi_resolution_structure, grid_ds, grid_delta, dose_lut = self.up_sampling(grid_3d, self.delta_mm)
                 dose_grid_points = grid_ds[:, :2]
                 return hi_resolution_structure, dose_lut, dose_grid_points, grid_delta
+
             else:
                 return self._get_calculation_data(grid_3d)
 
@@ -289,6 +293,16 @@ class Structure(object):
         grid_delta = [x_delta, y_delta, z_delta]
         return self.planes, dose_lut, dose_grid_points, grid_delta
 
+    def _set_upsample_delta(self):
+        if self.volume_original < 100:
+            self.delta_mm = (0.25, 0.25, 0.25)
+            # elif 10 < self.volume_original <= 40:
+            #     self.delta_mm = (0.25, 0.25, 0.25)
+            # elif 40 < self.volume_original <= 100:
+            #     self.delta_mm = (0.5, 0.5, 0.5)
+            # else:
+            #     self.delta_mm = (1, 1, 1)
+
     def calculate_dvh(self, dicom_dose, bin_size=1.0, up_sample=False, timing=False):
         """
             Calculates structure DVH using Winding Number(wn) method to check contour boundaries
@@ -297,13 +311,13 @@ class Structure(object):
         :param up_sample: True/False
         :return: dose_range (cGy), cumulative dvh (cc)
         """
-        print(' ----- DVH Calculation -----')
-        print('Structure Name: %s - volume (cc) %1.3f' % (self.name, self.volume_cc))
+        # print(' ----- DVH Calculation -----')
+        # print('Structure Name: %s - volume (cc) %1.3f' % (self.name, self.volume_cc))
         # 3D DOSE TRI-LINEAR INTERPOLATION
         dose_interp, grid_3d, mapped_coord = dicom_dose.DoseRegularGridInterpolator()
         sPlanes, dose_lut, dosegrid_points, grid_delta = self._prepare_data(grid_3d, up_sample)
-        print('End caping:  ' + str(self.end_cap))
-        print('Grid delta (mm): ', grid_delta)
+        # print('End caping:  ' + str(self.end_cap))
+        # print('Grid delta (mm): ', grid_delta)
 
         # wrap z axis
         z_c, ordered_keys = wrap_z_coordinates(sPlanes, mapped_coord)
@@ -314,19 +328,15 @@ class Structure(object):
         nbins = int(maxdose / bin_size)
         hist = np.zeros(nbins)
         volume = 0
-        import time
+
         st = time.time()
         tested_voxels = []
         for i in range(len(ordered_keys)):
             z = ordered_keys[i]
-            sPlane = sPlanes[z]
+            s_plane = sPlanes[z]
             # print('calculating slice z: %.1f' % float(z))
             # Get the contours with calculated areas and the largest contour index
-            contours, largestIndex = calculate_contour_areas_numba(sPlane)
-
-            # If there is no dose for the current plane, go to the next plane
-            # if not len(doseplane):
-            #     break
+            contours, largest_index = calculate_contour_areas_numba(s_plane)
 
             # Calculate the histogram for each contour
             for j, contour in enumerate(contours):
@@ -343,13 +353,13 @@ class Structure(object):
                 h, vol = calculate_contour_dvh(m, doseplane, nbins, maxdose, grid_delta)
 
                 # If this is the largest contour, just add to the total histogram
-                if j == largestIndex:
+                if j == largest_index:
                     hist += h
                     volume += vol
                 # Otherwise, determine whether to add or subtract histogram
                 # depending if the contour is within the largest contour or not
                 else:
-                    inside = check_contour_inside(contour['data'], contours[largestIndex]['data'])
+                    inside = check_contour_inside(contour['data'], contours[largest_index]['data'])
                     # If the contour is inside, subtract it from the total histogram
                     if inside:
                         hist -= h
@@ -370,7 +380,7 @@ class Structure(object):
         dose_range, cdvh = dhist[idx], chist[idx]
         end = time.time()
         el = end - st
-        print('elapsed (s):', el)
+        # print('elapsed (s):', el)
         if timing:
             return self.name, self.volume_original, np.sum(tested_voxels), self.delta_mm[0], el
         else:

@@ -900,6 +900,11 @@ class ScoringDicomParser(DicomParser):
 
         return x, y
 
+    def GetContourPoints(self, array):
+        """Parses an array of xyz points and returns a array of point dictionaries."""
+
+        return np.asarray(list(zip(*[iter(array)] * 3)), dtype='float64')
+
     def GetStructures(self):
         """Returns the structures (ROIs) with their coordinates."""
 
@@ -969,6 +974,7 @@ class ScoringDicomParser(DicomParser):
                         plane['numContourPoints'] = contour.NumberofContourPoints
                         contour_data = self.GetContourPoints(contour.ContourData)
                         plane['contourData'] = contour_data
+                        # add info about contour centroid
                         plane['centroid'] = centroid_of_polygon(contour_data[:, 0], contour_data[:, 1])
                         # Each plane which coincides with a image slice will have a unique ID
                         if 'ContourImages' in contour:
@@ -976,7 +982,6 @@ class ScoringDicomParser(DicomParser):
 
                         # Add each plane to the planes dictionary of the current ROI
                         if 'geometricType' in plane:
-
                             # Fixed bug on import z position on -1.0 < z < 0.0 not using #.replace('-0', '0')
                             z = ('%.2f' % plane['contourData'][0][2])
                             if z not in planes.keys():

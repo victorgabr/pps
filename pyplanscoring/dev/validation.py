@@ -770,8 +770,6 @@ def test3(delta_mm=(0.1, 0.1, 0.1), plot_curves=True):
 
     """
 
-
-
     ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/analytical_data.xlsx'
 
     struc_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/STRUCTURES'
@@ -1268,6 +1266,45 @@ def upsampling_paper_pp():
     ax.set_xlabel('Volume (cc)')
     ax.set_ylabel('Median boundary gradient (cGy)')
     ax.set_xlim([0, 2000])
+    plt.show()
+
+
+def timimg_evaluation():
+    rd = '/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/Ahmad/6F RA 2.0mm DoseGrid Feb10/RD.1.2.246.352.71.7.584747638204.1758320.20170210154830.dcm'
+    rs = '/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/Ahmad/6F RA 2.0mm DoseGrid Feb10/RS.1.2.246.352.71.4.584747638204.248648.20170209152429.dcm'
+    rd1 = '/home/victor/Dropbox/Plan_Competition_Project/Competition_2016/Eclipse Plans/Saad RapidArc Eclipse/Saad RapidArc Eclipse/RD.Saad-Eclipse-RapidArc.dcm'
+    rs1 = '/home/victor/Dropbox/Plan_Competition_Project/Competition_2016/Eclipse Plans/Saad RapidArc Eclipse/Saad RapidArc Eclipse/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
+    rd2 = '/home/victor/Dropbox/Plan_Competition_Project/Competition_2016/Eclipse Plans/Venessa IMRT Eclipse/RD-Eclipse-Venessa-IMRTDose.dcm'
+    # dicom_data = [(rd, rs), (rd1, rs1), (rd2, rs1)]
+
+    dicom_data = [(rd, rs), (rd1, rs1)]
+
+    deltas = [1, 0.5, 0.25, 0.1]
+    timing_stats = []
+    for d in deltas:
+        for data in dicom_data:
+            rdi = data[0]
+            rsi = data[1]
+
+            rtss = ScoringDicomParser(filename=rsi)
+            dicom_dose = ScoringDicomParser(filename=rdi)
+            structures = rtss.GetStructures()
+
+            for key, structure in structures.items():
+                struc = Structure(structure)
+                if struc.volume_original < 100:
+                    struc.set_delta((d, d, d))
+                    res = struc.calculate_dvh(dicom_dose, up_sample=True, timing=True)
+                    timing_stats.append(res)
+
+    dest = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/validation/timings.obj'
+    save(timing_stats, dest)
+    # timing_stats = load(dest)
+
+    df = pd.DataFrame(timing_stats, columns=['Structure', 'Volume', 'voxels', 'grid_mm', 'timing'])
+    mask = df['grid_mm'] == 0.1
+
+    plt.plot(df[['Volume']][mask], df[['timing']][mask], '.')
     plt.show()
 
 
