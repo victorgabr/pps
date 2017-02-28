@@ -82,11 +82,13 @@ class DVHMetrics(object):
         :param dvh: DVH dictionary
         """
         vpp = dvh['data'] * 100 / dvh['data'][0]
-        self.volume_pp = np.append(vpp, 0)  # add 0 volume to interpolate
+        self.volume_pp = np.append(vpp, 0.0)  # add 0 volume to interpolate
         # self.volume_pp = vpp
         self.scaling = dvh['scaling']
+        # self.dose_axis = np.arange(len(dvh['data'])) * self.scaling
         self.dose_axis = np.arange(len(dvh['data']) + 1) * self.scaling
-        self.volume_cc = np.append(dvh['data'], 0)
+        # self.volume_cc = dvh['data']
+        self.volume_cc = np.append(dvh['data'], 0.0)
         self.stats = (dvh['max'], dvh['mean'], dvh['min'])
         self.data = dvh
 
@@ -561,7 +563,8 @@ class Participant(object):
 
 
 if __name__ == '__main__':
-    f = r'/home/victor/Dropbox/Plan_Competition_Project/Send to Victor Feb18/6F RA 2.0mm DoseGrid Feb10/PlanIQ SCORE Details 74 score/PlanIQ TEXT DVH Format for the 74 score Feb 18 2017.txt'
+
+    f = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/Ahmad/6F RA 2.0mm DoseGrid Feb10/PlanIQ SCORE Details 74 score/PlanIQ TEXT DVH Format for the 74 score Feb 18 2017.txt'
     dfn = pd.read_csv(f, sep='\t')
     df = dfn[['Plan Quality Metric Component', 'Objective(s)', 'Max Score', 'Result']].dropna()
     constrains, scores, criteria = read_scoring_criteria(f, cGy=1)
@@ -610,28 +613,12 @@ if __name__ == '__main__':
     # banner = '/home/victor/Dropbox/Plan_Competition_Project/scoring_report/2017 Plan Comp Banner.jpg'
     # sc_obj.save_score_results(out_file, banner)
 
-    # # DVH DATA
-    # dvhs = deepcopy(participant.score_obj.dvhs)
-    #
-    # max_volume_key = max(dvhs, key=lambda i: dvhs[i]['data'][0])
-    #
-    # metrics = DVHMetrics(dvhs[max_volume_key])
-    #
-    # val_test = 5320  # cGy
-    #
-    # PITV = metrics.get_volume_constrain_cc(val_test)
-    #
-    # # calculating coverage volume
-    # target_metrics = DVHMetrics(dvhs['PTV56'])
-    # CV = target_metrics.get_volume_constrain_cc(val_test)
-    # TV = target_metrics.get_volume()
-    # CI = CV ** 2 / (TV * PITV)
-    #
-    # # print('Plan Score: %1.3f' % val)
-    # # out_file = os.path.join(dicom_dir, 'plan_scoring_report.xls')
-    # # banner_path = os.path.join(wd, '2017 Plan Comp Banner.jpg')
-    # # participant.save_score(out_file, banner_path=banner_path)
-    # # print('Report saved: %s' % out_file)
-    # app = 0.8460
-    # PLANIQ = 0.8360
-    # CI_from_eclipse_DVH = 0.844
+    dvh = '/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/RD.1.2.246.352.71.7.584747638204.1758320.20170210154830_up_sampledend_cap.dvh'
+    tmp = load(dvh)['DVH']
+    test = Scoring(rd, rs, rp, constrains, scores)
+    test.set_dvh_data(dvh)
+
+    metrics = DVHMetrics(tmp['SPINAL CORD'])
+    metrics.get_dose_constrain_cc(10)
+    fd_cc = itp.interp1d(metrics.volume_cc, metrics.dose_axis, kind='quadratic')  # cc
+    plt.plot(metrics.volume_cc, metrics.dose_axis)

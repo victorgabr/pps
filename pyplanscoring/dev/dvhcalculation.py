@@ -1,8 +1,11 @@
 from __future__ import division
 
 import time
+from collections import OrderedDict
 from copy import deepcopy
+from itertools import combinations
 
+import matplotlib.pyplot as plt
 import numpy as np
 import numpy.ma as ma
 import pandas as pd
@@ -12,7 +15,7 @@ from joblib import delayed
 from pyplanscoring.dev.geometry import get_contour_mask_wn, get_dose_grid_3d, \
     get_axis_grid, get_dose_grid, \
     get_interpolated_structure_planes, contour_rasterization_numba, check_contour_inside, \
-    get_contour_roi_grid, wrap_xy_coordinates, wrap_z_coordinates
+    get_contour_roi_grid, wrap_xy_coordinates, wrap_z_coordinates, calculate_contours_uncertainty
 from pyplanscoring.dicomparser import ScoringDicomParser, lazyproperty
 from pyplanscoring.dvhcalc import calculate_contour_areas_numba, save
 from pyplanscoring.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean, get_cdvh_numba
@@ -170,10 +173,66 @@ def rms_gradient(df):
           (df['bounding'] - df['external']) ** 2
     return np.sqrt(rms / 3.0)
 
-    # rms = (df['internal'] - df['bounding']) ** 2 + \
-    #       (df['internal'] - df['external']) ** 2 + \
-    #       (df['bounding'] - df['external']) ** 2
-    # return abs(df['bounding'] - df['external'])
+
+def msgd(gradient_measure):
+    """
+        Mean squarted gradient difference "max - max" contours difference
+    :param gradient_measure: Gradient measure from contours boundary
+    :return:
+    """
+    tmp = list(combinations(gradient_measure, 2))
+    if len(tmp) == 3:
+        test = np.array(tmp)
+        grad = np.sqrt(np.sum((test[:, 0] - test[:, 1]) ** 2) / len(tmp))
+        return grad
+
+    else:
+        test = np.array(tmp)
+        grad = np.sqrt(np.sum((np.diff(test)) ** 2) / 2)
+        return grad
+
+
+def plot_plane_contours_gradient(s_plane, structure_name, save_fig=False):
+    ctrs, li = calculate_contours_uncertainty(s_plane, 1)
+    fig, ax = plt.subplots()
+    txt = structure_name + ' slice z: ' + str(s_plane[0]['contourData'][:, 2][0])
+    for c in ctrs:
+        ax.plot(c['data'][:, 0], -c['data'][:, 1], '.', label='Original')
+        ax.plot(c['expanded'][:, 0], -c['expanded'][:, 1], '.', label='Expanded')
+        ax.plot(c['shrunken'][:, 0], -c['shrunken'][:, 1], '.', label='shrunken')
+        ax.set_title(txt)
+        ax.legend()
+        plt.axis('equal')
+    if save_fig:
+        fig.savefig(txt + '.png', format='png', dpi=100)
+
+
+def get_boundary_stats(dose_mask, kind='max-min'):
+    if kind == 'max-min':
+        return dose_mask.max() - dose_mask.min()
+    elif kind == 'max/min':
+        return dose_mask.max() / dose_mask.min()
+    elif kind == 'std':
+        return dose_mask.std(ddof=1)
+    elif kind == 'cv':
+        return dose_mask.std(ddof=1) / dose_mask.mean()
+    else:
+        raise NotImplemented
+
+
+def plot_slice_gradient(gradient_z, structure_name):
+    try:
+        df_grad = pd.DataFrame(gradient_z).T
+        df_grad.columns = ['Average Gradient']
+        fig, ax = plt.subplots()
+        df_grad.plot(ax=ax)
+        txt = structure_name + ' Average Boundary Gradient'
+        ax.set_title(txt)
+        ax.set_xlabel('Slice Position - z (mm)')
+        ax.set_ylabel('Average Boundary gradient (cGy)')
+        plt.show()
+    except:
+        raise NotImplemented
 
 
 class Structure(object):
@@ -266,7 +325,7 @@ class Structure(object):
             # get structure slice position
             # set up-sample only small size structures
             if self.volume_original < self.vol_lim:
-
+                # self._set_upsample_delta()
                 hi_resolution_structure, grid_ds, grid_delta, dose_lut = self.up_sampling(grid_3d, self.delta_mm)
                 dose_grid_points = grid_ds[:, :2]
                 return hi_resolution_structure, dose_lut, dose_grid_points, grid_delta
@@ -294,8 +353,8 @@ class Structure(object):
         return self.planes, dose_lut, dose_grid_points, grid_delta
 
     def _set_upsample_delta(self):
-        if self.volume_original < 100:
-            self.delta_mm = (0.25, 0.25, 0.25)
+        if self.volume_original < 5:
+            self.delta_mm = (0.05, 0.05, 0.05)
             # elif 10 < self.volume_original <= 40:
             #     self.delta_mm = (0.25, 0.25, 0.25)
             # elif 40 < self.volume_original <= 100:
@@ -311,13 +370,13 @@ class Structure(object):
         :param up_sample: True/False
         :return: dose_range (cGy), cumulative dvh (cc)
         """
-        # print(' ----- DVH Calculation -----')
-        # print('Structure Name: %s - volume (cc) %1.3f' % (self.name, self.volume_cc))
+        print(' ----- DVH Calculation -----')
+        print('Structure Name: %s - volume (cc) %1.3f' % (self.name, self.volume_cc))
         # 3D DOSE TRI-LINEAR INTERPOLATION
         dose_interp, grid_3d, mapped_coord = dicom_dose.DoseRegularGridInterpolator()
         sPlanes, dose_lut, dosegrid_points, grid_delta = self._prepare_data(grid_3d, up_sample)
-        # print('End caping:  ' + str(self.end_cap))
-        # print('Grid delta (mm): ', grid_delta)
+        print('End caping:  ' + str(self.end_cap))
+        print('Grid delta (mm): ', grid_delta)
 
         # wrap z axis
         z_c, ordered_keys = wrap_z_coordinates(sPlanes, mapped_coord)
@@ -377,6 +436,8 @@ class Structure(object):
         chist = get_cdvh_numba(hist)
         dhist = (np.arange(0, nbins) / nbins) * maxdose
         idx = np.nonzero(chist)  # remove 0 volumes from DVH
+
+        # dose_range, cdvh = dhist, chist
         dose_range, cdvh = dhist[idx], chist[idx]
         end = time.time()
         el = end - st
@@ -639,6 +700,63 @@ class Structure(object):
         df_rectangles['Boundary gradient'] = rms_gradient(df_rectangles)
 
         return df_rectangles
+
+    def calc_boundary_gradient(self, dicom_dose, kind='max-min', up_sample=False):
+        print(' ----- Boundary Gradient Calculation -----')
+        print('Structure Name: %s - volume (cc) %1.3f' % (self.name, self.volume_cc))
+        # 3D DOSE TRI-LINEAR INTERPOLATOR
+        dose_interp, grid_3d, mapped_coord = dicom_dose.DoseRegularGridInterpolator()
+        planes_dict, dose_lut, dosegrid_points, grid_delta = self._prepare_data(grid_3d, up_sample)
+        print('End caping:  ' + str(self.end_cap))
+        print('Grid delta (mm): ', grid_delta)
+        # wrap z axis
+        z_c, ordered_keys = wrap_z_coordinates(planes_dict, mapped_coord)
+
+        boundary_keys = ['shrunken', 'data', 'expanded']
+        gradient_z = OrderedDict()
+        for i in range(len(ordered_keys)):
+            z = ordered_keys[i]
+            s_plane = planes_dict[z]
+            # Get the contours with calculated areas and the largest contour index
+            contours, largest_index = calculate_contours_uncertainty(s_plane, grid_delta[0])
+
+            # Calculate the histogram for each contour
+            contour_gradient = []
+            for j, contour in enumerate(contours):
+                gradient_measure = []
+                for k in boundary_keys:
+                    # check if contour exists
+                    if len(contour[k]) > 0:
+                        contour_dose_grid, ctr_dose_lut = get_contour_roi_grid(contour[k], grid_delta)
+                        x_c, y_c = wrap_xy_coordinates(ctr_dose_lut, mapped_coord)
+                        doseplane = dose_interp((z_c[i], y_c, x_c))
+                        m = get_contour_mask_wn(ctr_dose_lut, contour_dose_grid, contour['data'])
+                        dose_filled_contour = doseplane * m
+                        # get only nonzero doses to get stats
+                        dose_mask = dose_filled_contour[np.nonzero(dose_filled_contour)]
+
+                        # check if there is dose
+                        if np.any(dose_mask):
+                            # If this is the largest contour, just add to the total histogram
+                            if j == largest_index:
+                                b_stats = get_boundary_stats(dose_mask, kind)
+                                gradient_measure.append(b_stats)
+
+                            # Otherwise, determine whether to add or subtract
+                            # depending if the contour is within the largest contour or not
+                            else:
+                                inside = check_contour_inside(contour[k], contours[largest_index][k])
+                                # If the contour is inside, subtract it from the total histogram
+                                if not inside:
+                                    b_stats = get_boundary_stats(dose_mask, kind)
+                                    gradient_measure.append(b_stats)
+
+                # get gradient measure
+                contour_gradient.append(msgd(gradient_measure))
+
+            gradient_z[z] = contour_gradient
+
+        return gradient_z
 
 
 def get_dvh_upsampled(structure, dose, key, end_cap=False, upsample=True):
