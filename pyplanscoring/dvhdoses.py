@@ -19,7 +19,7 @@ import numba as nb
 if int(nb.__version__.split('.')[1]) >= 31:
     njit = functools.partial(nb.njit, fastmath=True, cache=True, nogil=True)
 else:
-    njit = nb.njit(cache=True, nogil=True)
+    njit = functools.partial(nb.njit, cache=True, nogil=True)
 
 
 def get_dvh_min_slow(dvh):

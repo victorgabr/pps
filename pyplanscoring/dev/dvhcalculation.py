@@ -1,9 +1,7 @@
 from __future__ import division
 
 import time
-from collections import OrderedDict
 from copy import deepcopy
-from itertools import combinations
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,7 +13,7 @@ from joblib import delayed
 from pyplanscoring.dev.geometry import get_contour_mask_wn, get_dose_grid_3d, \
     get_axis_grid, get_dose_grid, \
     get_interpolated_structure_planes, contour_rasterization_numba, check_contour_inside, \
-    get_contour_roi_grid, wrap_xy_coordinates, wrap_z_coordinates, calculate_contours_uncertainty
+    get_contour_roi_grid, wrap_xy_coordinates, wrap_z_coordinates
 from pyplanscoring.dicomparser import ScoringDicomParser, lazyproperty
 from pyplanscoring.dvhcalc import calculate_contour_areas_numba, save
 from pyplanscoring.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean, get_cdvh_numba
@@ -174,41 +172,13 @@ def rms_gradient(df):
     return np.sqrt(rms / 3.0)
 
 
-def msgd(gradient_measure):
-    """
-        Mean squarted gradient difference "max - max" contours difference
-    :param gradient_measure: Gradient measure from contours boundary
-    :return:
-    """
-    tmp = list(combinations(gradient_measure, 2))
-    if len(tmp) == 3:
-        test = np.array(tmp)
-        grad = np.sqrt(np.sum((test[:, 0] - test[:, 1]) ** 2) / len(tmp))
-        return grad
-
-    else:
-        test = np.array(tmp)
-        grad = np.sqrt(np.sum((np.diff(test)) ** 2) / 2)
-        return grad
-
-
-def plot_plane_contours_gradient(s_plane, structure_name, save_fig=False):
-    ctrs, li = calculate_contours_uncertainty(s_plane, 1)
-    fig, ax = plt.subplots()
-    txt = structure_name + ' slice z: ' + str(s_plane[0]['contourData'][:, 2][0])
-    for c in ctrs:
-        ax.plot(c['data'][:, 0], -c['data'][:, 1], '.', label='Original')
-        ax.plot(c['expanded'][:, 0], -c['expanded'][:, 1], '.', label='Expanded')
-        ax.plot(c['shrunken'][:, 0], -c['shrunken'][:, 1], '.', label='shrunken')
-        ax.set_title(txt)
-        ax.legend()
-        plt.axis('equal')
-    if save_fig:
-        fig.savefig(txt + '.png', format='png', dpi=100)
-
 
 def get_boundary_stats(dose_mask, kind='max-min'):
-    if kind == 'max-min':
+    if kind == 'min':
+        return dose_mask.min()
+    elif kind == 'max':
+        return dose_mask.max()
+    elif kind == 'max-min':
         return dose_mask.max() - dose_mask.min()
     elif kind == 'max/min':
         return dose_mask.max() / dose_mask.min()
@@ -216,6 +186,8 @@ def get_boundary_stats(dose_mask, kind='max-min'):
         return dose_mask.std(ddof=1)
     elif kind == 'cv':
         return dose_mask.std(ddof=1) / dose_mask.mean()
+    elif kind == 'mean':
+        return dose_mask.mean()
     else:
         raise NotImplemented
 
@@ -701,63 +673,6 @@ class Structure(object):
 
         return df_rectangles
 
-    def calc_boundary_gradient(self, dicom_dose, kind='max-min', up_sample=False):
-        print(' ----- Boundary Gradient Calculation -----')
-        print('Structure Name: %s - volume (cc) %1.3f' % (self.name, self.volume_cc))
-        # 3D DOSE TRI-LINEAR INTERPOLATOR
-        dose_interp, grid_3d, mapped_coord = dicom_dose.DoseRegularGridInterpolator()
-        planes_dict, dose_lut, dosegrid_points, grid_delta = self._prepare_data(grid_3d, up_sample)
-        print('End caping:  ' + str(self.end_cap))
-        print('Grid delta (mm): ', grid_delta)
-        # wrap z axis
-        z_c, ordered_keys = wrap_z_coordinates(planes_dict, mapped_coord)
-
-        boundary_keys = ['shrunken', 'data', 'expanded']
-        gradient_z = OrderedDict()
-        for i in range(len(ordered_keys)):
-            z = ordered_keys[i]
-            s_plane = planes_dict[z]
-            # Get the contours with calculated areas and the largest contour index
-            contours, largest_index = calculate_contours_uncertainty(s_plane, grid_delta[0])
-
-            # Calculate the histogram for each contour
-            contour_gradient = []
-            for j, contour in enumerate(contours):
-                gradient_measure = []
-                for k in boundary_keys:
-                    # check if contour exists
-                    if len(contour[k]) > 0:
-                        contour_dose_grid, ctr_dose_lut = get_contour_roi_grid(contour[k], grid_delta)
-                        x_c, y_c = wrap_xy_coordinates(ctr_dose_lut, mapped_coord)
-                        doseplane = dose_interp((z_c[i], y_c, x_c))
-                        m = get_contour_mask_wn(ctr_dose_lut, contour_dose_grid, contour['data'])
-                        dose_filled_contour = doseplane * m
-                        # get only nonzero doses to get stats
-                        dose_mask = dose_filled_contour[np.nonzero(dose_filled_contour)]
-
-                        # check if there is dose
-                        if np.any(dose_mask):
-                            # If this is the largest contour, just add to the total histogram
-                            if j == largest_index:
-                                b_stats = get_boundary_stats(dose_mask, kind)
-                                gradient_measure.append(b_stats)
-
-                            # Otherwise, determine whether to add or subtract
-                            # depending if the contour is within the largest contour or not
-                            else:
-                                inside = check_contour_inside(contour[k], contours[largest_index][k])
-                                # If the contour is inside, subtract it from the total histogram
-                                if not inside:
-                                    b_stats = get_boundary_stats(dose_mask, kind)
-                                    gradient_measure.append(b_stats)
-
-                # get gradient measure
-                contour_gradient.append(msgd(gradient_measure))
-
-            gradient_z[z] = contour_gradient
-
-        return gradient_z
-
 
 def get_dvh_upsampled(structure, dose, key, end_cap=False, upsample=True):
     """Get a calculated cumulative DVH along with the associated parameters."""
@@ -834,6 +749,39 @@ def save_dicom_dvhs(name, rs_file, rd_file, out_file=False):
         save(out_obj, out_file)
 
     return cdvh
+
+
+def calc_gradient_pp(structure, dicom_dose, kind='max', factor=1):
+    """
+        Helper function to calculate the structure average boundary gradient difference (cGy)
+    :param structure: Structure Dict
+    :param dicom_dose: RR-DOSE - ScoringDicomParser object
+    :return:
+    """
+    struc_test = Structure(structure, end_cap=True)
+    grad_z = struc_test.calc_boundary_gradient(dicom_dose, kind=kind, factor=factor)
+    obs = np.concatenate([v for k, v in grad_z.items()])
+    grad_mean = np.nanmean(obs)
+    grad_std = np.nanstd(obs, ddof=1)
+    grad_median = np.nanmedian(obs)
+    return structure['name'], grad_mean, grad_std, grad_median
+
+
+def calc_dvh_uncertainty(rd, rs, kind, factor):
+    """
+        Helper function to calculate using multiprocessing the average gradient
+    :param rd: Path do DICOM-RTDOSE file
+    :param rs: Path do DICOM-Structure file
+    :return: Pandas Dataframe with estimated uncertainty on maximum dose (cGy)
+    """
+    rtss = ScoringDicomParser(filename=rs)
+    dicom_dose = ScoringDicomParser(filename=rd)
+    structures = rtss.GetStructures()
+
+    res = Parallel(n_jobs=-1, verbose=11)(
+        delayed(calc_gradient_pp)(structure, dicom_dose, kind, factor) for key, structure in structures.items())
+
+    return pd.DataFrame(res, columns=['name', 'mean', 'std', 'median'])
 
 
 if __name__ == '__main__':

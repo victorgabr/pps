@@ -49,7 +49,7 @@ def main():
     print('------------- Calculating DVH and score --------------')
     participant = Participant(rp, rs, rd, upsample='_up_sampled_', end_cap=True)
     participant.set_participant_data(participant_name)
-    val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria, dicom_dvh=False)
+    val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria, dicom_dvh=True)
 
     print('Plan Score: %1.3f' % val)
     out_file = os.path.join(dicom_dir, 'plan_scoring_report.xls')

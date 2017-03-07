@@ -7,14 +7,12 @@ from math import factorial
 import numba as nb
 import numpy as np
 from scipy.interpolate import interp1d
-from shapely.geometry import Polygon
-
 
 # add fast-math
 if int(nb.__version__.split('.')[1]) >= 31:
     njit = functools.partial(nb.njit, fastmath=True, cache=True, nogil=True)
 else:
-    njit = nb.njit(cache=True, nogil=True)
+    njit = functools.partial(nb.njit, cache=True, nogil=True)
 
 
 def cn_PnPoly(P, V):
@@ -1256,60 +1254,5 @@ def wrap_z_coordinates(structure_planes, mapped_coord):
     return z_c, ordered_keys
 
 
-def expand_contour(contour_xy, distance):
-    """
-        Returns a geometry with an envelope at a distance from the object's envelope
-          A negative delta has a "shrink" effect.
-      :param contour_xy: Contour defined by [xi,yi] - [xn-1,yn-1], i = [0,n]
-      :param distance: distance to expand or shrink.
-      :return: modified contour
-    """
-    # repeat the first vertex at end
-    poly_xy = np.zeros((contour_xy.shape[0] + 1, contour_xy.shape[1]))
-    poly_xy[:-1] = contour_xy
-    poly_xy[-1] = contour_xy[0]
-    ctr_pol = Polygon(poly_xy)
-    mod = ctr_pol.buffer(distance)
-
-    return np.array(mod.exterior.coords)
 
 
-def calculate_contours_uncertainty(plane, distance):
-    """Calculate the area of each contour for the given plane.
-        calculate both expanded and shrunken contours by a distance in mm
-       Additionally calculate and return the largest contour index.
-       :param plane: Plane Dictionary
-       :param distance: distance in mm
-       :return: Contours list and Largest index
-       """
-
-    # Calculate the area for each contour in the current plane
-    contours = []
-    largest = 0
-    largestIndex = 0
-    expanded = []
-    shrunken = []
-    for c, contour in enumerate(plane):
-        cArea = calc_area(contour['contourData'][:, 0], contour['contourData'][:, 1])
-        if cArea < 1:
-            print('Warning contour with are less than 1 sq mm')
-
-        expanded = expand_contour(contour['contourData'][:, :2], distance)
-
-        try:
-            shrunken = expand_contour(contour['contourData'][:, :2], -distance)
-        except:
-            print('impossible to shrink a contour of area: %1.2f by a distance %1.2f' % (cArea, distance))
-        # Add the contour area and points to the list of contours
-        contours.append({'area': cArea,
-                         'data': contour['contourData'][:, :2],
-                         'expanded': expanded,
-                         'shrunken': shrunken})
-
-        # Determine which contour is the largest
-        if cArea > largest:
-            largest = cArea
-            largestIndex = c
-            # TODO implement a logger
-
-    return contours, largestIndex
