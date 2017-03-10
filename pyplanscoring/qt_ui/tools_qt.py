@@ -110,12 +110,9 @@ def generate_all():
 
 
 if __name__ == "__main__":
-    uifile = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\PyPlanScoring.ui'
-    outfile = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\PyPlanScoringQT.py'
+    uifile = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\pyplanscoring\PyPlanScoring.ui'
+    outfile = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\pyplanscoring\PyPlanScoringQT.py'
     qt2py(uifile, outfile)
-
-
-
 
 
     # save_average_image()

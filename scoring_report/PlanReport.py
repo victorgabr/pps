@@ -47,9 +47,15 @@ def main():
     rs = files_data.reset_index().set_index(1).ix['rtss']['index']
 
     print('------------- Calculating DVH and score --------------')
-    participant = Participant(rp, rs, rd, upsample='_up_sampled_', end_cap=True)
+
+    dicom_dvh = False
+    end_cap = True
+    participant = Participant(rp, rs, rd, upsample='_up_sampled_', end_cap=end_cap)
     participant.set_participant_data(participant_name)
-    val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria, dicom_dvh=True)
+    val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria,
+                                 dicom_dvh=dicom_dvh)
+    if dicom_dvh:
+        print('Using TPS calculated DVH extracted from DICOM-RT dose file')
 
     print('Plan Score: %1.3f' % val)
     out_file = os.path.join(dicom_dir, 'plan_scoring_report.xls')

@@ -100,11 +100,11 @@ def get_capped_structure(structure):
     ordered_keys = [z for z, sPlane in planesDict.items()]
     ordered_keys.sort(key=float)
     planes = np.array(ordered_keys, dtype=float)
-    start_cap = (planes[0] - structure['thickness'] / 2.0)
+    start_cap = (planes[0] - structure['thickness'] / 4.0)
     start_cap_key = '%.2f' % start_cap
     start_cap_values = planesDict[ordered_keys[0]]
 
-    end_cap = (planes[-1] + structure['thickness'] / 2.0)
+    end_cap = (planes[-1] + structure['thickness'] / 4.0)
     end_cap_key = '%.2f' % end_cap
     end_cap_values = planesDict[ordered_keys[-1]]
 
@@ -172,7 +172,6 @@ def rms_gradient(df):
     return np.sqrt(rms / 3.0)
 
 
-
 def get_boundary_stats(dose_mask, kind='max-min'):
     if kind == 'min':
         return dose_mask.min()
@@ -222,7 +221,8 @@ class Structure(object):
         self.dose_grid_points = None
         self.hi_res_structure = None
         self.dvh = np.array([])
-        self.delta_mm = np.asarray([0.25, 0.25, 0.1])
+        # self.delta_mm = np.asarray([0.25, 0.25, 0.1])
+        self.delta_mm = np.asarray([0.5, 0.5, 0.5])
         self.vol_lim = 100
         self.organ2dvh = None
         self.dvh_data = None
@@ -703,7 +703,8 @@ def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, end
         upsample = False
 
     # backend = 'threading'
-    res = Parallel(n_jobs=-1, verbose=11)(
+    # backend = 'threading'
+    res = Parallel(n_jobs=-1, verbose=11, backend='threading')(
         delayed(get_dvh_upsampled)(structure, rtdose, key, end_cap, upsample) for key, structure in structures.items()
         if
         structure['name'] in struc_names)
@@ -749,39 +750,6 @@ def save_dicom_dvhs(name, rs_file, rd_file, out_file=False):
         save(out_obj, out_file)
 
     return cdvh
-
-
-def calc_gradient_pp(structure, dicom_dose, kind='max', factor=1):
-    """
-        Helper function to calculate the structure average boundary gradient difference (cGy)
-    :param structure: Structure Dict
-    :param dicom_dose: RR-DOSE - ScoringDicomParser object
-    :return:
-    """
-    struc_test = Structure(structure, end_cap=True)
-    grad_z = struc_test.calc_boundary_gradient(dicom_dose, kind=kind, factor=factor)
-    obs = np.concatenate([v for k, v in grad_z.items()])
-    grad_mean = np.nanmean(obs)
-    grad_std = np.nanstd(obs, ddof=1)
-    grad_median = np.nanmedian(obs)
-    return structure['name'], grad_mean, grad_std, grad_median
-
-
-def calc_dvh_uncertainty(rd, rs, kind, factor):
-    """
-        Helper function to calculate using multiprocessing the average gradient
-    :param rd: Path do DICOM-RTDOSE file
-    :param rs: Path do DICOM-Structure file
-    :return: Pandas Dataframe with estimated uncertainty on maximum dose (cGy)
-    """
-    rtss = ScoringDicomParser(filename=rs)
-    dicom_dose = ScoringDicomParser(filename=rd)
-    structures = rtss.GetStructures()
-
-    res = Parallel(n_jobs=-1, verbose=11)(
-        delayed(calc_gradient_pp)(structure, dicom_dose, kind, factor) for key, structure in structures.items())
-
-    return pd.DataFrame(res, columns=['name', 'mean', 'std', 'median'])
 
 
 if __name__ == '__main__':

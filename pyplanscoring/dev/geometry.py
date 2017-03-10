@@ -10,9 +10,9 @@ from scipy.interpolate import interp1d
 
 # add fast-math
 if int(nb.__version__.split('.')[1]) >= 31:
-    njit = functools.partial(nb.njit, fastmath=True, cache=True, nogil=True)
+    njit = functools.partial(nb.njit, fastmath=True, cache=False, nogil=True)
 else:
-    njit = functools.partial(nb.njit, cache=True, nogil=True)
+    njit = functools.partial(nb.njit, cache=False, nogil=True)
 
 
 def cn_PnPoly(P, V):
@@ -1252,7 +1252,3 @@ def wrap_z_coordinates(structure_planes, mapped_coord):
     z_c = fz(ordered_keys)
 
     return z_c, ordered_keys
-
-
-
-

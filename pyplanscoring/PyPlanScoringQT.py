@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\vgalves\Dropbox\Plan_Competition_Project\PyPlanScoring.ui'
+# Form implementation generated from reading ui file 'C:\Users\vgalves\Dropbox\Plan_Competition_Project\pyplanscoring\PyPlanScoring.ui'
 #
-# Created: Mon Dec  5 16:03:55 2016
+# Created: Thu Mar  9 14:09:42 2017
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,15 +27,15 @@ class Ui_MainWindow(object):
         self.save_reports_button = QtGui.QPushButton(self.centralwidget)
         self.save_reports_button.setObjectName("save_reports_button")
         self.gridLayout.addWidget(self.save_reports_button, 4, 0, 1, 1)
-        self.listWidget = QtGui.QListWidget(self.centralwidget)
-        self.listWidget.setObjectName("listWidget")
-        self.gridLayout.addWidget(self.listWidget, 5, 0, 1, 1)
         self.label = QtGui.QLabel(self.centralwidget)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
         self.import_button = QtGui.QPushButton(self.centralwidget)
         self.import_button.setObjectName("import_button")
         self.gridLayout.addWidget(self.import_button, 3, 0, 1, 1)
+        self.listWidget = QtGui.QListWidget(self.centralwidget)
+        self.listWidget.setObjectName("listWidget")
+        self.gridLayout.addWidget(self.listWidget, 5, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 719, 20))
@@ -59,22 +59,25 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(
             QtGui.QApplication.translate("MainWindow", "PyPlanScoring", None, QtGui.QApplication.UnicodeUTF8))
-        self.save_reports_button.setToolTip(QtGui.QApplication.translate("MainWindow",
-                                                                         "<html><head/><body><p><span style=\" font-weight:600;\">Save constrains and evaluated scoring reports on *.xls file</span></p></body></html>",
-                                                                         None, QtGui.QApplication.UnicodeUTF8))
+        self.save_reports_button.setToolTip(
+            QtGui.QApplication.translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">Save\n"
+                                                       "                                constrains and evaluated scoring reports on *.xls file</span></p></body></html>",
+                                         None, QtGui.QApplication.UnicodeUTF8))
         self.save_reports_button.setText(
             QtGui.QApplication.translate("MainWindow", "Save Reports", None, QtGui.QApplication.UnicodeUTF8))
-        self.listWidget.setToolTip(QtGui.QApplication.translate("MainWindow",
-                                                                "<html><head/><body><p><span style=\" font-weight:600;\">Import plan data - set the folder containing RP,RS,RD dicom files</span></p></body></html>",
-                                                                None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("MainWindow",
-                                                        "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Participant\'s name</span></p></body></html>",
+        self.label.setText(QtGui.QApplication.translate("MainWindow", "<html><head/><body><p align=\"center\"><span\n"
+                                                                      "                                style=\" font-weight:600;\">Participant\'s name</span></p></body></html>",
                                                         None, QtGui.QApplication.UnicodeUTF8))
         self.import_button.setToolTip(QtGui.QApplication.translate("MainWindow",
-                                                                   "<html><head/><body><p><span style=\" font-weight:600;\">Import plan data - set the folder containing RP,RS,RD dicom files</span></p></body></html>",
+                                                                   "<html><head/><body><p><span style=\" font-weight:600;\">Import\n"
+                                                                   "                                plan data - set the folder containing RP,RS,RD dicom files</span></p></body></html>",
                                                                    None, QtGui.QApplication.UnicodeUTF8))
         self.import_button.setText(
             QtGui.QApplication.translate("MainWindow", "Import Plan Data", None, QtGui.QApplication.UnicodeUTF8))
+        self.listWidget.setToolTip(QtGui.QApplication.translate("MainWindow",
+                                                                "<html><head/><body><p><span style=\" font-weight:600;\">Import\n"
+                                                                "                                plan data - set the folder containing RP,RS,RD dicom files</span></p></body></html>",
+                                                                None, QtGui.QApplication.UnicodeUTF8))
         self.menuAbout.setTitle(
             QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
         self.action_developer.setText(

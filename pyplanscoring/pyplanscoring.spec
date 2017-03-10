@@ -2,10 +2,11 @@
 
 block_cipher = None
 
-a = Analysis(['pyplanscoring.py'],
-             pathex=['C:\\Users\\Victor\\Dropbox\\Plan_Competition_Project'],
-             binaries=None,
-             datas=None,
+a = Analysis(['app.py'],
+             pathex=[r'C:\Users\Victor\Dropbox\Plan_Competition_Project',
+                     r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring'],
+             binaries=[],
+             datas=[],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -18,7 +19,7 @@ pyz = PYZ(a.pure, a.zipped_data,
 exe = EXE(pyz,
           a.scripts,
           exclude_binaries=True,
-          name='pyplanscoring',
+          name='PyPlanScoring',
           debug=False,
           strip=False,
           upx=True,
@@ -29,4 +30,4 @@ coll = COLLECT(exe,
                a.datas,
                strip=False,
                upx=True,
-               name='pyplanscoring')
+               name='PyPlanScoring')

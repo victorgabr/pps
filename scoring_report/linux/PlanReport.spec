@@ -22,7 +22,7 @@ def Datafiles(*filenames, **kw):
 
 
 docfiles = Datafiles(r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/licence.txt')
-# mkl = Datafiles(r'C:\Users\Victor\Dropbox\DFR\win64\mkl_avx.dll')
+mkl = Datafiles(r'C:\Users\Victor\Dropbox\DFR\win64\mkl_avx.dll')
 # mkl1 = Datafiles(r'/home/victor/Dropbox/DFR/win64/mkl_def.dll')
 # mkl2 = Datafiles(r'C:\Users\Victor\Dropbox\DFR\win64\mkl_mc.dll')
 banner = Datafiles(r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/2017 Plan Comp Banner.jpg')

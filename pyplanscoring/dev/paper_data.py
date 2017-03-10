@@ -3,11 +3,35 @@ from itertools import combinations
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+from joblib import Parallel
+from joblib import delayed
 from shapely.geometry import Polygon
 
 from pyplanscoring.dev.dvhcalculation import Structure, get_boundary_stats
 from pyplanscoring.dev.geometry import wrap_z_coordinates, calc_area, get_contour_roi_grid, wrap_xy_coordinates, \
     get_contour_mask_wn, check_contour_inside
+from pyplanscoring.dev.validation import get_competition_data
+from pyplanscoring.dicomparser import ScoringDicomParser
+
+
+def calculate_gradient_stats():
+    rs = '/home/victor/Dropbox/Plan_Competition_Project/Competition_2016/DICOM Sets/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
+    #
+    root_path = '/media/victor/TOURO Mobile/PLAN_TESTING_DATA'
+    data = get_competition_data(root_path)
+
+    rd_data = data[data[1] == 'rtdose']['index']
+    res = []
+    for rd in rd_data:
+        df = calc_dvh_uncertainty(rd, rs, 'max', factor=0.5)
+        tmp = df['mean'].copy()
+        tmp.index = df['name']
+        res.append(tmp)
+
+    df_res = pd.concat(res, axis=1)
+
+    return df_res
 
 
 def msgd(gradient_measure):
@@ -168,5 +192,52 @@ class StructurePaper(Structure):
         return gradient_z
 
 
+def calc_gradient_pp(structure, dicom_dose, kind='max', factor=1):
+    """
+        Helper function to calculate the structure average boundary gradient difference (cGy)
+    :param structure: Structure Dict
+    :param dicom_dose: RR-DOSE - ScoringDicomParser object
+    :return:
+    """
+    struc_test = StructurePaper(structure, end_cap=True)
+    grad_z = struc_test.calc_boundary_gradient(dicom_dose, kind=kind, factor=factor)
+    obs = np.concatenate([v for k, v in grad_z.items()])
+    grad_mean = np.nanmean(obs)
+    grad_std = np.nanstd(obs, ddof=1)
+    grad_median = np.nanmedian(obs)
+    return structure['name'], grad_mean, grad_std, grad_median
+
+
+def calc_dvh_uncertainty(rd, rs, kind, factor):
+    """
+        Helper function to calculate using multiprocessing the average gradient
+    :param rd: Path do DICOM-RTDOSE file
+    :param rs: Path do DICOM-Structure file
+    :return: Pandas Dataframe with estimated uncertainty on maximum dose (cGy)
+    """
+    rtss = ScoringDicomParser(filename=rs)
+    dicom_dose = ScoringDicomParser(filename=rd)
+    structures = rtss.GetStructures()
+
+    res = Parallel(n_jobs=-1, verbose=11)(
+        delayed(calc_gradient_pp)(structure, dicom_dose, kind, factor) for key, structure in structures.items()
+        if structure['name'] not in ['BODY'])
+
+    return pd.DataFrame(res, columns=['name', 'mean', 'std', 'median'])
+
+
 if __name__ == '__main__':
-    pass
+    rs = '/home/victor/Dropbox/Plan_Competition_Project/Competition_2016/DICOM Sets/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
+    #
+    root_path = '/media/victor/TOURO Mobile/PLAN_TESTING_DATA'
+    data = get_competition_data(root_path)
+
+    rd_data = data[data[1] == 'rtdose']['index']
+    res = []
+    for rd in rd_data:
+        df = calc_dvh_uncertainty(rd, rs, 'max', factor=0.5)
+        tmp = df['mean'].copy()
+        tmp.index = df['name']
+        res.append(tmp)
+
+    df_res = pd.concat(res, axis=1)

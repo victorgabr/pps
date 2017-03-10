@@ -13,8 +13,7 @@ from joblib import Parallel
 from joblib import delayed
 from matplotlib import pyplot as plt
 
-from pyplanscoring.dev.dvhcalculation import Structure, prepare_dvh_data, calc_dvhs_upsampled, save_dicom_dvhs, \
-    calc_dvh_uncertainty
+from pyplanscoring.dev.dvhcalculation import Structure, prepare_dvh_data, calc_dvhs_upsampled, save_dicom_dvhs
 from pyplanscoring.dev.geometry import get_axis_grid, get_interpolated_structure_planes
 from pyplanscoring.dicomparser import ScoringDicomParser
 from pyplanscoring.dosimetric import read_scoring_criteria, constrains, Competition2016
@@ -1322,25 +1321,6 @@ def timimg_evaluation():
 
     plt.plot(df[['Volume']][mask], df[['timing']][mask], '.')
     plt.show()
-
-
-def calculate_gradient_stats():
-    rs = '/home/victor/Dropbox/Plan_Competition_Project/Competition_2016/DICOM Sets/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
-    #
-    root_path = '/media/victor/TOURO Mobile/PLAN_TESTING_DATA'
-    data = get_competition_data(root_path)
-
-    rd_data = data[data[1] == 'rtdose']['index']
-    res = []
-    for rd in rd_data:
-        df = calc_dvh_uncertainty(rd, rs, 'max', factor=0.5)
-        tmp = df['mean'].copy()
-        tmp.index = df['name']
-        res.append(tmp)
-
-    df_res = pd.concat(res, axis=1)
-
-    return df_res
 
 
 if __name__ == '__main__':

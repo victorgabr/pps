@@ -31,6 +31,49 @@ def get_dvh_files(root_path):
     return dvh_files
 
 
+# def get_participant_folder_data(participant_name, root_path):
+#     """
+#         Provide all participant required files (RP,RS an RD DICOM FILES)
+#     :param participant_name: Participant string name
+#     :param root_path: participant folder
+#     :return: Pandas DataFrame containing path to files
+#     """
+#     files = [os.path.join(root, name) for root, dirs, files in os.walk(root_path) for name in files if
+#              name.endswith(('.dcm', '.DCM'))]
+#
+#     filtered_files = OrderedDict()
+#     for f in files:
+#         try:
+#             obj = ScoringDicomParser(filename=f)
+#             rt_type = obj.GetSOPClassUID()
+#             if rt_type == 'rtplan':
+#                 participant_data = [participant_name, rt_type]
+#                 filtered_files[f] = participant_data
+#             if rt_type == 'rtss':
+#                 participant_data = [participant_name, rt_type]
+#                 filtered_files[f] = participant_data
+#             if rt_type == 'rtdose':
+#                 participant_data = [participant_name, rt_type]
+#                 filtered_files[f] = participant_data
+#         except:
+#             logger.exception('Error in file %s' % f)
+#
+#     data = pd.DataFrame(filtered_files).T
+#
+#     # Check data consistency
+#     data_truth = []
+#     dcm_types = pd.DataFrame(['rtdose', 'rtplan', 'rtss'])
+#     dcm_files = pd.DataFrame(['RT-DOSE', 'RT-PLAN', 'RT-STRUCTURE'])
+#     for t in dcm_types.values:
+#         data_truth.append(t in data[1].values)
+#     data_truth = np.array(data_truth)
+#
+#     if len(data) == 3 and np.all(data_truth):
+#         return True, data
+#     else:
+#         return False, dcm_files.loc[~data_truth]
+
+
 def get_participant_folder_data(participant_name, root_path):
     """
         Provide all participant required files (RP,RS an RD DICOM FILES)
@@ -49,9 +92,9 @@ def get_participant_folder_data(participant_name, root_path):
             if rt_type == 'rtplan':
                 participant_data = [participant_name, rt_type]
                 filtered_files[f] = participant_data
-            if rt_type == 'rtss':
-                participant_data = [participant_name, rt_type]
-                filtered_files[f] = participant_data
+            # if rt_type == 'rtss':
+            #     participant_data = [participant_name, rt_type]
+            #     filtered_files[f] = participant_data
             if rt_type == 'rtdose':
                 participant_data = [participant_name, rt_type]
                 filtered_files[f] = participant_data
@@ -62,13 +105,13 @@ def get_participant_folder_data(participant_name, root_path):
 
     # Check data consistency
     data_truth = []
-    dcm_types = pd.DataFrame(['rtdose', 'rtplan', 'rtss'])
-    dcm_files = pd.DataFrame(['RT-DOSE', 'RT-PLAN', 'RT-STRUCTURE'])
+    dcm_types = pd.DataFrame(['rtdose', 'rtplan'])
+    dcm_files = pd.DataFrame(['RT-DOSE', 'RT-PLAN'])
     for t in dcm_types.values:
         data_truth.append(t in data[1].values)
     data_truth = np.array(data_truth)
 
-    if len(data) == 3 and np.all(data_truth):
+    if len(data) == 2 and np.all(data_truth):
         return True, data
     else:
         return False, dcm_files.loc[~data_truth]
@@ -316,23 +359,25 @@ class Scoring(object):
         # write total score rows
         total_fmt = workbook.add_format({'align': 'right', 'num_format': '0.00',
                                          'bold': True, 'bottom': 6})
-        # Determine where we will place the formula
-        for i in [6, 8]:
-            cell_location = xl_rowcol_to_cell(number_rows + 1, i)
-            # Get the range to use for the sum formula
-            start_range = xl_rowcol_to_cell(1, i)
-            end_range = xl_rowcol_to_cell(number_rows, i)
-            # Construct and write the formula
-            formula = "=SUM({:s}:{:s})".format(start_range, end_range)
-            worksheet.write_formula(cell_location, formula, total_fmt)
+
+        total_score = df['Raw Score'].sum()
+        max_score = df['Max Score'].sum()
+        performance = total_score / max_score
 
         worksheet.write_string(number_rows + 1, 5, "Max Score:", total_fmt)
         worksheet.write_string(number_rows + 1, 7, "Total Score:", total_fmt)
 
         # performance format
         performance_format = workbook.add_format({'align': 'right', 'num_format': '0.0%', 'bold': True, 'bottom': 6})
-        percent_formula = "=I{0}/G{0}".format(number_rows + 2)
-        worksheet.write_formula(number_rows + 1, 9, percent_formula, performance_format)
+
+        cell_location = xl_rowcol_to_cell(number_rows + 1, 9)
+        worksheet.write_number(cell_location, performance, performance_format)
+
+        cell_location = xl_rowcol_to_cell(number_rows + 1, 6)
+        # Get the range to use for the sum formula
+        worksheet.write_number(cell_location, max_score, total_fmt)
+        cell_location = xl_rowcol_to_cell(number_rows + 1, 8)
+        worksheet.write_number(cell_location, total_score, total_fmt)
 
         # SAVE BANNER
         if banner_path is not None:
