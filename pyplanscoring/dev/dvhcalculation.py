@@ -93,28 +93,31 @@ def get_planes_thickness(planesDict):
     return planes_thickness
 
 
-def get_capped_structure(structure):
-    planesDict = structure['planes']
+def get_capped_structure(structure, factor=4):
+    if factor == 0:
+        return structure['planes']
+    else:
+        planesDict = structure['planes']
 
-    out_Dict = deepcopy(planesDict)
-    ordered_keys = [z for z, sPlane in planesDict.items()]
-    ordered_keys.sort(key=float)
-    planes = np.array(ordered_keys, dtype=float)
-    start_cap = (planes[0] - structure['thickness'] / 4.0)
-    start_cap_key = '%.2f' % start_cap
-    start_cap_values = planesDict[ordered_keys[0]]
+        out_Dict = deepcopy(planesDict)
+        ordered_keys = [z for z, sPlane in planesDict.items()]
+        ordered_keys.sort(key=float)
+        planes = np.array(ordered_keys, dtype=float)
+        start_cap = (planes[0] - structure['thickness'] / factor)
+        start_cap_key = '%.2f' % start_cap
+        start_cap_values = planesDict[ordered_keys[0]]
 
-    end_cap = (planes[-1] + structure['thickness'] / 4.0)
-    end_cap_key = '%.2f' % end_cap
-    end_cap_values = planesDict[ordered_keys[-1]]
+        end_cap = (planes[-1] + structure['thickness'] / factor)
+        end_cap_key = '%.2f' % end_cap
+        end_cap_values = planesDict[ordered_keys[-1]]
 
-    out_Dict.pop(ordered_keys[0])
-    out_Dict.pop(ordered_keys[-1])
-    # adding structure caps
-    out_Dict[start_cap_key] = start_cap_values
-    out_Dict[end_cap_key] = end_cap_values
+        out_Dict.pop(ordered_keys[0])
+        out_Dict.pop(ordered_keys[-1])
+        # adding structure caps
+        out_Dict[start_cap_key] = start_cap_values
+        out_Dict[end_cap_key] = end_cap_values
 
-    return out_Dict
+        return out_Dict
 
 
 def get_bounding_lut(xmin, xmax, ymin, ymax, delta_mm, grid_delta):
@@ -508,13 +511,7 @@ class Structure(object):
             Up sample structures calculation by Victor Alves
         Read "A simple scoring ratio to index the conformity of radiosurgical
         treatment plans" by Ian Paddick.
-        J Neurosurg (Suppl 3) 93:219-222, 2000
-
-        :param rtdose: DICOM-RT dose ScoringDicomParser object
-        :param lowerlimit: Lower limit dose value (cGy)
-        :param upsample: True/False
-        :return: conformality index
-        """
+        J Neurosurg (Suppl 3) 93:219-222, 2000"""
 
         # print(' ----- Conformality index calculation -----')
         # print('Structure Name: %s - volume (cc) %1.3f - lower_limit (cGy):  %1.2f' % (
@@ -525,8 +522,16 @@ class Structure(object):
 
         sPlanes, dose_lut, dosegrid_points, grid_delta = self._prepare_data(grid_3d, upsample)
 
-        # wrap z axis
-        z_c, ordered_keys = wrap_z_coordinates(sPlanes, mapped_coord)
+        xx, yy = np.meshgrid(dose_lut[0], dose_lut[1], indexing='xy', sparse=True)
+
+        # Iterate over each plane in the structure
+        # wrap coordinates
+        fx, fy, fz = mapped_coord
+        ordered_keys = [z for z, sPlane in sPlanes.items()]
+        ordered_keys.sort(key=float)
+        x_cord = fx(xx)
+        y_cord = fy(yy)
+        z_cord = fz(ordered_keys)
 
         PITV = 0  # Rx isodose volume in cc
         CV = 0  # coverage volume
@@ -538,17 +543,15 @@ class Structure(object):
             # Get the contours with calculated areas and the largest contour index
             contours, largestIndex = calculate_contour_areas_numba(sPlane)
 
-            # Calculate the histogram for each contour
-            for j, contour in enumerate(contours):
-                # Get the dose plane for the current structure contour at plane
-                contour_dose_grid, ctr_dose_lut = get_contour_roi_grid(contour['data'], grid_delta)
+            # Get the dose plane for the current structure plane
+            doseplane = dose_interp((z_cord[i], y_cord, x_cord))
 
-                x_c, y_c = wrap_xy_coordinates(ctr_dose_lut, mapped_coord)
+            # If there is no dose for the current plane, go to the next plane
+            if not len(doseplane):
+                break
 
-                doseplane = dose_interp((z_c[i], y_c, x_c))
-
-                m = get_contour_mask_wn(ctr_dose_lut, contour_dose_grid, contour['data'])
-
+            for i, contour in enumerate(contours):
+                m = get_contour_mask_wn(dose_lut, dosegrid_points, contour['data'])
                 PITV_vol, CV_vol = self.calc_ci_vol(m, doseplane, lowerlimit, grid_delta)
 
                 # If this is the largest contour, just add to the total volume
