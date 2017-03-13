@@ -93,8 +93,14 @@ def get_planes_thickness(planesDict):
     return planes_thickness
 
 
-def get_capped_structure(structure, factor=4):
-    if factor == 0:
+def get_capped_structure(structure, shift=0):
+    """
+        Return structure planes dict end caped
+    :param structure: Structure Dict
+    :param shift: end cap shift - (millimeters)
+    :return: Structure Planes end-caped by shift
+    """
+    if shift == 0.0:
         return structure['planes']
     else:
         planesDict = structure['planes']
@@ -103,11 +109,11 @@ def get_capped_structure(structure, factor=4):
         ordered_keys = [z for z, sPlane in planesDict.items()]
         ordered_keys.sort(key=float)
         planes = np.array(ordered_keys, dtype=float)
-        start_cap = (planes[0] - structure['thickness'] / factor)
+        start_cap = (planes[0] - shift)
         start_cap_key = '%.2f' % start_cap
         start_cap_values = planesDict[ordered_keys[0]]
 
-        end_cap = (planes[-1] + structure['thickness'] / factor)
+        end_cap = (planes[-1] + shift)
         end_cap_key = '%.2f' % end_cap
         end_cap_values = planesDict[ordered_keys[-1]]
 
@@ -210,23 +216,23 @@ def plot_slice_gradient(gradient_z, structure_name):
 
 
 class Structure(object):
-    def __init__(self, dicom_structure, end_cap=False):
+    def __init__(self, dicom_structure, calculation_options):
         """
             Class to encapsulate up-sampling and DVH calculation methodologies
         :param dicom_structure: Structure Dict - Planes and contours
         :param end_cap: Structure end cap.
         """
         self.structure = dicom_structure
-        self.end_cap = end_cap
+        self.calculation_options = calculation_options
         self.contour_spacing = dicom_structure['thickness']
         self.grid_spacing = np.zeros(3)
         self.dose_lut = None
         self.dose_grid_points = None
         self.hi_res_structure = None
         self.dvh = np.array([])
-        # self.delta_mm = np.asarray([0.25, 0.25, 0.1])
-        self.delta_mm = np.asarray([0.5, 0.5, 0.5])
-        self.vol_lim = 100
+        voxel_size = calculation_options['voxel_size']
+        self.delta_mm = np.asarray([voxel_size, voxel_size, voxel_size])
+        self.vol_lim = calculation_options['maximum_upsampled_volume_cc']
         self.organ2dvh = None
         self.dvh_data = None
 
@@ -244,11 +250,8 @@ class Structure(object):
     # @poperty Fix python 2.7 compatibility but it is very ineficient
     @lazyproperty
     def planes(self):
-        if self.end_cap:
-            # TODO improve end capping method
-            return get_capped_structure(self.structure)
-        else:
-            return self.structure['planes']
+        # TODO improve end capping method
+        return get_capped_structure(self.structure, self.calculation_options['end_cap'])
 
     @property
     def volume_original(self):
@@ -337,7 +340,7 @@ class Structure(object):
             # else:
             #     self.delta_mm = (1, 1, 1)
 
-    def calculate_dvh(self, dicom_dose, bin_size=1.0, up_sample=False, timing=False):
+    def calculate_dvh(self, dicom_dose, bin_size=1.0, timing=False):
         """
             Calculates structure DVH using Winding Number(wn) method to check contour boundaries
         :param dicom_dose: DICOM-RT dose ScoringDicomParser object
@@ -347,11 +350,15 @@ class Structure(object):
         """
         print(' ----- DVH Calculation -----')
         print('Structure Name: %s - volume (cc) %1.3f' % (self.name, self.volume_cc))
+
         # 3D DOSE TRI-LINEAR INTERPOLATION
         dose_interp, grid_3d, mapped_coord = dicom_dose.DoseRegularGridInterpolator()
+        # Set up_sampling or not
+        up_sample = self.calculation_options['up_sampling']
         sPlanes, dose_lut, dosegrid_points, grid_delta = self._prepare_data(grid_3d, up_sample)
-        print('End caping:  ' + str(self.end_cap))
-        print('Grid delta (mm): ', grid_delta)
+
+        print('End caping (mm): %1.2f ' % self.calculation_options['end_cap'])
+        print('Grid delta (mm): (%1.2f, %1.2f, %1.2f) ' % (grid_delta[0], grid_delta[1], grid_delta[2]))
 
         # wrap z axis
         z_c, ordered_keys = wrap_z_coordinates(sPlanes, mapped_coord)
@@ -550,12 +557,12 @@ class Structure(object):
             if not len(doseplane):
                 break
 
-            for i, contour in enumerate(contours):
+            for j, contour in enumerate(contours):
                 m = get_contour_mask_wn(dose_lut, dosegrid_points, contour['data'])
                 PITV_vol, CV_vol = self.calc_ci_vol(m, doseplane, lowerlimit, grid_delta)
 
                 # If this is the largest contour, just add to the total volume
-                if i == largestIndex:
+                if j == largestIndex:
                     PITV += PITV_vol
                     CV += CV_vol
                 # Otherwise, determine whether to add or subtract
@@ -677,18 +684,18 @@ class Structure(object):
         return df_rectangles
 
 
-def get_dvh_upsampled(structure, dose, key, end_cap=False, upsample=True):
+def get_dvh_upsampled(structure, dose, key, calculation_options):
     """Get a calculated cumulative DVH along with the associated parameters."""
 
-    struc_teste = Structure(structure, end_cap=end_cap)
-    dhist, chist = struc_teste.calculate_dvh(dose, up_sample=upsample)
+    struc_teste = Structure(structure, calculation_options)
+    dhist, chist = struc_teste.calculate_dvh(dose)
     dvh_data = prepare_dvh_data(dhist, chist)
     dvh_data['key'] = key
 
     return dvh_data
 
 
-def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, end_cap=False, upsample=True):
+def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, calculation_options=None):
     """
         Computes structures DVH using a RS-DICOM and RD-DICOM diles
     :param rs_file: path to RS dicom-file
@@ -700,15 +707,8 @@ def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, end
     # Obtain the structures and DVHs from the DICOM data
     structures = rtss.GetStructures()
 
-    if upsample:
-        upsample = True
-    else:
-        upsample = False
-
-    # backend = 'threading'
-    # backend = 'threading'
     res = Parallel(n_jobs=-1, verbose=11, backend='threading')(
-        delayed(get_dvh_upsampled)(structure, rtdose, key, end_cap, upsample) for key, structure in structures.items()
+        delayed(get_dvh_upsampled)(structure, rtdose, key, calculation_options) for key, structure in structures.items()
         if
         structure['name'] in struc_names)
     cdvh = {}

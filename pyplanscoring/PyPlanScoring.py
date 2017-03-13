@@ -1,5 +1,5 @@
 from __future__ import division
-
+import configparser
 import os
 import platform
 import sys
@@ -28,12 +28,23 @@ def _sys_getenc_wrapper():
 
 sys.getfilesystemencoding = _sys_getenc_wrapper
 
+# set globals
 # SET COMPETITION 2017
+
 folder = os.getcwd()
 path = os.path.join(folder, 'Scoring Criteria.txt')
 constrains, scores, criteria = read_scoring_criteria(path)
 banner_path = os.path.join(folder, '2017 Plan Comp Banner.jpg')
-rs = os.path.join(folder, 'RS.1.2.246.352.71.4.584747638204.253443.20170222200317.dcm')
+
+# Get calculation defaults
+config = configparser.ConfigParser()
+config.read(os.path.join(folder, 'PyPlanScoring.ini'))
+calculation_options = dict()
+calculation_options['end_cap'] = config.getfloat('DEFAULT', 'end_cap')
+calculation_options['use_tps_dvh'] = config.getboolean('DEFAULT', 'use_tps_dvh')
+calculation_options['up_sampling'] = config.getboolean('DEFAULT', 'up_sampling')
+calculation_options['maximum_upsampled_volume_cc'] = config.getfloat('DEFAULT', 'maximum_upsampled_volume_cc')
+calculation_options['voxel_size'] = config.getfloat('DEFAULT', 'voxel_size')
 
 
 class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):
@@ -84,42 +95,31 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):
     def _calc_score(self):
         rd = self.files_data.reset_index().set_index(1).ix['rtdose']['index']
         rp = self.files_data.reset_index().set_index(1).ix['rtplan']['index']
+        rs = os.path.join(folder, 'RS.1.2.246.352.71.4.584747638204.253443.20170222200317.dcm')
 
-        # rs = self.files_data.reset_index().set_index(1).ix['rtss']['index']
-        # end cap and upsample only small structures
-        self.participant = Participant(rp, rs, rd, upsample='_up_sampled_', end_cap=True)
+        if calculation_options['use_tps_dvh']:
+            rs = self.files_data.reset_index().set_index(1).ix['rtss']['index']
+
+        self.participant = Participant(rp, rs, rd, calculation_options=calculation_options)
         self.participant.set_participant_data(self.name)
-        arg = QtCore.QEventLoop.AllEvents
-        QtCore.QCoreApplication.processEvents(arg, maxtime=1000)
         val = self.participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria,
-                                          dicom_dvh=False)
+                                          calculation_options=calculation_options)
 
         return val
 
     def on_save(self):
         self.listWidget.addItem(str('-------------Calculating score--------------'))
-        # self.worker.set_parameters(self.name,
-        #                            self.files_data,
-        #                            constrains,
-        #                            scores,
-        #                            criteria,
-        #                            dicom_dvh=False,
-        #                            upsample=True,
-        #                            end_cap=True)
-        #
-        # self.worker.show()
-        # self.worker.run()
-        # # self.worker_thread.start()
+        if calculation_options['use_tps_dvh']:
+            self.listWidget.addItem(str('Using TPS exported DVH'))
+            self.listWidget.addItem(str('Matched RS/RD dicom files'))
+            self.listWidget.addItem(str(self.files_data.reset_index().set_index(1).ix['rtss']['index']))
+            self.listWidget.addItem(str(self.files_data.reset_index().set_index(1).ix['rtdose']['index']))
 
         out_name = '_plan_scoring_report.xlsx'
-        # if self.tps_check_box.isChecked():
-        #     self.listWidget.addItem(str('Using TPS calculated DVH from DICOM-RT dose file'))
-        #     out_name = '_plan_scoring_report_TPS_DVH.xlsx'
-
         sc = self._calc_score()
         self.listWidget.addItem(str('Plan Score: %1.3f' % sc))
         out_file = os.path.join(self.folder_root, self.name + out_name)
-        self.participant.save_score(out_file, banner_path=banner_path)
+        self.participant.save_score(out_file, banner_path=banner_path, report_header=self.name)
         self.listWidget.addItem(str('Saving report on %s ' % out_file))
 
     def about(self):
@@ -182,9 +182,7 @@ def main():
     app = QtGui.QApplication(sys.argv)
     form = MainDialog()
     form.show()
-    QtCore.QCoreApplication.processEvents()
-    # sys.exit(app.exec_())
-    app.exec_()
+    sys.exit(app.exec_())
 
 
 if __name__ == '__main__':

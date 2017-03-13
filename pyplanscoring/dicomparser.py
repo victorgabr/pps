@@ -1180,9 +1180,9 @@ def test_rtss_eclipse(f):
 
 
 if __name__ == '__main__':
-    f = r'D:\Dropbox\Plan_Competition_Project\FantomaPQRT\RS.PQRT END TO END.dcm'
+    f = r'/home/victor/Downloads/Simon.Heinze@kssg.ch -Simon(TOMO)/Simon.Heinze@kssg.ch -Simon/Plan-File-PreEvaluatiuon-HeinzeSimon.dcm'
 
-    f = r'/home/victor/Downloads/RS.PQRT END TO END.dcm'
+    # f = r'/home/victor/Downloads/RS.PQRT END TO END.dcm'
     ds = dicom.read_file(f)
     print('SpecificCharacterSet: %s' % ds.SpecificCharacterSet)
     print('Manufacturer: %s' % ds.Manufacturer)
@@ -1196,4 +1196,6 @@ if __name__ == '__main__':
     rois = [roi for roi in ds.ROIContours]
     rc = [roi for roi in ds.StructureSetROISequence]
     print(rois)
+    rtp = ScoringDicomParser(filename=f)
+
     # print(rois)
