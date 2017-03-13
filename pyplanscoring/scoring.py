@@ -31,49 +31,6 @@ def get_dvh_files(root_path):
     return dvh_files
 
 
-# def get_participant_folder_data(participant_name, root_path):
-#     """
-#         Provide all participant required files (RP,RS an RD DICOM FILES)
-#     :param participant_name: Participant string name
-#     :param root_path: participant folder
-#     :return: Pandas DataFrame containing path to files
-#     """
-#     files = [os.path.join(root, name) for root, dirs, files in os.walk(root_path) for name in files if
-#              name.endswith(('.dcm', '.DCM'))]
-#
-#     filtered_files = OrderedDict()
-#     for f in files:
-#         try:
-#             obj = ScoringDicomParser(filename=f)
-#             rt_type = obj.GetSOPClassUID()
-#             if rt_type == 'rtplan':
-#                 participant_data = [participant_name, rt_type]
-#                 filtered_files[f] = participant_data
-#             if rt_type == 'rtss':
-#                 participant_data = [participant_name, rt_type]
-#                 filtered_files[f] = participant_data
-#             if rt_type == 'rtdose':
-#                 participant_data = [participant_name, rt_type]
-#                 filtered_files[f] = participant_data
-#         except:
-#             logger.exception('Error in file %s' % f)
-#
-#     data = pd.DataFrame(filtered_files).T
-#
-#     # Check data consistency
-#     data_truth = []
-#     dcm_types = pd.DataFrame(['rtdose', 'rtplan', 'rtss'])
-#     dcm_files = pd.DataFrame(['RT-DOSE', 'RT-PLAN', 'RT-STRUCTURE'])
-#     for t in dcm_types.values:
-#         data_truth.append(t in data[1].values)
-#     data_truth = np.array(data_truth)
-#
-#     if len(data) == 3 and np.all(data_truth):
-#         return True, data
-#     else:
-#         return False, dcm_files.loc[~data_truth]
-
-
 def get_participant_folder_data(participant_name, root_path):
     """
         Provide all participant required files (RP,RS an RD DICOM FILES)
@@ -92,9 +49,9 @@ def get_participant_folder_data(participant_name, root_path):
             if rt_type == 'rtplan':
                 participant_data = [participant_name, rt_type]
                 filtered_files[f] = participant_data
-            # if rt_type == 'rtss':
-            #     participant_data = [participant_name, rt_type]
-            #     filtered_files[f] = participant_data
+            if rt_type == 'rtss':
+                participant_data = [participant_name, rt_type]
+                filtered_files[f] = participant_data
             if rt_type == 'rtdose':
                 participant_data = [participant_name, rt_type]
                 filtered_files[f] = participant_data
@@ -105,16 +62,59 @@ def get_participant_folder_data(participant_name, root_path):
 
     # Check data consistency
     data_truth = []
-    dcm_types = pd.DataFrame(['rtdose', 'rtplan'])
-    dcm_files = pd.DataFrame(['RT-DOSE', 'RT-PLAN'])
+    dcm_types = pd.DataFrame(['rtdose', 'rtplan', 'rtss'])
+    dcm_files = pd.DataFrame(['RT-DOSE', 'RT-PLAN', 'RT-STRUCTURE'])
     for t in dcm_types.values:
         data_truth.append(t in data[1].values)
     data_truth = np.array(data_truth)
 
-    if len(data) == 2 and np.all(data_truth):
+    if len(data) == 3 and np.all(data_truth):
         return True, data
     else:
         return False, dcm_files.loc[~data_truth]
+
+
+# def get_participant_folder_data(participant_name, root_path):
+#     """
+#         Provide all participant required files (RP,RS an RD DICOM FILES)
+#     :param participant_name: Participant string name
+#     :param root_path: participant folder
+#     :return: Pandas DataFrame containing path to files
+#     """
+#     files = [os.path.join(root, name) for root, dirs, files in os.walk(root_path) for name in files if
+#              name.endswith(('.dcm', '.DCM'))]
+#
+#     filtered_files = OrderedDict()
+#     for f in files:
+#         try:
+#             obj = ScoringDicomParser(filename=f)
+#             rt_type = obj.GetSOPClassUID()
+#             if rt_type == 'rtplan':
+#                 participant_data = [participant_name, rt_type]
+#                 filtered_files[f] = participant_data
+#             # if rt_type == 'rtss':
+#             #     participant_data = [participant_name, rt_type]
+#             #     filtered_files[f] = participant_data
+#             if rt_type == 'rtdose':
+#                 participant_data = [participant_name, rt_type]
+#                 filtered_files[f] = participant_data
+#         except:
+#             logger.exception('Error in file %s' % f)
+#
+#     data = pd.DataFrame(filtered_files).T
+#
+#     # Check data consistency
+#     data_truth = []
+#     dcm_types = pd.DataFrame(['rtdose', 'rtplan'])
+#     dcm_files = pd.DataFrame(['RT-DOSE', 'RT-PLAN'])
+#     for t in dcm_types.values:
+#         data_truth.append(t in data[1].values)
+#     data_truth = np.array(data_truth)
+#
+#     if len(data) == 2 and np.all(data_truth):
+#         return True, data
+#     else:
+#         return False, dcm_files.loc[~data_truth]
 
 
 class DVHMetrics(object):
@@ -218,7 +218,7 @@ class DVHMetrics(object):
 
 
 class Scoring(object):
-    def __init__(self, rd_file, rs_file, rp_file, constrain, score, criteria=None):
+    def __init__(self, rd_file, rs_file, rp_file, constrain, score, criteria=None, calculation_options=None):
         """
             Scoring class to encapsulate methods to extract constrains from DICOM-RP/RS/RD
         :param rd_file: DICOM-RT Dose file path
@@ -239,6 +239,7 @@ class Scoring(object):
         self.score = 0
         self.criteria = criteria
         self.is_dicom_dvh = False
+        self.calculation_options = calculation_options
 
     @lazyproperty
     def scoring_result(self):
@@ -252,7 +253,7 @@ class Scoring(object):
             self.score = pd.DataFrame(self.scoring_result).sum().sum()
             return self.score
 
-    def save_score_results(self, out_file, banner_path=None):
+    def save_score_results(self, out_file, banner_path=None, report_header=''):
         """
             Save detailed scoring results on spreadsheet
         :param out_file: File path to excel report (*.xls file)
@@ -279,12 +280,12 @@ class Scoring(object):
 
             df_report = pd.concat(report)
             df_report['Performance'] = df_report['Raw Score'] / df_report['Max Score']
-            self.save_formatted_report(df_report, out_file, banner_path)
+            self.save_formatted_report(df_report, out_file, banner_path, report_header)
         else:
             print('You need to set DVH data first!')
 
     @staticmethod
-    def save_formatted_report(df, out_file, banner_path=None):
+    def save_formatted_report(df, out_file, banner_path=None, report_header=''):
 
         """
             Save an formated report using pandas and xlsxwriter
@@ -292,9 +293,10 @@ class Scoring(object):
         :param out_file: filename path
         :param banner_path: banner path
         """
+        start_row = 31
         number_rows = len(df.index)
         writer = pd.ExcelWriter(out_file, engine='xlsxwriter')
-        df.to_excel(writer, sheet_name='report')
+        df.to_excel(writer, sheet_name='report', startrow=start_row)
 
         # Get access to the workbook and sheet
         workbook = writer.book
@@ -321,18 +323,19 @@ class Scoring(object):
         # Format the columns by width and include number formats
 
         # Structure name
-        sname = "A2:A{}".format(number_rows + 1)
+        nr = number_rows + start_row
+        sname = "A2:A{}".format(nr + 1)
         worksheet.set_column(sname, 24)
         # constrain
-        constrain = "B2:B{}".format(number_rows + 1)
+        constrain = "B2:B{}".format(nr + 1)
         worksheet.set_column(constrain, 20, constrain_fmt)
 
         # constrain value
-        constrain_value = "C2:C{}".format(number_rows + 1)
+        constrain_value = "C2:C{}".format(nr + 1)
         worksheet.set_column(constrain_value, 20, constrain_fmt)
 
         # constrain type
-        constrain_type = "D2:D{}".format(number_rows + 1)
+        constrain_type = "D2:D{}".format(nr + 1)
         worksheet.set_column(constrain_type, 20, constrain_fmt)
 
         worksheet.conditional_format(constrain_type, {'type': 'text',
@@ -350,7 +353,7 @@ class Scoring(object):
         worksheet.set_column('E:I', 20, number_format)
 
         # Define our range for the color formatting
-        color_range = "J2:J{}".format(number_rows + 1)
+        color_range = "J2:J{}".format(nr + 1)
         worksheet.set_column(color_range, 20, total_percent_fmt)
 
         # Highlight the top 5 values in Green
@@ -360,28 +363,46 @@ class Scoring(object):
         total_fmt = workbook.add_format({'align': 'right', 'num_format': '0.00',
                                          'bold': True, 'bottom': 6})
 
+        total_fmt_header = workbook.add_format({'align': 'right', 'num_format': '0.00',
+                                                'bold': True, 'bottom': 6, 'bg_color': '#C6EFCE'})
+
         total_score = df['Raw Score'].sum()
         max_score = df['Max Score'].sum()
         performance = total_score / max_score
 
-        worksheet.write_string(number_rows + 1, 5, "Max Score:", total_fmt)
-        worksheet.write_string(number_rows + 1, 7, "Total Score:", total_fmt)
+        worksheet.write_string(nr + 1, 5, "Max Score:", total_fmt)
+        worksheet.write_string(nr + 1, 7, "Total Score:", total_fmt_header)
 
         # performance format
-        performance_format = workbook.add_format({'align': 'right', 'num_format': '0.0%', 'bold': True, 'bottom': 6})
+        performance_format = workbook.add_format(
+            {'align': 'right', 'num_format': '0.0%', 'bold': True, 'bottom': 6, 'bg_color': '#C6EFCE'})
 
-        cell_location = xl_rowcol_to_cell(number_rows + 1, 9)
+        cell_location = xl_rowcol_to_cell(nr + 1, 9)
         worksheet.write_number(cell_location, performance, performance_format)
 
-        cell_location = xl_rowcol_to_cell(number_rows + 1, 6)
+        cell_location = xl_rowcol_to_cell(nr + 1, 6)
         # Get the range to use for the sum formula
         worksheet.write_number(cell_location, max_score, total_fmt)
-        cell_location = xl_rowcol_to_cell(number_rows + 1, 8)
-        worksheet.write_number(cell_location, total_score, total_fmt)
+        cell_location = xl_rowcol_to_cell(nr + 1, 8)
+        worksheet.write_number(cell_location, total_score, total_fmt_header)
 
         # SAVE BANNER
         if banner_path is not None:
-            worksheet.insert_image('K1', banner_path)
+            options = {'x_scale': 0.87}
+            worksheet.insert_image('A1', banner_path, options=options)
+
+        # adding participant header
+        # Create a format to use in the merged range.
+        merge_format = workbook.add_format({
+            'bold': 1,
+            'border': 1,
+            'align': 'center',
+            'valign': 'vcenter',
+            'font_size': 15,
+        })
+
+        # Merge 3 cells.
+        worksheet.merge_range('A31:J31', report_header, merge_format)
 
         writer.save()
 
@@ -473,9 +494,30 @@ class Scoring(object):
 
     def get_conformity(self, nk, value):
 
-        stmp = Structure(self.structures[nk])
+        stmp = Structure(self.structures[nk], self.calculation_options)
         cindex = stmp.calc_conformation_index(self.rtdose, value)
         return cindex
+
+    def _get_conformity(self, k, values):
+
+        """
+            Calculates CI using only DVH curves from TPS.
+        :param k: Structure name
+        :param values: Value in cGy to calculate CV
+
+        :return:
+        """
+        max_volume_key = max(self.dvhs, key=lambda i: self.dvhs[i]['data'][0])
+
+        metrics = DVHMetrics(self.dvhs[max_volume_key])
+
+        PITV = metrics.get_volume_constrain_cc(values)
+        target_metrics = DVHMetrics(self.dvhs[k])
+        CV = target_metrics.get_volume_constrain_cc(values)
+        TV = target_metrics.get_volume()
+        CI = CV ** 2 / (TV * PITV)
+
+        return CI
 
     def calc_conformity(self, k, values):
 
@@ -526,7 +568,7 @@ class Scoring(object):
 
 class Participant(object):
     # TODO save important data a
-    def __init__(self, rp_file, rs_file, rd_file, dvh_file='', upsample='', end_cap=False):
+    def __init__(self, rp_file, rs_file, rd_file, dvh_file='', calculation_options=None):
         """
             Class to encapsulate all plan participant planning data to eval using pyplanscoring app
         :param rp_file: path to DICOM-RTPLAN file
@@ -545,8 +587,7 @@ class Participant(object):
         self.score_obj = None
         self.participant_name = ''
         self.structure_names = []
-        self.up_sample = upsample
-        self.end_cap = end_cap
+        self.calculation_options = calculation_options
 
     def set_participant_data(self, participant_name):
 
@@ -558,10 +599,7 @@ class Participant(object):
         p = os.path.splitext(dest)
         _, filename = os.path.split(dest)
 
-        fig_name = p[0] + '_RD_calc_' + self.up_sample + 'DVH.png'
-
-        if self.end_cap:
-            fig_name = p[0] + '_RD_calc_' + self.up_sample + '_END_CAPPED_DVH.png'
+        fig_name = p[0] + '_RD_calc_' + 'DVH.png'
 
         fig, ax = plt.subplots()
         fig.set_figheight(12)
@@ -583,19 +621,25 @@ class Participant(object):
         self.structure_names = structure_names
         if not self.dvh_file:
             p = os.path.splitext(self.rd_file)
-            self.dvh_file = p[0] + self.up_sample + '.dvh'
-            if self.end_cap:
-                self.dvh_file = p[0] + self.up_sample + 'end_cap.dvh'
-            if not os.path.exists(self.dvh_file):
-                cdvh = calc_dvhs_upsampled(self.participant_name, self.rs_file, self.rd_file,
-                                           structure_names,
-                                           out_file=self.dvh_file,
-                                           end_cap=self.end_cap, upsample=self.up_sample)
-                self._save_dvh_fig(cdvh, self.rd_file)
+            self.dvh_file = p[0] + '.dvh'
+            # if not os.path.exists(self.dvh_file):
+            cdvh = calc_dvhs_upsampled(self.participant_name, self.rs_file, self.rd_file,
+                                       structure_names,
+                                       out_file=self.dvh_file,
+                                       calculation_options=self.calculation_options)
+            self._save_dvh_fig(cdvh, self.rd_file)
 
-    def eval_score(self, constrains_dict, scores_dict, criteria_df, dicom_dvh=False):
-        self.score_obj = Scoring(self.rd_file, self.rs_file, self.rp_file, constrains_dict, scores_dict, criteria_df)
-        if dicom_dvh:
+    def eval_score(self, constrains_dict, scores_dict, criteria_df, calculation_options):
+
+        self.score_obj = Scoring(self.rd_file,
+                                 self.rs_file,
+                                 self.rp_file,
+                                 constrains_dict,
+                                 scores_dict,
+                                 criteria_df,
+                                 calculation_options=calculation_options)
+
+        if calculation_options['use_tps_dvh']:
             self.score_obj.set_dicom_dvh_data()
         else:
             self._save_dvh(criteria_df.index.unique())
@@ -603,8 +647,8 @@ class Participant(object):
 
         return self.score_obj.get_total_score()
 
-    def save_score(self, out_file, banner_path=None):
-        self.score_obj.save_score_results(out_file, banner_path)
+    def save_score(self, out_file, banner_path=None, report_header=''):
+        self.score_obj.save_score_results(out_file, banner_path, report_header)
 
 
 if __name__ == '__main__':
