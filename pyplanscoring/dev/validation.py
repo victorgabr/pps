@@ -1,5 +1,6 @@
 from __future__ import division
 
+import configparser
 import logging
 import os
 import re
@@ -25,6 +26,17 @@ from pyplanscoring.scoring import DVHMetrics, Scoring
 logger = logging.getLogger('validation')
 
 logging.basicConfig(filename='plan_competition_2016_no_dicom_DVH.log', level=logging.DEBUG)
+
+# Get calculation defaults
+folder = os.getcwd()
+config = configparser.ConfigParser()
+config.read(os.path.join(folder, 'validation.ini'))
+calculation_options = dict()
+calculation_options['end_cap'] = config.getfloat('DEFAULT', 'end_cap')
+calculation_options['use_tps_dvh'] = config.getboolean('DEFAULT', 'use_tps_dvh')
+calculation_options['up_sampling'] = config.getboolean('DEFAULT', 'up_sampling')
+calculation_options['maximum_upsampled_volume_cc'] = config.getfloat('DEFAULT', 'maximum_upsampled_volume_cc')
+calculation_options['voxel_size'] = config.getfloat('DEFAULT', 'voxel_size')
 
 
 # TODO extract constrains from analytical curves
@@ -228,7 +240,7 @@ def get_analytical_curve(an_curves_obj, file_structure_name, column):
     return dose_range, cdvh
 
 
-def calc_data(row, dose_files_dict, structure_dict, constrains, delta_mm=(0.2, 0.2, 0.1), end_cap=True, up_sample=True):
+def calc_data(row, dose_files_dict, structure_dict, constrains, calculation_options):
     idx, values = row[0], row[1]
     s_name = values['Structure name']
     voxel = str(values['Dose Voxel (mm)'])
@@ -243,10 +255,12 @@ def calc_data(row, dose_files_dict, structure_dict, constrains, delta_mm=(0.2, 0
     structures = struc.GetStructures()
     structure = structures[2]
 
+    # set end cap by 1/2 slice thickness
+    calculation_options['end_cap'] = structure['thickness'] / 2.0
+
     # set up sampled structure
-    struc_teste = Structure(structure, end_cap=end_cap)
-    struc_teste.set_delta(delta_mm)
-    dhist, chist = struc_teste.calculate_dvh(dicom_dose, up_sample=up_sample)
+    struc_teste = Structure(structure, calculation_options)
+    dhist, chist = struc_teste.calculate_dvh(dicom_dose)
     dvh_data = struc_teste.get_dvh_data()
 
     # Setup DVH metrics class and get DVH DATA
@@ -279,9 +293,9 @@ def calc_data_all(row, dose_files_dict, structure_dict, constrains, an_curves, c
     structure = structures[2]
 
     # set up sampled structure
-    struc_teste = Structure(structure, end_cap=end_cap)
+    struc_teste = Structure(structure)
     struc_teste.set_delta(delta_mm)
-    dhist, chist = struc_teste.calculate_dvh(dicom_dose, up_sample=up_sample)
+    dhist, chist = struc_teste.calculate_dvh(dicom_dose)
 
     # get its columns from spreadsheet
     column = col_grad_dict[gradient][voxel]
@@ -503,7 +517,7 @@ def test22(delta_mm=(0.1, 0.1, 0.1), up_sample=True, plot_curves=True):
     plt.show()
 
 
-def test1(delta_mm=(0.1, 0.1, 0.1), end_cap=True, up_sample=True, lim=3, save_data=False):
+def test1(lim=3, save_data=False):
     """
     In Test 1, the axial contour spacing was kept constant at
     0.2 mm to essentially eliminate the variation and/or errors
@@ -599,11 +613,7 @@ def test1(delta_mm=(0.1, 0.1, 0.1), end_cap=True, up_sample=True, lim=3, save_da
                            dose_files_dict,
                            structure_dict,
                            constrains,
-                           delta_mm,
-                           end_cap=end_cap,
-                           up_sample=up_sample)
-        for row in
-        df.iterrows())
+                           calculation_options) for row in df.iterrows())
 
     # aggregating data
     df_concat = [d[0] for d in res]
@@ -709,8 +719,7 @@ def test2(delta_mm=(0.1, 0.1, 0.1), end_cap=True, lim=3):
                            dose_files_dict,
                            structure_dict,
                            constrains,
-                           delta_mm=delta_mm,
-                           end_cap=end_cap) for row in dfi.iterrows())
+                           calculation_options) for row in dfi.iterrows())
 
     # aggregating data
     df_concat = [d[0] for d in res]
@@ -751,7 +760,7 @@ def test2(delta_mm=(0.1, 0.1, 0.1), end_cap=True, lim=3):
     print(test_table)
 
 
-def test3(delta_mm=(0.1, 0.1, 0.1), plot_curves=True):
+def test3(plot_curves=True):
     """
                        Gradient Resolution (mm)  max  mean  min  std
     Sphere_10_0        Z(AP)               1 -0.0  -0.2 -0.3  0.1
@@ -826,16 +835,19 @@ def test3(delta_mm=(0.1, 0.1, 0.1), plot_curves=True):
         struc = ScoringDicomParser(filename=struc_path)
         structures = struc.GetStructures()
         structure = structures[st]
+
+        # set end cap by 1/2 slice thickness
+        calculation_options['end_cap'] = structure['thickness'] / 2.0
+
         # set up sampled structure
-        struc_teste = Structure(structure, end_cap=True)
-        struc_teste.set_delta(delta_mm=delta_mm)
+        struc_teste = Structure(structure, calculation_options)
         str_result = {}
         test_data = test_files[sname]
         for k in test_data:
             # get dose
             dose_file = test_data[k]
             dicom_dose = ScoringDicomParser(filename=dose_file)
-            dhist, chist = struc_teste.calculate_dvh(dicom_dose, up_sample=True)
+            dhist, chist = struc_teste.calculate_dvh(dicom_dose)
             dvh_data = struc_teste.get_dvh_data()
             str_result[k] = dvh_data
 
@@ -1309,7 +1321,7 @@ def timimg_evaluation():
                 struc = Structure(structure)
                 if struc.volume_original < 100:
                     struc.set_delta((d, d, d))
-                    res = struc.calculate_dvh(dicom_dose, up_sample=True, timing=True)
+                    res = struc.calculate_dvh(dicom_dose, timing=True)
                     timing_stats.append(res)
 
     dest = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/validation/timings.obj'
@@ -1324,7 +1336,8 @@ def timimg_evaluation():
 
 
 if __name__ == '__main__':
-    test1()
+    plt.style.use('ggplot')
+    test3()
 # plot_curves = True
 # plt.style.use('ggplot')
 # delta_mm = (0.1, 0.1, 0.1)
