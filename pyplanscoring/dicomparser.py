@@ -1160,6 +1160,25 @@ class ScoringDicomParser(DicomParser):
 
         return self.dvhs
 
+    def GetSOPClassUID(self):
+        """Determine the SOP Class UID of the current file.
+            http://www.dicomlibrary.com/dicom/sop/
+        """
+
+        if self.ds.SOPClassUID == '1.2.840.10008.5.1.4.1.1.481.2':
+            return 'rtdose'
+        elif self.ds.SOPClassUID == '1.2.840.10008.5.1.4.1.1.481.3':
+            return 'rtss'
+        elif self.ds.SOPClassUID == '1.2.840.10008.5.1.4.1.1.481.5':
+            return 'rtplan'
+        # IMPT plan files
+        elif self.ds.SOPClassUID == '1.2.840.10008.5.1.4.1.1.481.8':
+            return 'rtplan'
+        elif self.ds.SOPClassUID == '1.2.840.10008.5.1.4.1.1.2':
+            return 'ct'
+        else:
+            return None
+
 
 def test_rtss_eclipse(f):
     ds = dicom.read_file(f)
