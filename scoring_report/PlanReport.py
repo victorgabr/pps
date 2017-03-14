@@ -20,6 +20,13 @@ txt = "PlanReport - H&N Nasopharynx - 2017 RT Plan Competition: %s \n" \
       "%s" \
       % (__version__, __author__, platform.python_version(), platform.system(), __license__)
 
+calculation_options = dict()
+calculation_options['end_cap'] = 0.5
+calculation_options['use_tps_dvh'] = False
+calculation_options['up_sampling'] = True
+calculation_options['maximum_upsampled_volume_cc'] = 100.0
+calculation_options['voxel_size'] = 0.5
+
 
 def main():
     print(txt)
@@ -48,13 +55,11 @@ def main():
 
     print('------------- Calculating DVH and score --------------')
 
-    dicom_dvh = False
-    end_cap = True
-    participant = Participant(rp, rs, rd, upsample='_up_sampled_', end_cap=end_cap)
+    participant = Participant(rp, rs, rd, calculation_options=calculation_options)
     participant.set_participant_data(participant_name)
     val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria,
-                                 dicom_dvh=dicom_dvh)
-    if dicom_dvh:
+                                 calculation_options=calculation_options)
+    if calculation_options['use_tps_dvh']:
         print('Using TPS calculated DVH extracted from DICOM-RT dose file')
 
     print('Plan Score: %1.3f' % val)

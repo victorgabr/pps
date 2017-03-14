@@ -11,7 +11,7 @@ import scipy.interpolate as itp
 from xlsxwriter.utility import xl_rowcol_to_cell
 
 from pyplanscoring.dev.dvhcalculation import calc_dvhs_upsampled, Structure
-from pyplanscoring.dicomparser import ScoringDicomParser, lazyproperty
+from pyplanscoring.dicomparser import ScoringDicomParser
 from pyplanscoring.dosimetric import read_scoring_criteria
 from pyplanscoring.dvhcalc import load
 
@@ -241,7 +241,8 @@ class Scoring(object):
         self.is_dicom_dvh = False
         self.calculation_options = calculation_options
 
-    @lazyproperty
+    # @lazyproperty
+    @property
     def scoring_result(self):
         return self.calc_score()
 

@@ -14,7 +14,7 @@ from pyplanscoring.dev.geometry import get_contour_mask_wn, get_dose_grid_3d, \
     get_axis_grid, get_dose_grid, \
     get_interpolated_structure_planes, contour_rasterization_numba, check_contour_inside, \
     get_contour_roi_grid, wrap_xy_coordinates, wrap_z_coordinates
-from pyplanscoring.dicomparser import ScoringDicomParser, lazyproperty
+from pyplanscoring.dicomparser import ScoringDicomParser
 from pyplanscoring.dvhcalc import calculate_contour_areas_numba, save
 from pyplanscoring.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean, get_cdvh_numba
 
@@ -106,7 +106,7 @@ def get_capped_structure(structure, shift=0):
         planesDict = structure['planes']
 
         out_Dict = deepcopy(planesDict)
-        ordered_keys = [z for z, sPlane in planesDict.items()]
+        ordered_keys = [z for z in planesDict.keys()]
         ordered_keys.sort(key=float)
         planes = np.array(ordered_keys, dtype=float)
         start_cap = (planes[0] - shift)
@@ -248,7 +248,8 @@ class Structure(object):
         return self.structure['name']
 
     # @poperty Fix python 2.7 compatibility but it is very ineficient
-    @lazyproperty
+    # @lazyproperty
+    @property
     def planes(self):
         # TODO improve end capping method
         return get_capped_structure(self.structure, self.calculation_options['end_cap'])
@@ -259,20 +260,22 @@ class Structure(object):
         vol_cc = self.calculate_volume(self.structure['planes'], grid)
         return vol_cc
 
-    @lazyproperty
+    # @lazyproperty
+    @property
     def volume_cc(self):
         grid = [self.structure['thickness'], self.structure['thickness'], self.structure['thickness']]
         vol_cc = self.calculate_volume(self.planes, grid)
         return vol_cc
 
     # Fix python 2.7 compatibility
-    @lazyproperty
+    # @lazyproperty
+    @property
     def ordered_planes(self):
         """
             Return a 1D array from structure z planes coordinates
         :return:
         """
-        ordered_keys = [z for z, sPlane in self.planes.items()]
+        ordered_keys = [z for z in self.planes.keys()]
         ordered_keys.sort(key=float)
         return np.array(ordered_keys, dtype=float)
 
