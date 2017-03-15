@@ -21,11 +21,11 @@ txt = "PlanReport - H&N Nasopharynx - 2017 RT Plan Competition: %s \n" \
       % (__version__, __author__, platform.python_version(), platform.system(), __license__)
 
 calculation_options = dict()
-calculation_options['end_cap'] = 0.5
+calculation_options['end_cap'] = 0.2
 calculation_options['use_tps_dvh'] = False
 calculation_options['up_sampling'] = True
 calculation_options['maximum_upsampled_volume_cc'] = 100.0
-calculation_options['voxel_size'] = 0.5
+calculation_options['voxel_size'] = 0.2
 
 
 def main():

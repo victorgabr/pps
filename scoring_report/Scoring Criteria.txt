@@ -23,11 +23,11 @@ Plan Quality Metric Component	Objective(s)	Result		Raw Score	Max Score	Performan
 [LARYNX] Mean dose (Gy)	< 50 [≤ 45]				3 *			
 [BRACHIAL PLEXUS] D[0.1cc] (Gy)	< 66 [≤ 63]				5 *			
 [ESOPHAGUS] Mean dose (Gy)	< 50 [≤ 45]				3 *			
-[PTV70-BR.PLX 4MM] Conformation Number [66.5Gy]	> 0.65 [≥ 0.85]				4 *			
+[PTV70-BR.PLX 4MM] Conformation Number [66.5Gy]	> 0.65 [≥ 0.9]				4 *			
 [PTV70-BR.PLX 4MM] Homogeneity Index [70.0Gy]	< 0.13 [≤ 0.08]				2 *			
-[PTV63-BR.PLX 1MM] Conformation Number [59.8Gy]	> 0.65 [≥ 0.85]				3 *			
+[PTV63-BR.PLX 1MM] Conformation Number [59.8Gy]	> 0.65 [≥ 0.88]				3 *			
 [PTV63-70 3MM] Homogeneity Index [63.0Gy]	< 0.14 [≤ 0.08]				3 *			
-[PTV56] Conformation Number [53.2Gy]	> 0.65 [≥ 0.85]				3 *			
+[PTV56] Conformation Number [53.2Gy]	> 0.65 [≥ 0.87]				3 *			
 [PTV56-63 3MM] Homogeneity Index [56.0Gy]	< 0.14 [≤ 0.08]				3 *			
 [BODY] D[0.1cc] (Gy)	< 77 [≤ 75]				3 *			
 Total [31 Metrics]				0.00 *	0.00 *			

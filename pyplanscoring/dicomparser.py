@@ -1171,13 +1171,66 @@ class ScoringDicomParser(DicomParser):
             return 'rtss'
         elif self.ds.SOPClassUID == '1.2.840.10008.5.1.4.1.1.481.5':
             return 'rtplan'
-        # IMPT plan files
+        # Radiation Therapy Ion Plan Storage
         elif self.ds.SOPClassUID == '1.2.840.10008.5.1.4.1.1.481.8':
             return 'rtplan'
         elif self.ds.SOPClassUID == '1.2.840.10008.5.1.4.1.1.2':
             return 'ct'
         else:
             return None
+
+    ############################### RT Plan Methods ###############################
+
+    def GetPlan(self):
+        """Returns the plan information."""
+
+        self.plan = dict()
+        self.plan['label'] = self.ds.RTPlanLabel
+        self.plan['date'] = self.ds.RTPlanDate
+        self.plan['time'] = self.ds.RTPlanTime
+        self.plan['name'] = ''
+        self.plan['rxdose'] = 0
+        if "DoseReferences" in self.ds:
+            for item in self.ds.DoseReferences:
+                if item.DoseReferenceStructureType == 'SITE':
+                    self.plan['name'] = "N/A"
+                    if "DoseReferenceDescription" in item:
+                        self.plan['name'] = item.DoseReferenceDescription
+                    if 'TargetPrescriptionDose' in item:
+                        rxdose = item.TargetPrescriptionDose * 100
+                        if rxdose > self.plan['rxdose']:
+                            self.plan['rxdose'] = rxdose
+                elif item.DoseReferenceStructureType == 'VOLUME':
+                    if 'TargetPrescriptionDose' in item:
+                        self.plan['rxdose'] = item.TargetPrescriptionDose * 100
+        if ("FractionGroups" in self.ds) and (self.plan['rxdose'] == 0):
+            fg = self.ds.FractionGroups[0]
+            if ("ReferencedBeams" in fg) and ("NumberofFractionsPlanned" in fg):
+                beams = fg.ReferencedBeams
+                fx = fg.NumberofFractionsPlanned
+                for beam in beams:
+                    if "BeamDose" in beam:
+                        self.plan['rxdose'] += beam.BeamDose * fx * 100
+
+        if "FractionGroups" in self.ds:
+            fg = self.ds.FractionGroups[0]
+            if "ReferencedBeams" in fg:
+                self.plan['fractions'] = fg.NumberofFractionsPlanned
+        self.plan['rxdose'] = int(self.plan['rxdose'])
+        self.plan['beams'] = self.GetReferencedBeamsInFraction()
+
+        tmp = self.GetStudyInfo()
+        self.plan['description'] = tmp['description']
+        if 'RTPlanName' in self.ds:
+            self.plan['plan_name'] = self.ds.RTPlanName
+        else:
+            self.plan['plan_name'] = ''
+        if 'PatientsName' in self.ds:
+            name = self.ds.PatientsName.family_comma_given().replace(',', '').replace('^', ' ').strip()
+            self.plan['patient_name'] = name
+        else:
+            self.plan['patient_name'] = ''
+        return self.plan
 
 
 def test_rtss_eclipse(f):

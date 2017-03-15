@@ -1,4 +1,5 @@
 from __future__ import division
+
 import configparser
 import os
 import platform
@@ -45,6 +46,7 @@ calculation_options['use_tps_dvh'] = config.getboolean('DEFAULT', 'use_tps_dvh')
 calculation_options['up_sampling'] = config.getboolean('DEFAULT', 'up_sampling')
 calculation_options['maximum_upsampled_volume_cc'] = config.getfloat('DEFAULT', 'maximum_upsampled_volume_cc')
 calculation_options['voxel_size'] = config.getfloat('DEFAULT', 'voxel_size')
+calculation_options['num_cores'] = config.getint('DEFAULT', 'num_cores')
 
 
 class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):
@@ -137,47 +139,6 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):
         QtGui.QMessageBox.about(self, 'Information', txt)
 
 
-class Worker(QtGui.QWidget):
-    calc_done = QtCore.Signal(object)
-
-    def __init__(self, parent=None):
-        super(Worker, self).__init__(parent)
-        self.participant = None
-        self.constrains = None
-        self.scores = None
-        self.criteria = None
-        self.dicom_dvh = None
-        self.result = None
-
-    def set_parameters(self, name, files_data, constrains, scores, criteria, dicom_dvh, upsample, end_cap):
-        rd = files_data.reset_index().set_index(1).ix['rtdose']['index']
-        rp = files_data.reset_index().set_index(1).ix['rtplan']['index']
-        rs = files_data.reset_index().set_index(1).ix['rtss']['index']
-        # end cap and upsample only small structures
-        up = ''
-        if upsample:
-            up = '_up_sampled_'
-
-        self.participant = Participant(rp, rs, rd, upsample=up, end_cap=end_cap)
-        self.participant.set_participant_data(name)
-        self.constrains = constrains
-        self.scores = scores
-        self.criteria = criteria
-        self.dicom_dvh = dicom_dvh
-
-    @QtCore.Slot()
-    def run(self):
-        self.result = self.participant.eval_score(constrains_dict=self.constrains,
-                                                  scores_dict=self.scores,
-                                                  criteria_df=self.criteria,
-                                                  dicom_dvh=self.dicom_dvh)
-
-        self.calc_done.emit((self.participant, self.result))
-
-    def get_result(self):
-        return self.participant, self.result
-
-
 def main():
     app = QtGui.QApplication(sys.argv)
     form = MainDialog()
@@ -189,6 +150,4 @@ if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     form = MainDialog()
     form.show()
-    # QtCore.QCoreApplication.processEvents()
     sys.exit(app.exec_())
-    # app.exec_()

@@ -228,7 +228,8 @@ class Scoring(object):
         :param score: Scores dict {"Structure Name": {Metric: [type, (constrain_min, constrain_max), (point_min, point_max)}
         :param criteria: Scores DataFrame
         """
-        self.rt_plan = ScoringDicomParser(filename=rp_file).GetPlan()
+        # TODO debug importing RP files
+        # self.rt_plan = ScoringDicomParser(filename=rp_file).GetPlan()
         self.structures = ScoringDicomParser(filename=rs_file).GetStructures()
         self.rtdose = ScoringDicomParser(filename=rd_file)
         self.constrains = dict((k.upper(), v) for k, v in constrain.items())
@@ -254,7 +255,7 @@ class Scoring(object):
             self.score = pd.DataFrame(self.scoring_result).sum().sum()
             return self.score
 
-    def save_score_results(self, out_file, banner_path=None, report_header=''):
+    def get_report_df(self):
         """
             Save detailed scoring results on spreadsheet
         :param out_file: File path to excel report (*.xls file)
@@ -281,12 +282,21 @@ class Scoring(object):
 
             df_report = pd.concat(report)
             df_report['Performance'] = df_report['Raw Score'] / df_report['Max Score']
-            self.save_formatted_report(df_report, out_file, banner_path, report_header)
+            return df_report
         else:
             print('You need to set DVH data first!')
 
+    def save_score_results(self, out_file, banner_path=None, report_header=''):
+        """
+            Save detailed scoring results on spreadsheet
+        :param out_file: File path to excel report (*.xls file)
+        :param banner_path: Path the competition banner *.png
+        """
+        df_report = self.get_report_df()
+        self.save_formatted_report(df_report, out_file, banner_path, report_header)
+
     @staticmethod
-    def save_formatted_report(df, out_file, banner_path=None, report_header=''):
+    def save_formatted_report(df, out_file, banner_path=None, report_header='', io=None):
 
         """
             Save an formated report using pandas and xlsxwriter
@@ -593,7 +603,8 @@ class Participant(object):
     def set_participant_data(self, participant_name):
 
         self.participant_name = participant_name
-        self.plan_data = self.rp_dcm.GetPlan()
+        # TODO debug import RP files.
+        # self.plan_data = self.rp_dcm.GetPlan()
         self.tps_info = self.rd_dcm.get_tps_data()
 
     def _save_dvh_fig(self, calc_dvhs, dest):
@@ -648,67 +659,48 @@ class Participant(object):
 
         return self.score_obj.get_total_score()
 
+    def get_score_report(self, banner_path, report_header, io):
+        rep = self.score_obj.get_report_df()
+        self.score_obj.save_formatted_report(rep,
+                                             out_file='',
+                                             banner_path=banner_path,
+                                             report_header=report_header,
+                                             io=io)
+
     def save_score(self, out_file, banner_path=None, report_header=''):
         self.score_obj.save_score_results(out_file, banner_path, report_header)
 
 
 if __name__ == '__main__':
+    participant_name = 'Rense Lamsma'
+    dicom_dir = r'/media/victor/TOURO Mobile/COMPETITION 2017/plans/Rense Lamsma - IMPT'
+    rp = r'/media/victor/TOURO Mobile/COMPETITION 2017/plans/Rense Lamsma - IMPT/RP1.2.752.243.1.1.20170314143351969.2000.27546.dcm'
+    rs = r'/media/victor/TOURO Mobile/COMPETITION 2017/plans/Rense Lamsma - IMPT/RS1.2.752.243.1.1.20170228161420610.1600.70016.dcm'
+    rd = r'/media/victor/TOURO Mobile/COMPETITION 2017/plans/Rense Lamsma - IMPT/RD1.2.752.243.1.1.20170314143351971.9000.67615.dcm'
+    f = r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/Scoring Criteria.txt'
 
-    f = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/Ahmad/6F RA 2.0mm DoseGrid Feb10/PlanIQ SCORE Details 74 score/PlanIQ TEXT DVH Format for the 74 score Feb 18 2017.txt'
-    dfn = pd.read_csv(f, sep='\t')
-    df = dfn[['Plan Quality Metric Component', 'Objective(s)', 'Max Score', 'Result']].dropna()
-    constrains, scores, criteria = read_scoring_criteria(f, cGy=1)
-    criteria['Result'] = df['Result'].values
-    s_names = criteria.index.unique()
-    constrains_result = {}
+    truth, files_data = get_participant_folder_data(participant_name, dicom_dir)
 
-    for name in s_names:
-        df_tmp = criteria.loc[[name]]
-        constrains_tmp = {}
-        scores_tmp = {}
-        for i in range(len(df_tmp.index)):
-            key = df_tmp['constrain'].values[i]
-            val = df_tmp['Result'].values[i]
-            constrains_tmp[key] = val
+    constrains, scores, criteria = read_scoring_criteria(f)
 
-        constrains_result[name] = constrains_tmp
-
-    # df.index = criteria.index
-    # df['constrain'] = criteria['constrain']
-
-    # constrains_values = df[]
-
-    from pyplanscoring.dosimetric import read_scoring_criteria
-
-    rd = r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/RD.1.2.246.352.71.7.584747638204.1758320.20170210154830.dcm'
-    rs = r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/RS.1.2.246.352.71.4.584747638204.248648.20170209152429.dcm'
-    rp = r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/RP.1.2.246.352.71.5.584747638204.955801.20170210152428.dcm'
-    participant_name = 'test_CI'
-
-    constrains, scores, criteria = read_scoring_criteria(f, cGy=100)
+    calculation_options = dict()
+    calculation_options['end_cap'] = 0.5
+    calculation_options['use_tps_dvh'] = False
+    calculation_options['up_sampling'] = True
+    calculation_options['maximum_upsampled_volume_cc'] = 100.0
+    calculation_options['voxel_size'] = 0.5
 
     print('------------- Calculating DVH and score --------------')
-    participant = Participant(rp, rs, rd, upsample='_up_sampled', end_cap=True)
+
+    participant = Participant(rp, rs, rd, calculation_options=calculation_options)
     participant.set_participant_data(participant_name)
-    val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria, dicom_dvh=False)
+    val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria,
+                                 calculation_options=calculation_options)
     print(val)
 
-    constrains, scores, criteria = read_scoring_criteria(f, cGy=1)
-    sc_obj = Scoring(rd, rs, rp, constrains, scores, criteria)
-    sc_obj.set_constrains_values(constrains_result)
-    sc_obj.dvhs = {1: 1}
-    s = sc_obj.calc_score()
-    print(pd.DataFrame(s).sum().sum())
-    # out_file = '/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/Scoring_using_planIQ_constrains_values.xls'
-    # banner = '/home/victor/Dropbox/Plan_Competition_Project/scoring_report/2017 Plan Comp Banner.jpg'
-    # sc_obj.save_score_results(out_file, banner)
-
-    dvh = '/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/RD.1.2.246.352.71.7.584747638204.1758320.20170210154830_up_sampledend_cap.dvh'
-    tmp = load(dvh)['DVH']
-    test = Scoring(rd, rs, rp, constrains, scores)
-    test.set_dvh_data(dvh)
-
-    metrics = DVHMetrics(tmp['SPINAL CORD'])
-    metrics.get_dose_constrain_cc(10)
-    fd_cc = itp.interp1d(metrics.volume_cc, metrics.dose_axis, kind='quadratic')  # cc
-    plt.plot(metrics.volume_cc, metrics.dose_axis)
+    print('Plan Score: %1.3f' % val)
+    out_file = os.path.join(dicom_dir, participant_name + '_plan_scoring_report.xls')
+    banner_path = '/home/victor/Dropbox/Plan_Competition_Project/scoring_report/2017 Plan Comp Banner.jpg'
+    participant.save_score(out_file, banner_path=banner_path)
+    print('Report saved: %s' % out_file)
+    input("Press enter to exit.")
