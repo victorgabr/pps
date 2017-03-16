@@ -659,13 +659,8 @@ class Participant(object):
 
         return self.score_obj.get_total_score()
 
-    def get_score_report(self, banner_path, report_header, io):
-        rep = self.score_obj.get_report_df()
-        self.score_obj.save_formatted_report(rep,
-                                             out_file='',
-                                             banner_path=banner_path,
-                                             report_header=report_header,
-                                             io=io)
+    def get_score_report(self):
+        return self.score_obj.get_report_df()
 
     def save_score(self, out_file, banner_path=None, report_header=''):
         self.score_obj.save_score_results(out_file, banner_path, report_header)

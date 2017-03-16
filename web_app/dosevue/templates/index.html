@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>DoseVue</title>
+    <title>Radiation Knowledge</title>
 
     <!-- Bootstrap core CSS -->
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
@@ -26,70 +26,70 @@
 
 <div class="container">
     <div class="header">
-        <h3 class="text-muted">DoseVue</h3>
+        <h3 class="text-muted">PlanReport - H&N Nasopharynx - 2017 RT Plan Competition</h3>
     </div>
 
     <div class="row marketing">
         <div class="col-lg-12">
             <div class="row placeholders">
-                <div id="struct_upload_container" class="upload-container">
-                    <!-- The fileinput-button span is used to style the file input field as button -->
-                    <span id="structure_upload_button" class="btn btn-success fileinput-button">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    <span>Select DICOM Structure File</span>
-                        <!-- The file input field used as target for the file upload widget -->
-                    <input id="structure_upload" type="file" name="files[]" accept=".dcm">
-                </span>
-                    <br>
-                    <br>
-                    <!-- The global progress bar -->
-                    <div id="rs_progress" class="progress hide">
-                        <div class="progress-bar progress-bar-success"></div>
-                    </div>
-                    <!-- The container for the uploaded files -->
-                    <div id="files" class="files"></div>
-                    <br>
-                </div>
+                <!--<div id="struct_upload_container" class="upload-container">-->
+                <!--&lt;!&ndash; The fileinput-button span is used to style the file input field as button &ndash;&gt;-->
+                <!--<span id="structure_upload_button" class="btn btn-success fileinput-button">-->
+                <!--<i class="glyphicon glyphicon-plus"></i>-->
+                <!--<span>Select DICOM Structure File</span>-->
+                <!--&lt;!&ndash; The file input field used as target for the file upload widget &ndash;&gt;-->
+                <!--<input id="structure_upload" type="file" name="files[]" accept=".dcm">-->
+                <!--</span>-->
+                <!--<br>-->
+                <!--<br>-->
+                <!--&lt;!&ndash; The global progress bar &ndash;&gt;-->
+                <!--<div id="rs_progress" class="progress hide">-->
+                <!--<div class="progress-bar progress-bar-success"></div>-->
+                <!--</div>-->
+                <!--&lt;!&ndash; The container for the uploaded files &ndash;&gt;-->
+                <!--<div id="files" class="files"></div>-->
+                <!--<br>-->
+                <!--</div>-->
 
-                <div id="other_upload_container" class="upload-container hide">
+                <div id="other_upload_container" class="upload-container ">
                     <div class="form-horizontal" role="form">
-                        <div class="form-group" id="structure-list">
-                            <label for="mandible-select" class="col-sm-4 control-label">Select Mandible
-                                Structure:</label>
+                        <!--<div class="form-group" id="structure-list">-->
+                        <!--<label for="mandible-select" class="col-sm-4 control-label">Select Mandible-->
+                        <!--Structure:</label>-->
 
-                            <div class="col-sm-8">
-                                <select id="mandible_select"></select>
-                            </div>
-                        </div>
+                        <!--<div class="col-sm-8">-->
+                        <!--<select id="mandible_select"></select>-->
+                        <!--</div>-->
+                        <!--</div>-->
+
+                        <!--<div class="form-group">-->
+                        <!--<label for="dose_upload_input" class="col-sm-4 control-label">Dose DICOM file</label>-->
+                        <!--<div class="col-sm-4">-->
+                        <!--<ul id="dose_uploaded_filenames" class="list-unstyled filenames">-->
+                        <!--</ul>-->
+                        <!--<span id="dose_upload_button" class="btn btn-success fileinput-button">-->
+                        <!--<i class="glyphicon glyphicon-plus"></i>-->
+                        <!--<span>Select DICOM Dose file</span>-->
+                        <!--&lt;!&ndash; The file input field used as target for the file upload widget &ndash;&gt;-->
+                        <!--<input id="dose_upload_input" type="file" name="files[]" accept=".dcm" multiple>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-4">-->
+                        <!--<div id="dose_progress" class="progress hide">-->
+                        <!--<div class="progress-bar progress-bar-success"></div>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--</div>-->
 
                         <div class="form-group">
-                            <label for="dose_upload_input" class="col-sm-4 control-label">Dose DICOM file</label>
+                            <label for="inputPassword3" class="col-sm-4 control-label">RD DICOM file</label>
                             <div class="col-sm-4">
-                                <ul id="dose_uploaded_filenames" class="list-unstyled filenames">
-                                </ul>
-                                <span id="dose_upload_button" class="btn btn-success fileinput-button">
+                        <span id="ct_upload_button" class="btn btn-success fileinput-button">
                         <i class="glyphicon glyphicon-plus"></i>
-                        <span>Select DICOM Dose file</span>
-                                    <!-- The file input field used as target for the file upload widget -->
-                        <input id="dose_upload_input" type="file" name="files[]" accept=".dcm" multiple>
-                    </span>
-                            </div>
-                            <div class="col-sm-4">
-                                <div id="dose_progress" class="progress hide">
-                                    <div class="progress-bar progress-bar-success"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="inputPassword3" class="col-sm-4 control-label">CT DICOM file</label>
-                            <div class="col-sm-4">
-                    <span id="ct_upload_button" class="btn btn-success fileinput-button">
-                        <i class="glyphicon glyphicon-plus"></i>
-                        <span>Select CT DICOM file</span>
-                        <!-- The file input field used as target for the file upload widget -->
+                        <span>Select RD DICOM file</span>
+                            <!-- The file input field used as target for the file upload widget -->
                         <input id="ct_upload_input" type="file" name="files[]" accept=".dcm">
-                    </span>
+                        </span>
                                 <ul id="ct_uploaded_filenames" class="list-unstyled filenames">
                                 </ul>
                             </div>
@@ -107,15 +107,15 @@
                             <div class="col-sm-offset-2 col-sm-10">
                                 <form id="reportform" action="/api/v1/create_report/" name="report_form" method="POST">
                                     <input id="rd_input" type="hidden" name="rd_filename" value="">
-                                    <input id="rs_input" type="hidden" name="rs_filename" value="">
-                                    <input id="ct_input" type="hidden" name="ct_filename" value="">
-                                    <input id="roi_input" type="hidden" name="roi" value="">
+                                    <!--<input id="rs_input" type="hidden" name="rs_filename" value="">-->
+                                    <!--<input id="ct_input" type="hidden" name="ct_filename" value="">-->
+                                    <!--<input id="roi_input" type="hidden" name="roi" value="">-->
                                     <button type="submit" name="submitbutton" id="create_report" class="btn btn-default"
-                                            disabled>Create Report</a>
+                                            disabled>Create Report
+                                    </button>
                                 </form>
                             </div>
                         </div>
-                        </form>
                     </div>
                 </div>
                 <div class="form-horizontal" role="form">
@@ -128,7 +128,7 @@
 
             </div>
             <footer class="footer">
-                <p>&copy; DoseVue 2014</p>
+                <p>&copy; 2017 https://radiationknowledge.org</p>
             </footer>
         </div> <!-- /container -->
 
@@ -143,5 +143,6 @@
         <!-- The File Upload processing plugin -->
         <script src="static/js/uploads/jquery.fileupload-process.js"></script>
         <script src="static/js/frontend.js"></script>
+    </div>
 </body>
 </html>
