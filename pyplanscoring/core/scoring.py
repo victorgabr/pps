@@ -10,10 +10,9 @@ import pandas as pd
 import scipy.interpolate as itp
 from xlsxwriter.utility import xl_rowcol_to_cell
 
-from pyplanscoring.dev.dvhcalculation import calc_dvhs_upsampled, Structure
-from pyplanscoring.dicomparser import ScoringDicomParser
-from pyplanscoring.dosimetric import read_scoring_criteria
-from pyplanscoring.dvhcalc import load
+from pyplanscoring.core.dicomparser import ScoringDicomParser
+from pyplanscoring.core.dvhcalculation import calc_dvhs_upsampled, Structure
+from pyplanscoring.core.dvhcalculation import load
 
 logger = logging.getLogger('scoring')
 
@@ -667,35 +666,4 @@ class Participant(object):
 
 
 if __name__ == '__main__':
-    participant_name = 'Rense Lamsma'
-    dicom_dir = r'/media/victor/TOURO Mobile/COMPETITION 2017/plans/Rense Lamsma - IMPT'
-    rp = r'/media/victor/TOURO Mobile/COMPETITION 2017/plans/Rense Lamsma - IMPT/RP1.2.752.243.1.1.20170314143351969.2000.27546.dcm'
-    rs = r'/media/victor/TOURO Mobile/COMPETITION 2017/plans/Rense Lamsma - IMPT/RS1.2.752.243.1.1.20170228161420610.1600.70016.dcm'
-    rd = r'/media/victor/TOURO Mobile/COMPETITION 2017/plans/Rense Lamsma - IMPT/RD1.2.752.243.1.1.20170314143351971.9000.67615.dcm'
-    f = r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/Scoring Criteria.txt'
-
-    truth, files_data = get_participant_folder_data(participant_name, dicom_dir)
-
-    constrains, scores, criteria = read_scoring_criteria(f)
-
-    calculation_options = dict()
-    calculation_options['end_cap'] = 0.5
-    calculation_options['use_tps_dvh'] = False
-    calculation_options['up_sampling'] = True
-    calculation_options['maximum_upsampled_volume_cc'] = 100.0
-    calculation_options['voxel_size'] = 0.5
-
-    print('------------- Calculating DVH and score --------------')
-
-    participant = Participant(rp, rs, rd, calculation_options=calculation_options)
-    participant.set_participant_data(participant_name)
-    val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria,
-                                 calculation_options=calculation_options)
-    print(val)
-
-    print('Plan Score: %1.3f' % val)
-    out_file = os.path.join(dicom_dir, participant_name + '_plan_scoring_report.xls')
-    banner_path = '/home/victor/Dropbox/Plan_Competition_Project/scoring_report/2017 Plan Comp Banner.jpg'
-    participant.save_score(out_file, banner_path=banner_path)
-    print('Report saved: %s' % out_file)
-    input("Press enter to exit.")
+    pass

@@ -14,14 +14,14 @@ from joblib import Parallel
 from joblib import delayed
 from matplotlib import pyplot as plt
 
-from pyplanscoring.dev.dvhcalculation import Structure, prepare_dvh_data, calc_dvhs_upsampled, save_dicom_dvhs
-from pyplanscoring.dev.geometry import get_axis_grid, get_interpolated_structure_planes
-from pyplanscoring.dicomparser import ScoringDicomParser
-from pyplanscoring.dosimetric import read_scoring_criteria, constrains, Competition2016
-from pyplanscoring.dvhcalc import calc_dvhs
-from pyplanscoring.dvhcalc import load
-from pyplanscoring.dvhdoses import get_dvh_max
-from pyplanscoring.scoring import DVHMetrics, Scoring
+from pyplanscoring.core.dicomparser import ScoringDicomParser
+from pyplanscoring.core.dosimetric import read_scoring_criteria, constrains, Competition2016
+from pyplanscoring.core.dvhcalculation import Structure, prepare_dvh_data, calc_dvhs_upsampled, save_dicom_dvhs, load
+from pyplanscoring.core.dvhdoses import get_dvh_max
+from pyplanscoring.core.geometry import get_axis_grid, get_interpolated_structure_planes
+from pyplanscoring.core.scoring import DVHMetrics, Scoring
+from pyplanscoring.lecacy_dicompyler.dvhcalc import calc_dvhs
+from pyplanscoring.lecacy_dicompyler.dvhcalc import load
 
 logger = logging.getLogger('validation')
 
@@ -640,7 +640,7 @@ def test1(lim=3, save_data=False):
         res[col] = {'count': count, 'range': rg}
 
     test_table = pd.DataFrame(res).T
-    dest = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/dev/validation_paper'
+    dest = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/core/validation_paper'
     if save_data:
         result.to_excel(os.path.join(dest, 'Test_1_result.xls'))
         test_table.to_excel(os.path.join(dest, 'test_1_table_paper.xls'))
@@ -728,7 +728,7 @@ def test2(delta_mm=(0.1, 0.1, 0.1), end_cap=True, lim=3):
     result = pd.concat(df_concat, axis=1).T.reset_index()
     result['Structure name'] = sname
 
-    dest = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/dev/validation_paper'
+    dest = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/core/validation_paper'
     result.to_excel(os.path.join(dest, 'Test_2_result.xls'))
 
     res_col = ['Structure name', 'Dose Voxel (mm)', 'Gradient direction', 'Total Volume (cc)', 'Dmin', 'Dmax', 'Dmean',
@@ -908,7 +908,7 @@ def test3(plot_curves=True):
     result_df = pd.concat([df_final, r0, r1, r2, r3])
 
     print(result_df)
-    dest = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/dev/validation_paper'
+    dest = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/core/validation_paper'
     result_df.to_excel(os.path.join(dest, 'test_3_table.xls'))
     #
     # result_df.to_excel('test_3_table.xls')
@@ -1338,245 +1338,3 @@ def timimg_evaluation():
 if __name__ == '__main__':
     plt.style.use('ggplot')
     test3()
-# plot_curves = True
-# plt.style.use('ggplot')
-# delta_mm = (0.1, 0.1, 0.1)
-# ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/analytical_data.xlsx'
-#
-# struc_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/STRUCTURES'
-# dose_grid_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS'
-# st = 2
-#
-# snames = ['Sphere_10_0', 'Sphere_30_0',
-#           'Cylinder_10_0', 'Cylinder_30_0',
-#           'RtCylinder_10_0', 'RtCylinder_30_0',
-#           'Cone_10_0', 'Cone_30_0',
-#           'RtCone_10_0', 'RtCone_30_0']
-#
-# structure_path = [os.path.join(struc_dir, f + '.dcm') for f in snames]
-#
-# structure_dict = dict(zip(snames, structure_path))
-#
-# dose_files = [os.path.join(dose_grid_dir, f) for f in [
-#     'Linear_AntPost_1mm_Aligned.dcm',
-#     'Linear_AntPost_2mm_Aligned.dcm',
-#     'Linear_AntPost_3mm_Aligned.dcm',
-#     'Linear_SupInf_1mm_Aligned.dcm',
-#     'Linear_SupInf_2mm_Aligned.dcm',
-#     'Linear_SupInf_3mm_Aligned.dcm']]
-#
-# # dose dict
-# dose_files_dict = {
-#     'Z(AP)': {'1': dose_files[0], '2': dose_files[1], '3': dose_files[2]},
-#     'Y(SI)': {'1': dose_files[3], '2': dose_files[4], '3': dose_files[5]}}
-#
-# test_files = {}
-# for s_name in structure_dict:
-#     grad_files = {}
-#     for grad in dose_files_dict:
-#         tick = str(int(int(re.findall(r'\d+', s_name)[0]) / 10))
-#         grad_files[grad] = dose_files_dict[grad][tick]
-#
-#     test_files[s_name] = grad_files
-#
-# result = OrderedDict()
-# for sname in snames:
-#     struc_path = structure_dict[sname]
-#     # set structure's object
-#     struc = ScoringDicomParser(filename=struc_path)
-#     structures = struc.GetStructures()
-#     structure = structures[st]
-#     # set up sampled structure
-#     struc_teste = Structure(structure, end_cap=True)
-#     struc_teste.set_delta(delta_mm=delta_mm)
-#     str_result = {}
-#     test_data = test_files[sname]
-#     for k in test_data:
-#         # get dose
-#         dose_file = test_data[k]
-#         dicom_dose = ScoringDicomParser(filename=dose_file)
-#         dhist, chist = struc_teste.calculate_dvh(dicom_dose, up_sample=True)
-#         dvh_data = struc_teste.get_dvh_data()
-#         str_result[k] = dvh_data
-#
-#     result[sname] = str_result
-#
-# dest = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/test3_ref_dvh.obj'
-# # save(an_data, dest)
-# an_data = load(dest)
-#
-# teste = []
-# curve_compare = []
-# for s in result:
-#     for g in result[s]:
-#         adata = an_data[s][g]
-#         calc_data = result[s][g]
-#         cmp = CurveCompare(adata['dose_axis'], adata['data'], calc_data['dose_axis'], calc_data['data'])
-#         curve_stats = cmp.stats_paper
-#         curve_stats['Resolution (mm)'] = str(int(int(re.findall(r'\d+', s)[0]) / 10))
-#         curve_stats['Gradient'] = g
-#         curve_compare.append(cmp)
-#         tmp = pd.DataFrame(curve_stats, index=[s])
-#         teste.append(tmp)
-#
-# df_final = pd.concat(teste)
-#
-# mask0 = np.logical_and(df_final['Resolution (mm)'] == '1', df_final['Gradient'] == 'Y(SI)')
-# mask1 = np.logical_and(df_final['Resolution (mm)'] == '1', df_final['Gradient'] == 'Z(AP)')
-# mask2 = np.logical_and(df_final['Resolution (mm)'] == '3', df_final['Gradient'] == 'Y(SI)')
-# mask3 = np.logical_and(df_final['Resolution (mm)'] == '3', df_final['Gradient'] == 'Z(AP)')
-#
-# # Row 0
-# r0 = pd.DataFrame(['Y(SI)'], index=['Average (N = 5)'], columns=['Gradient'])
-# r0['Resolution (mm)'] = '1'
-# ri = pd.DataFrame(df_final[mask0].mean().round(1)).T
-# ri.index = ['Average (N = 5)']
-# r0 = r0.join(ri)
-#
-# # Row 1
-# r1 = pd.DataFrame(['Z(AP)'], index=['Average (N = 5)'], columns=['Gradient'])
-# r1['Resolution (mm)'] = '1'
-# ri = pd.DataFrame(df_final[mask1].mean().round(1)).T
-# ri.index = ['Average (N = 5)']
-# r1 = r1.join(ri)
-#
-# # Row 2
-# r2 = pd.DataFrame(['Y(SI)'], index=['Average (N = 5)'], columns=['Gradient'])
-# r2['Resolution (mm)'] = '3'
-# ri = pd.DataFrame(df_final[mask2].mean().round(1)).T
-# ri.index = ['Average (N = 5)']
-# r2 = r2.join(ri)
-#
-# # Row 3
-# r3 = pd.DataFrame(['Z(AP)'], index=['Average (N = 5)'], columns=['Gradient'])
-# r3['Resolution (mm)'] = '3'
-# ri = pd.DataFrame(df_final[mask3].mean().round(1)).T
-# ri.index = ['Average (N = 5)']
-# r3 = r3.join(ri)
-# result_df = pd.concat([df_final, r0, r1, r2, r3])
-#
-# print(result_df)
-# dest = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/dev/validation_paper'
-# result_df.to_excel(os.path.join(dest, 'test_3_table.xls'))
-#
-# if plot_curves:
-#     # for c in curve_compare:
-#     #     c.plot_results()
-#     for grad in ['Z(AP)', 'Y(SI)']:
-#         for s_key in result:
-#             adata = an_data[s_key][grad]
-#             calc_data = result[s_key][grad]
-#             fig, ax = plt.subplots()
-#             ax.plot(adata['dose_axis'], adata['data'], label='Analytical')
-#             ax.plot(calc_data['dose_axis'], calc_data['data'], label='Software')
-#             ax.legend(loc='best')
-#             ax.set_xlabel('Dose (cGy)')
-#             ax.set_ylabel('Volume (cc)')
-#             title = s_key + ' Dose Gradient ' + grad + '.png'
-#             ax.set_title(title)
-#             fig.savefig(os.path.join(dest, title), format='png', dpi=100)
-#     # plt.show()
-#
-#
-
-
-# test1()
-# # test2()
-# test3()
-# delta_mm = (0.1, 0.1, 0.1)
-# end_cap = True
-# up_sample = True
-# lim = 3
-#
-# ref_data = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/analytical_data.xlsx'
-# struc_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/STRUCTURES'
-# dose_grid_dir = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/DVH-Analysis-Data-Etc/DOSE GRIDS'
-#
-# snames = ['Sphere_10_0', 'Sphere_20_0', 'Sphere_30_0',
-#           'Cylinder_10_0', 'Cylinder_20_0', 'Cylinder_30_0',
-#           'RtCylinder_10_0', 'RtCylinder_20_0', 'RtCylinder_30_0',
-#           'Cone_10_0', 'Cone_20_0', 'Cone_30_0',
-#           'RtCone_10_0', 'RtCone_20_0', 'RtCone_30_0']
-#
-# structure_path = [os.path.join(struc_dir, f + '.dcm') for f in snames]
-#
-# structure_dict = dict(zip(snames, structure_path))
-#
-# dose_files = [os.path.join(dose_grid_dir, f) for f in [
-#     'Linear_AntPost_1mm_Aligned.dcm',
-#     'Linear_AntPost_2mm_Aligned.dcm',
-#     'Linear_AntPost_3mm_Aligned.dcm',
-#     'Linear_SupInf_1mm_Aligned.dcm',
-#     'Linear_SupInf_2mm_Aligned.dcm',
-#     'Linear_SupInf_3mm_Aligned.dcm']]
-#
-# # dose dict
-# dose_files_dict = {
-#     'Z(AP)': {'1': dose_files[0], '2': dose_files[1], '3': dose_files[2]},
-#     'Y(SI)': {'1': dose_files[3], '2': dose_files[4], '3': dose_files[5]}}
-#
-# # grab analytical data
-#
-# df = pd.read_excel(ref_data, sheetname='Analytical')
-#
-# dfi = df.ix[40:]
-# mask0 = dfi['Structure Shift'] == 0
-# dfi = dfi.loc[mask0]
-#
-# # Constrains to get data
-# # Constrains
-#
-# constrains = OrderedDict()
-# constrains['Total_Volume'] = True
-# constrains['min'] = 'min'
-# constrains['max'] = 'max'
-# constrains['mean'] = 'mean'
-# constrains['D99'] = 99
-# constrains['D95'] = 95
-# constrains['D5'] = 5
-# constrains['D1'] = 1
-# constrains['Dcc'] = 0.03
-#
-# # GET CALCULATED DATA
-# res = Parallel(n_jobs=-1, verbose=11)(
-#     delayed(calc_data)(row,
-#                        dose_files_dict,
-#                        structure_dict,
-#                        constrains,
-#                        delta_mm=delta_mm,
-#                        end_cap=end_cap) for row in dfi.iterrows())
-#
-# # aggregating data
-# df_concat = [d[0] for d in res]
-# sname = [d[1] for d in res]
-#
-# result = pd.concat(df_concat, axis=1).T.reset_index()
-# result['Structure name'] = sname
-#
-# res_col = ['Structure name', 'Dose Voxel (mm)', 'Gradient direction', 'Total Volume (cc)', 'Dmin', 'Dmax', 'Dmean',
-#            'D99', 'D95', 'D5', 'D1', 'D0.03cc']
-#
-# num_col = ['Total Volume (cc)', 'Dmin', 'Dmax', 'Dmean', 'D99', 'D95', 'D5', 'D1', 'D0.03cc']
-#
-# df_num = dfi[num_col]
-#
-# result_num = result[result.columns[1:-2]]
-# result_num.columns = df_num.columns
-# result_num.index = df_num.index
-#
-# delta = ((result_num - df_num) / df_num) * 100
-#
-# pcol = ['Total Volume (cc)', 'Dmax', 'Dmean', 'D99', 'D95', 'D5', 'D1']
-#
-# res = OrderedDict()
-#
-# for col in delta:
-#     count = np.sum(np.abs(delta[col]) > lim)
-#     rg = np.array([round(delta[col].min(), 1), round(delta[col].max(), 1)])
-#     res[col] = {'count': count, 'range': rg}
-#
-# test_table = pd.DataFrame(res).T
-# print(test_table)
-#
-# mask = delta['D0.03cc'] > 3
-# print(result['Structure name'][mask])

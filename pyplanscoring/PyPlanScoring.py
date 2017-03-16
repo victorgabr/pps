@@ -14,8 +14,8 @@ matplotlib.use('Qt4Agg')
 matplotlib.rcParams['backend.qt4'] = 'PySide'
 
 from pyplanscoring import PyPlanScoringQT
-from pyplanscoring.dosimetric import read_scoring_criteria
-from pyplanscoring.scoring import Participant, get_participant_folder_data
+from pyplanscoring.core.dosimetric import read_scoring_criteria
+from pyplanscoring.core.scoring import Participant, get_participant_folder_data
 
 __version__ = '0.0.1'
 __author__ = 'Dr. Victor Gabriel Leandro Alves, D.Sc.'

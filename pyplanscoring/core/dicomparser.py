@@ -6,7 +6,7 @@ import numba as nb
 import pandas as pd
 from scipy.interpolate import RegularGridInterpolator, interp1d
 
-from pyplanscoring.dev.geometry import centroid_of_polygon
+from pyplanscoring.core.geometry import centroid_of_polygon
 
 logger = logging.getLogger('dicomparser')
 import numpy as np
@@ -1252,22 +1252,4 @@ def test_rtss_eclipse(f):
 
 
 if __name__ == '__main__':
-    f = r'/home/victor/Downloads/Simon.Heinze@kssg.ch -Simon(TOMO)/Simon.Heinze@kssg.ch -Simon/Plan-File-PreEvaluatiuon-HeinzeSimon.dcm'
-
-    # f = r'/home/victor/Downloads/RS.PQRT END TO END.dcm'
-    ds = dicom.read_file(f)
-    print('SpecificCharacterSet: %s' % ds.SpecificCharacterSet)
-    print('Manufacturer: %s' % ds.Manufacturer)
-    print('ManufacturersModelName: %s' % ds.ManufacturersModelName)
-    print('SoftwareVersions: %s' % ds.SoftwareVersions)
-    print('Modality: %s' % ds.Modality)
-    print('StructureSetDescription: %s' % ds.StructureSetDescription)
-    print('StructureSetROISequence length: %i' % len(ds.StructureSetROISequence))
-    print('ROIContours length: %i' % len(ds.ROIContours))
-
-    rois = [roi for roi in ds.ROIContours]
-    rc = [roi for roi in ds.StructureSetROISequence]
-    print(rois)
-    rtp = ScoringDicomParser(filename=f)
-
-    # print(rois)
+    pass

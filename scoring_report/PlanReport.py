@@ -1,8 +1,8 @@
 import os
 import platform
 
-from pyplanscoring.dosimetric import read_scoring_criteria
-from pyplanscoring.scoring import get_participant_folder_data, Participant
+from pyplanscoring.core.dosimetric import read_scoring_criteria
+from pyplanscoring.core.scoring import get_participant_folder_data, Participant
 
 __version__ = '0.0.1'
 __author__ = 'Dr. Victor Gabriel Leandro Alves, D.Sc.'

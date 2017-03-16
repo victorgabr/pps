@@ -8,11 +8,11 @@ from joblib import Parallel
 from joblib import delayed
 from shapely.geometry import Polygon
 
-from pyplanscoring.dev.dvhcalculation import Structure, get_boundary_stats
-from pyplanscoring.dev.geometry import wrap_z_coordinates, calc_area, get_contour_roi_grid, wrap_xy_coordinates, \
+from pyplanscoring.core.dicomparser import ScoringDicomParser
+from pyplanscoring.core.dvhcalculation import Structure, get_boundary_stats
+from pyplanscoring.core.geometry import wrap_z_coordinates, calc_area, get_contour_roi_grid, wrap_xy_coordinates, \
     get_contour_mask_wn, check_contour_inside
-from pyplanscoring.dev.validation import get_competition_data
-from pyplanscoring.dicomparser import ScoringDicomParser
+from pyplanscoring.core.validation import get_competition_data
 
 
 def calculate_gradient_stats():

@@ -1,7 +1,14 @@
 from __future__ import division
 
+import bz2
+import sys
 import time
 from copy import deepcopy
+
+if sys.version_info[0] == 3:
+    import pickle
+else:
+    import cPickle as pickle
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,13 +17,12 @@ import pandas as pd
 from joblib import Parallel
 from joblib import delayed
 
-from pyplanscoring.dev.geometry import get_contour_mask_wn, get_dose_grid_3d, \
+from pyplanscoring.core.geometry import get_contour_mask_wn, get_dose_grid_3d, \
     get_axis_grid, get_dose_grid, \
     get_interpolated_structure_planes, contour_rasterization_numba, check_contour_inside, \
-    get_contour_roi_grid, wrap_xy_coordinates, wrap_z_coordinates
-from pyplanscoring.dicomparser import ScoringDicomParser
-from pyplanscoring.dvhcalc import calculate_contour_areas_numba, save
-from pyplanscoring.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean, get_cdvh_numba
+    get_contour_roi_grid, wrap_xy_coordinates, wrap_z_coordinates, calculate_contour_areas_numba
+from pyplanscoring.core.dicomparser import ScoringDicomParser
+from pyplanscoring.core.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean, get_cdvh_numba
 
 float_formatter = lambda x: "%.2f" % x
 np.set_printoptions(formatter={'float_kind': float_formatter})
@@ -28,6 +34,28 @@ np.set_printoptions(formatter={'float_kind': float_formatter})
 http://dicom.nema.org/medical/Dicom/2016b/output/chtml/part03/sect_C.8.8.html
 http://dicom.nema.org/medical/Dicom/2016b/output/chtml/part03/sect_C.7.6.2.html#sect_C.7.6.2.1.1
 '''
+
+
+def save(obj, filename, protocol=-1):
+    """
+        Saves  Object into a file using gzip and Pickle
+    :param obj: Calibration Object
+    :param filename: Filename *.fco
+    :param protocol: cPickle protocol
+    """
+    with bz2.BZ2File(filename, 'wb') as f:
+        pickle.dump(obj, f, protocol)
+
+
+def load(filename):
+    """
+        Loads a Calibration Object into a file using gzip and Pickle
+    :param filename: Calibration filemane *.fco
+    :return: object
+    """
+    with bz2.BZ2File(filename, 'rb') as f:
+        obj = pickle.load(f)
+    return obj
 
 
 def prepare_dvh_data(dhist, dvh):

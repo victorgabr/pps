@@ -5,7 +5,7 @@ import os
 from flask import Flask, make_response, request, render_template
 from werkzeug.datastructures import Headers
 
-from web_app.dosevue.report_creator import PlanReportCreator
+from web_app.plan_report.report_creator import PlanReportCreator
 
 app = Flask(__name__)
 

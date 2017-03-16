@@ -5,15 +5,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 from joblib import Parallel, delayed
 
-from pyplanscoring.dev.contours3d import plot_contours
-from pyplanscoring.dev.dvhcalculation import Structure
-from pyplanscoring.dicomparser import DicomParser, ScoringDicomParser
-from pyplanscoring.dosimetric import constrains
-from pyplanscoring.dvhcalc import get_dvh, get_dvh_pp, calc_dvhs, get_contour_mask, calculate_contour_dvh, \
+from pyplanscoring.core.contours3d import plot_contours
+from pyplanscoring.core.dicomparser import DicomParser, ScoringDicomParser
+from pyplanscoring.core.dosimetric import constrains
+from pyplanscoring.core.dvhcalculation import Structure
+from pyplanscoring.core.dvhdoses import get_cdvh_numba
+from pyplanscoring.core.scoring import Scoring
+from pyplanscoring.lecacy_dicompyler.dvhcalc import get_dvh, get_dvh_pp, calc_dvhs, get_contour_mask, \
+    calculate_contour_dvh, \
     calculate_contour_areas, \
     get_cdvh
-from pyplanscoring.dvhdoses import get_cdvh_numba
-from pyplanscoring.scoring import Scoring
 
 
 # from pyplanscoring.dosimetric import scores
@@ -524,7 +525,7 @@ def test_roi_expansion():
 def test_bounding():
     # /  public-domain code by Darel Rex Finley, 2007
 
-    from pyplanscoring.dev.geometry import get_axis_grid, wrap_xy_coordinates
+    from pyplanscoring.core.geometry import get_axis_grid, wrap_xy_coordinates
     import pandas as pd
 
     # TODO test bounding rectangles implementation

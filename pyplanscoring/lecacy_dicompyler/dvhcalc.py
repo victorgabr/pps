@@ -20,9 +20,9 @@ from joblib import Parallel
 from joblib import delayed
 from matplotlib.path import Path
 
-from pyplanscoring.dev.geometry import calculate_contour_areas_numba
-from pyplanscoring.dicomparser import ScoringDicomParser
-from pyplanscoring.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean, get_cdvh_numba
+from pyplanscoring.core.geometry import calculate_contour_areas_numba
+from pyplanscoring.core.dicomparser import ScoringDicomParser
+from pyplanscoring.core.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean, get_cdvh_numba
 
 if sys.version_info[0] == 3:
     import pickle
@@ -395,7 +395,7 @@ def get_cdvh(ddvh):
 ############################# Test DVH Calculation #############################
 
 def main():
-    from pyplanscoring import dicomparser
+    from pyplanscoring.core import dicomparser
     has_pylab = True
     try:
         import matplotlib.pyplot as pl

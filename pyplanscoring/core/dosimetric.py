@@ -8,7 +8,7 @@ from collections import OrderedDict
 import numpy as np
 import pandas as pd
 
-from pyplanscoring.dicomparser import ScoringDicomParser
+from pyplanscoring.core.dicomparser import ScoringDicomParser
 
 logger = logging.getLogger('dosimetric')
 
