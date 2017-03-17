@@ -66,8 +66,8 @@ def prepare_dvh_data(dhist, dvh):
     dvhdata['type'] = 'CUMULATIVE'
     dvhdata['doseunits'] = 'cGY'
     dvhdata['volumeunits'] = 'cm3'
-    dvhdata['scaling'] = np.diff(dhist)[0]
-    # dvhdata['scaling'] = 1.0  # standard 1 cGy bins
+    # dvhdata['scaling'] = np.diff(dhist)[0]
+    dvhdata['scaling'] = 1.0  # standard 1 cGy bins  # Fix XiO calculation error
     dvhdata['min'] = get_dvh_min(dvh)
     dvhdata['max'] = get_dvh_max(dvh)
     dvhdata['mean'] = get_dvh_mean(dvh)
