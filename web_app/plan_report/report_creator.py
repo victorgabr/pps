@@ -67,9 +67,10 @@ class PlanReportCreator(object):
         calculation_options['up_sampling'] = True
         calculation_options['maximum_upsampled_volume_cc'] = 100.0
         calculation_options['voxel_size'] = 0.2
-        calculation_options['num_cores'] = 4
+        calculation_options['num_cores'] = 8
         calculation_options['save_dvh_figure'] = False
         calculation_options['save_dvh_data'] = False
+        calculation_options['mp_backend'] = 'threading'
 
         print('------------- Calculating DVH and score --------------')
         participant = Participant(self.rp_file, self.rs_file, self.rd_file, calculation_options=calculation_options)

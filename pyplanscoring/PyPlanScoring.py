@@ -48,6 +48,7 @@ calculation_options['voxel_size'] = config.getfloat('DEFAULT', 'voxel_size')
 calculation_options['num_cores'] = config.getint('DEFAULT', 'num_cores')
 calculation_options['save_dvh_figure'] = config.getboolean('DEFAULT', 'save_dvh_figure')
 calculation_options['save_dvh_data'] = config.getboolean('DEFAULT', 'save_dvh_data')
+calculation_options['mp_backend'] = config['DEFAULT']['mp_backend']
 
 
 class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):

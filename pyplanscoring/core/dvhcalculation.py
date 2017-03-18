@@ -737,8 +737,9 @@ def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, cal
     rtdose = ScoringDicomParser(filename=rd_file)
     # Obtain the structures and DVHs from the DICOM data
     structures = rtss.GetStructures()
-
-    res = Parallel(n_jobs=calculation_options['num_cores'], verbose=11, backend='threading')(
+    # backend = 'threading'
+    backend = calculation_options['mp_backend']
+    res = Parallel(n_jobs=calculation_options['num_cores'], verbose=11, backend=backend)(
         delayed(get_dvh_upsampled)(structure, rtdose, key, calculation_options) for key, structure in structures.items()
         if
         structure['name'] in struc_names)

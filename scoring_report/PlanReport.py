@@ -1,5 +1,8 @@
 import os
 import platform
+import sys
+
+sys.path.extend(['/home/victor/Dropbox/Plan_Competition_Project'])
 
 from pyplanscoring.core.dosimetric import read_scoring_criteria
 from pyplanscoring.core.scoring import get_participant_folder_data, Participant
@@ -27,6 +30,10 @@ calculation_options['up_sampling'] = True
 calculation_options['maximum_upsampled_volume_cc'] = 100.0
 calculation_options['voxel_size'] = 0.2
 calculation_options['num_cores'] = 8
+calculation_options['save_dvh_figure'] = True
+calculation_options['save_dvh_data'] = True
+calculation_options['mp_backend'] = 'threading'
+
 
 def main():
     print(txt)
@@ -58,7 +65,7 @@ def main():
     participant = Participant(rp, rs, rd, calculation_options=calculation_options)
     participant.set_participant_data(participant_name)
     val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria,
-                                 calculation_options=calculation_options)
+                                 )
     if calculation_options['use_tps_dvh']:
         print('Using TPS calculated DVH extracted from DICOM-RT dose file')
 
