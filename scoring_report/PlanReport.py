@@ -26,7 +26,7 @@ calculation_options['use_tps_dvh'] = False
 calculation_options['up_sampling'] = True
 calculation_options['maximum_upsampled_volume_cc'] = 100.0
 calculation_options['voxel_size'] = 0.2
-
+calculation_options['num_cores'] = 8
 
 def main():
     print(txt)

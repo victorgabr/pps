@@ -68,12 +68,13 @@ class PlanReportCreator(object):
         calculation_options['maximum_upsampled_volume_cc'] = 100.0
         calculation_options['voxel_size'] = 0.2
         calculation_options['num_cores'] = 4
+        calculation_options['save_dvh_figure'] = False
+        calculation_options['save_dvh_data'] = False
 
         print('------------- Calculating DVH and score --------------')
         participant = Participant(self.rp_file, self.rs_file, self.rd_file, calculation_options=calculation_options)
         participant.set_participant_data(report_header)
-        val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria,
-                                     calculation_options=calculation_options)
+        val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria)
 
         df_report = participant.get_score_report()
         print('Plan Score: %1.2f' % val)

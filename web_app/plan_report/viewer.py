@@ -100,7 +100,8 @@ def report_creator():
     response = make_response(report_data)
 
     # clean up uploaded files
-    # os.remove(dose_file_name)
+    os.remove(dose_file_name)
+    # TODO not save DVH png, and *.dvh file, or just remove after report generation
 
     ################################
     # Code for setting correct

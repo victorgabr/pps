@@ -416,16 +416,20 @@ class Scoring(object):
 
         writer.save()
 
-    def set_dvh_data(self, dvh_filepath):
+    def set_dvh_data(self, dvh_filepath='', dvhs=None):
         """
             Set DVH data from *.dvh files
         :param dvh_filepath:
         """
-        dvh_obj = load(dvh_filepath)
-        self.dvhs = dvh_obj['DVH']
-        # All keys Upper
-        self.dvhs = dict((k.upper(), v) for k, v in self.dvhs.items())
-        self._set_constrains_values()
+        if dvh_filepath:
+            dvh_obj = load(dvh_filepath)
+            self.dvhs = dvh_obj['DVH']
+            # All keys Upper
+            self.dvhs = dict((k.upper(), v) for k, v in self.dvhs.items())
+            self._set_constrains_values()
+        elif dvhs is not None:
+            self.dvhs = dict((k.upper(), v) for k, v in dvhs.items())
+            self._set_constrains_values()
 
     def set_dicom_dvh_data(self):
         """
@@ -577,7 +581,7 @@ class Scoring(object):
 
 
 class Participant(object):
-    # TODO save important data a
+    # TODO save important data extracted from RP files
     def __init__(self, rp_file, rs_file, rd_file, dvh_file='', calculation_options=None):
         """
             Class to encapsulate all plan participant planning data to eval using pyplanscoring app
@@ -607,11 +611,8 @@ class Participant(object):
         self.tps_info = self.rd_dcm.get_tps_data()
 
     def _save_dvh_fig(self, calc_dvhs, dest):
-        p = os.path.splitext(dest)
-        _, filename = os.path.split(dest)
-
-        fig_name = p[0] + '_RD_calc_' + 'DVH.png'
-
+        p, filename = os.path.split(dest)
+        fig_name = os.path.join(p, self.participant_name + '_cDVH.png')
         fig, ax = plt.subplots()
         fig.set_figheight(12)
         fig.set_figwidth(20)
@@ -623,24 +624,27 @@ class Participant(object):
                         label=sname, linewidth=2.0, color=np.array(structure['color'], dtype=float) / 255)
                 ax.legend(loc=7, borderaxespad=-5)
 
-        ax.set_ylabel('Vol (%)')
+        ax.set_ylabel('Volume (%)')
         ax.set_xlabel('Dose (cGy)')
-        ax.set_title(filename)
+        ax.set_title(self.participant_name)
         fig.savefig(fig_name, format='png', dpi=100)
 
-    def _save_dvh(self, structure_names):
+    def calculate_dvh(self, structure_names):
         self.structure_names = structure_names
         if not self.dvh_file:
-            p = os.path.splitext(self.rd_file)
-            self.dvh_file = p[0] + '.dvh'
-            # if not os.path.exists(self.dvh_file):
+            p, filename = os.path.split(self.rd_file)
+            dvh_file = os.path.join(p, self.participant_name + '.dvh')
             cdvh = calc_dvhs_upsampled(self.participant_name, self.rs_file, self.rd_file,
                                        structure_names,
-                                       out_file=self.dvh_file,
+                                       out_file=dvh_file,
                                        calculation_options=self.calculation_options)
-            self._save_dvh_fig(cdvh, self.rd_file)
 
-    def eval_score(self, constrains_dict, scores_dict, criteria_df, calculation_options):
+            if self.calculation_options['save_dvh_figure']:
+                self._save_dvh_fig(cdvh, self.rd_file)
+
+            return cdvh
+
+    def eval_score(self, constrains_dict, scores_dict, criteria_df):
 
         self.score_obj = Scoring(self.rd_file,
                                  self.rs_file,
@@ -648,13 +652,13 @@ class Participant(object):
                                  constrains_dict,
                                  scores_dict,
                                  criteria_df,
-                                 calculation_options=calculation_options)
+                                 calculation_options=self.calculation_options)
 
-        if calculation_options['use_tps_dvh']:
+        if self.calculation_options['use_tps_dvh']:
             self.score_obj.set_dicom_dvh_data()
         else:
-            self._save_dvh(criteria_df.index.unique())
-            self.score_obj.set_dvh_data(self.dvh_file)
+            cdvh = self.calculate_dvh(criteria_df.index.unique())
+            self.score_obj.set_dvh_data(dvh_filepath=self.dvh_file, dvhs=cdvh)
 
         return self.score_obj.get_total_score()
 

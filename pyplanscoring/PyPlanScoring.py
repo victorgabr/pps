@@ -8,8 +8,7 @@ import sys
 import matplotlib
 from PySide import QtGui, QtCore
 
-# from PySide.QtCore import QLocale
-
+# TODO comment this lines before compile using pyinstaller
 matplotlib.use('Qt4Agg')
 matplotlib.rcParams['backend.qt4'] = 'PySide'
 
@@ -47,6 +46,8 @@ calculation_options['up_sampling'] = config.getboolean('DEFAULT', 'up_sampling')
 calculation_options['maximum_upsampled_volume_cc'] = config.getfloat('DEFAULT', 'maximum_upsampled_volume_cc')
 calculation_options['voxel_size'] = config.getfloat('DEFAULT', 'voxel_size')
 calculation_options['num_cores'] = config.getint('DEFAULT', 'num_cores')
+calculation_options['save_dvh_figure'] = config.getboolean('DEFAULT', 'save_dvh_figure')
+calculation_options['save_dvh_data'] = config.getboolean('DEFAULT', 'save_dvh_data')
 
 
 class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):
@@ -104,8 +105,7 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):
 
         self.participant = Participant(rp, rs, rd, calculation_options=calculation_options)
         self.participant.set_participant_data(self.name)
-        val = self.participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria,
-                                          calculation_options=calculation_options)
+        val = self.participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria)
 
         return val
 

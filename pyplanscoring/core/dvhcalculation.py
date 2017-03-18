@@ -747,10 +747,11 @@ def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, cal
         key = k['key']
         cdvh[structures[key]['name']] = k
 
-    if out_file:
-        out_obj = {'participant': name,
-                   'DVH': cdvh}
-        save(out_obj, out_file)
+    if calculation_options['save_dvh_data']:
+        if out_file:
+            out_obj = {'participant': name,
+                       'DVH': cdvh}
+            save(out_obj, out_file)
 
     return cdvh
 

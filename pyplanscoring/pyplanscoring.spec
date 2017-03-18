@@ -18,8 +18,8 @@ added_files = [
 ]
 
 a = Analysis(['app.py'],
-             pathex=[r'C:\Users\Victor\Dropbox\Plan_Competition_Project',
-                     r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring'],
+             pathex=[r'D:\Dropbox\Plan_Competition_Project',
+                     r'D:\Dropbox\Plan_Competition_Project\pyplanscoring'],
              binaries=[],
              datas=added_files,
              hiddenimports=[],
