@@ -32,7 +32,7 @@ calculation_options['voxel_size'] = 0.2
 calculation_options['num_cores'] = 8
 calculation_options['save_dvh_figure'] = True
 calculation_options['save_dvh_data'] = True
-calculation_options['mp_backend'] = 'threading'
+calculation_options['mp_backend'] = 'multiprocessing'
 
 
 def main():
