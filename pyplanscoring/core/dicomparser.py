@@ -308,6 +308,9 @@ class DicomParser(object):
                 number = item.ReferencedROINumber
                 structures[number]['RTROIType'] = item.RTROIInterpretedType
 
+        # TODO handle XIO less than 5.00
+
+
         # The coordinate data of each ROI is stored within ROIContourSequence
         if 'ROIContours' in self.ds:
             for roi in self.ds.ROIContours:
@@ -346,7 +349,7 @@ class DicomParser(object):
 
                         # Determine all the plane properties
                         plane['geometricType'] = contour.ContourGeometricType
-                        plane['numContourPoints'] = contour.NumberofContourPointsF
+                        plane['numContourPoints'] = contour.NumberofContourPoints
                         plane['contourData'] = self.GetContourPoints(contour.ContourData)
                         # Each plane which coincides with a image slice will have a unique ID
                         if 'ContourImages' in contour:
@@ -975,8 +978,14 @@ class ScoringDicomParser(DicomParser):
                         contour_data = self.GetContourPoints(contour.ContourData)
                         plane['contourData'] = contour_data
                         # add info about contour centroid
-                        plane['centroid'] = centroid_of_polygon(contour_data[:, 0], contour_data[:, 1])
-                        # Each plane which coincides with a image slice will have a unique ID
+
+                        # TODO DEBUG centroid calculation on XiO
+                        # if contour.roi not in ['POINT', 'ISOCENTER']:
+                        try:
+                            plane['centroid'] = centroid_of_polygon(contour_data[:, 0], contour_data[:, 1])
+                            # Each plane which coincides with a image slice will have a unique ID
+                        except:
+                            plane['centroid'] = (contour_data[:, 0].mean(), contour_data[:, 1][0].mean())
                         if 'ContourImages' in contour:
                             plane['UID'] = contour.ContourImages[0].ReferencedSOPInstanceUID
 
@@ -1234,7 +1243,7 @@ class ScoringDicomParser(DicomParser):
 
 
 def test_rtss_eclipse(f):
-    ds = dicom.read_file(f)
+    ds = dicom.read_file(f, force=True)
     print('SpecificCharacterSet: %s' % ds.SpecificCharacterSet)
     print('Manufacturer: %s' % ds.Manufacturer)
     print('ManufacturersModelName: %s' % ds.ManufacturersModelName)
