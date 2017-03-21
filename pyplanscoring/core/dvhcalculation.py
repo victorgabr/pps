@@ -757,6 +757,38 @@ def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, cal
     return cdvh
 
 
+def calc_dvhs_pp(name, rtdose, structures, struc_names, out_file=False, calculation_options=None):
+    """
+        Computes structures cDVH
+
+    :param name: participant name
+    :param rtdose: ScoringDicomParser obj
+    :param structures: Structures dict
+    :param struc_names: Structure names list from criteria txt file
+    :param out_file: *.dvh out file path
+    :param calculation_options: Dict from *.ini file
+    :return: dict - computed DVHs
+    """
+
+    backend = calculation_options['mp_backend']
+    res = Parallel(n_jobs=calculation_options['num_cores'], verbose=11, backend=backend)(
+        delayed(get_dvh_upsampled)(structure, rtdose, key, calculation_options) for key, structure in structures.items()
+        if
+        structure['name'] in struc_names)
+    cdvh = {}
+    for k in res:
+        key = k['key']
+        cdvh[structures[key]['name']] = k
+
+    if calculation_options['save_dvh_data']:
+        if out_file:
+            out_obj = {'participant': name,
+                       'DVH': cdvh}
+            save(out_obj, out_file)
+
+    return cdvh
+
+
 def save_dicom_dvhs(name, rs_file, rd_file, out_file=False):
     """
         Computes structures DVH using a RS-DICOM and RD-DICOM diles

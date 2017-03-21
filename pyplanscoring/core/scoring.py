@@ -1,5 +1,6 @@
 from __future__ import division
 
+import difflib
 import logging
 import os
 from collections import OrderedDict
@@ -11,10 +12,23 @@ import scipy.interpolate as itp
 from xlsxwriter.utility import xl_rowcol_to_cell
 
 from pyplanscoring.core.dicomparser import ScoringDicomParser
-from pyplanscoring.core.dvhcalculation import calc_dvhs_upsampled, Structure
+from pyplanscoring.core.dvhcalculation import Structure, calc_dvhs_pp
 from pyplanscoring.core.dvhcalculation import load
 
 logger = logging.getLogger('scoring')
+
+
+def get_matched_names(criteria_structure_names, dicom_structure_dict):
+    result = []
+    names_dcm = [dicom_structure_dict[k]['name'] for k in dicom_structure_dict.keys()]
+    for nic in criteria_structure_names:
+        result += difflib.get_close_matches(nic, names_dcm, n=1)
+
+    if len(result) == len(criteria_structure_names):
+        return result, names_dcm
+    else:
+        print(criteria_structure_names, result)
+        print('not matched')
 
 
 def get_dvh_files(root_path):
@@ -217,27 +231,27 @@ class DVHMetrics(object):
 
 
 class Scoring(object):
-    def __init__(self, rd_file, rs_file, rp_file, constrain, score, criteria=None, calculation_options=None):
+    def __init__(self, rd_dcm, structures, rp_dcm, constrain, score, criteria_df=None, calculation_options=None):
         """
             Scoring class to encapsulate methods to extract constrains from DICOM-RP/RS/RD
-        :param rd_file: DICOM-RT Dose file path
-        :param rs_file: DICOM-RT Structures file path
-        :param rp_file: DICOM-RT Plan file path
+        :param rd_dcm: ScoringDicomParser RD
+        :param structures: Structures dict
+        :param rp_dcm: ScoringDicomParser RP
         :param constrain: Constrain dict {"Structure Name": {Metric:Value}}
         :param score: Scores dict {"Structure Name": {Metric: [type, (constrain_min, constrain_max), (point_min, point_max)}
         :param criteria: Scores DataFrame
         """
-        # TODO debug importing RP files
-        # self.rt_plan = ScoringDicomParser(filename=rp_file).GetPlan()
-        self.structures = ScoringDicomParser(filename=rs_file).GetStructures()
-        self.rtdose = ScoringDicomParser(filename=rd_file)
+        self.rt_plan = rp_dcm.GetPlan()
+        self.structures = structures
+        self.rtdose = rd_dcm
         self.constrains = dict((k.upper(), v) for k, v in constrain.items())
+        # self.constrains =
         self.scores = dict((k.upper(), v) for k, v in score.items())
         self.dvhs = {}
         self.constrains_values = {}
         self.score_result = {}
         self.score = 0
-        self.criteria = criteria
+        self.criteria_df = criteria_df
         self.is_dicom_dvh = False
         self.calculation_options = calculation_options
 
@@ -263,13 +277,14 @@ class Scoring(object):
         if self.dvhs:
             score_results = pd.DataFrame(self.scoring_result).T
             constrains_results = pd.DataFrame(self.constrains_values).T
-            self.criteria.index = [name.upper() for name in self.criteria.index]
-
-            # saving results report on spreadsheet
-            s_names = self.criteria.index.unique()
+            # self.criteria.index = [name.upper() for name in self.criteria.index]
+            #
+            # # saving results report on spreadsheet
+            s_names = self.criteria_df.index.unique()
+            # s_names = self.criteria_df
             report = []
             for name in s_names:
-                sc_tmp = self.criteria.loc[[name]]
+                sc_tmp = self.criteria_df.loc[[name]]
                 ctr_tmp = constrains_results.loc[[name]].dropna(axis=1)
                 score_tmp = score_results.loc[[name]].dropna(axis=1)
                 for res in ctr_tmp.columns:
@@ -454,6 +469,7 @@ class Scoring(object):
         """
 
         for key, values in self.constrains.items():
+
             if key == 'GLOBAL MAX':
                 max_dose = self.rtdose.global_max
                 self.dvhs['GLOBAL MAX'] = {'data': np.asarray([1, 100]),
@@ -595,6 +611,7 @@ class Participant(object):
         self.rd_dcm = ScoringDicomParser(filename=rd_file)
         self.rs_dcm = ScoringDicomParser(filename=rs_file)
         self.rp_dcm = ScoringDicomParser(filename=rp_file)
+        self.structures = self.rs_dcm.GetStructures()
         self.dvh_file = dvh_file
         self.tps_info = ''
         self.plan_data = {}
@@ -616,8 +633,8 @@ class Participant(object):
         fig, ax = plt.subplots()
         fig.set_figheight(12)
         fig.set_figwidth(20)
-        structures = self.rs_dcm.GetStructures()
-        for key, structure in structures.items():
+
+        for key, structure in self.structures.items():
             sname = structure['name']
             if sname in self.structure_names:
                 ax.plot(calc_dvhs[sname]['data'] / calc_dvhs[sname]['data'][0] * 100,
@@ -630,14 +647,17 @@ class Participant(object):
         fig.savefig(fig_name, format='png', dpi=100)
 
     def calculate_dvh(self, structure_names):
-        self.structure_names = structure_names
+
         if not self.dvh_file:
             p, filename = os.path.split(self.rd_file)
             dvh_file = os.path.join(p, self.participant_name + '.dvh')
-            cdvh = calc_dvhs_upsampled(self.participant_name, self.rs_file, self.rd_file,
-                                       structure_names,
-                                       out_file=dvh_file,
-                                       calculation_options=self.calculation_options)
+
+            cdvh = calc_dvhs_pp(self.participant_name,
+                                self.rd_dcm,
+                                self.structures,
+                                structure_names,
+                                out_file=dvh_file,
+                                calculation_options=self.calculation_options)
 
             if self.calculation_options['save_dvh_figure']:
                 self._save_dvh_fig(cdvh, self.rd_file)
@@ -646,18 +666,31 @@ class Participant(object):
 
     def eval_score(self, constrains_dict, scores_dict, criteria_df):
 
-        self.score_obj = Scoring(self.rd_file,
-                                 self.rs_file,
-                                 self.rp_file,
-                                 constrains_dict,
-                                 scores_dict,
+        # TODO refactor structure name matching
+        criteria_structure_names, names_dcm = get_matched_names(criteria_df.index.unique(), self.structures)
+        self.structure_names = criteria_structure_names
+        constrains_m = dict(
+            (difflib.get_close_matches(k.upper(), names_dcm, n=1)[0], v) for k, v in constrains_dict.items())
+
+        scores_m = dict((difflib.get_close_matches(k.upper(), names_dcm, n=1)[0], v) for k, v in scores_dict.items())
+
+        matched_index = [difflib.get_close_matches(i.upper(), names_dcm, n=1)[0] for i in criteria_df.index]
+
+        criteria_df.index = matched_index
+
+        # end structure name matching
+        self.score_obj = Scoring(self.rd_dcm,
+                                 self.structures,
+                                 self.rp_dcm,
+                                 constrains_m,
+                                 scores_m,
                                  criteria_df,
                                  calculation_options=self.calculation_options)
 
         if self.calculation_options['use_tps_dvh']:
             self.score_obj.set_dicom_dvh_data()
         else:
-            cdvh = self.calculate_dvh(criteria_df.index.unique())
+            cdvh = self.calculate_dvh(criteria_structure_names)
             self.score_obj.set_dvh_data(dvh_filepath=self.dvh_file, dvhs=cdvh)
 
         return self.score_obj.get_total_score()

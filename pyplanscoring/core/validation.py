@@ -34,9 +34,14 @@ config.read(os.path.join(folder, 'validation.ini'))
 calculation_options = dict()
 calculation_options['end_cap'] = config.getfloat('DEFAULT', 'end_cap')
 calculation_options['use_tps_dvh'] = config.getboolean('DEFAULT', 'use_tps_dvh')
+calculation_options['use_tps_structures'] = config.getboolean('DEFAULT', 'use_tps_structures')
 calculation_options['up_sampling'] = config.getboolean('DEFAULT', 'up_sampling')
 calculation_options['maximum_upsampled_volume_cc'] = config.getfloat('DEFAULT', 'maximum_upsampled_volume_cc')
 calculation_options['voxel_size'] = config.getfloat('DEFAULT', 'voxel_size')
+calculation_options['num_cores'] = config.getint('DEFAULT', 'num_cores')
+calculation_options['save_dvh_figure'] = config.getboolean('DEFAULT', 'save_dvh_figure')
+calculation_options['save_dvh_data'] = config.getboolean('DEFAULT', 'save_dvh_data')
+calculation_options['mp_backend'] = config['DEFAULT']['mp_backend']
 
 
 # TODO extract constrains from analytical curves
@@ -649,7 +654,7 @@ def test1(lim=3, save_data=False):
     return test_table
 
 
-def test2(delta_mm=(0.1, 0.1, 0.1), end_cap=True, lim=3):
+def test2(lim=3):
     """
                               count         range
         Total Volume (cc)     2   [-3.9, 0.6]

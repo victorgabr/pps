@@ -32,9 +32,6 @@ sys.getfilesystemencoding = _sys_getenc_wrapper
 # SET COMPETITION 2017
 
 folder = os.getcwd()
-path = os.path.join(folder, 'Scoring Criteria.txt')
-constrains, scores, criteria = read_scoring_criteria(path)
-banner_path = os.path.join(folder, '2017 Plan Comp Banner.jpg')
 
 # Get calculation defaults
 config = configparser.ConfigParser()
@@ -42,6 +39,7 @@ config.read(os.path.join(folder, 'PyPlanScoring.ini'))
 calculation_options = dict()
 calculation_options['end_cap'] = config.getfloat('DEFAULT', 'end_cap')
 calculation_options['use_tps_dvh'] = config.getboolean('DEFAULT', 'use_tps_dvh')
+calculation_options['use_tps_structures'] = config.getboolean('DEFAULT', 'use_tps_structures')
 calculation_options['up_sampling'] = config.getboolean('DEFAULT', 'up_sampling')
 calculation_options['maximum_upsampled_volume_cc'] = config.getfloat('DEFAULT', 'maximum_upsampled_volume_cc')
 calculation_options['voxel_size'] = config.getfloat('DEFAULT', 'voxel_size')
@@ -49,6 +47,10 @@ calculation_options['num_cores'] = config.getint('DEFAULT', 'num_cores')
 calculation_options['save_dvh_figure'] = config.getboolean('DEFAULT', 'save_dvh_figure')
 calculation_options['save_dvh_data'] = config.getboolean('DEFAULT', 'save_dvh_data')
 calculation_options['mp_backend'] = config['DEFAULT']['mp_backend']
+
+path = os.path.join(folder, 'Scoring Criteria.txt')
+constrains, scores, criteria = read_scoring_criteria(path)
+banner_path = os.path.join(folder, '2017 Plan Comp Banner.jpg')
 
 
 class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):
@@ -101,7 +103,7 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):
         rp = self.files_data.reset_index().set_index(1).ix['rtplan']['index']
         rs = os.path.join(folder, 'RS.1.2.246.352.71.4.584747638204.253443.20170222200317.dcm')
 
-        if calculation_options['use_tps_dvh']:
+        if calculation_options['use_tps_dvh'] or calculation_options['use_tps_structures']:
             rs = self.files_data.reset_index().set_index(1).ix['rtss']['index']
 
         self.participant = Participant(rp, rs, rd, calculation_options=calculation_options)
