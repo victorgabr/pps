@@ -1006,70 +1006,6 @@ class ScoringDicomParser(DicomParser):
 
         return structures
 
-    def GetDoseGrid(self, z=0, threshold=0.5, interp_all=False):
-        """
-        Return the 2d dose grid for the given slice position (mm).
-
-        :param z:           Slice position in mm.
-        :param threshold:   Threshold in mm to determine the max difference from z to the closest dose slice without using interpolation.
-        :return:            An numpy 2d array of dose points.
-        """
-
-        # If this is a multi-frame dose pixel array,
-        # determine the offset for each frame
-        if 'GridFrameOffsetVector' in self.ds:
-            z = float(z)
-            # Get the initial dose grid position (z) in patient coordinates
-            imagepatpos = self.ds.ImagePositionPatient[2]
-            orientation = self.ds.ImageOrientationPatient[0]
-            # Add the position to the offset vector to determine the
-            # z coordinate of each dose plane
-            planes = orientation * np.array(self.ds.GridFrameOffsetVector) + \
-                     imagepatpos
-
-            if not interp_all:
-
-                frame = -1
-                # Check to see if the requested plane exists in the array
-                if np.amin(np.fabs(planes - z)) < threshold:
-                    frame = np.argmin(np.fabs(planes - z))
-                # Return the requested dose plane, since it was found
-                if not (frame == -1):
-                    return self.ds.pixel_array[frame]
-                # Check whether the requested plane is within the dose grid boundaries
-                elif (z < np.amin(planes)) or (z > np.amax(planes)):
-                    return []
-                # The requested plane was not found, so interpolate between planes
-                else:
-                    # Determine the upper and lower bounds
-                    umin = np.fabs(planes - z)
-                    ub = np.argmin(umin)
-                    lmin = umin.copy()
-                    # Change the minimum value to the max so we can find the 2nd min
-                    lmin[ub] = np.amax(umin)
-                    lb = np.argmin(lmin)
-                    # Fractional distance of dose plane between upper and lower bound
-                    fz = (z - planes[lb]) / (planes[ub] - planes[lb])
-                    plane = self.InterpolateDosePlanes(
-                        self.ds.pixel_array[ub], self.ds.pixel_array[lb], fz)
-                    return plane
-            else:
-                # Determine the upper and lower bounds
-                umin = np.fabs(planes - z)
-                ub = np.argmin(umin)
-                lmin = umin.copy()
-                # Change the minimum value to the max so we can find the 2nd min
-                lmin[ub] = np.amax(umin)
-                lb = np.argmin(lmin)
-                # Fractional distance of dose plane between upper and lower bound
-                fz = (z - planes[lb]) / (planes[ub] - planes[lb])
-                plane = self.InterpolateDosePlanes(
-                    self.ds.pixel_array[ub], self.ds.pixel_array[lb], fz)
-
-                return plane
-        else:
-            return []
-
     def get_grid_3d(self):
 
         # Get the dose to pixel LUT
@@ -1240,6 +1176,18 @@ class ScoringDicomParser(DicomParser):
         else:
             self.plan['patient_name'] = ''
         return self.plan
+
+    def GetDoseData(self):
+        """Return the dose data from a DICOM RT Dose file."""
+
+        data = self.GetImageData()
+        data['doseunits'] = self.ds.DoseUnits
+        data['dosetype'] = self.ds.DoseType
+        data['dosesummationtype'] = self.ds.DoseSummationType
+        data['dosegridscaling'] = self.ds.DoseGridScaling
+        data['dosemax'] = self.global_max
+
+        return data
 
 
 def test_rtss_eclipse(f):

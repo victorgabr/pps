@@ -497,6 +497,7 @@ class Scoring(object):
                         else:
                             nk = self.dvhs[key]['key']
                             ct = self.get_conformity(nk, values[k])
+                            # ct = self.get_conformity(key, values[k])
                         values_constrains[k] = ct
                     if k == 'Dmax_position':
                         nk = self.dvhs[key]['key']
@@ -620,11 +621,14 @@ class Participant(object):
         self.structure_names = []
         self.calculation_options = calculation_options
 
+    def set_structure_names(self, names):
+        self.structure_names = names
+
     def set_participant_data(self, participant_name):
 
         self.participant_name = participant_name
         # TODO debug import RP files.
-        # self.plan_data = self.rp_dcm.GetPlan()
+        self.plan_data = self.rp_dcm.GetPlan()
         self.tps_info = self.rd_dcm.get_tps_data()
 
     def _save_dvh_fig(self, calc_dvhs, dest):
@@ -643,7 +647,7 @@ class Participant(object):
 
         ax.set_ylabel('Volume (%)')
         ax.set_xlabel('Dose (cGy)')
-        ax.set_title(self.participant_name)
+        ax.set_title(filename)
         fig.savefig(fig_name, format='png', dpi=100)
 
     def calculate_dvh(self, structure_names):

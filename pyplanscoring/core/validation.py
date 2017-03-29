@@ -19,7 +19,7 @@ from pyplanscoring.core.dosimetric import read_scoring_criteria, constrains, Com
 from pyplanscoring.core.dvhcalculation import Structure, prepare_dvh_data, calc_dvhs_upsampled, save_dicom_dvhs, load
 from pyplanscoring.core.dvhdoses import get_dvh_max
 from pyplanscoring.core.geometry import get_axis_grid, get_interpolated_structure_planes
-from pyplanscoring.core.scoring import DVHMetrics, Scoring
+from pyplanscoring.core.scoring import DVHMetrics, Scoring, Participant
 from pyplanscoring.lecacy_dicompyler.dvhcalc import calc_dvhs
 from pyplanscoring.lecacy_dicompyler.dvhcalc import load
 
@@ -28,7 +28,7 @@ logger = logging.getLogger('validation')
 logging.basicConfig(filename='plan_competition_2016_no_dicom_DVH.log', level=logging.DEBUG)
 
 # Get calculation defaults
-folder = os.getcwd()
+folder = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/core'
 config = configparser.ConfigParser()
 config.read(os.path.join(folder, 'validation.ini'))
 calculation_options = dict()
@@ -1058,6 +1058,10 @@ class EvalCompetition(object):
         self.comp_data = None
         self.dvh_files = []
         self.results = []
+        self.comp_data = get_competition_data(root_path)
+
+    def save_reports(self):
+        pass
 
     def save_dvh_all(self, clean_files=False, end_cap=False, dicom_dvh=False):
 
@@ -1100,24 +1104,6 @@ class EvalCompetition(object):
                                                    end_cap=end_cap)
                 i += 1
                 print('processing file done %s' % f)
-
-                # fig, ax = plt.subplots()
-                # fig.set_figheight(12)
-                # fig.set_figwidth(20)
-                #
-                # for key, structure in structures.items():
-                #     sname = structure['name']
-                #     if sname in self.scores.keys():
-                #         ax.plot(calcdvhs[sname]['data'] / calcdvhs[sname]['data'][0] * 100,
-                #                 label=sname, linewidth=2.0, color=np.array(structure['color'], dtype=float) / 255)
-                #         ax.legend(loc=7, borderaxespad=-5)
-                #         ax.set_ylabel('Vol (%)')
-                #         ax.set_xlabel('Dose (cGy)')
-                #         ax.set_title(n + ':' + df)
-                #         fig_name = os.path.join(dest, n + '_RD_calc_DVH.png')
-                #         fig.savefig(fig_name, format='png', dpi=100)
-                #
-                # plt.close('all')
 
     def set_data(self):
         self.comp_data = get_competition_data(self.root_path)
@@ -1340,6 +1326,177 @@ def timimg_evaluation():
     plt.show()
 
 
-if __name__ == '__main__':
+def compare_dvh_planIQ():
     plt.style.use('ggplot')
-    test3()
+    from pyplanscoring.core.scoring import get_participant_folder_data, Participant
+
+    folder = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/ref_plan'
+    plan_iq = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/testdata/ref_plan/PlanIQ TXT DVH Feb 5 2017.txt'
+
+    calculation_options = dict()
+    calculation_options['end_cap'] = 1.5
+    calculation_options['use_tps_dvh'] = False
+    calculation_options['use_tps_structures'] = False
+    calculation_options['up_sampling'] = True
+    calculation_options['maximum_upsampled_volume_cc'] = 100.0
+    calculation_options['voxel_size'] = 0.5
+    calculation_options['num_cores'] = 8
+    calculation_options['save_dvh_figure'] = True
+    calculation_options['save_dvh_data'] = True
+    calculation_options['mp_backend'] = 'multiprocessing'
+
+    df = read_planiq_dvh(plan_iq)
+    flag, files_data = get_participant_folder_data('ref_plan', folder)
+    rd = files_data.reset_index().set_index(1).ix['rtdose']['index']
+    rp = files_data.reset_index().set_index(1).ix['rtplan']['index']
+    rs = files_data.reset_index().set_index(1).ix['rtss']['index']
+    participant = Participant(rp, rs, rd, calculation_options=calculation_options)
+    participant.set_participant_data('ref_plan')
+    participant.set_structure_names(df.columns)
+    cdvh = participant.calculate_dvh(df.columns)
+
+    for key in cdvh.keys():
+        fig, ax = plt.subplots()
+        fig.set_figheight(12)
+        fig.set_figwidth(20)
+
+        ax.plot(cdvh[key]['dose_axis'], cdvh[key]['data'] / cdvh[key]['data'][0] * 100, label='PyPlanScoring')
+        ax.plot(df.index, df[key] / df[key][0] * 100, label='PlanIQ')
+        ax.set_title(key)
+        ax.set_ylabel('Volume (%)')
+        ax.set_xlabel('Dose (cGy)')
+        ax.set_xlim([cdvh[key]['dose_axis'][0], cdvh[key]['dose_axis'][-1]])
+        ax.legend()
+
+    plt.show()
+
+
+def get_plans_data(root_path):
+    files = [os.path.join(root, name) for root, dirs, files in os.walk(root_path) for name in files if
+             name.endswith(('.dcm', '.DCM'))]
+
+    filtered_files = OrderedDict()
+    for f in files:
+        try:
+            obj = ScoringDicomParser(filename=f)
+            rt_type = obj.GetSOPClassUID()
+            if rt_type == 'rtdose':
+                # tmp = f.split(os.path.sep)[-2].split()
+                p, name = os.path.split(f)
+                # name = tmp[0].split('-')[0]
+                participant_data = [name, rt_type]
+                filtered_files[f] = participant_data
+            if rt_type == 'rtplan':
+                # tmp = f.split(os.path.sep)[-2].split()
+                # name = tmp[0].split('-')[0]
+                p, name = os.path.split(f)
+                participant_data = [name, rt_type]
+                filtered_files[f] = participant_data
+        except:
+            logger.exception('Error in file %s' % f)
+
+    data = pd.DataFrame(filtered_files).T
+    return data
+
+
+def batch_calc_2017():
+    config = configparser.ConfigParser()
+    conf_file = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/PyPlanScoring.ini'
+
+    config.read(conf_file)
+    calculation_options = dict()
+    calculation_options['end_cap'] = config.getfloat('DEFAULT', 'end_cap')
+    calculation_options['use_tps_dvh'] = config.getboolean('DEFAULT', 'use_tps_dvh')
+    calculation_options['use_tps_structures'] = config.getboolean('DEFAULT', 'use_tps_structures')
+    calculation_options['up_sampling'] = config.getboolean('DEFAULT', 'up_sampling')
+    calculation_options['maximum_upsampled_volume_cc'] = config.getfloat('DEFAULT', 'maximum_upsampled_volume_cc')
+    calculation_options['voxel_size'] = config.getfloat('DEFAULT', 'voxel_size')
+    calculation_options['num_cores'] = config.getint('DEFAULT', 'num_cores')
+    calculation_options['save_dvh_figure'] = config.getboolean('DEFAULT', 'save_dvh_figure')
+    calculation_options['save_dvh_data'] = config.getboolean('DEFAULT', 'save_dvh_data')
+    calculation_options['mp_backend'] = config['DEFAULT']['mp_backend']
+
+    root_path = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/Patch_calculation/Patch Calculation Test'
+    rs_file = '/home/victor/Dropbox/Plan_Competition_Project/competition_2017/DICOM/RS.1.2.246.352.71.4.584747638204.253443.20170222200317.dcm'
+    rp_file = '/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/Ahmad Nobah/RP.1.2.246.352.71.5.584747638204.955801.20170210152428.dcm'
+    comp_data = get_plans_data(root_path)
+
+    criteria_file = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/Scoring Criteria.txt'
+    constrains, scores, criteria = read_scoring_criteria(criteria_file)
+
+    banner_path = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/2017 Plan Comp Banner.jpg'
+
+    mask = comp_data[1] == 'rtdose'
+    rd_files = comp_data.index[mask]
+    names = comp_data[0][mask].values
+
+    i = 0
+    for f, n in zip(rd_files, names):
+        p = os.path.splitext(f)
+        out_file = p[0] + '.dvh'
+        dest, df = os.path.split(f)
+        if not os.path.exists(out_file):
+            try:
+                print('Iteration: %i' % i)
+                print('processing file: %s' % f)
+                participant = Participant(rp_file, rs_file, f, calculation_options=calculation_options)
+                participant.set_participant_data(n)
+                val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria)
+                report_path = p[0] + '_plan_scoring_report.xlsx'
+                participant.save_score(report_path, banner_path=banner_path, report_header=n)
+            except:
+                logger.exception('Error in file: %s' % f)
+
+
+if __name__ == '__main__':
+
+    config = configparser.ConfigParser()
+    conf_file = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/PyPlanScoring.ini'
+
+    config.read(conf_file)
+    calculation_options = dict()
+    calculation_options['end_cap'] = config.getfloat('DEFAULT', 'end_cap')
+    calculation_options['use_tps_dvh'] = config.getboolean('DEFAULT', 'use_tps_dvh')
+    calculation_options['use_tps_structures'] = config.getboolean('DEFAULT', 'use_tps_structures')
+    calculation_options['up_sampling'] = config.getboolean('DEFAULT', 'up_sampling')
+    calculation_options['maximum_upsampled_volume_cc'] = config.getfloat('DEFAULT', 'maximum_upsampled_volume_cc')
+    calculation_options['voxel_size'] = config.getfloat('DEFAULT', 'voxel_size')
+    calculation_options['num_cores'] = config.getint('DEFAULT', 'num_cores')
+    calculation_options['save_dvh_figure'] = config.getboolean('DEFAULT', 'save_dvh_figure')
+    calculation_options['save_dvh_data'] = config.getboolean('DEFAULT', 'save_dvh_data')
+    calculation_options['mp_backend'] = config['DEFAULT']['mp_backend']
+
+    root_path = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/Patch_calculation/Patch Calculation Test'
+    rs_file = '/home/victor/Dropbox/Plan_Competition_Project/competition_2017/DICOM/RS.1.2.246.352.71.4.584747638204.253443.20170222200317.dcm'
+    rp_file = '/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/Ahmad Nobah/RP.1.2.246.352.71.5.584747638204.955801.20170210152428.dcm'
+    comp_data = get_plans_data(root_path)
+
+    criteria_file = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/Scoring Criteria.txt'
+    constrains, scores, criteria = read_scoring_criteria(criteria_file)
+
+    banner_path = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/2017 Plan Comp Banner.jpg'
+
+    mask = comp_data[1] == 'rtdose'
+    rd_files = comp_data.index[mask]
+    names = comp_data[0][mask].values
+
+    i = 0
+    for f, n in zip(rd_files, names):
+        # f = rd_files[-3]
+        p = os.path.splitext(f)
+        out_file = p[0] + '.dvh'
+
+        dest, df = os.path.split(f)
+        # if not os.path.exists(out_file):
+        try:
+            print('Iteration: %i' % i)
+            print('processing file: %s' % f)
+            participant = Participant(rp_file, rs_file, f, calculation_options=calculation_options)
+            participant.set_participant_data(n)
+            val = participant.eval_score(constrains_dict=constrains, scores_dict=scores, criteria_df=criteria)
+            report_path = p[0] + '_plan_scoring_report.xlsx'
+            participant.save_score(report_path, banner_path=banner_path, report_header=n)
+        except:
+            logger.exception('Error in file: %s' % f)
+
+        i += 1

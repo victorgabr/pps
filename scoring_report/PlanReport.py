@@ -1,3 +1,4 @@
+import configparser
 import os
 import platform
 import sys
@@ -23,16 +24,20 @@ txt = "PlanReport - H&N Nasopharynx - 2017 RT Plan Competition: %s \n" \
       "%s" \
       % (__version__, __author__, platform.python_version(), platform.system(), __license__)
 
+# Get calculation defaults
+config = configparser.ConfigParser()
+config.read('/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/PyPlanScoring.ini')
 calculation_options = dict()
-calculation_options['end_cap'] = 0.2
-calculation_options['use_tps_dvh'] = False
-calculation_options['up_sampling'] = True
-calculation_options['maximum_upsampled_volume_cc'] = 100.0
-calculation_options['voxel_size'] = 0.2
-calculation_options['num_cores'] = 8
-calculation_options['save_dvh_figure'] = True
-calculation_options['save_dvh_data'] = True
-calculation_options['mp_backend'] = 'multiprocessing'
+calculation_options['end_cap'] = config.getfloat('DEFAULT', 'end_cap')
+calculation_options['use_tps_dvh'] = config.getboolean('DEFAULT', 'use_tps_dvh')
+calculation_options['use_tps_structures'] = config.getboolean('DEFAULT', 'use_tps_structures')
+calculation_options['up_sampling'] = config.getboolean('DEFAULT', 'up_sampling')
+calculation_options['maximum_upsampled_volume_cc'] = config.getfloat('DEFAULT', 'maximum_upsampled_volume_cc')
+calculation_options['voxel_size'] = config.getfloat('DEFAULT', 'voxel_size')
+calculation_options['num_cores'] = config.getint('DEFAULT', 'num_cores')
+calculation_options['save_dvh_figure'] = config.getboolean('DEFAULT', 'save_dvh_figure')
+calculation_options['save_dvh_data'] = config.getboolean('DEFAULT', 'save_dvh_data')
+calculation_options['mp_backend'] = config['DEFAULT']['mp_backend']
 
 
 def main():

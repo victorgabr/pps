@@ -7,7 +7,6 @@ import sys
 
 import matplotlib
 from PySide import QtGui, QtCore
-
 # TODO comment this lines before compile using pyinstaller
 matplotlib.use('Qt4Agg')
 matplotlib.rcParams['backend.qt4'] = 'PySide'
