@@ -43,8 +43,19 @@ logging.basicConfig(filename='Generate_reports.log', level=logging.DEBUG)
 def download_wrapper(date, row, destination):
     row['date'] = date.to_pydatetime()
     participant = row
-    uploaded_files = participant['Submit Plan'].split(',')
     entry_folder = row['Name (First)'].capitalize() + ' ' + row['Name (Last)'].capitalize() + ' ' + str(row['Entry Id'])
+
+    print(participant['Submit Plan'])
+    try:
+        uploaded_files = participant['Submit Plan'].split(',')
+    except:
+        txt = 'No files to download from : %s' % entry_folder
+        logger.debug(txt)
+        return
+
+    entry_folder = row['Name (First)'].capitalize() + ' ' + row['Name (Last)'].capitalize() + ' ' + str(row['Entry Id'])
+    entry_folder = entry_folder.replace('/', ' ')
+
     entry_path = osp.join(destination, entry_folder)
 
     if not osp.exists(entry_path):
@@ -88,13 +99,13 @@ class CompetitionPlans(object):
                'User Agent']
         self.df = self.df_raw[col].sort_index()
 
-    def download_all(self, out_folder, num_entries=3, pp=True):
+    def download_all(self, out_folder, pp=True):
 
         if pp:
             Parallel(n_jobs=-1, verbose=11)(
-                delayed(download_wrapper)(date, row, out_folder) for date, row in self.df.ix[:num_entries].iterrows())
+                delayed(download_wrapper)(date, row, out_folder) for date, row in self.df.iterrows())
         else:
-            for date, row in self.df.ix[:num_entries].iterrows():
+            for date, row in self.df.iterrows():
                 download_wrapper(date, row, out_folder)
 
     def generate_reports(self):
@@ -106,7 +117,7 @@ def test_download_all():
     f = '/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/submit-plan-2017-03-24.csv'
 
     cplans = CompetitionPlans(f)
-    cplans.download_all(destination, num_entries=-1, pp=True)
+    cplans.download_all(destination, pp=True)
 
 
 def get_random_colors(no_colors):
@@ -175,7 +186,7 @@ def make_report():
     doc.build(story)
 
 
-class CompetitionReport(object):
+class CompetitionReportPDF(object):
     def __init__(self, buffer, pageSize='A4'):
         self.buffer = buffer
         # default format is A4
@@ -381,13 +392,13 @@ def test_save_pdf():
     out_report = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/competition/test.pdf'
 
     # Title.
-    rep = CompetitionReport(out_report, 'A3')
+    rep = CompetitionReportPDF(out_report, 'A3')
     rep.report(report_df, 'Test Competition Report', banner_path=banner_path)
 
 
 def get_participant_data(participant_folder):
     metadata_path = osp.join(participant_folder, 'metadata.csv')
-    try:
+    if osp.exists(metadata_path):
         metadata = pd.read_csv(metadata_path,
                                header=None,
                                index_col=0,
@@ -421,7 +432,7 @@ def get_participant_data(participant_folder):
 
         return True, pd.DataFrame(filtered_files).T
 
-    except:
+    else:
         logger.debug('There is no metadata.csv file inside %s' % participant_folder)
         return False, None
 
@@ -481,40 +492,46 @@ class CompetitionReports(object):
             participant_folder = osp.join(self.root_folder, folder)
             self.batch_data.append(participant_folder)
 
-    def get_dicom_files(self, files):
+    def check_xio_version(self, dicom_data, f):
         try:
-            rp, rs, rd = files
+            rp = dicom_data.reset_index().set_index(1).ix['rtplan']['index']
             obj = ScoringDicomParser(filename=rp)
             tps_info = obj.get_tps_data()
+            print(tps_info)
             if tps_info['TPS'].lower() == 'xio':
                 if int(tps_info['SoftwareVersions'][0]) < 5:
-                    return files
+                    try:
+                        rs = dicom_data.reset_index().set_index(1).ix['rtss']['index']
+                        return True, rs, dicom_data
+                    except:
+
+                        return False, None, dicom_data
+                else:
+
+                    return False, None, dicom_data
             else:
-                return rp, self.ref_struc_file, rd
+                return False, None, dicom_data
         except:
-            rp, rs, rd = files
-            logger.exception('Error on cheking Xio less than 4.00')
-            return rp, self.ref_struc_file, rd
+            # f, name = osp.split(self.ref_struc_file)
+            logger.exception('Error on cheking Xio less than 4.00 on folder: %s' % f)
+            return False, None, dicom_data
 
     def participant_report(self, folder_path):
 
         # test parse participant folder
         flag_folder, folder_data = get_participant_data(folder_path)
 
-        if not flag_folder:
-            return None
+        # if not flag_folder:
+        #     return None
 
         # check data consistency
-        flag, truth, files = check_required_files(folder_data, folder_path)
+        flag, truth, dicom_data = check_required_files(folder_data, folder_path)
 
-        if flag and flag_folder:
-            # Participant Data
-            print('files:', files)
-            # Check if there is XIO less than 4.00
-            rp, rs, rd_files = self.get_dicom_files(files)
+        if flag and truth['rtdose']:
 
             # Set report header
-            name = folder_data[0][0]
+            # todo sanitize name strings
+            name = folder_data[0][0].replace('/', ' ')
             plan_type = folder_data[2][0]
             tech = folder_data[3][0]
             tps_name = folder_data[4][0]
@@ -522,6 +539,18 @@ class CompetitionReports(object):
             print('-------------')
             print(report_header)
             print('-------------')
+            # Participant Data
+            print('files:', dicom_data)
+            # Check if there is XIO less than 4.00
+            test_xio, rs, dicom_data = self.check_xio_version(dicom_data, folder_path)
+
+            # Use ref rp file only to generate reports
+            if not test_xio:
+                rs = self.ref_struc_file
+
+            rp = self.ref_plan_file
+            rd_files = dicom_data.reset_index().set_index(1).ix['rtdose']['index']
+
             if not isinstance(rd_files, str):
                 for rd_file in rd_files:
                     print('Calculatig %s dose file' % rd_file)
@@ -545,8 +574,12 @@ class CompetitionReports(object):
                             report_df = participant.score_obj.get_report_df()
 
                             # Title.
-                            rep = CompetitionReport(out_report, 'A3')
+                            rep = CompetitionReportPDF(out_report, 'A3')
                             rep.report(report_df, report_header, banner_path=self.banner_path)
+                            print('PDF report saved at: %s ' % out_report)
+                            print('XLSX report saved at %s' % report_xls_path)
+
+
                     except:
                         logger.debug('Error in file: %s ' % rd_file)
                         logger.debug('Error in file: %s ' % rp)
@@ -574,8 +607,10 @@ class CompetitionReports(object):
                         report_df = participant.score_obj.get_report_df()
 
                         # Title.
-                        rep = CompetitionReport(out_report, 'A3')
+                        rep = CompetitionReportPDF(out_report, 'A3')
                         rep.report(report_df, report_header, banner_path=self.banner_path)
+                        print('PDF report saved at: %s ' % out_report)
+                        print('XLSX report saved at %s' % report_xls_path)
                 except:
                     logger.debug('Error in file: %s ' % rd_files)
                     logger.debug('Error in file: %s ' % rp)
@@ -614,10 +649,12 @@ def check_required_files(dicom_data, folder_path):
 
     try:
         rd = dicom_data.reset_index().set_index(1).ix['rtdose']['index']
-        rs = dicom_data.reset_index().set_index(1).ix['rtss']['index']
-        rp = dicom_data.reset_index().set_index(1).ix['rtplan']['index']
-        return True, truth, (rp, rs, rd)
+        # rs = dicom_data.reset_index().set_index(1).ix['rtss']['index']
+        # rp = dicom_data.reset_index().set_index(1).ix['rtplan']['index']
+        return True, truth, dicom_data
     except:
+        logger.debug('RDOSE Dicom data not found at: %s' % folder_path)
+
         return False, truth, None
 
 
@@ -648,63 +685,67 @@ def test_update_reports():
     obj = ScoringDicomParser(filename=test)
 
 
-# TODO ADD code to sum RTDOSE from each field ecl.GetReferencedBeamNumber()
+class GenerateReports(object):
+    def __init__(self, app_folder, root_folder, reports_folder, error_folder):
+        self.app_folder = app_folder
+        self.root_folder = root_folder
+        self.reports_folder = reports_folder
+        self.error_folder = error_folder
+        self.reports = CompetitionReports(root_folder=root_folder, app_folder=app_folder)
+        self.plans = None
+
+    def download_plans(self, csv_path):
+        self.plans = CompetitionPlans(csv_path)
+        self.plans.download_all(self.root_folder)
+
+    def calc_report(self, clean_data=False):
+        self.reports.set_participant_folder()
+        if clean_data:
+            self.reports.delete_reports()
+
+        self.reports.generate_reports()
+
+    def participant_report(self, participant_folder):
+        self.reports.participant_report(participant_folder)
+
+    def save_reports(self):
+        for folder in os.listdir(self.root_folder):
+            participant_report_folder = osp.join(self.reports_folder, folder)
+            participant_folder = osp.join(self.root_folder, folder)
+            if not osp.exists(participant_report_folder):
+                os.mkdir(participant_report_folder)
+
+            files = [osp.join(root, name) for root, dirs, files in os.walk(participant_folder) for name in files if
+                     name.strip().endswith(('.PDF', '.pdf', '.csv', '.xlsx'))]
+
+            for f in files:
+                _, fname = osp.split(f)
+                shutil.copy(f, participant_report_folder)
+                print('Saved file %s at %s' % (fname, participant_report_folder))
+
+    def move_error_plans(self):
+        for folder in os.listdir(self.root_folder):
+            participant_folder = osp.join(self.root_folder, folder)
+            files = [osp.join(root, name) for root, dirs, files in os.walk(participant_folder) for name in files if
+                     name.strip().endswith(('.pdf', '.xlsx'))]
+
+            if not files:
+                logger.debug('No report at: %s' % participant_folder)
+                shutil.move(participant_folder, self.error_folder)
 
 
 if __name__ == '__main__':
-    # root_folder = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/dowload_website'
-    # app_folder = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring'
-    # comp = CompetitionReports(root_folder, app_folder)
-    # comp.set_participant_folder()
-    # # comp.delete_reports()
-    # comp.generate_reports()
-    # #
-    # reports_folder = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/reports_pdf'
-    # for folder in os.listdir(root_folder):
-    #     participant_report_folder = osp.join(reports_folder, folder)
-    #     participant_folder = osp.join(root_folder, folder)
-    #     if not osp.exists(participant_report_folder):
-    #         os.mkdir(participant_report_folder)
-    #
-    #     files = [osp.join(root, name) for root, dirs, files in os.walk(participant_folder) for name in files if
-    #              name.strip().endswith(('.PDF', '.pdf', '.csv', '.xlsx'))]
-    #
-    #     for f in files:
-    #         shutil.copy(f, participant_report_folder)
-    #
-    #
+    app_folder = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring'
+    root_folder = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/plans'
+    reports_folder = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/reports'
+    error_folder = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/error_plans'
+    csv_entries = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submit-plan-2017-04-01_only_today.csv'
 
+    reports = GenerateReports(app_folder, root_folder, reports_folder, error_folder)
+    reports.download_plans(csv_entries)
+    reports.calc_report()
+    reports.save_reports()
+    reports.move_error_plans()
 
-
-    # folder_path = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/Error_plan/Xiaofang Yin 2282'
-    # # test parse participant folder
-    # flag_folder, folder_data = get_participant_data(folder_path)
-    #
-    # # check data consistency
-    # flag, truth, files = check_required_files(folder_data, folder_path)
-    # rp, rs, rd = files
-    #
-    # for r in rd:
-    #     print(r)
-    #
-    # participant = Participant(rp, rs, rd.ix[0],
-    #                           calculation_options=comp.calculation_options)
-    # participant.set_participant_data('')
-    # val = participant.eval_score(comp.constrains, comp.scores, comp.criteria)
-    # #
-    #
-
-
-
-
-    import pydicom as dicom
-    import platform
-
-    print('System: ', platform.python_version(), platform.system())
-    print('PyDicom', dicom.__version__)
-
-    dose = '/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/debug/RTDOSE1.2.826.0.1.3680043.2.200.189365528.430.25677.1488.dcm'
-    ds = dicom.read_file(dose)
-    print(ds.pixel_array)
-
-    dcm = ScoringDicomParser(filename=dose)
+    participant = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/error_plans/Youqun Lai 2397'
+    reports.participant_report(participant)
