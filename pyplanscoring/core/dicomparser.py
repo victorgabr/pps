@@ -1162,7 +1162,19 @@ class ScoringDicomParser(DicomParser):
             if "ReferencedBeams" in fg:
                 self.plan['fractions'] = fg.NumberofFractionsPlanned
         self.plan['rxdose'] = int(self.plan['rxdose'])
-        self.plan['beams'] = self.GetReferencedBeamsInFraction()
+        ref_beams = self.GetReferencedBeamsInFraction()
+        self.plan['beams'] = ref_beams
+
+        # try estimate the number of isocenters
+        isos = np.array([ref_beams[i]['IsocenterPosition'] for i in ref_beams])
+        # round to 2 decimals
+        isos = np.round(isos, 2)
+        dist = np.sqrt(np.sum((isos - isos[0]) ** 2, axis=1))
+        self.plan['n_isocenters'] = len(np.unique(dist))
+
+        # Total number of MU
+        total_mu = np.sum([ref_beams[b]['MU'] for b in ref_beams])
+        self.plan['Plan_MU'] = total_mu
 
         tmp = self.GetStudyInfo()
         self.plan['description'] = tmp['description']
@@ -1176,6 +1188,68 @@ class ScoringDicomParser(DicomParser):
         else:
             self.plan['patient_name'] = ''
         return self.plan
+
+    def GetReferencedBeamsInFraction(self, fx=0):
+        """Return the referenced beams from the specified fraction."""
+
+        beams = {}
+        if "Beams" in self.ds:
+            bdict = self.ds.Beams
+        elif "IonBeams" in self.ds:
+            bdict = self.ds.IonBeams
+        else:
+            return beams
+        # Obtain the beam information
+        for bi in bdict:
+            beam = {}
+            beam['name'] = bi.BeamName if "BeamName" in bi else ""
+            beam['description'] = bi.BeamDescription if "BeamDescription" in bi else ""
+            beam['BeamType'] = bi.BeamType if "BeamType" in bi else ""
+            beam['RadiationType'] = bi.RadiationType if "RadiationType" in bi else ""
+            beam['ManufacturerModelName'] = bi.ManufacturerModelName if "ManufacturerModelName" in bi else ""
+            beam['PrimaryDosimeterUnit'] = bi.PrimaryDosimeterUnit if "PrimaryDosimeterUnit" in bi else ""
+            beam['NumberofWedges'] = bi.NumberofWedges if "NumberofWedges" in bi else ""
+            beam['NumberofCompensators'] = bi.NumberofCompensators if "NumberofCompensators" in bi else ""
+            beam['NumberofBoli'] = bi.NumberofBoli if "NumberofBoli" in bi else ""
+            beam['NumberofBlocks'] = bi.NumberofBlocks if "NumberofBlocks" in bi else ""
+            beam[
+                'FinalCumulativeMetersetWeight'] = bi.FinalCumulativeMetersetWeight if "FinalCumulativeMetersetWeight" in bi else ""
+            beam['NumberofControlPoints'] = bi.NumberofControlPoints if "NumberofControlPoints" in bi else ""
+
+            # Check control points if exists
+            if "ControlPointSequence" in bi:
+                beam['ControlPointSequence'] = bi.ControlPointSequence
+                # control point 0
+                cp0 = bi.ControlPointSequence[0]
+                beam['NominalBeamEnergy'] = cp0.NominalBeamEnergy if "NominalBeamEnergy" in cp0 else ""
+                beam['DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
+                beam['IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
+                beam['GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
+                beam[
+                    'BeamLimitingDeviceAngle'] = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
+                beam['TableTopEccentricAngle'] = cp0.TableTopEccentricAngle if "TableTopEccentricAngle" in cp0 else ""
+
+                # check beam limits
+                if 'BeamLimitingDevicePositionSequence' in cp0:
+                    for bl in cp0.BeamLimitingDevicePositionSequence:
+                        beam[bl.RTBeamLimitingDeviceType] = bl.LeafJawPositions
+
+            # add each beam to beams dict
+            beams[bi.BeamNumber] = beam
+
+        # Obtain the referenced beam info from the fraction info
+        if "FractionGroups" in self.ds:
+            fg = self.ds.FractionGroups[fx]
+            if "ReferencedBeams" in fg:
+                rb = fg.ReferencedBeams
+                nfx = fg.NumberofFractionsPlanned
+                for b in rb:
+                    if "BeamDose" in b:
+                        beams[b.ReferencedBeamNumber]['dose'] = \
+                            b.BeamDose * nfx * 100
+                    if 'BeamMeterset' in b:
+                        beams[b.ReferencedBeamNumber]['MU'] = b.BeamMeterset
+        return beams
 
     def GetDoseData(self):
         """Return the dose data from a DICOM RT Dose file."""
@@ -1209,4 +1283,89 @@ def test_rtss_eclipse(f):
 
 
 if __name__ == '__main__':
-    pass
+    file_path = r'/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/plans/Abhijit Mandal 2425/RP.1.2.246.352.71.5.214046841532.25911.20170322123039_ABHIJIT-MANDAL.dcm '
+
+    plan = ScoringDicomParser(filename=file_path)
+    plan_data = plan.GetPlan()
+    print(plan_data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # ds = plan.ds
+    # fx = 0
+    #
+    # beams = {}
+    # if "Beams" in ds:
+    #     bdict = ds.Beams
+    # elif "IonBeams" in ds:
+    #     bdict = ds.IonBeams
+    # else:
+    #     pass
+    #
+    # # Obtain the beam information
+    # for bi in bdict:
+    #     beam = {}
+    #     beam['name'] = bi.BeamName if "BeamName" in bi else ""
+    #     beam['description'] = bi.BeamDescription if "BeamDescription" in bi else ""
+    #     beam['BeamType'] = bi.BeamType if "BeamType" in bi else ""
+    #     beam['RadiationType'] = bi.RadiationType if "RadiationType" in bi else ""
+    #     beam['ManufacturerModelName'] = bi.ManufacturerModelName if "ManufacturerModelName" in bi else ""
+    #     beam['PrimaryDosimeterUnit'] = bi.PrimaryDosimeterUnit if "PrimaryDosimeterUnit" in bi else ""
+    #     beam['NumberofWedges'] = bi.NumberofWedges if "NumberofWedges" in bi else ""
+    #     beam['NumberofCompensators'] = bi.NumberofCompensators if "NumberofCompensators" in bi else ""
+    #     beam['NumberofBoli'] = bi.NumberofBoli if "NumberofBoli" in bi else ""
+    #     beam['NumberofBlocks'] = bi.NumberofBlocks if "NumberofBlocks" in bi else ""
+    #     beam[
+    #         'FinalCumulativeMetersetWeight'] = bi.FinalCumulativeMetersetWeight if "FinalCumulativeMetersetWeight" in bi else ""
+    #     beam['NumberofControlPoints'] = bi.NumberofControlPoints if "NumberofControlPoints" in bi else ""
+    #
+    #     # Check control points if exists
+    #     if "ControlPointSequence" in bi:
+    #         beam['ControlPointSequence'] = bi.ControlPointSequence
+    #         # control point 0
+    #         cp0 = bi.ControlPointSequence[0]
+    #         beam['NominalBeamEnergy'] = cp0.NominalBeamEnergy if "NominalBeamEnergy" in cp0 else ""
+    #         beam['DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
+    #         beam['IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
+    #         beam['GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
+    #         beam['BeamLimitingDeviceAngle'] = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
+    #         beam['TableTopEccentricAngle'] = cp0.TableTopEccentricAngle if "TableTopEccentricAngle" in cp0 else ""
+    #
+    #         # check beam limits
+    #         if 'BeamLimitingDevicePositionSequence' in cp0:
+    #             for bl in cp0.BeamLimitingDevicePositionSequence:
+    #                 beam[bl.RTBeamLimitingDeviceType] = bl.LeafJawPositions
+    #
+    #     beams[bi.BeamNumber] = beam
+    #
+    # # Obtain the referenced beam info from the fraction info
+    # if "FractionGroups" in ds:
+    #     fg = ds.FractionGroups[fx]
+    #     if "ReferencedBeams" in fg:
+    #         rb = fg.ReferencedBeams
+    #         nfx = fg.NumberofFractionsPlanned
+    #         for bi in rb:
+    #             if "BeamDose" in bi:
+    #                 # dose in cGy
+    #                 beams[bi.ReferencedBeamNumber]['dose'] = bi.BeamDose * nfx * 100
+    #             if 'BeamMeterset' in bi:
+    #                 beams[bi.ReferencedBeamNumber]['MU'] = bi.BeamMeterset
+    #
+    # isos = np.array([beams[i]['IsocenterPosition'] for i in beams])
+    # dist = np.sqrt(np.sum((isos - isos[0]) ** 2, axis=1))
+    #
+    # n_isocenters = len(np.unique(dist))
