@@ -1193,10 +1193,10 @@ class ScoringDicomParser(DicomParser):
         """Return the referenced beams from the specified fraction."""
 
         beams = {}
-        if "Beams" in self.ds:
-            bdict = self.ds.Beams
-        elif "IonBeams" in self.ds:
-            bdict = self.ds.IonBeams
+        if "BeamSequence" in self.ds:
+            bdict = self.ds.BeamSequence
+        elif "IonBeamSequence" in self.ds:
+            bdict = self.ds.IonBeamSequence
         else:
             return beams
         # Obtain the beam information
@@ -1234,21 +1234,33 @@ class ScoringDicomParser(DicomParser):
                     for bl in cp0.BeamLimitingDevicePositionSequence:
                         beam[bl.RTBeamLimitingDeviceType] = bl.LeafJawPositions
 
+            # Ion control point sequence
+            if "IonControlPointSequence" in bi:
+                beam['IonControlPointSequence'] = bi.IonControlPointSequence
+                cp0 = bi.IonControlPointSequence[0]
+                beam['NominalBeamEnergyUnit'] = cp0.NominalBeamEnergyUnit if "NominalBeamEnergyUnit" in cp0 else ""
+                beam['NominalBeamEnergy'] = cp0.NominalBeamEnergy if "NominalBeamEnergy" in cp0 else ""
+                beam['DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
+                beam['IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
+                beam['GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
+                beam[
+                    'BeamLimitingDeviceAngle'] = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
+
             # add each beam to beams dict
             beams[bi.BeamNumber] = beam
 
         # Obtain the referenced beam info from the fraction info
-        if "FractionGroups" in self.ds:
-            fg = self.ds.FractionGroups[fx]
-            if "ReferencedBeams" in fg:
-                rb = fg.ReferencedBeams
-                nfx = fg.NumberofFractionsPlanned
-                for b in rb:
-                    if "BeamDose" in b:
-                        beams[b.ReferencedBeamNumber]['dose'] = \
-                            b.BeamDose * nfx * 100
-                    if 'BeamMeterset' in b:
-                        beams[b.ReferencedBeamNumber]['MU'] = b.BeamMeterset
+        if "FractionGroupSequence" in self.ds:
+            fg = self.ds.FractionGroupSequence[fx]
+            if "ReferencedBeamSequence" in fg:
+                rb = fg.ReferencedBeamSequence
+                nfx = fg.NumberOfFractionsPlanned
+                for bi in rb:
+                    if "BeamDose" in bi:
+                        # dose in cGy
+                        beams[bi.ReferencedBeamNumber]['dose'] = bi.BeamDose * nfx * 100
+                    if 'BeamMeterset' in bi:
+                        beams[bi.ReferencedBeamNumber]['MU'] = bi.BeamMeterset
         return beams
 
     def GetDoseData(self):
@@ -1283,36 +1295,23 @@ def test_rtss_eclipse(f):
 
 
 if __name__ == '__main__':
-    file_path = r'/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/plans/Abhijit Mandal 2425/RP.1.2.246.352.71.5.214046841532.25911.20170322123039_ABHIJIT-MANDAL.dcm '
+    file_path = r'/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/plans/Fazal Khan 3149/PLAN-CLINICAL-FINAL-FAZAL-KHAN.dcm '
 
     plan = ScoringDicomParser(filename=file_path)
-    plan_data = plan.GetPlan()
-    print(plan_data)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    # plan_data = plan.GetPlan()
+    # print(plan_data)
+    #
+    plan_vmat = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/plans/Camila Pessoa de sales 3131/RP.1.2.246.352.71.5.826790223438.302226.20170329172455-Pessoa-de-Sales-Camila.dcm '
+    planv = ScoringDicomParser(filename=plan_vmat)
+    planv.GetPlan()
     # ds = plan.ds
     # fx = 0
     #
     # beams = {}
-    # if "Beams" in ds:
-    #     bdict = ds.Beams
-    # elif "IonBeams" in ds:
-    #     bdict = ds.IonBeams
+    # if "BeamSequence" in ds:
+    #     bdict = ds.BeamSequence
+    # elif "IonBeamSequence" in ds:
+    #     bdict = ds.IonBeamSequence
     # else:
     #     pass
     #
@@ -1350,14 +1349,25 @@ if __name__ == '__main__':
     #             for bl in cp0.BeamLimitingDevicePositionSequence:
     #                 beam[bl.RTBeamLimitingDeviceType] = bl.LeafJawPositions
     #
+    #     # Ion control point sequence
+    #     if "IonControlPointSequence" in bi:
+    #         beam['IonControlPointSequence'] = bi.IonControlPointSequence
+    #         cp0 = bi.IonControlPointSequence[0]
+    #         beam['NominalBeamEnergyUnit'] = cp0.NominalBeamEnergyUnit if "NominalBeamEnergyUnit" in cp0 else ""
+    #         beam['NominalBeamEnergy'] = cp0.NominalBeamEnergy if "NominalBeamEnergy" in cp0 else ""
+    #         beam['DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
+    #         beam['IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
+    #         beam['GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
+    #         beam['BeamLimitingDeviceAngle'] = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
+    #
     #     beams[bi.BeamNumber] = beam
     #
     # # Obtain the referenced beam info from the fraction info
-    # if "FractionGroups" in ds:
-    #     fg = ds.FractionGroups[fx]
-    #     if "ReferencedBeams" in fg:
-    #         rb = fg.ReferencedBeams
-    #         nfx = fg.NumberofFractionsPlanned
+    # if "FractionGroupSequence" in ds:
+    #     fg = ds.FractionGroupSequence[fx]
+    #     if "ReferencedBeamSequence" in fg:
+    #         rb = fg.ReferencedBeamSequence
+    #         nfx = fg.NumberOfFractionsPlanned
     #         for bi in rb:
     #             if "BeamDose" in bi:
     #                 # dose in cGy
