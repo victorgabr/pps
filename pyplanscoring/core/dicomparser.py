@@ -918,8 +918,8 @@ class ScoringDicomParser(DicomParser):
             return structures
 
         # Locate the name and number of each ROI
-        if 'StructureSetROIs' in self.ds:
-            for item in self.ds.StructureSetROIs:
+        if 'StructureSetROISequence' in self.ds:
+            for item in self.ds.StructureSetROISequence:
                 data = {}
                 number = item.ROINumber
                 data['id'] = number
@@ -928,14 +928,14 @@ class ScoringDicomParser(DicomParser):
                 structures[number] = data
 
         # Determine the type of each structure (PTV, organ, external, etc)
-        if 'RTROIObservations' in self.ds:
-            for item in self.ds.RTROIObservations:
+        if 'RTROIObservationsSequence' in self.ds:
+            for item in self.ds.RTROIObservationsSequence:
                 number = item.ReferencedROINumber
                 structures[number]['RTROIType'] = item.RTROIInterpretedType
 
         # The coordinate data of each ROI is stored within ROIContourSequence
-        if 'ROIContours' in self.ds:
-            for roi in self.ds.ROIContours:
+        if 'ROIContourSequence' in self.ds:
+            for roi in self.ds.ROIContourSequence:
                 number = roi.ReferencedROINumber
 
                 # Generate a random color for the current ROI
@@ -966,15 +966,15 @@ class ScoringDicomParser(DicomParser):
                         #     str(number))
 
                 planes = {}
-                if 'Contours' in roi:
+                if 'ContourSequence' in roi:
                     # Locate the contour sequence for each referenced ROI
-                    for contour in roi.Contours:
+                    for contour in roi.ContourSequence:
                         # For each plane, initialize a new plane dictionary
                         plane = {}
 
                         # Determine all the plane properties
                         plane['geometricType'] = contour.ContourGeometricType
-                        plane['numContourPoints'] = contour.NumberofContourPoints
+                        plane['numContourPoints'] = contour.NumberOfContourPoints
                         contour_data = self.GetContourPoints(contour.ContourData)
                         plane['contourData'] = contour_data
                         # add info about contour centroid
@@ -1285,7 +1285,7 @@ def test_rtss_eclipse(f):
     print('Modality: %s' % ds.Modality)
     print('StructureSetDescription: %s' % ds.StructureSetDescription)
     print('StructureSetROISequence length: %i' % len(ds.StructureSetROISequence))
-    print('ROIContours length: %i' % len(ds.ROIContours))
+    print('ROIContourSequence length: %i' % len(ds.ROIContourSequence))
 
     rois = []
     for roi in ds.ROIContours:
@@ -1295,6 +1295,12 @@ def test_rtss_eclipse(f):
 
 
 if __name__ == '__main__':
+    # test RS file reading
+
+    rs_file = '/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/RS.1.2.246.352.71.4.584747638204.248648.20170123083029.dcm'
+    rs_dcm = ScoringDicomParser(filename=rs_file)
+    structures = rs_dcm.GetStructures()
+
     file_path = r'/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/plans/Fazal Khan 3149/PLAN-CLINICAL-FINAL-FAZAL-KHAN.dcm '
 
     plan = ScoringDicomParser(filename=file_path)
