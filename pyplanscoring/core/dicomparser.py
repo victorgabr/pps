@@ -1202,8 +1202,12 @@ class ScoringDicomParser(DicomParser):
         # Obtain the beam information
         for bi in bdict:
             beam = {}
-            beam['name'] = bi.BeamName if "BeamName" in bi else ""
-            beam['description'] = bi.BeamDescription if "BeamDescription" in bi else ""
+            beam['Manufacturer'] = bi.Manufacturer if "Manufacturer" in bi else ""
+            beam['InstitutionName'] = bi.InstitutionName if "InstitutionName" in bi else ""
+            beam['TreatmentMachineName'] = bi.TreatmentMachineName if "TreatmentMachineName" in bi else ""
+            beam['BeamName'] = bi.BeamName if "BeamName" in bi else ""
+            beam['SourcetoSurfaceDistance'] = bi.SourcetoSurfaceDistance if "SourcetoSurfaceDistance" in bi else ""
+            beam['BeamDescription '] = bi.BeamDescription if "BeamDescription" in bi else ""
             beam['BeamType'] = bi.BeamType if "BeamType" in bi else ""
             beam['RadiationType'] = bi.RadiationType if "RadiationType" in bi else ""
             beam['ManufacturerModelName'] = bi.ManufacturerModelName if "ManufacturerModelName" in bi else ""
@@ -1212,8 +1216,8 @@ class ScoringDicomParser(DicomParser):
             beam['NumberofCompensators'] = bi.NumberofCompensators if "NumberofCompensators" in bi else ""
             beam['NumberofBoli'] = bi.NumberofBoli if "NumberofBoli" in bi else ""
             beam['NumberofBlocks'] = bi.NumberofBlocks if "NumberofBlocks" in bi else ""
-            beam[
-                'FinalCumulativeMetersetWeight'] = bi.FinalCumulativeMetersetWeight if "FinalCumulativeMetersetWeight" in bi else ""
+            ftemp = bi.FinalCumulativeMetersetWeight if "FinalCumulativeMetersetWeight" in bi else ""
+            beam['FinalCumulativeMetersetWeight'] = ftemp
             beam['NumberofControlPoints'] = bi.NumberofControlPoints if "NumberofControlPoints" in bi else ""
 
             # Check control points if exists
@@ -1225,8 +1229,8 @@ class ScoringDicomParser(DicomParser):
                 beam['DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
                 beam['IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
                 beam['GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
-                beam[
-                    'BeamLimitingDeviceAngle'] = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
+                btmp = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
+                beam['BeamLimitingDeviceAngle'] = btmp
                 beam['TableTopEccentricAngle'] = cp0.TableTopEccentricAngle if "TableTopEccentricAngle" in cp0 else ""
 
                 # check beam limits
@@ -1243,8 +1247,8 @@ class ScoringDicomParser(DicomParser):
                 beam['DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
                 beam['IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
                 beam['GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
-                beam[
-                    'BeamLimitingDeviceAngle'] = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
+                btmp1 = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
+                beam['BeamLimitingDeviceAngle'] = btmp1
 
             # add each beam to beams dict
             beams[bi.BeamNumber] = beam
