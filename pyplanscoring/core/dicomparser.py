@@ -1051,6 +1051,14 @@ class ScoringDicomParser(DicomParser):
 
         return np.max(dose_matrix)  # 3D dose matrix in cGy
 
+    def HasDVHs(self):
+        """Returns whether dose-volume histograms (DVHs) exist."""
+
+        if not "DVHSequence" in self.ds:
+            return False
+        else:
+            return True
+
     def GetDVHs(self):
         """Returns the dose-volume histograms (DVHs)."""
 
@@ -1058,22 +1066,22 @@ class ScoringDicomParser(DicomParser):
 
         if self.HasDVHs():
             cGy = 100
-            for item in self.ds.DVHs:
+            for item in self.ds.DVHSequence:
                 # Make sure that the DVH has a referenced structure / ROI
-                if not 'DVHReferencedROIs' in item:
+                if not 'DVHReferencedROISequence' in item:
                     continue
-                number = item.DVHReferencedROIs[0].ReferencedROINumber
+                number = item.DVHReferencedROISequence[0].ReferencedROINumber
                 # logger.debug("Found DVH for ROI #%s", str(number))
                 dvhitem = {}
                 # If the DVH is differential, convert it to a cumulative DVH
-                if self.ds.DVHs[0].DVHType == 'DIFFERENTIAL':
+                if self.ds.DVHSequence[0].DVHType == 'DIFFERENTIAL':
                     dvhitem['data'] = self.GenerateCDVH(item.DVHData)
                     dvhitem['bins'] = len(dvhitem['data'])
                 # Otherwise the DVH is cumulative
                 # Remove "filler" values from DVH data array (even values are DVH values)
                 else:
                     dvhitem['data'] = np.array(item.DVHData[1::2])
-                    dvhitem['bins'] = int(item.DVHNumberofBins)
+                    dvhitem['bins'] = int(item.DVHNumberOfBins)
                 dvhitem['type'] = 'CUMULATIVE'
 
                 if item.DoseUnits == 'GY':
@@ -1087,17 +1095,17 @@ class ScoringDicomParser(DicomParser):
                 # Convert all point doses to cGy
 
                 if "DVHMinimumDose" in item:
-                    dvhitem['min'] = item.DVHMinimumDose * cGy
+                    dvhitem['min'] = float(item.DVHMinimumDose) * cGy
                 else:
                     # save the min dose as -1 so we can calculate it later
                     dvhitem['min'] = -1
                 if "DVHMaximumDose" in item:
-                    dvhitem['max'] = item.DVHMaximumDose * cGy
+                    dvhitem['max'] = float(item.DVHMaximumDose) * cGy
                 else:
                     # save the max dose as -1 so we can calculate it later
                     dvhitem['max'] = -1
                 if "DVHMeanDose" in item:
-                    dvhitem['mean'] = item.DVHMeanDose * cGy
+                    dvhitem['mean'] = float(item.DVHMeanDose) * cGy
                 else:
                     # save the mean dose as -1 so we can calculate it later
                     dvhitem['mean'] = -1
@@ -1230,6 +1238,11 @@ class ScoringDicomParser(DicomParser):
                 beam['IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
                 beam['GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
                 beam['GantryRotationDirection'] = cp0.GantryRotationDirection if "GantryRotationDirection" in cp0 else""
+                # check there is VMAT delivery
+                if beam['GantryRotationDirection']:
+                    if bi.ControlPointSequence[-1].GantryRotationDirection == 'NONE':
+                        final_angle = bi.ControlPointSequence[-1].GantryAngle if "GantryAngle" in cp0 else ""
+                        beam['GantryFinalAngle'] = final_angle
 
                 btmp = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
                 beam['BeamLimitingDeviceAngle'] = btmp
@@ -1304,82 +1317,7 @@ if __name__ == '__main__':
     # test RS file reading
 
 
-    fp = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/plans/Friedemann Herberth 3218/RP.1.2.246.352.71.5.29569967170.311761.20170412132814.dcm'
-    plan = ScoringDicomParser(filename=fp)
-    fplan = plan.GetPlan()
-    print(fplan)
-    ds = plan.ds
-    fx = 0
+    fp = r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/RD.1.2.246.352.71.7.584747638204.1750110.20170123082607.dcm'
 
-    beams = {}
-    if "BeamSequence" in ds:
-        bdict = ds.BeamSequence
-    elif "IonBeamSequence" in ds:
-        bdict = ds.IonBeamSequence
-    else:
-        pass
-
-    # Obtain the beam information
-    for bi in bdict:
-        beam = {}
-        beam['name'] = bi.BeamName if "BeamName" in bi else ""
-        beam['description'] = bi.BeamDescription if "BeamDescription" in bi else ""
-        beam['BeamType'] = bi.BeamType if "BeamType" in bi else ""
-        beam['RadiationType'] = bi.RadiationType if "RadiationType" in bi else ""
-        beam['ManufacturerModelName'] = bi.ManufacturerModelName if "ManufacturerModelName" in bi else ""
-        beam['PrimaryDosimeterUnit'] = bi.PrimaryDosimeterUnit if "PrimaryDosimeterUnit" in bi else ""
-        beam['NumberofWedges'] = bi.NumberofWedges if "NumberofWedges" in bi else ""
-        beam['NumberofCompensators'] = bi.NumberofCompensators if "NumberofCompensators" in bi else ""
-        beam['NumberofBoli'] = bi.NumberofBoli if "NumberofBoli" in bi else ""
-        beam['NumberofBlocks'] = bi.NumberofBlocks if "NumberofBlocks" in bi else ""
-        beam[
-            'FinalCumulativeMetersetWeight'] = bi.FinalCumulativeMetersetWeight if "FinalCumulativeMetersetWeight" in bi else ""
-        beam['NumberofControlPoints'] = bi.NumberofControlPoints if "NumberofControlPoints" in bi else ""
-
-        # Check control points if exists
-        if "ControlPointSequence" in bi:
-            beam['ControlPointSequence'] = bi.ControlPointSequence
-            # control point 0
-            cp0 = bi.ControlPointSequence[0]
-            beam['NominalBeamEnergy'] = cp0.NominalBeamEnergy if "NominalBeamEnergy" in cp0 else ""
-            beam['DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
-            beam['IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
-            beam['GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
-            beam['BeamLimitingDeviceAngle'] = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
-            beam['TableTopEccentricAngle'] = cp0.TableTopEccentricAngle if "TableTopEccentricAngle" in cp0 else ""
-
-            # check beam limits
-            if 'BeamLimitingDevicePositionSequence' in cp0:
-                for bl in cp0.BeamLimitingDevicePositionSequence:
-                    beam[bl.RTBeamLimitingDeviceType] = bl.LeafJawPositions
-
-        # Ion control point sequence
-        if "IonControlPointSequence" in bi:
-            beam['IonControlPointSequence'] = bi.IonControlPointSequence
-            cp0 = bi.IonControlPointSequence[0]
-            beam['NominalBeamEnergyUnit'] = cp0.NominalBeamEnergyUnit if "NominalBeamEnergyUnit" in cp0 else ""
-            beam['NominalBeamEnergy'] = cp0.NominalBeamEnergy if "NominalBeamEnergy" in cp0 else ""
-            beam['DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
-            beam['IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
-            beam['GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
-            beam['BeamLimitingDeviceAngle'] = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
-
-        beams[bi.BeamNumber] = beam
-
-    # Obtain the referenced beam info from the fraction info
-    if "FractionGroupSequence" in ds:
-        fg = ds.FractionGroupSequence[fx]
-        if "ReferencedBeamSequence" in fg:
-            rb = fg.ReferencedBeamSequence
-            nfx = fg.NumberOfFractionsPlanned
-            for bi in rb:
-                if "BeamDose" in bi:
-                    # dose in cGy
-                    beams[bi.ReferencedBeamNumber]['dose'] = bi.BeamDose * nfx * 100
-                if 'BeamMeterset' in bi:
-                    beams[bi.ReferencedBeamNumber]['MU'] = bi.BeamMeterset
-
-    isos = np.array([beams[i]['IsocenterPosition'] for i in beams])
-    dist = np.sqrt(np.sum((isos - isos[0]) ** 2, axis=1))
-
-    n_isocenters = len(np.unique(dist))
+    dose = ScoringDicomParser(filename=fp)
+    dose.GetDVHs()
