@@ -830,7 +830,13 @@ def planes2array(s_planes):
     for z in zval:
         plane_i = s_planes[z]
         for i in range(len(plane_i)):
-            structure_planes.append(np.asarray(plane_i[i]['contourData']))
+            polygon = np.asarray(plane_i[i]['contourData'])
+            # repeat the first vertex at end
+            # V = np.zeros((polygon.shape[0] + 1, polygon.shape[1]))
+            # V[:-1] = polygon
+            # V[-1] = polygon[0]
+            V = polygon
+            structure_planes.append(V)
             zplanes.append(z)
 
     return np.concatenate(structure_planes), np.asarray(zplanes, dtype=float)
@@ -1252,3 +1258,32 @@ def wrap_z_coordinates(structure_planes, mapped_coord):
     z_c = fz(ordered_keys)
 
     return z_c, ordered_keys
+
+
+def ordered_planes(planes):
+    """
+        Return a 1D array from structure z planes coordinates
+    :param planes: Plannes Dictionary 
+    :return: 
+    """
+    ordered_keys = [z for z in planes.keys()]
+    ordered_keys.sort(key=float)
+    return np.array(ordered_keys, dtype=float)
+
+
+def get_oversampled_structure(structure, delta_mm):
+    """
+        Performas structure upsampling
+    :param delta_mm: Voxel size in mm (dx,dy,dz)
+    :return: sPlanes oversampled, dose_grid_points, grid_delta, dose_lut
+
+    """
+    tmp_str = structure.copy()
+    planes = structure['planes']
+    o_planes = ordered_planes(planes)
+    zi, dz = get_axis_grid(delta_mm, o_planes)
+
+    hi_res_planes = get_interpolated_structure_planes(planes, zi)
+    tmp_str['planes'] = hi_res_planes
+
+    return tmp_str

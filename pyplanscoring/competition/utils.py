@@ -38,7 +38,7 @@ if sys.version[0] == '2':
 
     output = cStringIO.StringIO()
 else:
-    # python3.4
+    # python3.4d
     from io import BytesIO
 
     output = BytesIO()
@@ -1006,19 +1006,55 @@ def parse_plan_data(root_folder):
         participant[folder] = [plan_files, plan_data]
 
 
+def parse_plan_pp(root_folder, folder):
+    participant_folder = osp.join(root_folder, folder)
+    print('-----------')
+    print('Folder: %s' % folder)
+    files = [osp.join(participant_folder, name) for root, dirs, files in os.walk(participant_folder) for name in
+             files if name.strip().endswith('.dcm')]
+
+    plan_files = []
+    plan_data = []
+    for f in files:
+        print('file: %s' % f)
+        # try:
+        obj = ScoringDicomParser(filename=f)
+        rt_type = obj.GetSOPClassUID()
+        if rt_type == 'rtplan':
+            plan_files.append(f)
+            plan_data.append(obj.GetPlan())
+            # except:
+            #     logger.exception('Error in file %s' % f)
+
+    return folder, plan_files, plan_data
+
+
+# TODO WRITE PLAN DATA AT REPORT
+
 if __name__ == '__main__':
     app_folder = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring'
     root_folder = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/plans'
     reports_folder = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/reports'
     error_folder = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/error_plans'
-    csv_entries = '/media/victor/TOURO Mobile/COMPETITION 2017/csv_entries/submit-plan-2017-04-06.csv'
+    csv_entries = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/submit-plan-2017-04-14.csv'
     # #
 
+    # reports = GenerateReports(app_folder, root_folder, reports_folder, error_folder)
+    # # reports.download_plans(csv_entries)
+    # pfolder = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/plans/Friedemann Herberth 3218'
+    # reports.participant_report(pfolder)
 
-    root_folder = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/plans'
 
-    # parse RT plan files
+    # reports.participant_report(
+    #     '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/plans/Alberto Adrada 3136')
+    #
+    # root_folder = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/plans'
+
+    # import time
+    #
+    # # parse RT plan files
     participant = {}
+    st = time.time()
     for folder in os.listdir(root_folder):
         participant_folder = osp.join(root_folder, folder)
         print('-----------')
@@ -1038,5 +1074,28 @@ if __name__ == '__main__':
                     plan_data.append(obj.GetPlan())
             except:
                 logger.exception('Error in file %s' % f)
-
         participant[folder] = [plan_files, plan_data]
+
+    end = time.time()
+
+    fp = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/plans/Friedemann Herberth 3218/RP.1.2.246.352.71.5.29569967170.311761.20170412132814.dcm'
+    obj = ScoringDicomParser(filename=fp)
+    fplan = obj.GetPlan()
+    # for folder in os.listdir(root_folder):
+    #     participant_folder = osp.join(root_folder, folder)
+    #     print('-----------')
+    #     print('Folder: %s' % folder)
+    #     files = [osp.join(participant_folder, name) for root, dirs, files in os.walk(participant_folder) for name in
+    #              files if name.strip().endswith('.pln')]
+    #
+    #
+    #     for f in files:
+    #         os.remove(f)
+
+
+    # # print('seconds: ', end - st)
+    # # st = time.time()
+    # # res = Parallel(n_jobs=-1, verbose=11)(
+    # #     delayed(parse_plan_pp)(root_folder, folder) for folder in os.listdir(root_folder))
+    # # end = time.time()
+    # # print('seconds: ', end - st)

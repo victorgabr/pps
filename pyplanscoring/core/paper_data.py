@@ -227,17 +227,6 @@ def calc_dvh_uncertainty(rd, rs, kind, factor):
 
 
 if __name__ == '__main__':
-    rs = '/home/victor/Dropbox/Plan_Competition_Project/Competition_2016/DICOM Sets/RS.1.2.246.352.71.4.584747638204.208628.20160204185543.dcm'
-    #
-    root_path = '/media/victor/TOURO Mobile/PLAN_TESTING_DATA'
-    data = get_competition_data(root_path)
+    rs = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\scoring_report\dicom_files\RS.1.2.246.352.71.4.584747638204.248648.20170123083029.dcm'
 
-    rd_data = data[data[1] == 'rtdose']['index']
-    res = []
-    for rd in rd_data:
-        df = calc_dvh_uncertainty(rd, rs, 'max', factor=0.5)
-        tmp = df['mean'].copy()
-        tmp.index = df['name']
-        res.append(tmp)
-
-    df_res = pd.concat(res, axis=1)
+    rs_obj = ScoringDicomParser(filename=rs)

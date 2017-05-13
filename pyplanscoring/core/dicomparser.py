@@ -781,29 +781,6 @@ def get_transform_matrix(m, Rows, Columns, x, y, ix, jy):
     return x, y
 
 
-def pix_lut(ds):
-    di = ds.PixelSpacing[0]
-    dj = ds.PixelSpacing[1]
-    orientation = ds.ImageOrientationPatient
-    position = ds.ImagePositionPatient
-
-    m = np.matrix(
-        [[orientation[0] * di, orientation[3] * dj, 0, position[0]],
-         [orientation[1] * di, orientation[4] * dj, 0, position[1]],
-         [orientation[2] * di, orientation[5] * dj, 0, position[2]],
-         [0, 0, 0, 1]])
-
-    x = []
-    y = []
-    for i in range(0, ds.Columns):
-        imat = m * np.matrix([[i], [0], [0], [1]])
-        x.append(float(imat[0]))
-    for j in range(0, ds.Rows):
-        jmat = m * np.matrix([[0], [j], [0], [1]])
-        y.append(float(jmat[1]))
-    return x, y
-
-
 def pix_lut_numba(ds):
     di = ds.PixelSpacing[0]
     dj = ds.PixelSpacing[1]
@@ -1316,8 +1293,6 @@ def test_rtss_eclipse(f):
 if __name__ == '__main__':
     # test RS file reading
 
-
-    fp = r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/RD.1.2.246.352.71.7.584747638204.1750110.20170123082607.dcm'
-
-    dose = ScoringDicomParser(filename=fp)
-    dose.GetDVHs()
+    rs_file = r'D:\Dropbox\Plan_Competition_Project\scoring_report\dicom_files\RP.1.2.246.352.71.5.584747638204.952069.20170122155706.dcm'
+    plan = ScoringDicomParser(filename=rs_file)
+    plan_data = plan.GetPlan()

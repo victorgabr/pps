@@ -31,6 +31,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.widgets import Slider
 
+from pyplanscoring.core.dicomparser import ScoringDicomParser
+
 
 def meshgrid3(x, y, z):
     """ Create a three-dimensional meshgrid """
@@ -282,30 +284,36 @@ class DoseSlice3D(object):
 
     def show(self):
         figManager = plt.get_current_fig_manager()
-        figManager.window.showMaximized()
+        # figManager.window.showMaximized()
         plt.show()
 
 
 if __name__ == '__main__':
     # Number of x-grid points
-    nx = 100
+    arq = r'D:\Dropbox\Plan_Competition_Project\Competition_2016\Eclipse Plans\Saad RapidArc Eclipse\Saad RapidArc Eclipse\RD.Saad-Eclipse-RapidArc.dcm'
+    dose_obj = ScoringDicomParser(filename=arq)
+    x, y, z = dose_obj.get_grid_3d()
+    dose_3D = dose_obj.ds.pixel_array * float(dose_obj.ds.DoseGridScaling) * 100
 
-    # Number of 
-    ny = 100
-    nz = 200
-
-    x = np.linspace(-4, 4, nx)
-    y = np.linspace(-4, 4, ny)
-    z = np.linspace(0, 8, nz)
-
-    xx, yy, zz = meshgrid3(x, y, z)
-
-    # Display three cross sections of a Gaussian Beam/Paraxial wave
-    u = np.real(np.exp(-(2 * xx ** 2 + yy ** 2) / (.2 + 2j * zz)) / np.sqrt(.2 + 2j * zz))
-
-    s3 = slice3(xx, yy, zz, u)
-    s3.xlabel('x', fontsize=18)
-    s3.ylabel('y', fontsize=18)
-    s3.zlabel('z', fontsize=18)
-
-    s3.show()
+    dose_view = DoseSlice3D(x, y, z, dose_3D)
+    dose_view.show()
+    #
+    # # Number of
+    # ny = 100
+    # nz = 200
+    #
+    # x = np.linspace(-4, 4, nx)
+    # y = np.linspace(-4, 4, ny)
+    # z = np.linspace(0, 8, nz)
+    #
+    # xx, yy, zz = meshgrid3(x, y, z)
+    #
+    # # Display three cross sections of a Gaussian Beam/Paraxial wave
+    # u = np.real(np.exp(-(2 * xx ** 2 + yy ** 2) / (.2 + 2j * zz)) / np.sqrt(.2 + 2j * zz))
+    #
+    # s3 = slice3(xx, yy, zz, u)
+    # s3.xlabel('x', fontsize=18)
+    # s3.ylabel('y', fontsize=18)
+    # s3.zlabel('z', fontsize=18)
+    #
+    # s3.show()

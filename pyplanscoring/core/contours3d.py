@@ -9,7 +9,8 @@ from __future__ import division
 standard turntable camera to fly around with and a centered 3D Axis.
 """
 
-import vispy.scene
+import vispy
+
 from vispy.scene import visuals
 
 
@@ -17,12 +18,12 @@ def plot_contours(pos, symbol='+'):
     #
     # Make a canvas and add simple view
     #
-    canvas = vispy.scene.SceneCanvas(keys='interactive', show=True)
+    canvas = vispy.scene.SceneCanvas(keys='interactive', show=True, bgcolor='white')
     view = canvas.central_widget.add_view()
 
     # create scatter object and fill in the data
     scatter = visuals.Markers()
-    scatter.set_data(pos, symbol=symbol, face_color=(1, 1, 1, .5), size=5)
+    scatter.set_data(pos, symbol=symbol, face_color=(1, 1, 1, .5), size=1)
 
     view.add(scatter)
 

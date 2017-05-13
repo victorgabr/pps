@@ -7,6 +7,7 @@ import sys
 
 import matplotlib
 from PySide import QtGui, QtCore
+
 # TODO comment this lines before compile using pyinstaller
 matplotlib.use('Qt4Agg')
 matplotlib.rcParams['backend.qt4'] = 'PySide'
@@ -17,7 +18,7 @@ from pyplanscoring.core.scoring import Participant, get_participant_folder_data
 
 __version__ = '0.0.1'
 __author__ = 'Dr. Victor Gabriel Leandro Alves, D.Sc.'
-__copyright__ = "Copyright (C) 2004 Victor Gabriel Leandro Alves"
+__copyright__ = "Copyright (C) 2017 Victor Gabriel Leandro Alves"
 __license__ = "Licenced for evaluation purposes only"
 
 
