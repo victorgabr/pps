@@ -1214,12 +1214,15 @@ class ScoringDicomParser(DicomParser):
                 beam['DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
                 beam['IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
                 beam['GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
-                beam['GantryRotationDirection'] = cp0.GantryRotationDirection if "GantryRotationDirection" in cp0 else""
+
                 # check there is VMAT delivery
-                if beam['GantryRotationDirection']:
-                    if bi.ControlPointSequence[-1].GantryRotationDirection == 'NONE':
-                        final_angle = bi.ControlPointSequence[-1].GantryAngle if "GantryAngle" in cp0 else ""
-                        beam['GantryFinalAngle'] = final_angle
+                if 'GantryRotationDirection' in beam:
+                    if beam['GantryRotationDirection']:
+                        beam[
+                            'GantryRotationDirection'] = cp0.GantryRotationDirection if "GantryRotationDirection" in cp0 else""
+                        if bi.ControlPointSequence[-1].GantryRotationDirection == 'NONE':
+                            final_angle = bi.ControlPointSequence[-1].GantryAngle if "GantryAngle" in cp0 else ""
+                            beam['GantryFinalAngle'] = final_angle
 
                 btmp = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
                 beam['BeamLimitingDeviceAngle'] = btmp

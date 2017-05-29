@@ -7,7 +7,8 @@ import pandas as pd
 
 from pyplanscoring.competition.robust import mean, std
 # todo write stats analysis from constrains results
-from pyplanscoring.core.dicomparser import ScoringDicomParser
+from pyplanscoring.competition.utils import get_participant_data
+from pyplanscoring.core.dvhcalculation import load
 
 logger = logging.getLogger('results.py')
 
@@ -138,31 +139,60 @@ def sort_reports():
 
 
 if __name__ == '__main__':
+    root_folder = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\competition_2017\plans\plans\Victor Alves 3180'
 
-    root_folder = '/media/victor/TOURO Mobile/COMPETITION 2017/plans/submited_plans/plans'
+    pdatga = get_participant_data(root_folder)
 
-    # parse RT plan files
+    dvh_file = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\competition_2017\plans\plans\Victor Alves 3180\Victor Alves_RD.2017-PlanComp.Dose_PLA.dvh'
+    dvh = load(dvh_file)
 
-    participant = {}
-    for folder in os.listdir(root_folder):
-        participant_folder = osp.join(root_folder, folder)
-        print('-----------')
-        print('Folder: %s' % folder)
-        files = [osp.join(participant_folder, name) for root, dirs, files in os.walk(participant_folder) for name in
-                 files if name.strip().endswith('.dcm')]
+    DVH = dvh['DVH']
+    plt.style.use('ggplot')
 
-        plan_files = []
-        for f in files:
-            print('file: %s' % f)
-            try:
-                obj = ScoringDicomParser(filename=f)
-                rt_type = obj.GetSOPClassUID()
-                if rt_type == 'rtplan':
-                    plan_files.append(f)
 
-            except:
-                logger.exception('Error in file %s' % f)
 
-        participant[folder] = plan_files
 
-        # process plan files
+    # TODO ADD CALCULATION DETAILS AT PDF REPORT
+
+    # # plan_data_report = parse_plan_data(root_folder)
+    #
+    # # parse RT plan files
+    #
+    # participant = {}
+    # for folder in os.listdir(root_folder):
+    #     participant_folder = osp.join(root_folder, folder)
+    #     # print('-----------')
+    #     # print('Folder: %s' % folder)
+    #     files = [osp.join(participant_folder, name) for root, dirs, files in os.walk(participant_folder) for name in
+    #              files if name.strip().endswith('.dcm')]
+    #
+    #     plan_files = []
+    #     plan_data = []
+    #     for f in files:
+    #         # print('file: %s' % f)
+    #         try:
+    #             obj = ScoringDicomParser(filename=f)
+    #             rt_type = obj.GetSOPClassUID()
+    #             if rt_type == 'rtplan':
+    #                 plan_files.append(f)
+    #                 plan_data.append(obj.GetPlan())
+    #         except:
+    #             logger.exception('Error in file %s' % f)
+    #
+    #     participant[folder] = [plan_files, plan_data]
+    #
+    #     # process plan files to report
+    #     # get beams data
+    #     plan = plan_data
+    #     # print(plan)
+    #
+    #     import pprint
+    #
+    #     pprint.pprint(plan)
+    #     # for k, val in plan['beams'].items():
+    #     #     print(k, val)
+    #     #     iso = val['IsocenterPosition']
+    #
+    #     plan_dcm_file = r"C:\Users\Victor\Dropbox\CALIBRACAO_EBT3\IAMSPE\111111\DOSE.111111.306_PQRT2.dcm"
+    #     plan_dcm = ScoringDicomParser(filename=plan_dcm_file)
+    #     pprint.pprint(plan_dcm.GetDVHs())

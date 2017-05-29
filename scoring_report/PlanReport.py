@@ -26,7 +26,7 @@ txt = "PlanReport - H&N Nasopharynx - 2017 RT Plan Competition: %s \n" \
 
 # Get calculation defaults
 config = configparser.ConfigParser()
-config.read('/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/PyPlanScoring.ini')
+config.read(r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\PyPlanScoring.ini')
 calculation_options = dict()
 calculation_options['end_cap'] = config.getfloat('DEFAULT', 'end_cap')
 calculation_options['use_tps_dvh'] = config.getboolean('DEFAULT', 'use_tps_dvh')

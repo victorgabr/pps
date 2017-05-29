@@ -51,7 +51,7 @@ if __name__ == '__main__':
     rs_obj = ScoringDicomParser(filename=rs)
     structures = rs_obj.GetStructures()
 
-    structure = structures[4]
+    structure = structures[2]
     # sPlanes = structure['planes']
     # pos, z_axis = planes2array(sPlanes)
     ov_str = get_oversampled_structure(structure, 1)

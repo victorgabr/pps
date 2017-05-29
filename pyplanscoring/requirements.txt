@@ -7,3 +7,4 @@ pydicom >= 1.0.0
 matplotlib >= 2.0.0
 joblib >= 0.10.3
 PySide >= 1.2.2
+pillow >= 4.1.1

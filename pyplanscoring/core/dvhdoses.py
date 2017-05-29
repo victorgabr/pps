@@ -16,8 +16,8 @@ import numpy as np
 import numba as nb
 
 # add fast-math
-if int(nb.__version__.split('.')[1]) >= 31:
-    njit = functools.partial(nb.njit, fastmath=True, cache=False, nogil=True)
+if int(nb.__version__.split('.')[1]) >= 34:
+    njit = functools.partial(nb.njit, fastmath=True, cache=False, nogil=True, parallel=True)
 else:
     njit = functools.partial(nb.njit, cache=False, nogil=True)
 
@@ -198,22 +198,6 @@ def get_ddvh_slow(cdvh):
 
     return ddvh
 
-
-# def get_ddvh_slow(cdvh):
-#     '''Return dDVH from cDVH array.'''
-#
-#     # dDVH is the negative "slope" of the cDVH
-#     j = 0
-#     jmax = len(cdvh) - 1
-#     ddvh = []
-#     while j < jmax:
-#         ddvh += [cdvh[j] - cdvh[j + 1]]
-#         j += 1
-#     ddvh += [cdvh[j]]
-#
-#     return ddvh
-
-
 @njit
 def get_ddvh(cdvh):
     '''Return dDVH from cDVH array.'''
@@ -269,7 +253,7 @@ def test_all():
 
 
 if __name__ == '__main__':
-    doses = np.arange(150, 1000004)
+    doses = np.arange(150, 100000004)
     a = get_ddvh_slow(doses)
     b = get_ddvh(doses)
     np.testing.assert_array_almost_equal(b, a)

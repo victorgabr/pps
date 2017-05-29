@@ -9,8 +9,8 @@ import numpy as np
 from scipy.interpolate import interp1d
 
 # add fast-math
-if int(nb.__version__.split('.')[1]) >= 31:
-    njit = functools.partial(nb.njit, fastmath=True, cache=False, nogil=True)
+if int(nb.__version__.split('.')[1]) >= 34:
+    njit = functools.partial(nb.njit, fastmath=True, cache=False, nogil=True, parallel=True)
 else:
     njit = functools.partial(nb.njit, cache=False, nogil=True)
 
