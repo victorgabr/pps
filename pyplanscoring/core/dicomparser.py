@@ -1210,6 +1210,9 @@ class ScoringDicomParser(DicomParser):
                 beam['ControlPointSequence'] = bi.ControlPointSequence
                 # control point 0
                 control_point = bi.ControlPointSequence[0]
+                # final control point
+                final_cp = bi.ControlPointSequence[-1]
+
                 beam[
                     'NominalBeamEnergy'] = control_point.NominalBeamEnergy if "NominalBeamEnergy" in control_point else ""
                 beam['DoseRateSet'] = control_point.DoseRateSet if "DoseRateSet" in control_point else ""
@@ -1219,12 +1222,17 @@ class ScoringDicomParser(DicomParser):
 
                 # check there is VMAT delivery
                 if 'GantryRotationDirection' in control_point:
+                    if control_point.GantryRotationDirection != 'NONE':
 
-                    beam['GantryRotationDirection'] = control_point.GantryRotationDirection if "GantryRotationDirection" \
-                                                                                               in control_point else ""
-                    if bi.ControlPointSequence[-1].GantryRotationDirection == 'NONE':
-                        final_angle = bi.ControlPointSequence[-1].GantryAngle if "GantryAngle" in control_point else ""
-                        beam['GantryFinalAngle'] = final_angle
+                        # VMAT Delivery
+                        beam['GantryRotationDirection'] = control_point.GantryRotationDirection \
+                            if "GantryRotationDirection" in control_point else ""
+
+                        # last control point angle
+                        if final_cp.GantryRotationDirection == 'NONE':
+                            final_angle = bi.ControlPointSequence[-1].GantryAngle \
+                                if "GantryAngle" in control_point else ""
+                            beam['GantryFinalAngle'] = final_angle
 
                 btmp = control_point.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in control_point else ""
                 beam['BeamLimitingDeviceAngle'] = btmp
