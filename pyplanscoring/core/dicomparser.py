@@ -1209,40 +1209,46 @@ class ScoringDicomParser(DicomParser):
             if "ControlPointSequence" in bi:
                 beam['ControlPointSequence'] = bi.ControlPointSequence
                 # control point 0
-                cp0 = bi.ControlPointSequence[0]
-                beam['NominalBeamEnergy'] = cp0.NominalBeamEnergy if "NominalBeamEnergy" in cp0 else ""
-                beam['DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
-                beam['IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
-                beam['GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
+                control_point = bi.ControlPointSequence[0]
+                beam[
+                    'NominalBeamEnergy'] = control_point.NominalBeamEnergy if "NominalBeamEnergy" in control_point else ""
+                beam['DoseRateSet'] = control_point.DoseRateSet if "DoseRateSet" in control_point else ""
+                beam[
+                    'IsocenterPosition'] = control_point.IsocenterPosition if "IsocenterPosition" in control_point else ""
+                beam['GantryAngle'] = control_point.GantryAngle if "GantryAngle" in control_point else ""
 
                 # check there is VMAT delivery
-                if 'GantryRotationDirection' in beam:
-                    if beam['GantryRotationDirection']:
-                        beam[
-                            'GantryRotationDirection'] = cp0.GantryRotationDirection if "GantryRotationDirection" in cp0 else""
-                        if bi.ControlPointSequence[-1].GantryRotationDirection == 'NONE':
-                            final_angle = bi.ControlPointSequence[-1].GantryAngle if "GantryAngle" in cp0 else ""
-                            beam['GantryFinalAngle'] = final_angle
+                if 'GantryRotationDirection' in control_point:
 
-                btmp = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
+                    beam['GantryRotationDirection'] = control_point.GantryRotationDirection if "GantryRotationDirection" \
+                                                                                               in control_point else ""
+                    if bi.ControlPointSequence[-1].GantryRotationDirection == 'NONE':
+                        final_angle = bi.ControlPointSequence[-1].GantryAngle if "GantryAngle" in control_point else ""
+                        beam['GantryFinalAngle'] = final_angle
+
+                btmp = control_point.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in control_point else ""
                 beam['BeamLimitingDeviceAngle'] = btmp
-                beam['TableTopEccentricAngle'] = cp0.TableTopEccentricAngle if "TableTopEccentricAngle" in cp0 else ""
+                beam[
+                    'TableTopEccentricAngle'] = control_point.TableTopEccentricAngle if "TableTopEccentricAngle" in control_point else ""
 
                 # check beam limits
-                if 'BeamLimitingDevicePositionSequence' in cp0:
-                    for bl in cp0.BeamLimitingDevicePositionSequence:
+                if 'BeamLimitingDevicePositionSequence' in control_point:
+                    for bl in control_point.BeamLimitingDevicePositionSequence:
                         beam[bl.RTBeamLimitingDeviceType] = bl.LeafJawPositions
 
             # Ion control point sequence
             if "IonControlPointSequence" in bi:
                 beam['IonControlPointSequence'] = bi.IonControlPointSequence
-                cp0 = bi.IonControlPointSequence[0]
-                beam['NominalBeamEnergyUnit'] = cp0.NominalBeamEnergyUnit if "NominalBeamEnergyUnit" in cp0 else ""
-                beam['NominalBeamEnergy'] = cp0.NominalBeamEnergy if "NominalBeamEnergy" in cp0 else ""
-                beam['DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
-                beam['IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
-                beam['GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
-                btmp1 = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
+                control_point = bi.IonControlPointSequence[0]
+                beam[
+                    'NominalBeamEnergyUnit'] = control_point.NominalBeamEnergyUnit if "NominalBeamEnergyUnit" in control_point else ""
+                beam[
+                    'NominalBeamEnergy'] = control_point.NominalBeamEnergy if "NominalBeamEnergy" in control_point else ""
+                beam['DoseRateSet'] = control_point.DoseRateSet if "DoseRateSet" in control_point else ""
+                beam[
+                    'IsocenterPosition'] = control_point.IsocenterPosition if "IsocenterPosition" in control_point else ""
+                beam['GantryAngle'] = control_point.GantryAngle if "GantryAngle" in control_point else ""
+                btmp1 = control_point.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in control_point else ""
                 beam['BeamLimitingDeviceAngle'] = btmp1
 
             # add each beam to beams dict
