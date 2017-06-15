@@ -835,8 +835,8 @@ def planes2array(s_planes):
             # V = np.zeros((polygon.shape[0] + 1, polygon.shape[1]))
             # V[:-1] = polygon
             # V[-1] = polygon[0]
-            V = polygon
-            structure_planes.append(V)
+            # V = polygon
+            structure_planes.append(polygon)
             zplanes.append(z)
 
     return np.concatenate(structure_planes), np.asarray(zplanes, dtype=float)

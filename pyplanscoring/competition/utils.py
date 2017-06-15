@@ -5,7 +5,6 @@ import os
 import os.path as osp
 import shutil
 import smtplib
-import sys
 import time
 import urllib
 import urllib.request
@@ -14,35 +13,17 @@ from email import encoders as Encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from random import choice
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from joblib import Parallel, delayed
-from reportlab.lib import colors, styles
-from reportlab.lib.colors import HexColor
-from reportlab.lib.enums import TA_CENTER, TA_RIGHT, TA_LEFT
-from reportlab.lib.pagesizes import letter, A4, A3, landscape
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import mm, inch
-from reportlab.lib.utils import ImageReader
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Image, Spacer, Flowable, PageBreak
 from xlsxwriter.utility import xl_rowcol_to_cell
 
+from pyplanscoring.competition.report_generator import CompetitionReportPDF, FinalReportPDF
 from pyplanscoring.core.dicomparser import ScoringDicomParser
 from pyplanscoring.core.dosimetric import read_scoring_criteria
 from pyplanscoring.core.dvhcalculation import load
 from pyplanscoring.core.scoring import Participant
-
-if sys.version[0] == '2':
-    import cStringIO
-
-    output = cStringIO.StringIO()
-else:
-    # python3.4d
-    from io import BytesIO
-
-    output = BytesIO()
 
 logger = logging.getLogger('utils.py')
 
@@ -253,196 +234,6 @@ def test_download_all():
     cplans.download_all(destination, pp=True)
 
 
-def get_random_colors(no_colors):
-    # generate random hexa
-    colors_list = []
-    for i in range(no_colors):
-        color = ''.join([choice('0123456789ABCDEF') for x in range(6)])
-        colors_list.append(HexColor('#' + color))
-    return colors_list
-
-
-legendcolors = get_random_colors(10)
-
-
-class PdfImage(Flowable):
-    def __init__(self, img_data, width=200, height=200):
-        self.img_width = width
-        self.img_height = height
-        self.img_data = img_data
-
-    def wrap(self, width, height):
-        return self.img_width, self.img_height
-
-    def drawOn(self, canv, x, y, _sW=0):
-        if _sW > 0 and hasattr(self, 'hAlign'):
-            a = self.hAlign
-            if a in ('CENTER', 'CENTRE', TA_CENTER):
-                x += 0.5 * _sW
-            elif a in ('RIGHT', TA_RIGHT):
-                x += _sW
-            elif a not in ('LEFT', TA_LEFT):
-                raise ValueError("Bad hAlign value " + str(a))
-        canv.saveState()
-        canv.drawImage(self.img_data, x, y, self.img_width, self.img_height)
-        canv.restoreState()
-
-
-def make_report():
-    fig = plt.figure(figsize=(4, 3))
-    plt.plot([1, 2, 3, 4], [1, 4, 9, 26])
-    plt.ylabel('some numbers')
-    imgdata = output
-    fig.savefig(imgdata, format='png')
-    imgdata.seek(0)
-    image = ImageReader(imgdata)
-
-    doc = SimpleDocTemplate("hello.pdf")
-    style = styles["Normal"]
-    story = [Spacer(0, inch)]
-    img = PdfImage(image, width=200, height=200)
-
-    for i in range(10):
-        bogustext = ("Paragraph number %s. " % i)
-        p = Paragraph(bogustext, style)
-        story.append(p)
-        story.append(Spacer(1, 0.2 * inch))
-
-    story.append(img)
-
-    for i in range(10):
-        bogustext = ("Paragraph number %s. " % i)
-        p = Paragraph(bogustext, style)
-        story.append(p)
-        story.append(Spacer(1, 0.2 * inch))
-
-    doc.build(story)
-
-
-class CompetitionReportPDF(object):
-    def __init__(self, buffer, pageSize='A4'):
-        self.buffer = buffer
-        # default format is A4
-        if pageSize == 'A4':
-            self.pageSize = A4
-        elif pageSize == 'Letter':
-            self.pageSize = letter
-        elif pageSize == 'A3':
-            self.pageSize = A3
-
-        self.width, self.height = self.pageSize
-
-        self.pageSize = landscape(self.pageSize)
-
-    def pageNumber(self, canvas, doc):
-        number = canvas.getPageNumber()
-        canvas.drawCentredString(100 * mm, 15 * mm, str(number))
-
-    def report(self, report_df, title, banner_path):
-        # prepare fancy report
-        report_data = report_df.reset_index()
-        # Rename several DataFrame columns
-        report_data = report_data.rename(columns={
-            'index': 'Structure',
-            'constrain': 'Constrain',
-            'constrain_value': 'Metric',
-            'constrains_type': 'Constrain Type',
-            'value_low': 'Lower Metric',
-            'value_high': 'Upper Metric',
-        })
-
-        doc = SimpleDocTemplate(self.buffer,
-                                rightMargin=9,
-                                leftMargin=9,
-                                topMargin=9,
-                                bottomMargin=9,
-                                pagesize=self.pageSize)
-
-        # a collection of styles offer by the library
-        styles = getSampleStyleSheet()
-        # add custom paragraph style
-        styles.add(ParagraphStyle(name="Participant Header", fontSize=14, alignment=TA_CENTER, fontName='Times-Bold'))
-        styles.add(ParagraphStyle(name="TableHeader", fontSize=9, alignment=TA_CENTER, fontName='Times-Bold'))
-        styles.add(ParagraphStyle(name="structure", fontSize=9, alignment=TA_LEFT, fontName='Times-bold'))
-        styles.add(ParagraphStyle(name="Text", fontSize=9, alignment=TA_CENTER, fontName='Times'))
-        styles.add(ParagraphStyle(name="upper", fontSize=9, alignment=TA_CENTER, fontName='Times',
-                                  backColor=colors.lightcoral))
-        styles.add(ParagraphStyle(name="lower", fontSize=9, alignment=TA_CENTER, fontName='Times',
-                                  backColor=colors.lightgreen))
-        styles.add(ParagraphStyle(name="number", fontSize=9, alignment=TA_RIGHT, fontName='Times'))
-        styles.add(ParagraphStyle(name="TextMax", fontSize=9, alignment=TA_RIGHT, fontName='Times-Bold'))
-        styles.add(ParagraphStyle(name="Result number", fontSize=9, alignment=TA_RIGHT, fontName='Times-Bold',
-                                  backColor=colors.lightgreen))
-        styles.add(ParagraphStyle(name="Result", fontSize=9, alignment=TA_RIGHT, fontName='Times-bold'))
-        # list used for elements added into document
-        data = []
-        # add the banner
-        data.append(Image(banner_path, width=doc.width * 0.99, height=doc.height * 0.2))
-        data.append(Paragraph(title, styles['Participant Header']))
-        # insert a blank space
-        data.append(Spacer(1, 9))
-        # first colun
-        table_data = []
-        # table header
-        table_header = []
-        for header in report_data.columns:
-            table_header.append(Paragraph(header, styles['TableHeader']))
-
-        table_data.append(table_header)
-
-        i = 0
-        for wh in report_data.values:
-            # add a row to table
-            ctr_tye = str(wh[3])
-            if ctr_tye == 'upper':
-                constrain_type = Paragraph(str(wh[3]), styles['upper'])
-            else:
-                constrain_type = Paragraph(str(wh[3]), styles['lower'])
-
-            table_data.append(
-                [Paragraph(str(wh[0]), styles['structure']),
-                 Paragraph(str(wh[1]), styles['Text']),
-                 Paragraph(str(wh[2]), styles['Text']),
-                 constrain_type,
-                 Paragraph("%0.2f" % wh[4], styles['number']),
-                 Paragraph("%0.2f" % wh[5], styles['number']),
-                 Paragraph("%0.2f" % wh[6], styles['number']),
-                 Paragraph("%0.2f" % wh[7], styles['number']),
-                 Paragraph("%0.2f" % wh[8], styles['number']),
-                 Paragraph("{0} %".format(round(wh[9] * 100, 1)), styles['number'])])
-            i += 1
-
-        # adding last row
-        total = report_data.values[:, 6].sum()
-        score = report_data.values[:, 8].sum()
-        performance = round(score / total * 100, 1)
-        table_data.append(
-            [None,
-             None,
-             None,
-             None,
-             None,
-             Paragraph('Max Score:', styles['TextMax']),
-             Paragraph("%0.2f" % total, styles['number']),
-             Paragraph('Total Score', styles['Result number']),
-             Paragraph("%0.2f" % score, styles['Result number']),
-             Paragraph("{0} %".format(performance), styles['Result number'])])
-
-        # create table
-        wh_table = Table(data=table_data)
-        wh_table.hAlign = 'LEFT'
-        # wh_table.setStyle(TableStyle)
-        wh_table.setStyle(TableStyle(
-            [('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
-             ('BOX', (0, 0), (-1, -1), 0.5, colors.black),
-             ('VALIGN', (0, 0), (-1, 0), 'MIDDLE'),
-             ('BACKGROUND', (0, 0), (-1, 0), colors.gray)]))
-        data.append(wh_table)
-        # data.append(Spacer(1, 48))
-        # create document
-        doc.build(data)
-
-
 def dvh_dose_stats(DVH):
     # generate dose stats per volume
     ordered_keys = list(DVH.keys())
@@ -583,6 +374,31 @@ def get_participant_data(participant_folder):
     else:
         logger.debug('There is no metadata.csv file inside %s' % participant_folder)
         return False, None
+
+
+def get_dicom_data(participant_folder):
+    files = [osp.join(root, name) for root, dirs, files in os.walk(participant_folder) for name in files if
+             name.strip().endswith(('.dcm', '.DCM'))]
+
+    filtered_files = OrderedDict()
+    for f in files:
+        try:
+            obj = ScoringDicomParser(filename=f)
+            rt_type = obj.GetSOPClassUID()
+            if rt_type == 'rtdose':
+                participant_data = [f, rt_type]
+                filtered_files[f] = participant_data
+            if rt_type == 'rtplan':
+                participant_data = [f, rt_type]
+
+                filtered_files[f] = participant_data
+            if rt_type == 'rtss':
+                participant_data = [f, rt_type]
+                filtered_files[f] = participant_data
+        except:
+            logger.debug('Error in file %s' % f)
+
+    return True, pd.DataFrame(filtered_files).T
 
 
 class CompetitionReports(object):
@@ -731,6 +547,24 @@ class CompetitionReports(object):
                     logger.debug('Error in file: %s ' % rp)
         else:
             logger.debug("Missing dicom data: %s" % str(truth))
+
+    def participant_dvh(self, folder_path):
+        truth, files_data = get_dicom_data(participant_folder=folder_path)
+        rd = files_data.reset_index().set_index(1).ix['rtdose']['index']
+        rp = files_data.reset_index().set_index(1).ix['rtplan']['index']
+        rs = files_data.reset_index().set_index(1).ix['rtss']['index']
+        p, filename = os.path.split(rd)
+        participant = Participant(rp, rs, rd, calculation_options=self.calculation_options)
+        participant.set_participant_data(filename[:-4])
+        participant.eval_score(self.constrains, self.scores, self.criteria)
+
+    def generate_dvhs(self):
+        i = 0
+        for p in self.batch_data:
+            self.participant_dvh(p)
+            print('DVH generation ITERATION: %i' % i)
+            print('folder: ', p)
+            i += 1
 
     def generate_reports(self):
         i = 0
@@ -946,7 +780,6 @@ def parse_participant_plan_data(participant_folder):
     files = [osp.join(participant_folder, name) for root, dirs, files in os.walk(participant_folder) for name in
              files if name.strip().endswith('.dcm')]
 
-    plan_files = []
     plan_data = []
     for f in files:
         print('file: %s' % f)
@@ -954,12 +787,14 @@ def parse_participant_plan_data(participant_folder):
             obj = ScoringDicomParser(filename=f)
             rt_type = obj.GetSOPClassUID()
             if rt_type == 'rtplan':
-                plan_files.append(f)
-                plan_data.append(obj.GetPlan())
+                _, filename = osp.split(f)
+                plan_dict = obj.GetPlan()
+                plan_dict['filename'] = filename
+                plan_data.append(plan_dict)
         except:
             logger.exception('Error in file %s' % f)
 
-    return plan_data
+    return plan_data[0]
 
 
 def parse_plan_pp(root_folder, folder):
@@ -1049,174 +884,27 @@ def get_calculated_dvh_data(participant_folder):
     return dvh['DVH']
 
 
+#
+# def get_xlsx_report_data(participant_folder):
+#     files = [osp.join(participant_folder, name) for root, dirs, files in os.walk(participant_folder) for
+#              name in
+#              files if name.strip().endswith('.xlsx')]
+#
+#     for xls_file in files:
+#         report_df = pd.read_excel(xls_file, header=31).dropna()
+#         report_header = pd.read_excel(xls_file, header=29).dropna().columns[0]
+#         return report_df, report_header
+
+
 def get_xlsx_report_data(participant_folder):
     files = [osp.join(participant_folder, name) for root, dirs, files in os.walk(participant_folder) for
              name in
              files if name.strip().endswith('.xlsx')]
 
     for xls_file in files:
-        report_df = pd.read_excel(xls_file, header=31).dropna()
-        report_header = pd.read_excel(xls_file, header=29).dropna().columns[0]
+        report_df = pd.read_excel(xls_file, header=17).dropna()
+        report_header = pd.read_excel(xls_file, header=15).dropna().columns[0]
         return report_df, report_header
-
-
-class FinalReportPDF(CompetitionReportPDF):
-    def __init__(self, buffer, pageSize='A4'):
-        CompetitionReportPDF.__init__(self, buffer, pageSize)
-
-    def final_report(self, report_df, dose_stats_df, title, banner_path, dvh_path):
-        # prepare fancy report
-        report_data = report_df.reset_index()
-        dose_stats_df = dose_stats_df.reset_index()
-        # Rename several DataFrame columns
-        report_data = report_data.rename(columns={
-            'index': 'Structure',
-            'constrain': 'Constrain',
-            'constrain_value': 'Metric',
-            'constrains_type': 'Constrain Type',
-            'value_low': 'Lower Metric',
-            'value_high': 'Upper Metric',
-        })
-
-        doc = SimpleDocTemplate(self.buffer,
-                                rightMargin=9,
-                                leftMargin=9,
-                                topMargin=9,
-                                bottomMargin=9,
-                                pagesize=self.pageSize)
-
-        # a collection of styles offer by the library
-        styles = getSampleStyleSheet()
-        # add custom paragraph style
-        styles.add(ParagraphStyle(name="Participant Header", fontSize=14, alignment=TA_CENTER, fontName='Times-Bold'))
-        styles.add(ParagraphStyle(name="TableHeader", fontSize=9, alignment=TA_CENTER, fontName='Times-Bold'))
-        styles.add(ParagraphStyle(name="structure", fontSize=9, alignment=TA_LEFT, fontName='Times-bold'))
-        styles.add(ParagraphStyle(name="Text", fontSize=12, alignment=TA_CENTER, fontName='Times'))
-        styles.add(ParagraphStyle(name="upper", fontSize=9, alignment=TA_CENTER, fontName='Times',
-                                  backColor=colors.lightcoral))
-        styles.add(ParagraphStyle(name="lower", fontSize=9, alignment=TA_CENTER, fontName='Times',
-                                  backColor=colors.lightgreen))
-        styles.add(ParagraphStyle(name="number", fontSize=12, alignment=TA_RIGHT, fontName='Times'))
-        styles.add(ParagraphStyle(name="number_dvh", fontSize=12, alignment=TA_CENTER, fontName='Times'))
-        styles.add(ParagraphStyle(name="TextMax", fontSize=9, alignment=TA_RIGHT, fontName='Times-Bold'))
-        styles.add(ParagraphStyle(name="Result number", fontSize=9, alignment=TA_RIGHT, fontName='Times-Bold',
-                                  backColor=colors.lightgreen))
-        styles.add(ParagraphStyle(name="Result", fontSize=9, alignment=TA_RIGHT, fontName='Times-bold'))
-        # list used for elements added into document
-        data = []
-        # add the banner
-        data.append(Image(banner_path, width=doc.width * 0.99, height=doc.height * 0.2))
-        data.append(Paragraph(title, styles['Participant Header']))
-        # insert a blank space
-        data.append(Spacer(1, 9))
-        # first colun
-        table_data = []
-        # table header
-        table_header = []
-        for header in report_data.columns:
-            table_header.append(Paragraph(header, styles['TableHeader']))
-
-        table_data.append(table_header)
-
-        i = 0
-        for wh in report_data.values:
-            # add a row to table
-            ctr_tye = str(wh[3])
-            if ctr_tye == 'upper':
-                constrain_type = Paragraph(str(wh[3]), styles['upper'])
-            else:
-                constrain_type = Paragraph(str(wh[3]), styles['lower'])
-
-            table_data.append(
-                [Paragraph(str(wh[0]), styles['structure']),
-                 Paragraph(str(wh[1]), styles['Text']),
-                 Paragraph(str(wh[2]), styles['Text']),
-                 constrain_type,
-                 Paragraph("%0.2f" % wh[4], styles['number']),
-                 Paragraph("%0.2f" % wh[5], styles['number']),
-                 Paragraph("%0.2f" % wh[6], styles['number']),
-                 Paragraph("%0.2f" % wh[7], styles['number']),
-                 Paragraph("%0.2f" % wh[8], styles['number']),
-                 Paragraph("{0} %".format(round(wh[9] * 100, 1)), styles['number'])])
-            i += 1
-
-        # adding last row
-        total = report_data.values[:, 6].sum()
-        score = report_data.values[:, 8].sum()
-        performance = round(score / total * 100, 1)
-        table_data.append(
-            [None,
-             None,
-             None,
-             None,
-             None,
-             Paragraph('Max Score:', styles['TextMax']),
-             Paragraph("%0.2f" % total, styles['number']),
-             Paragraph('Total Score', styles['Result number']),
-             Paragraph("%0.2f" % score, styles['Result number']),
-             Paragraph("{0} %".format(performance), styles['Result number'])])
-
-        # create table
-        wh_table = Table(data=table_data)
-        wh_table.hAlign = 'LEFT'
-        # wh_table.setStyle(TableStyle)
-        wh_table.setStyle(TableStyle(
-            [('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
-             ('BOX', (0, 0), (-1, -1), 0.5, colors.black),
-             ('VALIGN', (0, 0), (-1, 0), 'MIDDLE'),
-             ('BACKGROUND', (0, 0), (-1, 0), colors.gray)]))
-        data.append(wh_table)
-        # add page break
-        data.append(PageBreak())
-
-        # starting new page DVH stats
-        # appendix = 'PyPlanScoring - Dose Volume Histogram - Calculation Results'
-        #
-        # data.append(Paragraph(appendix, styles['Participant Header']))
-        # data.append(Spacer(1, 5))
-        # DVH FIGURE
-        data.append(Image(dvh_path, width=doc.width * .95, height=doc.height * .95))
-        data.append(PageBreak())
-
-        # table header
-        dose_stats_df = dose_stats_df.rename(columns={
-            'index': 'DVH Summary - Doses in cGy',
-            'max': 'Maximum Dose',
-            'mean': 'Average Dose',
-            'min': 'Minimum Dose'
-        })
-
-        # Start DVH stats table
-        dvh_table_data = []
-        # table header
-        dvh_table_header = []
-        for header in dose_stats_df.columns:
-            dvh_table_header.append(Paragraph(header, styles['TableHeader']))
-
-        dvh_table_data.append(dvh_table_header)
-
-        for wh in dose_stats_df.values:
-            dvh_table_data.append(
-                [Paragraph(str(wh[0]), styles['structure']),
-                 Paragraph("%0.f" % wh[1], styles['number_dvh']),
-                 Paragraph("%0.f" % wh[2], styles['number_dvh']),
-                 Paragraph("%0.f" % wh[3], styles['number_dvh'])])
-
-            i += 1
-
-        # create table
-        dvh_wh_table = Table(data=dvh_table_data)
-        dvh_wh_table.hAlign = 'LEFT'
-        # wh_table.setStyle(TableStyle)
-        dvh_wh_table.setStyle(TableStyle(
-            [('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
-             ('BOX', (0, 0), (-1, -1), 0.5, colors.black),
-             ('VALIGN', (0, 0), (-1, 0), 'MIDDLE'),
-             ('BACKGROUND', (0, 0), (-1, 0), colors.gray)]))
-        data.append(dvh_wh_table)
-
-        # create document
-        doc.build(data)
 
 
 def save_dvh_report(DVH, dest_path):
@@ -1236,6 +924,7 @@ def save_dvh_report(DVH, dest_path):
     ax.set_xticks(minor_x_ticks, minor=True)
     ax.set_yticks(major_y_ticks)
     ax.set_yticks(minor_y_ticks, minor=True)
+    ax.set_xlim([0, 8020])
 
     ax.grid(which='both')
 
@@ -1249,17 +938,16 @@ def save_dvh_report(DVH, dest_path):
         ax.set_ylabel('Volume (%)')
         ax.set_xlabel('Dose (cGy)')
 
-        apendix = 'PyPlanScoring - Calculated DVH - Voxel Size [mm]: (0.2, 0.2, 0.2)'
+        apendix = 'PyPlanScoring - Calculated DVH - Voxel Size [mm]: (0.2, 0.2, 0.2) '
         ax.set_title(apendix)
         # data.append(Paragraph(apendix, styles['Participant Header']))
 
     fig.savefig(dest_path, format='png', dpi=100)
 
 
-if __name__ == '__main__':
+def final_report_snippet():
     # set final report
-
-    participant_folder = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\competition_2017\plans\plans\Victor Alves 3180'
+    participant_folder = r'D:\Dropbox\Plan_Competition_Project\competition_2017\plans\TO VICTOR\Abdul Qadir Jangda - Eclipse - IMRT - 23 MARCH FINAL - 50.4'
     pdatga = get_participant_data(participant_folder)
 
     # plan data
@@ -1283,3 +971,39 @@ if __name__ == '__main__':
     out_report = osp.join(participant_folder, 'Victor_FINAL_report.pdf')
     rep = FinalReportPDF(out_report, 'A3')
     rep.final_report(report_df, dvh_stats, report_header, banner_path=banner_path, dvh_path=out_dvh_img)
+
+
+if __name__ == '__main__':
+    # root_folder = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\competition_2017\plans\final_reports\plans_folder'
+    # app_folder = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring'
+
+    # set final report
+    participant_folder = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/final_reports/plans_folder/Abriel Jenshus - Pinnacle - VMAT - 22 MARCH FINAL - 86.8'
+    pdatga = get_dicom_data(participant_folder)
+
+    # plan data
+    plan_data_report = parse_participant_plan_data(participant_folder)
+
+    # getting DVH file and data
+    DVH = get_calculated_dvh_data(participant_folder)
+    dvh_stats = dvh_dose_stats(DVH)
+
+    # saving dvh figure
+    out_dvh_img = osp.join(participant_folder, 'report_dvh.png')
+    save_dvh_report(DVH, out_dvh_img)
+
+    report_df, report_header = get_xlsx_report_data(participant_folder)
+
+    # # save PDF report
+    banner_path = r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/2017 Plan Comp Banner.jpg'
+    #
+    out_report = osp.join(participant_folder, 'Abriel_FINAL_report.pdf')
+    rep = FinalReportPDF(out_report, 'A3')
+    rep.final_report(report_df, dvh_stats, report_header, banner_path=banner_path, dvh_path=out_dvh_img)
+
+    ## TODO add plan data information
+    plan_info = OrderedDict()
+    plan_info['Plan file'] = plan_data_report['filename']
+    plan_info['Number of beams/arcs'] = str(len(plan_data_report['beams']))
+    plan_info['Prescribed dose [cGy]'] = str(plan_data_report['rxdose'])
+    plan_info['Total MU'] = str(plan_data_report['Plan_MU'])

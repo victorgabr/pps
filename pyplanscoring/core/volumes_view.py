@@ -3,7 +3,7 @@ import vispy
 from vispy.scene import visuals
 
 from pyplanscoring.core.dicomparser import ScoringDicomParser
-from pyplanscoring.core.geometry import planes2array, get_oversampled_structure
+from pyplanscoring.core.geometry import planes2array
 
 plt.style.use('ggplot')
 
@@ -45,7 +45,7 @@ def vispy_plot_contours(structure, title=''):
 
 
 if __name__ == '__main__':
-    rs = r'/home/victor/Dropbox/Plan_Competition_Project/scoring_report/dicom_files/RS.1.2.246.352.71.4.584747638204.248648.20170123083029.dcm'
+    rs = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\pyplanscoring\testdata\DVH-Analysis-Data-Etc\STRUCTURES\Cylinder_30_0.dcm'
 
     # getting dicom data
     rs_obj = ScoringDicomParser(filename=rs)
@@ -54,10 +54,10 @@ if __name__ == '__main__':
     structure = structures[2]
     # sPlanes = structure['planes']
     # pos, z_axis = planes2array(sPlanes)
-    ov_str = get_oversampled_structure(structure, 1)
+    # ov_str = get_oversampled_structure(structure, 1)
 
     vispy_plot_contours(structure, structure['name'])
-    vispy_plot_contours(ov_str, structure['name'] + ' UP-SAMPLED - 1 mm')
+    # vispy_plot_contours(ov_str, structure['name'] + ' UP-SAMPLED - 1 mm')
 
 
 
