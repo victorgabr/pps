@@ -349,13 +349,6 @@ class FinalReportPDF(CompetitionReportPDF):
         data.append(wh_table)
         # add page break
         data.append(PageBreak())
-
-        # starting new page DVH stats
-        # appendix = 'PyPlanScoring - Dose Volume Histogram - Calculation Results'
-        #
-        # data.append(Paragraph(appendix, styles['Participant Header']))
-        # data.append(Spacer(1, 5))
-        # DVH FIGURE
         data.append(Image(dvh_path, width=doc.width * .95, height=doc.height * .95))
         data.append(PageBreak())
 

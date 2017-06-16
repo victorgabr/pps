@@ -777,24 +777,40 @@ def join_entries(entries_folder, csv_files):
 
 
 def parse_participant_plan_data(participant_folder):
-    files = [osp.join(participant_folder, name) for root, dirs, files in os.walk(participant_folder) for name in
-             files if name.strip().endswith('.dcm')]
+    _, files_data = get_dicom_data(participant_folder)
 
-    plan_data = []
-    for f in files:
-        print('file: %s' % f)
-        try:
-            obj = ScoringDicomParser(filename=f)
-            rt_type = obj.GetSOPClassUID()
-            if rt_type == 'rtplan':
-                _, filename = osp.split(f)
-                plan_dict = obj.GetPlan()
-                plan_dict['filename'] = filename
-                plan_data.append(plan_dict)
-        except:
-            logger.exception('Error in file %s' % f)
+    rd = files_data.reset_index().set_index(1).ix['rtdose']['index']
+    rp = files_data.reset_index().set_index(1).ix['rtplan']['index']
+    rs = files_data.reset_index().set_index(1).ix['rtss']['index']
 
-    return plan_data[0]
+    plan_dict = dict()
+
+    try:
+        obj = ScoringDicomParser(filename=rp)
+        _, filename = osp.split(rp)
+        plan_dict = obj.GetPlan()
+        plan_dict['plan_filename'] = filename
+        # dose filename
+        _, dfilename = osp.split(rd)
+        plan_dict['dose_filename'] = dfilename
+        # struc filename
+        # dose filename
+        _, sfilename = osp.split(rs)
+        plan_dict['structure_filename'] = sfilename
+
+    except:
+        logger.exception('Error in plan file %s' % rp)
+
+    # grap plan info data
+    plan_info = OrderedDict()
+    plan_info['Plan file'] = plan_dict['plan_filename']
+    plan_info['Structure file'] = plan_dict['structure_filename']
+    plan_info['Dose file'] = plan_dict['dose_filename']
+    plan_info['Number of beams/arcs'] = str(len(plan_dict['beams']))
+    plan_info['Prescribed dose [cGy]'] = str(plan_dict['rxdose'])
+    plan_info['Total MU'] = str(plan_dict['Plan_MU'])
+
+    return plan_info
 
 
 def parse_plan_pp(root_folder, folder):
@@ -881,7 +897,7 @@ def get_calculated_dvh_data(participant_folder):
              files if name.strip().endswith('.dvh')]
     dvh = load(files[0])
 
-    return dvh['DVH']
+    return dvh
 
 
 #
@@ -973,37 +989,56 @@ def final_report_snippet():
     rep.final_report(report_df, dvh_stats, report_header, banner_path=banner_path, dvh_path=out_dvh_img)
 
 
+class FinalReportGenerator(object):
+    def __init__(self, root_folder, app_folder):
+        self.root_folder = root_folder
+        self.app_folder = app_folder
+        self.banner_path = osp.join(app_folder, '2017 Plan Comp Banner.jpg')
+        self.batch_data = []
+
+    def set_participant_folder(self):
+        for folder in os.listdir(self.root_folder):
+            participant_folder = osp.join(self.root_folder, folder)
+            self.batch_data.append(participant_folder)
+
+    def gen_final_report(self, participant_folder):
+        # plan data
+        plan_info = parse_participant_plan_data(participant_folder)
+
+        # getting DVH file and data
+        DVH = get_calculated_dvh_data(participant_folder)
+        dvh_curves = DVH['DVH']
+        part_name = DVH['participant']
+
+        # saving dvh figure
+
+        dvh_stats = dvh_dose_stats(dvh_curves)
+        # saving dvh figure
+        out_dvh_img = osp.join(participant_folder, 'report_dvh.png')
+        save_dvh_report(dvh_curves, out_dvh_img)
+
+        # getting data from xlsx report
+        report_df, report_header = get_xlsx_report_data(participant_folder)
+
+        # out report filename
+        out_report = osp.join(participant_folder, part_name + '_final_report.pdf')
+
+        # saving PDF final report
+        rep = FinalReportPDF(out_report, 'A3')
+        rep.final_report(report_df, dvh_stats, report_header, banner_path=self.banner_path, dvh_path=out_dvh_img)
+
+    def batch_final_report(self):
+        i = 0
+        for p in self.batch_data:
+            _, pname = osp.split(p)
+            print('Participant %s final report ITERATION: %i' % (pname, i))
+            self.gen_final_report(p)
+            i += 1
+
+
 if __name__ == '__main__':
-    # root_folder = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\competition_2017\plans\final_reports\plans_folder'
-    # app_folder = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring'
-
-    # set final report
-    participant_folder = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/final_reports/plans_folder/Abriel Jenshus - Pinnacle - VMAT - 22 MARCH FINAL - 86.8'
-    pdatga = get_dicom_data(participant_folder)
-
-    # plan data
-    plan_data_report = parse_participant_plan_data(participant_folder)
-
-    # getting DVH file and data
-    DVH = get_calculated_dvh_data(participant_folder)
-    dvh_stats = dvh_dose_stats(DVH)
-
-    # saving dvh figure
-    out_dvh_img = osp.join(participant_folder, 'report_dvh.png')
-    save_dvh_report(DVH, out_dvh_img)
-
-    report_df, report_header = get_xlsx_report_data(participant_folder)
-
-    # # save PDF report
-    banner_path = r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/2017 Plan Comp Banner.jpg'
-    #
-    out_report = osp.join(participant_folder, 'Abriel_FINAL_report.pdf')
-    rep = FinalReportPDF(out_report, 'A3')
-    rep.final_report(report_df, dvh_stats, report_header, banner_path=banner_path, dvh_path=out_dvh_img)
-
-    ## TODO add plan data information
-    plan_info = OrderedDict()
-    plan_info['Plan file'] = plan_data_report['filename']
-    plan_info['Number of beams/arcs'] = str(len(plan_data_report['beams']))
-    plan_info['Prescribed dose [cGy]'] = str(plan_data_report['rxdose'])
-    plan_info['Total MU'] = str(plan_data_report['Plan_MU'])
+    root_folder = '/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/final_reports/plans_folder'
+    app_folder = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring'
+    frg = FinalReportGenerator(root_folder=root_folder, app_folder=app_folder)
+    frg.set_participant_folder()
+    frg.batch_final_report()
