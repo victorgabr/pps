@@ -183,7 +183,7 @@ class DoseSlice3D(object):
 
     def __init__(self, xx, yy, zz, u):
         self.x = xx[::-1]
-        self.y = -yy  # inverted y axis to pixel position
+        self.y = -yy  # inverted y axis to pixel Position
         self.z = zz
 
         self.data = u

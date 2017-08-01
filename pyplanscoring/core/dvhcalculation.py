@@ -331,7 +331,7 @@ class Structure(object):
         """
         if upsample:
             # upsample only small size structures
-            # get structure slice position
+            # get structure slice Position
             # set up-sample only small size structures
             if self.volume_original < self.vol_lim:
                 # self._set_upsample_delta()
@@ -355,7 +355,7 @@ class Structure(object):
         dose_grid_points = get_dose_grid(dose_lut)
         x_delta = abs(grid_3d[0][0] - grid_3d[0][1])
         y_delta = abs(grid_3d[1][0] - grid_3d[1][1])
-        # get structure slice position
+        # get structure slice Position
         # ordered_z = self.ordered_planes
         z_delta = self.structure['thickness']
         grid_delta = [x_delta, y_delta, z_delta]

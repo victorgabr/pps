@@ -509,7 +509,7 @@ def interp_structure_planes(structure_dict, n_planes=5, verbose=False):
 
     # adding last slice to result
     result += [structure_planes[-1]]
-    # return planes sorted by z-axis position
+    # return planes sorted by z-axis Position
 
     return sorted(result, key=lambda p: p[0][2])
 

@@ -1230,12 +1230,12 @@ def test_upsampling_paper(plot_grads=False):
                 fig, ax = plt.subplots()
                 df_rectangles[rec].plot(ax=ax)
                 ax.set_ylabel('Dmax - Dmin (cGy)')
-                ax.set_xlabel('Z - slice position (mm)')
+                ax.set_xlabel('Z - slice Position (mm)')
                 ax.set_title(structure['name'])
                 fig, ax = plt.subplots()
                 df_rectangles['Boundary gradient'].plot(ax=ax)
                 ax.set_ylabel('Boundary gradient (cGy)')
-                ax.set_xlabel('Z - slice position (mm)')
+                ax.set_xlabel('Z - slice Position (mm)')
 
                 title = 'Boundary gradient ' + structure['name'] + \
                         ' Median: %1.2f (cGy)' % med

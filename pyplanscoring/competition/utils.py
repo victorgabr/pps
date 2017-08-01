@@ -378,7 +378,7 @@ def get_participant_data(participant_folder):
 
 def get_dicom_data(participant_folder):
     files = [osp.join(root, name) for root, dirs, files in os.walk(participant_folder) for name in files if
-             name.strip().endswith(('.dcm', '.DCM'))]
+             name.strip().endswith(('.dcm', '.DCM', '.dcm_'))]
 
     filtered_files = OrderedDict()
     for f in files:
@@ -808,7 +808,8 @@ def parse_participant_plan_data(participant_folder):
     plan_info['Dose file'] = plan_dict['dose_filename']
     plan_info['Number of beams/arcs'] = str(len(plan_dict['beams']))
     plan_info['Prescribed dose [cGy]'] = str(plan_dict['rxdose'])
-    plan_info['Total MU'] = str(plan_dict['Plan_MU'])
+    plan_info['Total MU'] = str(round(plan_dict['Plan_MU']))
+    plan_info['Number of isocenters'] = str(plan_dict['n_isocenters'])
 
     return plan_info
 
@@ -1025,7 +1026,8 @@ class FinalReportGenerator(object):
 
         # saving PDF final report
         rep = FinalReportPDF(out_report, 'A3')
-        rep.final_report(report_df, dvh_stats, report_header, banner_path=self.banner_path, dvh_path=out_dvh_img)
+        rep.final_report(report_df, dvh_stats, report_header, plan_info, banner_path=self.banner_path,
+                         dvh_path=out_dvh_img)
 
     def batch_final_report(self):
         i = 0
@@ -1036,9 +1038,166 @@ class FinalReportGenerator(object):
             i += 1
 
 
+def download_missing_dicom():
+    import os
+    import pandas as pd
+    from pyplanscoring.core.dicomparser import ScoringDicomParser
+    import urllib
+    import urllib.request
+    import logging
+
+    logger = logging.getLogger('utils.py')
+
+    logging.basicConfig(filename='Generate_reports.log', level=logging.DEBUG)
+
+    def get_dicom_files(participant_folder):
+        return [os.path.join(root, name) for root, dirs, files in os.walk(participant_folder) for name in files if
+                name.strip().endswith(('.dcm', '.DCM'))]
+
+    def check_dicom_files(participant_folder):
+        files = get_dicom_files(participant_folder)
+        filtered_files = []
+        for f in files:
+            try:
+                obj = ScoringDicomParser(filename=f)
+                rt_type = obj.GetSOPClassUID()
+                if rt_type == 'rtdose' or rt_type == 'rtplan' or rt_type == 'rtdose':
+                    filtered_files.append(f)
+            except:
+                logger.debug('Error in file %s' % f)
+
+        return filtered_files
+
+    def download_metadata(participant, participant_folder):
+        print(participant['Submit Plan'])
+        uploaded_files = participant['Submit Plan'].split(',')
+        for url in uploaded_files:
+            try:
+                _, file_name = os.path.split(url)
+                file_name_path = os.path.join(participant_folder, file_name)
+                # Download the file from `url` and save it locally under `file_name`:
+                with urllib.request.urlopen(url) as response, open(file_name_path, 'wb') as out_file:
+                    data = response.read()  # a `bytes` object
+                    out_file.write(data)
+                    print('Saved file: %s inside: %s' % (file_name, participant_folder))
+
+            except:
+                txt = 'Error on downloading url: %s \n on folder: %s' % (url, participant_folder)
+                logger.debug(txt)
+
+    root_folder = r'D:\Final_Plans\ECPLIPSE_VMAT'
+    participant = {}
+    for folder in os.listdir(root_folder):
+        participant_folder = os.path.join(root_folder, folder)
+        metadata_path = os.path.join(participant_folder, 'metadata.csv')
+        if os.path.exists(metadata_path):
+            # check there is at least RP and RD files
+            files = check_dicom_files(participant_folder)
+            if len(files) < 2:
+                metadata = pd.read_csv(metadata_path, header=None, index_col=0, parse_dates=True).to_dict('dict')[1]
+                download_metadata(metadata, participant_folder)
+
+
+def copy_missing_dicom():
+    import os
+    import shutil
+
+    import pandas as pd
+    import re
+
+    from pyplanscoring.core.dicomparser import ScoringDicomParser
+    import urllib
+    import urllib.request
+    import logging
+
+    logger = logging.getLogger('utils.py')
+
+    logging.basicConfig(filename='Generate_reports.log', level=logging.DEBUG)
+
+    def get_dicom_files(participant_folder):
+        return [os.path.join(root, name) for root, dirs, files in os.walk(participant_folder) for name in files if
+                name.strip().endswith(('.dcm', '.DCM', '.dcm_', '.DCM_'))]
+
+    def get_dvh_file(participant_folder):
+        return [os.path.join(root, name) for root, dirs, files in os.walk(participant_folder) for name in files if
+                name.strip().endswith('.dvh')]
+
+    def check_dicom_files(participant_folder):
+        files = get_dicom_files(participant_folder)
+        filtered_files = []
+        for f in files:
+            try:
+                obj = ScoringDicomParser(filename=f)
+                rt_type = obj.GetSOPClassUID()
+                if rt_type == 'rtdose' or rt_type == 'rtplan' or rt_type == 'rtdose':
+                    filtered_files.append(f)
+            except:
+                logger.debug('Error in file %s' % f)
+
+        return filtered_files
+
+    def download_metadata(participant, participant_folder):
+        print(participant['Submit Plan'])
+        uploaded_files = participant['Submit Plan'].split(',')
+        for url in uploaded_files:
+            try:
+                _, file_name = os.path.split(url)
+                file_name_path = os.path.join(participant_folder, file_name)
+                # Download the file from `url` and save it locally under `file_name`:
+                with urllib.request.urlopen(url) as response, open(file_name_path, 'wb') as out_file:
+                    data = response.read()  # a `bytes` object
+                    out_file.write(data)
+                    print('Saved file: %s inside: %s' % (file_name, participant_folder))
+
+            except:
+                txt = 'Error on downloading url: %s \n on folder: %s' % (url, participant_folder)
+                logger.debug(txt)
+
+    # Script to copy missing dicom data
+
+    search_folder = r'I:\COMPETITION 2017\submited_plans_15_april\submited_plans_15_april\plans'
+    root_folder = r'I:\COMPETITION 2017\final_plans\Other\VICTOR M-Z'
+    participant = {}
+    for folder in os.listdir(root_folder):
+        participant_folder = os.path.join(root_folder, folder)
+        metadata_path = os.path.join(participant_folder, 'metadata.csv')
+        if os.path.exists(metadata_path):
+            # check there is at least RP and RD files
+            files = check_dicom_files(participant_folder)
+            dvh_files = get_dvh_file(participant_folder)
+            if len(files) < 2:
+                print(metadata_path)
+                metadata = pd.read_csv(metadata_path, header=None, index_col=0, parse_dates=True).to_dict('dict')[1]
+
+                # search at database
+                for f in os.listdir(search_folder):
+                    if re.findall(metadata['Entry Id'], f):
+                        db_folder = os.path.join(search_folder, f)
+                        dcm_files = check_dicom_files(db_folder)
+                        # copy files to destination
+                        for dcm in dcm_files:
+                            shutil.copy(dcm, participant_folder)
+                            print('Copied: %s to %s' % (dcm, participant_folder))
+
+            # check dvh files
+            if not dvh_files:
+                # print(metadata_path)
+                metadata = pd.read_csv(metadata_path, header=None, index_col=0, parse_dates=True).to_dict('dict')[1]
+
+                # search at database
+                for f in os.listdir(search_folder):
+                    if re.findall(metadata['Entry Id'], f):
+                        db_folder = os.path.join(search_folder, f)
+                        dvh_files = get_dvh_file(db_folder)
+                        # copy files to destination
+                        for dvh in dvh_files:
+                            shutil.copy(dvh, participant_folder)
+                            print('Copied: %s to %s' % (dvh, participant_folder))
+
+
 if __name__ == '__main__':
-    root_folder = '/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/final_reports/plans_folder'
-    app_folder = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring'
+    root_folder = '/home/steeve/Dropbox/Plan_Competition_Project/competition_2017/plans/final_reports/plans_folder'
+    app_folder = '/home/steeve/Dropbox/Plan_Competition_Project/pyplanscoring'
     frg = FinalReportGenerator(root_folder=root_folder, app_folder=app_folder)
     frg.set_participant_folder()
     frg.batch_final_report()

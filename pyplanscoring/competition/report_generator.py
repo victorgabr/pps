@@ -26,8 +26,8 @@ def stylesheet():
     styles = {'default': ParagraphStyle(
         name='default',
         fontName='Times-Roman',
-        fontSize=12,
-        leading=12,
+        fontSize=14,
+        leading=16,
         leftIndent=0,
         rightIndent=0,
         firstLineIndent=0,
@@ -259,7 +259,7 @@ class FinalReportPDF(CompetitionReportPDF):
     def __init__(self, buffer, pageSize='A3'):
         CompetitionReportPDF.__init__(self, buffer, pageSize)
 
-    def final_report(self, report_df, dose_stats_df, title, banner_path, dvh_path):
+    def final_report(self, report_df, dose_stats_df, title, plan_info, banner_path, dvh_path):
         # prepare fancy report
         report_data = report_df.reset_index()
         dose_stats_df = dose_stats_df.reset_index()
@@ -391,6 +391,29 @@ class FinalReportPDF(CompetitionReportPDF):
         dvh_wh_table.setStyle(table_style)
 
         data.append(dvh_wh_table)
+
+        data.append(PageBreak())
+
+        # Add plan summary
+        data.append(Paragraph("Appendix - Plan details", styles['title']))
+        txt = "This report was generated using the following data: <br/> <br/>" \
+              " RT plan file: %s <br/> " \
+              "RT structure set file: %s <br/>" \
+              "RT dose file: %s  <br/><br/>" \
+              "Plan summary:  <br/><br/>" \
+              "Number of beams/arcs: %s <br/>" \
+              "Number of isocenters: %s <br/>" \
+              "Prescribed dose:  %s cGy <br/>" \
+              "Total MU: %s <br/>" % (plan_info['Plan file'],
+                                      plan_info['Structure file'],
+                                      plan_info['Dose file'],
+                                      plan_info['Number of beams/arcs'],
+                                      plan_info['Number of isocenters'],
+                                      plan_info['Prescribed dose [cGy]'],
+                                      plan_info['Total MU'],
+                                      )
+
+        data.append(Paragraph(txt, styles['default']))
 
         # create document
         doc.build(data)

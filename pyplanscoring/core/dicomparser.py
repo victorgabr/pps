@@ -174,7 +174,7 @@ class DicomParser(object):
 
         data = {}
 
-        data['position'] = self.ds.ImagePositionPatient
+        data['Position'] = self.ds.ImagePositionPatient
         data['orientation'] = self.ds.ImageOrientationPatient
         data['pixelspacing'] = self.ds.PixelSpacing
         data['rows'] = self.ds.Rows
@@ -491,9 +491,9 @@ class DicomParser(object):
 
     def GetDoseGrid(self, z=0, threshold=0.5):
         """
-        Return the 2d dose grid for the given slice position (mm).
+        Return the 2d dose grid for the given slice Position (mm).
 
-        :param z:           Slice position in mm.
+        :param z:           Slice Position in mm.
         :param threshold:   Threshold in mm to determine the max difference from z to the closest dose slice without using interpolation.
         :return:            An numpy 2d array of dose points.
         """
@@ -502,10 +502,10 @@ class DicomParser(object):
         # determine the offset for each frame
         if 'GridFrameOffsetVector' in self.ds:
             z = float(z)
-            # Get the initial dose grid position (z) in patient coordinates
+            # Get the initial dose grid Position (z) in patient coordinates
             imagepatpos = self.ds.ImagePositionPatient[2]
             orientation = self.ds.ImageOrientationPatient[0]
-            # Add the position to the offset vector to determine the
+            # Add the Position to the offset vector to determine the
             # z coordinate of each dose plane
             planes = orientation * np.array(self.ds.GridFrameOffsetVector) + \
                      imagepatpos
@@ -551,9 +551,9 @@ class DicomParser(object):
 
     def GetIsodosePoints(self, z=0, level=100, threshold=0.5):
         """
-        Return points for the given isodose level and slice position from the dose grid.
+        Return points for the given isodose level and slice Position from the dose grid.
 
-        :param z:           Slice position in mm.
+        :param z:           Slice Position in mm.
         :param threshold:   Threshold in mm to determine the max difference from z to the closest dose slice without using interpolation.
         :param level:       Isodose level in scaled form (multiplied by self.ds.DoseGridScaling)
         :return:            An array of tuples representing isodose points.
@@ -683,8 +683,7 @@ class DicomParser(object):
         for b in bdict:
             beam = {}
             beam['name'] = b.BeamName if "BeamName" in b else ""
-            beam['description'] = b.BeamDescription \
-                if "BeamDescription" in b else ""
+            beam['description'] = b.BeamDescription if "BeamDescription" in b else ""
             beams[b.BeamNumber] = beam
 
         # Obtain the referenced beam info from the fraction info
@@ -695,8 +694,7 @@ class DicomParser(object):
                 nfx = fg.NumberofFractionsPlanned
                 for b in rb:
                     if "BeamDose" in b:
-                        beams[b.ReferencedBeamNumber]['dose'] = \
-                            b.BeamDose * nfx * 100
+                        beams[b.ReferencedBeamNumber]['dose'] = b.BeamDose * nfx * 100
                     if 'BeamMeterset' in b:
                         beams[b.ReferencedBeamNumber]['MU'] = b.BeamMeterset
         return beams
@@ -968,7 +966,7 @@ class ScoringDicomParser(DicomParser):
 
                         # Add each plane to the planes dictionary of the current ROI
                         if 'geometricType' in plane:
-                            # Fixed bug on import z position on -1.0 < z < 0.0 not using #.replace('-0', '0')
+                            # Fixed bug on import z Position on -1.0 < z < 0.0 not using #.replace('-0', '0')
                             z = ('%.2f' % plane['contourData'][0][2])
                             if z not in planes.keys():
                                 planes[z] = []
@@ -988,11 +986,11 @@ class ScoringDicomParser(DicomParser):
         # Get the dose to pixel LUT
         doselut = self.GetPatientToPixelLUT()
 
-        # Get the initial self grid position (z) in patient coordinates
+        # Get the initial self grid Position (z) in patient coordinates
         imagepatpos = self.ds.ImagePositionPatient[2]
         orientation = self.ds.ImageOrientationPatient[0]
 
-        # Add the position to the offset vector to determine the
+        # Add the Position to the offset vector to determine the
 
         # z coordinate of each dose plane
         z = orientation * np.array(self.ds.GridFrameOffsetVector) + imagepatpos
@@ -1158,7 +1156,7 @@ class ScoringDicomParser(DicomParser):
         self.plan['n_isocenters'] = len(np.unique(dist))
 
         # Total number of MU
-        total_mu = np.sum([ref_beams[b]['MU'] for b in ref_beams])
+        total_mu = np.sum([ref_beams[b]['MU'] for b in ref_beams if 'MU' in ref_beams[b]])
         self.plan['Plan_MU'] = total_mu
 
         tmp = self.GetStudyInfo()
@@ -1204,6 +1202,9 @@ class ScoringDicomParser(DicomParser):
             ftemp = bi.FinalCumulativeMetersetWeight if "FinalCumulativeMetersetWeight" in bi else ""
             beam['FinalCumulativeMetersetWeight'] = ftemp
             beam['NumberofControlPoints'] = bi.NumberofControlPoints if "NumberofControlPoints" in bi else ""
+            # adding mlc info from BeamLimitingDeviceSequence
+            beam_limits = bi.BeamLimitingDeviceSequence if "BeamLimitingDeviceSequence" in bi else ""
+            beam['BeamLimitingDeviceSequence'] = beam_limits
 
             # Check control points if exists
             if "ControlPointSequence" in bi:

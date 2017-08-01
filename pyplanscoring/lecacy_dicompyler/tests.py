@@ -658,7 +658,7 @@ if __name__ == '__main__':
     df_bounding.plot(ax=ax)
     df_external.plot(ax=ax)
     ax.set_ylabel('Dmax - Dmin (cGy)')
-    ax.set_xlabel('Z - slice position (mm)')
+    ax.set_xlabel('Z - slice Position (mm)')
     ax.set_title(structure['name'])
     # else:
     #     inside = check_contour_inside(contour['data'], contours[largestIndex]['data'])
