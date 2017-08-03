@@ -26,7 +26,7 @@ class RTPlan:
                 # Sometimes DICOM files may not have headers, but they should always
                 # have a SOPClassUID to declare what type of file it is. If the
                 # file doesn't have a SOPClassUID, then it probably isn't DICOM.
-                if not "SOPClassUID" in self.ds:
+                if "SOPClassUID" not in self.ds:
                     raise AttributeError
         else:
             raise AttributeError
@@ -107,7 +107,7 @@ class RTPlan:
             return beams
         # Obtain the beam information
         for bi in bdict:
-            beam = {}
+            beam = dict()
             beam['Manufacturer'] = bi.Manufacturer if "Manufacturer" in bi else ""
             beam['InstitutionName'] = bi.InstitutionName if "InstitutionName" in bi else ""
             beam['TreatmentMachineName'] = bi.TreatmentMachineName if "TreatmentMachineName" in bi else ""

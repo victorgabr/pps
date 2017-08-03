@@ -67,14 +67,14 @@ def get_score_complexity_debug(participant_folder):
 if __name__ == '__main__':
     plt.style.use('ggplot')
 
-    participant_folder = r'I:\COMPETITION 2017\final_plans\RayStation_VMAT'
-    res = get_score_complexity(participant_folder)
+    participant_folder = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/final_reports/plans_folder'
+    res = get_score_complexity_debug(participant_folder)
     score_complexity = np.array(list(filter(lambda x: x is not None, res)))
 
     plt.figure()
     plt.plot(score_complexity[:, 0], score_complexity[:, 1], '.')
     plt.xlabel('Score')
-    plt.ylabel('Complexity factor mm-1')
+    plt.ylabel('complexity factor mm-1')
     plt.xlim([0, 105])
     plt.ylim([0, 0.3])
     plt.axhline(0.18, color='b')
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     plt.figure()
     plt.plot(score_complexity[:, 2], score_complexity[:, 1], '.')
     plt.xlabel('MU/cGy')
-    plt.ylabel('Complexity factor mm-1')
+    plt.ylabel('complexity factor mm-1')
     plt.xlim([0, 13])
     plt.ylim([0, 0.3])
     plt.title('RayStation - VMAT')

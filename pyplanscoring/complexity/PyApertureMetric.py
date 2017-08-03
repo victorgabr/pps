@@ -1,12 +1,8 @@
-# root_path = r'C:\Users\Victor\Dropbox\Plan_Competition_Project'
-# sys.path.extend([root_path])
-
 import logging
 
 import numba as nb
 import numpy as np
 
-from pyplanscoring.competition.utils import get_dicom_data
 from pyplanscoring.complexity.ApertureMetric import Aperture, EdgeMetricBase
 from pyplanscoring.complexity.EsapiApertureMetric import ComplexityMetric, MetersetsFromMetersetWeightsCreator
 from pyplanscoring.complexity.dicomrt import RTPlan
@@ -41,7 +37,7 @@ class PyAperturesFromBeamCreator:
         leafWidths = self.GetLeafWidths(beam)
         jaw = self.CreateJaw(beam)
         for controlPoint in beam['ControlPointSequence']:
-            gantry_angle = float(controlPoint.GantryAngle)
+            gantry_angle = float(controlPoint.GantryAngle) if 'GantryAngle' in controlPoint else beam['GantryAngle']
             leafPositions = self.GetLeafPositions(controlPoint)
             apertures.append(PyAperture(leafPositions, leafWidths, jaw, gantry_angle))
         return apertures
@@ -64,13 +60,13 @@ class PyAperturesFromBeamCreator:
         return [left, -top, right, -bottom]
 
     def GetLeafWidths(self, beam_dict):
-        # TODO add error handling
         """
             Get MLCX leaf width from  BeamLimitingDeviceSequence
             (300a, 00be) Leaf Position Boundaries Tag
         :param beam_dict: Dicomparser Beam dict from plan_dict
         :return: MLCX leaf width
         """
+
         bs = beam_dict['BeamLimitingDeviceSequence']
         # the script only takes MLCX as parameter
         for b in bs:
@@ -78,7 +74,6 @@ class PyAperturesFromBeamCreator:
                 return np.diff(b.LeafPositionBoundaries)
 
     def GetLeafTops(self, beam_dict):
-        # TODO add error handling
         """
             Get MLCX leaf Tops from  BeamLimitingDeviceSequence
             (300a, 00be) Leaf Position Boundaries Tag
@@ -291,28 +286,17 @@ def batch_calc_complexity():
 
 
 if __name__ == '__main__':
+    participant_folder = r'D:\Dropbox\Plan_Competition_Project\competition_2017\plans\final_reports\plans_folder'
+    # data = get_dicom_data(participant_folder)
+    # files_data = data[1]
+    # rp = files_data.reset_index().set_index(1).loc['rtplan']['index']
 
-    participant_folder = r'I:\COMPETITION 2017\final_plans\ECPLIPSE_VMAT'
-    data = get_dicom_data(participant_folder)
-    files_data = data[1]
-    rp = files_data.reset_index().set_index(1).loc['rtplan']['index']
+    # for plan_file in rp:
+    plan_file = r'D:\Dropbox\Plan_Competition_Project\competition_2017\plans\final_reports\plans_folder\Abdul Qadir Jangda - Eclipse - IMRT - 23 MARCH FINAL - 50.4\RP.1.2.246.352.71.5.225097321.535249.20170322121553.dcm'
+    plan_info = RTPlan(filename=plan_file)
+    plan_dict = plan_info.get_plan()
+    pm = PyComplexityMetric()
+    complexity_metric = pm.CalculateForPlan(None, plan_dict)
+    print(complexity_metric)
 
-    eclipse_error = [
-        'I:\\COMPETITION 2017\\final_plans\\ECPLIPSE_VMAT\\Adriana Andrevska -Eclipse - VMAT -22 MARCH FINAL - 77\\RP.QA_HNComp_notmt.ADRIANA_FINAL.dcm',
-        'I:\\COMPETITION 2017\\final_plans\\ECPLIPSE_VMAT\\Alejandro Rincones - Eclipse - VMAT - 23 MARCH FINAL - ERROR\\RP.AlejandroRincones.dcm',
-        'I:\\COMPETITION 2017\\final_plans\\ECPLIPSE_VMAT\\Dario Terribilini - Eclipse - VMAT - 19 MAY FINAL\\Plan-Dario.Terribilini.dcm',
-        'I:\\COMPETITION 2017\\final_plans\\ECPLIPSE_VMAT\\GUILHERME BITTENCOURT - Eclipse - VMAT - CLINICAL - 19 MAY FINAL - 77\\RP.1.2.246.352.71.5.401200693434.161781.20170424103655.dcm',
-        'I:\\COMPETITION 2017\\final_plans\\ECPLIPSE_VMAT\\GUILHERME BITTENCOURT - Eclipse - VMAT - FANTASY - 19 MAY FINAL - 77\\RP.1.2.246.352.71.5.401200693434.161781.201704241036551.dcm',
-        'I:\\COMPETITION 2017\\final_plans\\ECPLIPSE_VMAT\\Lifei Zhang  - Eclipse - VMAT\\RP.1.2.246.352.71.5.764575068994.371.20170517125310.dcm',
-        'I:\\COMPETITION 2017\\final_plans\\ECPLIPSE_VMAT\\Sacha af Wetterstedt - Eclipse - VMAT -20 MARCH FINAL - 88\\Plan.HN_.Sacha_.af_.Wetterstedt1.dcm',
-        'I:\\COMPETITION 2017\\final_plans\\ECPLIPSE_VMAT\\Thomas Marsac - Eclipse - VMAT - 4 APRIL FINAL - 63 NO RD AND RP\\RP.1.2.246.352.71.5.820714239.215017.20170324145258.dcm_',
-        'I:\\COMPETITION 2017\\final_plans\\ECPLIPSE_VMAT\\Yun Zhang - Eclipse - VMAT( Error ) (Final need Evaluation)\\28 march final\\RP.2017-HN-PlanComp-1.plan-YunZhang1.dcm',
-        'I:\\COMPETITION 2017\\final_plans\\ECPLIPSE_VMAT\\Yun Zhang - Eclipse - VMAT( Error ) (Final need Evaluation)\\Plan 1\\RP.2017-HN-PlanComp-1.plan-YunZhang1.dcm',
-        'I:\\COMPETITION 2017\\final_plans\\ECPLIPSE_VMAT\\Zhibin Liu -  Eclipse -  VMAT - 31 MARCH FINAL - 71 NO RD AND RP\\Plan-File-Zhibin-Liu.dcm']
-
-    for plan_file in rp:
-        plan_info = RTPlan(filename=plan_file)
-        plan_dict = plan_info.get_plan()
-        pm = PyComplexityMetric()
-        complexity_metric = pm.CalculateForPlan(None, plan_dict)
-        print(complexity_metric)
+    ap = PyAperturesFromBeamCreator().Create(plan_dict['beams'][2])
