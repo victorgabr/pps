@@ -1,10 +1,9 @@
 import logging
 
-import numba as nb
 import numpy as np
 
-from pyplanscoring.complexity.ApertureMetric import Aperture, EdgeMetricBase
-from pyplanscoring.complexity.EsapiApertureMetric import ComplexityMetric, MetersetsFromMetersetWeightsCreator
+from pyplanscoring.complexity.ApertureMetric import Aperture, LeafPair
+from pyplanscoring.complexity.EsapiApertureMetric import MetersetsFromMetersetWeightsCreator
 from pyplanscoring.complexity.dicomrt import RTPlan
 
 logger = logging.getLogger('PyApertureMetric.py')
@@ -12,10 +11,34 @@ logger = logging.getLogger('PyApertureMetric.py')
 logging.basicConfig(filename='complexity_reports.log', level=logging.DEBUG)
 
 
+class PyLeafPair(LeafPair):
+    def __init__(self, left, right, width, top, jaw):
+        super().__init__(left, right, width, top, jaw)
+
+    def __repr__(self):
+        txt = 'Leaf Pair: left: %1.1f top: %1.1f right: %1.1f botton: %1.1f' \
+              % (self.Left, self.Top, self.Right, self.Bottom)
+
+        return txt
+
+
 class PyAperture(Aperture):
     def __init__(self, leaf_positions, leaf_widths, jaw, gantry_angle):
         super().__init__(leaf_positions, leaf_widths, jaw)
         self.gantry_angle = gantry_angle
+
+    def CreateLeafPairs(self, positions, widths, jaw):
+        leaf_tops = self.GetLeafTops(widths)
+
+        pairs = []
+        for i in range(len(widths)):
+            lp = PyLeafPair(positions[0, i], positions[1, i], widths[i], leaf_tops[i], jaw)
+            pairs.append(lp)
+        return pairs
+
+    @property
+    def LeafPairArea(self):
+        return [lp.FieldArea() for lp in self.LeafPairs]
 
     @property
     def GantryAngle(self):
@@ -101,81 +124,6 @@ class PyAperturesFromBeamCreator:
         return np.vstack((bank_a_pos, bank_b_pos))
 
 
-class PyEdgeMetricBase(EdgeMetricBase):
-    def Calculate(self, aperture):
-        return self.DivisionOrDefault(aperture.side_perimeter(), aperture.Area())
-
-    @staticmethod
-    def DivisionOrDefault(a, b):
-        return a / b if b != 0 else 0
-
-
-class PyComplexityMetric(ComplexityMetric):
-    # TODO add unit tests
-    def CalculateForPlan(self, patient=None, plan=None):
-        """
-            Returns the complexity metric of a plan, calculated as
-            the weighted sum of the individual metrics for each beam
-        :param patient: Patient Class
-        :param plan: Plan class
-        :return: metric
-        """
-        weights = self.GetWeightsPlan(plan)
-        metrics = self.GetMetricsPlan(patient, plan)
-
-        return self.WeightedSum(weights, metrics)
-
-    def GetWeightsPlan(self, plan):
-        """
-             Returns the weights of a plan's beams
-             by default, the weights are the meterset values per beam
-        :param plan: DicomParser plan dict
-        """
-        return self.GetMeterSetsPlan(plan)
-
-    def GetMeterSetsPlan(self, plan):
-        """
-            Returns the total metersets of a plan's beams
-        :param plan: DicomParser plan dictionaty
-        :return: metersets of a plan's beams
-        """
-        return [float(beam['MU']) for k, beam in plan['beams'].items() if 'MU' in beam]
-
-    def CalculateForPlanPerBeam(self, patient, plan):
-        """
-            Returns the unweighted metrics of a plan's non-setup beams
-        :param patient:
-        :param plan:
-        :return:
-        """
-        values = []
-        for k, beam in plan['beams'].items():
-            # check if treatment beam
-            if 'MU' in beam:
-                v = self.CalculateForBeam(patient, plan, beam)
-                values.append(v)
-
-        return values
-
-    def CalculatePerAperture(self, apertures):
-        metric = PyEdgeMetricBase()
-        return [metric.Calculate(aperture) for aperture in apertures]
-
-    def CalculateForBeamPerAperture(self, patient, plan, beam):
-        apertures = self.CreateApertures(patient, plan, beam)
-        return self.CalculatePerAperture(apertures)
-
-    def CreateApertures(self, patient, plan, beam):
-        """
-            Added default parameter to meet Liskov substitution principle
-        :param patient:
-        :param plan:
-        :param beam:
-        :return:
-        """
-        return PyAperturesFromBeamCreator().Create(beam)
-
-
 class PyMetersetsFromMetersetWeightsCreator:
     def Create(self, beam):
         if beam['PrimaryDosimeterUnit'] != 'MU':
@@ -185,6 +133,11 @@ class PyMetersetsFromMetersetWeightsCreator:
         metersets = self.ConvertMetersetWeightsToMetersets(beam['MU'], metersetWeights)
 
         return self.UndoCummulativeSum(metersets)
+
+    def GetCumulativeMetersets(self, beam):
+        metersetWeights = self.GetMetersetWeights(beam['ControlPointSequence'])
+        metersets = self.ConvertMetersetWeightsToMetersets(beam['MU'], metersetWeights)
+        return metersets
 
     @staticmethod
     def GetMetersetWeights(ControlPoints):
@@ -201,21 +154,17 @@ class PyMetersetsFromMetersetWeightsCreator:
         :param cummulativeSum:
         :return:
         """
-        return undo_cumulative_sum(cummulativeSum)
 
+        values = np.zeros(len(cummulativeSum))
+        delta_prev = 0.0
+        for i in range(len(values) - 1):
+            delta_curr = cummulativeSum[i + 1] - cummulativeSum[i]
+            values[i] = 0.5 * delta_prev + 0.5 * delta_curr
+            delta_prev = delta_curr
 
-@nb.njit
-def undo_cumulative_sum(cummulativeSum):
-    values = np.zeros(len(cummulativeSum))
-    delta_prev = 0.0
-    for i in range(len(values) - 1):
-        delta_curr = cummulativeSum[i + 1] - cummulativeSum[i]
-        values[i] = 0.5 * delta_prev + 0.5 * delta_curr
-        delta_prev = delta_curr
+        values[-1] = 0.5 * delta_prev
 
-    values[-1] = 0.5 * delta_prev
-
-    return values
+        return values
 
 
 def test_metersets_cp_creator_numba():
@@ -248,55 +197,5 @@ def test_metersets_cp_creator_numba():
     np.testing.assert_array_almost_equal(mt.Create(beam), pymt.Create(beam))
 
 
-def batch_calc_complexity():
-    import logging
-    # from pyplanscoring.complexity.PyApertureMetric import get_score_complexity
-
-    logger = logging.getLogger('test.py')
-    import matplotlib.pyplot as plt
-    import numpy as np
-
-    plt.style.use('ggplot')
-
-    if __name__ == '__main__':
-        participant_folder = r'D:\Final_Plans\ECPLIPSE_VMAT'
-        res = get_score_complexity(participant_folder)
-
-        score_complexity = np.array(list(filter(lambda x: x is not None, res)))
-
-        plt.figure()
-        plt.plot(score_complexity[:, 0], score_complexity[:, 1], '.')
-        plt.xlabel('Score')
-        plt.ylabel('complexity factor mm-1')
-        plt.axhline(0.18, color='b')
-        plt.title('Eclipse™ - VMAT')
-
-        plt.figure()
-        plt.plot(score_complexity[:, 0], score_complexity[:, 2], '.')
-        plt.xlabel('Score')
-        plt.ylabel('MU/cGy')
-        plt.title('Eclipse™ - VMAT')
-
-        plt.figure()
-        plt.plot(score_complexity[:, 2], score_complexity[:, 1], '.')
-        plt.xlabel('MU/cGy')
-        plt.ylabel('complexity factor mm-1')
-        plt.title('Eclipse™ - VMAT')
-        plt.show()
-
-
 if __name__ == '__main__':
-    participant_folder = r'D:\Dropbox\Plan_Competition_Project\competition_2017\plans\final_reports\plans_folder'
-    # data = get_dicom_data(participant_folder)
-    # files_data = data[1]
-    # rp = files_data.reset_index().set_index(1).loc['rtplan']['index']
-
-    # for plan_file in rp:
-    plan_file = r'D:\Dropbox\Plan_Competition_Project\competition_2017\plans\final_reports\plans_folder\Abdul Qadir Jangda - Eclipse - IMRT - 23 MARCH FINAL - 50.4\RP.1.2.246.352.71.5.225097321.535249.20170322121553.dcm'
-    plan_info = RTPlan(filename=plan_file)
-    plan_dict = plan_info.get_plan()
-    pm = PyComplexityMetric()
-    complexity_metric = pm.CalculateForPlan(None, plan_dict)
-    print(complexity_metric)
-
-    ap = PyAperturesFromBeamCreator().Create(plan_dict['beams'][2])
+    pass

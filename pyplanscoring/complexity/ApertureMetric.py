@@ -41,6 +41,10 @@ class Rect:
         self.Right = right
         self.Bottom = bottom
 
+    def __repr__(self):
+        return 'Position: left: %1.1f top: %1.1f right: %1.1f botton: %1.1f' \
+               % (self.Left, self.Top, self.Right, self.Bottom)
+
 
 class Jaw:
     def __init__(self, left, top, right, bottom):
