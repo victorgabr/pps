@@ -150,7 +150,7 @@ class DVHMetrics(object):
 
         # setting constrain interpolation functions
         self.fv = itp.interp1d(self.dose_axis, self.volume_pp, fill_value='extrapolate')  # pp
-        self.fv_cc = itp.interp1d(self.dose_axis, self.volume_cc, fill_value='extrapolate')  # pp
+        self.fv_cc = itp.interp1d(self.dose_axis, self.volume_cc, fill_value='extrapolate')  # cc
         self.fd = itp.interp1d(self.volume_pp, self.dose_axis, fill_value='extrapolate')  # pp
         self.fd_cc = itp.interp1d(self.volume_cc, self.dose_axis, fill_value='extrapolate')  # cc
 
@@ -195,14 +195,14 @@ class DVHMetrics(object):
         """ Return the maximum dose (in cGy) that a specific volume (in percent)
             receives. i.e. D90, D20.
 
-            :param volume: Volume constrain in %
+            :param volume: volume constrain in %
             :return: Dose in cGy
             """
         return float(self.fd(volume))
 
     def get_dose_constrain_cc(self, volumecc):
         """ Return the maximum dose (in cGy) that a specific volume in cc.
-        :param volumecc: Volume in cc
+        :param volumecc: volume in cc
         :return: Dose in cGy
         """
 
@@ -222,7 +222,7 @@ class DVHMetrics(object):
         """ Return the volume (in cc) of the structure that receives at
             least a specific dose in cGy. i.e. Vcc, Vcc.
             :param dose:  Dose value in cGy
-            :return: Volume in cc
+            :return: volume in cc
             """
         return float(self.fv_cc(dose))
 
@@ -448,7 +448,7 @@ class Scoring(object):
 
     def set_dicom_dvh_data(self):
         """
-            Getting DHV data from RT-DOSE file or calculate it.
+            Getting DHV data from RT-DOSE file or calculate_integrate it.
         """
         self.is_dicom_dvh = True
 
@@ -534,7 +534,7 @@ class Scoring(object):
         """
             Calculates CI using only DVH curves from TPS.
         :param k: Structure name
-        :param values: Value in cGy to calculate CV
+        :param values: Value in cGy to calculate_integrate CV
 
         :return:
         """
@@ -555,7 +555,7 @@ class Scoring(object):
         """
             Calculates CI using only DVH curves from TPS.
         :param k: Structure name
-        :param values: Value in cGy to calculate CV
+        :param values: Value in cGy to calculate_integrate CV
 
         :return:
         """
@@ -645,7 +645,7 @@ class Participant(object):
                         label=sname, linewidth=2.0, color=np.array(structure['color'], dtype=float) / 255)
                 ax.legend(loc=7, borderaxespad=-5)
 
-        ax.set_ylabel('Volume (%)')
+        ax.set_ylabel('volume (%)')
         ax.set_xlabel('Dose (cGy)')
         ax.set_title(filename)
         fig.savefig(fig_name, format='png', dpi=100)

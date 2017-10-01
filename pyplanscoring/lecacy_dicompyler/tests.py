@@ -37,7 +37,7 @@ def test_getting_data():
 
 
 def dvh_estimation_consistency(rs_file, rd_file):
-    # Read the example RT structure and RT dose files
+    # read the example RT structure and RT dose files
 
     rtss = DicomParser(filename=rs_file)
     rtdose = DicomParser(filename=rd_file)
@@ -52,8 +52,8 @@ def dvh_estimation_consistency(rs_file, rd_file):
         calcdvhs[key] = get_dvh(structure, rtdose)
 
     # Compare the calculated and original DVH volume for each structure
-    print('\nStructure Name\t\t' + 'Original Volume\t\t' + \
-          'Calculated Volume\t' + 'Percent Difference')
+    print('\nStructure Name\t\t' + 'Original volume\t\t' + \
+          'Calculated volume\t' + 'Percent Difference')
     print('--------------\t\t' + '---------------\t\t' + \
           '-----------------\t' + '------------------')
     for key, structure in iter(structures.items()):

@@ -2,7 +2,7 @@ from __future__ import division
 
 import functools
 
-"""Functions to calculate minimum, maximum, and mean dose to ROI from a cDVH."""
+"""Functions to calculate_integrate minimum, maximum, and mean dose to ROI from a cDVH."""
 # Copyright (c) 2009 Roy Keyes (roy.coding)
 # Copyright (c) 2011 Aditya Panchal
 # This file is part of dicompyler, relased under a BSD license.
@@ -141,7 +141,7 @@ def get_dvh_mean_slow(dvh):
 
     # Mean dose = total dose / ROI volume
 
-    # Volume of ROI
+    # volume of ROI
     v1 = dvh[0]
 
     # Calculate dDVH
@@ -165,7 +165,7 @@ def get_dvh_mean(dvh):
 
     # Mean dose = total dose / ROI volume
 
-    # Volume of ROI
+    # volume of ROI
     v1 = dvh[0]
 
     # Calculate dDVH

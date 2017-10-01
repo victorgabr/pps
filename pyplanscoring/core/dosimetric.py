@@ -414,7 +414,7 @@ if __name__ == '__main__':
     print(dfi.loc[mask_small, 'Max Score'].to_string())
     p0 = (dfi.loc[mask_small, 'Max Score']).sum()
     print('Max points on Dmax and Dcc:', p0)
-    print('Points on Volume/CI/Hi constrains:')
+    print('Points on volume/CI/Hi constrains:')
     print(dfi.loc[~mask_small, 'Max Score'].to_string())
     p1 = (dfi.loc[~mask_small, 'Max Score']).sum()
     print('Max points on volumes:', p1)

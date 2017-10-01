@@ -260,7 +260,7 @@ class GammaComparisonWidget(QtGui.QWidget, DoseCompQT.Ui_DoseComp):
         dta = round(float(self.dTAMmSpinBox.value()) / self.reg_delta)
         dt = self.doseThresholdDoubleSpinBox.value() / 100.0
         local = not self.local_checkBox.isChecked()
-        # calculate the gamma index
+        # calculate_integrate the gamma index
         g = gamma_index(self.computed, self.film, dta, dd, dt, local)
         self.G = np.dstack((g, g, g))
         self.flat_G = np.ravel(g)
@@ -299,7 +299,7 @@ class GammaComparisonWidget(QtGui.QWidget, DoseCompQT.Ui_DoseComp):
         self.gamma_widget.show_image()
         self.gridLayout.addWidget(self.gamma_widget, 1, 0, 1, 1)
 
-        # calculate the histogram.
+        # calculate_integrate the histogram.
         self.fig = plt.figure()
         self.ax = self.fig.add_subplot(111)
         idx = np.nonzero(self.flat_G)
@@ -462,7 +462,7 @@ class DoseComparisonWidget(QtGui.QWidget, DoseCompAbsQT.Ui_DoseCompAbs):
         self.result_widget.show_image()
         self.gridLayout.addWidget(self.result_widget, 1, 0, 1, 1)
 
-        # calculate the histogram.
+        # calculate_integrate the histogram.
         self.fig = plt.figure()
         self.ax = self.fig.add_subplot(111)
         m = self.flat_G.mean()
@@ -763,7 +763,7 @@ class EditImageWidget(QtGui.QWidget, FormImageQT.Ui_imageForm):
         self.cursor_position = np.asarray(position[0]).astype(int)
         self.isocenter += pos
         print(self.cursor_position)
-        print('position: ', self.cursor_position)
+        print('Position: ', self.cursor_position)
         print('actual isocenter: ', self.isocenter)
         self.update_image(fig=1)
 
@@ -990,7 +990,7 @@ class TPSWidget(QtGui.QWidget, TPSWidgetQT.Ui_imageForm):
         position = self.canvas.get_points()
         self.cursor_position = np.asarray(position[0]).astype(int)
         self.isocenter += np.asarray(position[0])
-        print('position: ' + str(self.cursor_position))
+        print('Position: ' + str(self.cursor_position))
         print('actual isocenter: ' + str(self.isocenter))
         self.update_image()
 
@@ -1244,7 +1244,7 @@ class OptimizedDoseWidget(QtGui.QWidget, DoseOptimizedQT.Ui_DoseOptimForm):
             QtGui.QMessageBox.information(None, "Information", txt)
         else:
             if not self.showed:
-                message = "<p>It is not possible to calculate uncertainty for type *.%s images</p>" % self.image_type
+                message = "<p>It is not possible to calculate_integrate uncertainty for type *.%s images</p>" % self.image_type
                 QtGui.QMessageBox.information(None, "Information", message)
                 self.showed = True
 
@@ -1391,7 +1391,7 @@ class OptimizedDoseWidget(QtGui.QWidget, DoseOptimizedQT.Ui_DoseOptimForm):
         position = self.canvas.get_points()
         self.cursor_position = np.asarray(position[0]).astype(int)
         self.isocenter += np.asarray(position[0])
-        print('position: ' + str(self.cursor_position))
+        print('Position: ' + str(self.cursor_position))
         print('actual isocenter: ' + str(self.isocenter))
         self.update_image()
 
@@ -1950,7 +1950,7 @@ class CalibrationWidget(QtGui.QWidget):
 
             self.show()
 
-            # get dose points position
+            # get dose points Position
             position = self.mpl_widget.get_points()
             self.cal.set_points_position(position)
 

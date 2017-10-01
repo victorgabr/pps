@@ -347,7 +347,7 @@ class Structure(object):
 
     def _get_calculation_data(self, grid_3d):
         """
-            Return all data need to calculate DVH without up-sampling
+            Return all data need to calculate_integrate DVH without up-sampling
         :param grid_3d: X,Y,Z grid coordinates (mm)
         :return: sPlanes, dose_lut, dose_grid_points, grid_delta
         """
@@ -441,7 +441,7 @@ class Structure(object):
                         hist += h
                         volume += vol
 
-        # Volume units are given in cm^3
+        # volume units are given in cm^3
         volume /= 1000
         # Rescale the histogram to reflect the total volume
         hist = hist * volume / sum(hist)
@@ -530,7 +530,7 @@ class Structure(object):
                         hist += h
                         volume += vol
 
-        # Volume units are given in cm^3
+        # volume units are given in cm^3
         volume /= 1000
         # Rescale the histogram to reflect the total volume
         hist = hist * volume / sum(hist)
@@ -547,7 +547,7 @@ class Structure(object):
     def calc_conformation_index(self, rtdose, lowerlimit, upsample=False):
         """From a selected structure and isodose line, return conformality index.
             Up sample structures calculation by Victor Alves
-        Read "A simple scoring ratio to index the conformity of radiosurgical
+        read "A simple scoring ratio to index the conformity of radiosurgical
         treatment plans" by Ian Paddick.
         J Neurosurg (Suppl 3) 93:219-222, 2000"""
 
@@ -604,7 +604,7 @@ class Structure(object):
                     if not inside:
                         CV += CV_vol
 
-        # Volume units are given in cm^3
+        # volume units are given in cm^3
         PITV /= 1000.0
         CV /= 1000.0
         TV = self.calculate_volume(sPlanes, grid_delta)
@@ -639,7 +639,7 @@ class Structure(object):
         :rtype: float
         :param structure_planes: Structure planes dict
         :param grid_delta: Voxel size (dx,dy,xz)
-        :return: Structure Volume
+        :return: Structure volume
         """
 
         ordered_keys = [z for z, sPlane in structure_planes.items()]
@@ -650,7 +650,7 @@ class Structure(object):
         n = 0
         for z in ordered_keys:
             sPlane = structure_planes[z]
-            # calculate contour areas
+            # calculate_integrate contour areas
             contours, largestIndex = calculate_contour_areas_numba(sPlane)
             # See if the rest of the contours are within the largest contour
             area = contours[largestIndex]['area']
@@ -757,7 +757,7 @@ def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, cal
     return cdvh
 
 
-def calc_dvhs_pp(name, rtdose, structures, struc_names, out_file=False, calculation_options=None):
+def calc_dvhs_pp(name, rtdose, structures, struc_names, out_file=False, calculalltion_options=None):
     """
         Computes structures cDVH
 

@@ -7,530 +7,195 @@ based on:
 https://rexcardan.github.io/ESAPIX/
 
 """
-from pyplanscoring.core.constraints.types import DoseValue, VolumePresentation
+import difflib
+
+import numpy as np
+
+from pyplanscoring.core.constraints.query import QueryExtensions
+from pyplanscoring.core.constraints.types import DoseValuePresentation, DoseValue, DoseUnit, DVHData
 
 
-class DoseStructureConstraint:
-    def __init__(self):
-        """
-            abstract class DoseStructureConstraint
+class PlanningItem:
+    """
+        Planning items extensions
+    """
 
-            The string structure name corresponding to the structure ID in Eclipse.
-            Separate with '&' character for multiple structures
-        """
-        self._structure_name = None
-        self._constraint_dose = None
-        self._dose = None
-        self._unit = None
-        self._priority = None
+    def __init__(self, rp_dcm, rs_dcm, rd_dcm):
+        self.id = ''
 
-    @property
-    def structure_name(self):
-        return self._structure_name
-
-    @structure_name.setter
-    def structure_name(self, value):
-        self._structure_name = value
-
-    @property
-    def constraint_dose(self):
-        return DoseValue(self.dose, self.unit)
-
-    @constraint_dose.setter
-    def constraint_dose(self, dose_value):
-        self.dose = dose_value.dose
-        self.unit = dose_value.unit
+        self._plan = rp_dcm.GetPlan()
+        self._rp_dcm = rp_dcm
+        self._rs_dcm = rs_dcm
+        self._rd_dcm = rd_dcm
+        self._dose_data = rd_dcm.GetDoseData()
+        self._dvhs = rd_dcm.GetDVHs()
+        self._structures = rs_dcm.GetStructures()
 
     @property
-    def dose(self):
-        """
-             The dose value component of the constraint dose - Used for text storage
-        :return:  dose
-        """
-        return self._dose
-
-    @dose.setter
-    def dose(self, value):
-        self._dose = value
+    def plan(self):
+        return self._plan
 
     @property
-    def unit(self):
-        """
-            The dose unit component of the constraint dose - Used for text storage
-        :return: unit
-        """
-        return self._unit
-
-    @unit.setter
-    def unit(self, value):
-        self._unit = value
+    def approval_status(self):
+        txt = self._rp_dcm.ds.ApprovalStatus if 'ApprovalStatus' in self._rp_dcm.ds else ''
+        return txt
 
     @property
-    def structure_names(self):
-        return self.structure_name.split('&')
+    def beams(self):
+        return self._plan['beams'] if 'beams' in self._plan else {}
 
     @property
-    def name(self):
-        return self.structure_name
+    def dose_value_presentation(self):
+        dv = self._rd_dcm.ds.DoseUnits if 'DoseUnits' in self._rd_dcm.ds else ''
+        if not dv:
+            return DoseValuePresentation.Unknown
+        if dv == 'GY':
+            return DoseValuePresentation.Absolute
+        else:
+            return DoseValuePresentation.Relative
 
     @property
-    def priority(self):
-        return self._priority
-
-    @priority.setter
-    def priority(self, value):
-        self._priority = value
+    def total_prescribed_dose(self):
+        # Todo not hard Coding cGy as default
+        return DoseValue(self._plan['rxdose'], DoseUnit.cGy)
 
     @property
-    def constrain(self):
-        """
-        :return: ConstraintResult
-        """
-        return NotImplementedError
-
-    @staticmethod
-    def can_constrain():
-        """
-        :return: ConstraintResult
-        """
-        return NotImplementedError
-
-    @staticmethod
-    def get_failed_result_type():
-        return NotImplementedError
-
-    @staticmethod
-    def get_merged_dvh():
-        return NotImplementedError
-
-    @staticmethod
-    def get_structures():
-        """
-            Implement it from DICOM RS files
-        :return:
-        """
-        return NotImplementedError
-
-
-class MaxDoseConstraint(DoseStructureConstraint):
-    def __init__(self):
-        super().__init__()
-
-    def constrain(self):
-        msg = ''
-        passed = self.get_failed_result_type()
-        # TODO implement it from DVH data
-        return NotImplementedError
-
-    def __str__(self):
-        # Mayo format
-        dose_unit = str(self.constraint_dose.unit)
-        dose = str(self.constraint_dose.value)
-        return 'Max[%s] <= %s' % (dose_unit, dose)
-
-    def __repr__(self):
-        return self.__str__()
-
-
-class MinDoseConstraint(DoseStructureConstraint):
-    def __init__(self):
-        super().__init__()
-
-    def constrain(self):
-        msg = ''
-        passed = self.get_failed_result_type()
-        # TODO implement it from DVH data
-        return NotImplementedError
-
-    def __str__(self):
-        # Mayo format
-        dose_unit = str(self.constraint_dose.unit)
-        dose = str(self.constraint_dose.value)
-        return 'Min[%s] <= %s' % (dose_unit, dose)
-
-    def __repr__(self):
-        return self.__str__()
-
-
-class MinMeanDoseConstraint(DoseStructureConstraint):
-    def __init__(self):
-        super().__init__()
-
-    def constrain(self):
-        msg = ''
-        passed = self.get_failed_result_type()
-        # TODO implement it from DVH data
-        return NotImplementedError
-
-    def __str__(self):
-        # Mayo format
-        dose_unit = str(self.constraint_dose.unit)
-        dose = str(self.constraint_dose.value)
-        return 'Mean[%s] >= %s' % (dose_unit, dose)
-
-    def __repr__(self):
-        return self.__str__()
-
-
-class MaxMeanDoseConstraint(DoseStructureConstraint):
-    def __init__(self):
-        super().__init__()
-
-    def constrain(self):
-        msg = ''
-        passed = self.get_failed_result_type()
-        # TODO implement it from DVH data
-        return NotImplementedError
-
-    def __str__(self):
-        # Mayo format
-        dose_unit = str(self.constraint_dose.unit)
-        dose = str(self.constraint_dose.value)
-        return 'Mean[%s] <= %s' % (dose_unit, dose)
-
-    def __repr__(self):
-        return self.__str__()
-
-
-class DoseAtVolumeConstraint(DoseStructureConstraint):
-    def __init__(self):
-        super().__init__()
-        self._volume = None
-        self._volume_type = None
+    def treatment_orientation(self):
+        # TODO implement DICOM IMAGE ORIENTATION TAG
+        return np.array(self._dose_data['orientation'], dtype=float)
 
     @property
-    def volume(self):
-        """
-        :return: Volume
-        """
-        return self._volume
+    def structures(self):
+        if self._dvhs:
+            for k in self._structures.keys():
+                self._structures[k]['cdvh'] = self._dvhs[k] if k in self._dvhs else {}
+                self._structures[k]['volume'] = self._dvhs[k]['data'][0] if k in self._dvhs else None
+            return self._structures
+        else:
+            return self.get_structures()
 
-    @volume.setter
-    def volume(self, value):
-        self._volume = value
+    def get_structures(self):
+        """
+             Returns the structures from the planning item. Removes the need to cast to plan or plan sum.
+        :param plan: PlanningItem
+        :return: the referenced structure set - Dict
+        """
+        return self._rs_dcm.GetStructures()
+
+    def contains_structure(self, struct_id):
+        """
+                Returns true if the planning item references a structure set with the input structure id AND the structure is
+                contoured. Also allows a regex
+                expression to match to structure id.
+
+        :param struct_id: the structure id to match
+        :return: Returns true if the planning item references a structure set with the input structure id
+                AND the structure is contoured.
+        :rtype: bool and Structure
+        """
+        structure_names = [self.structures[k]['name'] for k in self.structures.keys()]
+        matches = difflib.get_close_matches(struct_id, structure_names, n=1)
+
+        return True if matches else False
+
+    def get_structure(self, struct_id):
+        """
+             Gets a structure (if it exists from the structure set references by the planning item
+        :param struct_id:
+        :return: Structure
+        """
+        if self.contains_structure(struct_id):
+            for k in self.structures.keys():
+                if struct_id == self.structures[k]['name']:
+                    return self.structures[k]
+        else:
+            return "Structure %s not found" % struct_id
 
     @property
-    def volume_type(self):
-        return self._volume_type
-
-    @volume_type.setter
-    def volume_type(self, value):
-        self._volume_type = value
-
-    @property
-    def passing_func(self):
-        return NotImplementedError
-
-    @passing_func.setter
-    def passing_func(self, value):
-        pass
-
-    def get_dose_at_volume(self):
+    def creation_date_time(self):
         """
-            Gets the dose at a volume for all structures in this constraint by merging their dvhs
-            # TODO the planning item containing the dose to be queried
-        :return:
+            # TODO implement pydicom interface
+        :return: Creation datetime
         """
-        return 'DoseAtVol'
+        return self._plan['date']
 
-    def constrain(self):
-        # TODO constrain result
-        return 'constrain result'
-
-
-class VolumeAtDoseConstraint(DoseStructureConstraint):
-    def __init__(self):
-        super().__init__()
-        self._volume = None
-        self._volume_type = None
-
-    @property
-    def volume(self):
+    def get_dvh_cumulative_data(self, structure, dose_presentation, volume_presentation=None):
         """
-        :return: Volume
+            Get CDVH data from DICOM-RTDOSE file
+        :param structure: Structure
+        :param dose_presentation: DoseValuePresentation
+        :param volume_presentation: VolumePresentation
+        :return: DVHData
         """
-        return self._volume
 
-    @volume.setter
-    def volume(self, value):
-        self._volume = value
+        struc_dict = self.get_structure(structure)
+        if struc_dict['cdvh']:
+            dvh = DVHData(struc_dict['cdvh'])
+            if dose_presentation == self.dose_value_presentation:
+                return dvh
+            if dose_presentation == DoseValuePresentation.Relative:
+                dvh.to_relative_dose(self.total_prescribed_dose)
+                return dvh
 
-    @property
-    def volume_type(self):
-        return self._volume_type
-
-    @volume_type.setter
-    def volume_type(self, value):
-        self._volume_type = value
-
-    @property
-    def passing_func(self):
-        return NotImplementedError
-
-    @passing_func.setter
-    def passing_func(self, value):
-        pass
-
-    def get_volume_at_dose(self):
+    def get_dose_at_volume(self, ss, volume, v_pres, d_pres):
         """
-            Gets the dose at a volume for all structures in this constraint by merging their dvhs
-            # TODO the planning item containing the dose to be queried
-        :return:
+             Finds the dose at a certain volume input of a structure
+        :param ss: Structure - the structure to analyze
+        :param volume: the volume (cc or %)
+        :param v_pres: VolumePresentation - the units of the input volume
+        :param d_pres: DoseValuePresentation - the dose value presentation you want returned
+        :return: DoseValue
         """
-        return 'volume_at_dose'
 
-    def constrain(self):
-        # TODO constrain result
-        return 'constrain result'
+        dvh = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        return dvh.get_dose_at_volume(volume)
 
-
-class MinDoseAtVolConstraint(DoseAtVolumeConstraint):
-    def __init__(self):
-        super().__init__()
-
-    @staticmethod
-    def min_dose_at_vol_constraint():
-        # TODO implement it using interpolation
-        return NotImplementedError
-
-    def constrain(self):
-        msg = ''
-        passed = self.get_failed_result_type()
-        # TODO implement it from DVH data
-        return NotImplementedError
-
-    def __str__(self):
-        # Mayo format
-        vol = str(self.volume).replace(',', '')
-        vol_unit = 'cc' if self.volume_type == VolumePresentation.absolute_cm3 else '%'
-        dose_unit = str(self.constraint_dose.unit)
-        dose = str(self.constraint_dose.value)
-        return 'D%s%s[%s] >= %s' % (vol, vol_unit, dose_unit, dose)
-
-    def __repr__(self):
-        return self.__str__()
-
-
-class MaxDoseAtVolConstraint(DoseAtVolumeConstraint):
-    def __init__(self):
-        super().__init__()
-
-    @staticmethod
-    def max_dose_at_vol_constraint():
-        # TODO implement it using interpolation
-        return NotImplementedError
-
-    def constrain(self):
-        msg = ''
-        passed = self.get_failed_result_type()
-        # TODO implement it from DVH data
-        return NotImplementedError
-
-    def __str__(self):
-        # Mayo format
-        vol = str(self.volume).replace(',', '')
-        vol_unit = 'cc' if self.volume_type == VolumePresentation.absolute_cm3 else '%'
-        dose_unit = str(self.constraint_dose.unit)
-        dose = str(self.constraint_dose.value)
-        return 'D%s%s[%s] <= %s' % (vol, vol_unit, dose_unit, dose)
-
-    def __repr__(self):
-        return self.__str__()
-
-
-class MinVolAtDoseConstraint(VolumeAtDoseConstraint):
-    def __init__(self):
-        super().__init__()
-        # TODO implement lambda passing function
-
-    def __str__(self):
-        # Mayo format
-        vol = str(self.volume)
-        vol_unit = 'cc' if self.volume_type == VolumePresentation.absolute_cm3 else '%'
-        dose_unit = str(self.constraint_dose.unit)
-        dose = str(self.constraint_dose.value)
-        return 'V%s%s[%s] >= %s' % (dose, dose_unit, vol_unit, vol)
-
-    def __repr__(self):
-        return self.__str__()
-
-
-class MaxVolAtDoseConstraint(VolumeAtDoseConstraint):
-    def __init__(self):
-        super().__init__()
-        # TODO implement lambda passing function
-
-    def __str__(self):
-        # Mayo format
-        vol = str(self.volume)
-        vol_unit = 'cc' if self.volume_type == VolumePresentation.absolute_cm3 else '%'
-        dose_unit = str(self.constraint_dose.unit)
-        dose = str(self.constraint_dose.value)
-        return 'V%s%s[%s] <= %s' % (dose, dose_unit, vol_unit, vol)
-
-    def __repr__(self):
-        return self.__str__()
-
-
-class ComplimentVolumeAtDoseConstraint(DoseStructureConstraint):
-    def __init__(self):
-        super().__init__()
-        self._volume = None
-        self._volume_type = None
-
-    @property
-    def volume(self):
+    def get_dose_compliment_at_volume(self, ss, volume, v_pres, d_pres):
         """
-        :return: Volume
+            Return the compliment dose (coldspot) for a given volume.
+            This is equivalent to taking the total volume of the
+            object and subtracting the input volume
+
+        :param ss: Structure - the structure to analyze
+        :param volume: the volume to sample
+        :param v_pres: VolumePresentation - the units of the input volume
+        :param d_pres: DoseValuePresentation - the dose value presentation you want returned
+        :return: DoseValue
         """
-        return self._volume
+        dvh = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        return dvh.get_dose_compliment(volume)
 
-    @volume.setter
-    def volume(self, value):
-        self._volume = value
-
-    @property
-    def volume_type(self):
-        return self._volume_type
-
-    @volume_type.setter
-    def volume_type(self, value):
-        self._volume_type = value
-
-    @property
-    def passing_func(self):
-        return NotImplementedError
-
-    @passing_func.setter
-    def passing_func(self, value):
-        pass
-
-    def get_compliment_volume_at_dose(self):
+    def get_volume_at_dose(self, ss, dv, v_pres):
         """
-            Gets the dose at a volume for all structures in this constraint by merging their dvhs
-            # TODO the planning item containing the dose to be queried
-        :return:
+             Returns the volume of the input structure at a given input dose
+        :param ss: Structure - the structure to analyze
+        :param dv: DoseValue
+        :param v_pres: VolumePresentation - the units of the input volume
+        :return: the volume at the requested presentation
         """
-        return 'compliment_volume_at_dose'
+        d_pres = dv.get_presentation()
+        dvh = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        return dvh.get_volume_at_dose(dv, v_pres)
 
-    def constrain(self):
-        # TODO constrain result
-        return 'constrain result'
-
-
-class MinComplimentVolumeAtDose(ComplimentVolumeAtDoseConstraint):
-    def __init__(self):
-        super().__init__()
-        # TODO implement lambda passing function
-
-    def __str__(self):
-        # Mayo format
-        vol = str(self.volume).replace(",", "")
-        vol_unit = 'cc' if self.volume_type == VolumePresentation.absolute_cm3 else '%'
-        dose_unit = str(self.constraint_dose.unit)
-        dose = str(self.constraint_dose.value)
-        return 'CV%s%s[%s] >= %s' % (dose, dose_unit, vol_unit, vol)
-
-    def __repr__(self):
-        return self.__str__()
-
-
-class MaxComplimentVolumeAtDose(ComplimentVolumeAtDoseConstraint):
-    def __init__(self):
-        super().__init__()
-        # TODO implement lambda passing function
-
-    def __str__(self):
-        # Mayo format
-        vol = str(self.volume).replace(",", "")
-        vol_unit = 'cc' if self.volume_type == VolumePresentation.absolute_cm3 else '%'
-        dose_unit = str(self.constraint_dose.unit)
-        dose = str(self.constraint_dose.value)
-        return 'CV%s%s[%s] <= %s' % (dose, dose_unit, vol_unit, vol)
-
-    def __repr__(self):
-        return self.__str__()
-
-
-class ComplimentDoseAtVolumeConstraint(DoseStructureConstraint):
-    def __init__(self):
+    def get_compliment_volume_at_dose(self, ss, dv, v_pres):
         """
-            Encapsulates the dose compliment (cold spot) of a structure. Dose compliment at 2% will give the maximum dose
-                 in the coldest 2 % of a structure.
+             Returns the compliment volume of the input structure at a given input dose
+        :param ss: Structure - the structure to analyze
+        :param dv: DoseValue
+        :param v_pres: VolumePresentation - the units of the input volume
+        :return: the volume at the requested presentation
         """
-        super().__init__()
-        self._volume = None
-        self._volume_type = None
+        d_pres = dv.get_presentation()
+        dvh = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        return dvh.get_compliment_volume_at_dose(dv, v_pres)
 
-    @property
-    def volume(self):
+    def execute_query(self, mayo_format_query, ss):
         """
-        :return: Volume
+        :param pi: PlanningItem
+        :param mayo_format_query: String Mayo query
+        :param ss: Structure string
+        :return: Query result
         """
-        return self._volume
-
-    @volume.setter
-    def volume(self, value):
-        self._volume = value
-
-    @property
-    def volume_type(self):
-        return self._volume_type
-
-    @volume_type.setter
-    def volume_type(self, value):
-        self._volume_type = value
-
-    @property
-    def passing_func(self):
-        return NotImplementedError
-
-    @passing_func.setter
-    def passing_func(self, value):
-        pass
-
-    def get_dose_compliment_at_volume(self):
-        """
-            Gets the dose at a volume for all structures in this constraint by merging their dvhs
-            # TODO the planning item containing the dose to be queried
-        :return:
-        """
-        return 'compliment_volume_at_dose'
-
-    def constrain(self):
-        # TODO constrain result
-        return 'constrain result'
-
-
-class MinComplimentDoseAtVolumeConstraint(ComplimentDoseAtVolumeConstraint):
-    def __init__(self):
-        super().__init__()
-        # TODO implement lambda passing function
-
-    def __str__(self):
-        # Mayo format
-        vol = str(self.volume).replace(",", "")
-        vol_unit = 'cc' if self.volume_type == VolumePresentation.absolute_cm3 else '%'
-        dose_unit = str(self.constraint_dose.unit)
-        dose = str(self.constraint_dose.value)
-        return 'DC%s%s[%s] >= %s' % (vol, vol_unit, dose_unit, dose)
-
-    def __repr__(self):
-        return self.__str__()
-
-
-class MaxComplimentDoseAtVolumeConstraint(ComplimentDoseAtVolumeConstraint):
-    def __init__(self):
-        super().__init__()
-        # TODO implement lambda passing function
-
-    def __str__(self):
-        # Mayo format
-        vol = str(self.volume).replace(",", "")
-        vol_unit = 'cc' if self.volume_type == VolumePresentation.absolute_cm3 else '%'
-        dose_unit = str(self.constraint_dose.unit)
-        dose = str(self.constraint_dose.value)
-        return 'DC%s%s[%s] <= %s' % (vol, vol_unit, dose_unit, dose)
-
-    def __repr__(self):
-        return self.__str__()
+        query = QueryExtensions()
+        query.read(mayo_format_query)
+        return query.run_query(query, self, ss)

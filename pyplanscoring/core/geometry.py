@@ -341,7 +341,7 @@ def k_nearest_neighbors(k, feature_train, features_query):
 
 def calculate_planes_contour_areas(planes):
     """Calculate the area of each contour for the given plane.
-       Additionally calculate and return the largest contour index."""
+       Additionally calculate_integrate and return the largest contour index."""
     # Calculate the area for each contour in the current plane
     contours = []
     largest = 0
@@ -1003,7 +1003,7 @@ def get_z_planes_dict(struc_planes, ordered_z, z_interp_positions):
 
 def calculate_contour_areas_numba(plane):
     """Calculate the area of each contour for the given plane.
-       Additionally calculate and return the largest contour index."""
+       Additionally calculate_integrate and return the largest contour index."""
 
     # Calculate the area for each contour in the current plane
     contours = []

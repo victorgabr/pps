@@ -30,8 +30,9 @@ docfiles = Datafiles(os.path.join(folder, 'licence.txt'))
 banner = Datafiles(os.path.join(folder, '2017 Plan Comp Banner.jpg'))
 criteria = Datafiles(os.path.join(folder, 'Scoring Criteria.txt'))
 rs_file = Datafiles(os.path.join(folder, 'RS.1.2.246.352.71.4.584747638204.253443.20170222200317.dcm'))
+ini_file = Datafiles(os.path.join(folder, 'PyPlanScoring.ini'))
 
-a = Analysis(['app.py'],
+a = Analysis(['PyPlanScoring.py'],
              pathex=[r'C:\Users\Victor\Dropbox\Plan_Competition_Project',
                      r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring'],
              binaries=[],
@@ -62,12 +63,7 @@ coll = COLLECT(exe,
                banner,
                criteria,
                rs_file,
+               ini_file,
                strip=False,
                upx=True,
                name='PyPlanScoring')
-
-
-
-
-
-# pyi-makespec --distpath r'C:\PYTHON_BUILD\dist' --workpath r'C:\PYTHON_BUILD\build' app.py

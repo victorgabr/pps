@@ -12,6 +12,7 @@ logging.basicConfig(filename='complexity_reports.log', level=logging.DEBUG)
 
 
 class PyLeafPair(LeafPair):
+
     def __init__(self, left, right, width, top, jaw):
         super().__init__(left, right, width, top, jaw)
 
@@ -23,6 +24,7 @@ class PyLeafPair(LeafPair):
 
 
 class PyAperture(Aperture):
+
     def __init__(self, leaf_positions, leaf_widths, jaw, gantry_angle):
         super().__init__(leaf_positions, leaf_widths, jaw)
         self.gantry_angle = gantry_angle
@@ -54,13 +56,15 @@ class PyAperture(Aperture):
 
 
 class PyAperturesFromBeamCreator:
+
     def Create(self, beam):
 
         apertures = []
         leafWidths = self.GetLeafWidths(beam)
         jaw = self.CreateJaw(beam)
         for controlPoint in beam['ControlPointSequence']:
-            gantry_angle = float(controlPoint.GantryAngle) if 'GantryAngle' in controlPoint else beam['GantryAngle']
+            gantry_angle = float(controlPoint.GantryAngle) if 'GantryAngle' in controlPoint else beam[
+                'GantryAngle']
             leafPositions = self.GetLeafPositions(controlPoint)
             apertures.append(PyAperture(leafPositions, leafWidths, jaw, gantry_angle))
         return apertures
@@ -125,6 +129,7 @@ class PyAperturesFromBeamCreator:
 
 
 class PyMetersetsFromMetersetWeightsCreator:
+
     def Create(self, beam):
         if beam['PrimaryDosimeterUnit'] != 'MU':
             return None
@@ -176,21 +181,19 @@ def test_metersets_cp_creator_numba():
     # print('Friedemann Herberth  - FANTASY - 21 APRIL FINAL - 100')
     # print('complexity Metric: ', complexity_metric)
     # print('complexity threshold of 0.18')
-
     # test beam creator
     beam = plan_dict['beams'][1]
-    a = MetersetsFromMetersetWeightsCreator().Create(beam)
+    # a = MetersetsFromMetersetWeightsCreator().Create(beam)
     mt = MetersetsFromMetersetWeightsCreator()
     metersetWeights = mt.GetMetersetWeights(beam['ControlPointSequence'])
     metersets = mt.ConvertMetersetWeightsToMetersets(beam['MU'], metersetWeights)
-    cs = mt.UndoCummulativeSum(metersets)
-
+    # cs = mt.UndoCummulativeSum(metersets)
     mt.Create(beam)
 
     pymt = PyMetersetsFromMetersetWeightsCreator()
     metersetWeights1 = pymt.GetMetersetWeights(beam['ControlPointSequence'])
     metersets1 = pymt.ConvertMetersetWeightsToMetersets(beam['MU'], metersetWeights1)
-    cs1 = pymt.UndoCummulativeSum(metersets1)
+    # cs1 = pymt.UndoCummulativeSum(metersets1)
 
     np.testing.assert_array_almost_equal(metersetWeights, metersetWeights1)
     np.testing.assert_array_almost_equal(metersets, metersets1)
@@ -198,4 +201,9 @@ def test_metersets_cp_creator_numba():
 
 
 if __name__ == '__main__':
+    # plan_file = r"D:\Final_Plans\ECPLIPSE_VMAT\Friedemann Herberth  - FANTASY - 21 APRIL FINAL - 100.0\RP.1.2.246.352.71.5.29569967170.312423.20170420161749.dcm"
+    # plan_info = RTPlan(filename=plan_file)
+    # plan_dict = plan_info.get_plan()
+    # complexity_metric = PyComplexityMetric().CalculateForPlan(None, plan_dict)
     pass
+

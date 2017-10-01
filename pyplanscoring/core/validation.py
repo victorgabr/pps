@@ -27,22 +27,6 @@ logger = logging.getLogger('validation')
 
 logging.basicConfig(filename='plan_competition_2016_no_dicom_DVH.log', level=logging.DEBUG)
 
-# Get calculation defaults
-folder = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/core'
-config = configparser.ConfigParser()
-config.read(os.path.join(folder, 'validation.ini'))
-calculation_options = dict()
-calculation_options['end_cap'] = config.getfloat('DEFAULT', 'end_cap')
-calculation_options['use_tps_dvh'] = config.getboolean('DEFAULT', 'use_tps_dvh')
-calculation_options['use_tps_structures'] = config.getboolean('DEFAULT', 'use_tps_structures')
-calculation_options['up_sampling'] = config.getboolean('DEFAULT', 'up_sampling')
-calculation_options['maximum_upsampled_volume_cc'] = config.getfloat('DEFAULT', 'maximum_upsampled_volume_cc')
-calculation_options['voxel_size'] = config.getfloat('DEFAULT', 'voxel_size')
-calculation_options['num_cores'] = config.getint('DEFAULT', 'num_cores')
-calculation_options['save_dvh_figure'] = config.getboolean('DEFAULT', 'save_dvh_figure')
-calculation_options['save_dvh_data'] = config.getboolean('DEFAULT', 'save_dvh_data')
-calculation_options['mp_backend'] = config['DEFAULT']['mp_backend']
-
 
 # TODO extract constrains from analytical curves
 
@@ -87,6 +71,15 @@ class CurveCompare(object):
         stats['std'] = self.delta_dvh_pp.std(ddof=1).round(1)
         return stats
 
+    @property
+    def stats_delta_cc(self):
+        stats = {}
+        stats['min'] = self.delta_dvh.min().round(1)
+        stats['max'] = self.delta_dvh.max().round(1)
+        stats['mean'] = self.delta_dvh.mean().round(1)
+        stats['std'] = self.delta_dvh.std(ddof=1).round(1)
+        return stats
+
     def get_constrains(self, constrains_dict):
         ref_constrains = eval_constrains_dict(self.ref_dvh_dict, constrains_dict)
         calc_constrains = eval_constrains_dict(self.calc_dvh_dict, constrains_dict)
@@ -107,7 +100,7 @@ class CurveCompare(object):
         calc = self.calc_dvh(self.dose_samples)
         ax.plot(self.dose_samples, ref, label='Analytical')
         ax.plot(self.dose_samples, calc, label='App')
-        ax.set_ylabel('Volume (cc)')
+        ax.set_ylabel('volume (cc)')
         ax.set_xlabel('Dose (cGy)')
         txt = self.structure_name + ' ' + self.doseF_grid + ' mm ' + self.gradient
         ax.set_title(txt)
@@ -160,7 +153,7 @@ def test_real_dvh():
                     # plt.plot(dicompyler_dvh['data'], label='Software DVH - Dmax: %1.1f cGy' % nup)
                     ax.legend(loc='best')
                     ax.set_xlabel('Dose (cGy)')
-                    ax.set_ylabel('Volume (cc)')
+                    ax.set_ylabel('volume (cc)')
                     fname = txt + '.png'
                     fig.savefig(fname, format='png', dpi=100)
                     dvhs[structure['name']] = dvh_data
@@ -551,7 +544,7 @@ def test1(lim=3, save_data=False):
     voxel (0.1, 0.1, 0.1) mm
 
                       count        range
-    Total Volume (cc)     0  [-0.7, 0.5]
+    Total volume (cc)     0  [-0.7, 0.5]
     Dmin                  0  [-0.1, 2.6]
     Dmax                  0  [-0.4, 0.0]
     Dmean                 0  [-0.2, 0.3]
@@ -627,9 +620,9 @@ def test1(lim=3, save_data=False):
     result = pd.concat(df_concat, axis=1).T.reset_index()
     result['Structure name'] = sname
 
-    res_col = ['Structure name', 'Dose Voxel (mm)', 'Gradient direction', 'Total Volume (cc)', 'Dmin', 'Dmax', 'Dmean',
+    res_col = ['Structure name', 'Dose Voxel (mm)', 'Gradient direction', 'Total volume (cc)', 'Dmin', 'Dmax', 'Dmean',
                'D99', 'D95', 'D5', 'D1', 'D0.03cc']
-    num_col = ['Total Volume (cc)', 'Dmin', 'Dmax', 'Dmean', 'D99', 'D95', 'D5', 'D1', 'D0.03cc']
+    num_col = ['Total volume (cc)', 'Dmin', 'Dmax', 'Dmean', 'D99', 'D95', 'D5', 'D1', 'D0.03cc']
 
     df_num = df[num_col]
     result_num = result[result.columns[1:-2]]
@@ -657,7 +650,7 @@ def test1(lim=3, save_data=False):
 def test2(lim=3):
     """
                               count         range
-        Total Volume (cc)     2   [-3.9, 0.6]
+        Total volume (cc)     2   [-3.9, 0.6]
         Dmin                  0   [-0.2, 2.6]
         Dmax                  0   [-0.4, 0.0]
         Dmean                 0   [-0.8, 0.7]
@@ -736,10 +729,10 @@ def test2(lim=3):
     dest = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/core/validation_paper'
     result.to_excel(os.path.join(dest, 'Test_2_result.xls'))
 
-    res_col = ['Structure name', 'Dose Voxel (mm)', 'Gradient direction', 'Total Volume (cc)', 'Dmin', 'Dmax', 'Dmean',
+    res_col = ['Structure name', 'Dose Voxel (mm)', 'Gradient direction', 'Total volume (cc)', 'Dmin', 'Dmax', 'Dmean',
                'D99', 'D95', 'D5', 'D1', 'D0.03cc']
 
-    num_col = ['Total Volume (cc)', 'Dmin', 'Dmax', 'Dmean', 'D99', 'D95', 'D5', 'D1', 'D0.03cc']
+    num_col = ['Total volume (cc)', 'Dmin', 'Dmax', 'Dmean', 'D99', 'D95', 'D5', 'D1', 'D0.03cc']
 
     df_num = dfi[num_col]
 
@@ -749,7 +742,7 @@ def test2(lim=3):
 
     delta = ((result_num - df_num) / df_num) * 100
 
-    pcol = ['Total Volume (cc)', 'Dmax', 'Dmean', 'D99', 'D95', 'D5', 'D1']
+    pcol = ['Total volume (cc)', 'Dmax', 'Dmean', 'D99', 'D95', 'D5', 'D1']
 
     res = OrderedDict()
 
@@ -930,7 +923,7 @@ def test3(plot_curves=True):
                 ax.plot(calc_data['dose_axis'], calc_data['data'], label='Software')
                 ax.legend(loc='best')
                 ax.set_xlabel('Dose (cGy)')
-                ax.set_ylabel('Volume (cc)')
+                ax.set_ylabel('volume (cc)')
                 title = s_key + ' Dose Gradient ' + grad + '.png'
                 ax.set_title(title)
                 fig.savefig(os.path.join(dest, title), format='png', dpi=100)
@@ -1242,10 +1235,10 @@ def test_upsampling_paper(plot_grads=False):
                 ax.set_title(title)
                 plt.show()
 
-    gradient_df = pd.DataFrame(gradient_stats, columns=['Name', 'Volume', 'Median'])
+    gradient_df = pd.DataFrame(gradient_stats, columns=['Name', 'volume', 'Median'])
     fig, ax = plt.subplots()
-    ax.plot(gradient_df['Volume'], np.log10(gradient_df['Median']), '.')
-    ax.set_xlabel('Volume (cc)')
+    ax.plot(gradient_df['volume'], np.log10(gradient_df['Median']), '.')
+    ax.set_xlabel('volume (cc)')
     ax.set_ylabel('Median boundary gradient (cGy)')
     ax.set_xlim([0, 1000])
     plt.show()
@@ -1278,10 +1271,10 @@ def upsampling_paper_pp():
 
         gradient_stats += res
 
-    gradient_df = pd.DataFrame(gradient_stats, columns=['Name', 'Volume', 'Median'])
+    gradient_df = pd.DataFrame(gradient_stats, columns=['Name', 'volume', 'Median'])
     fig, ax = plt.subplots()
-    ax.plot(gradient_df['Volume'], gradient_df['Median'], '.')
-    ax.set_xlabel('Volume (cc)')
+    ax.plot(gradient_df['volume'], gradient_df['Median'], '.')
+    ax.set_xlabel('volume (cc)')
     ax.set_ylabel('Median boundary gradient (cGy)')
     ax.set_xlim([0, 2000])
     plt.show()
@@ -1319,10 +1312,10 @@ def timimg_evaluation():
     save(timing_stats, dest)
     # timing_stats = load(dest)
 
-    df = pd.DataFrame(timing_stats, columns=['Structure', 'Volume', 'voxels', 'grid_mm', 'timing'])
+    df = pd.DataFrame(timing_stats, columns=['Structure', 'volume', 'voxels', 'grid_mm', 'timing'])
     mask = df['grid_mm'] == 0.1
 
-    plt.plot(df[['Volume']][mask], df[['timing']][mask], '.')
+    plt.plot(df[['volume']][mask], df[['timing']][mask], '.')
     plt.show()
 
 
@@ -1363,7 +1356,7 @@ def compare_dvh_planIQ():
         ax.plot(cdvh[key]['dose_axis'], cdvh[key]['data'] / cdvh[key]['data'][0] * 100, label='PyPlanScoring')
         ax.plot(df.index, df[key] / df[key][0] * 100, label='PlanIQ')
         ax.set_title(key)
-        ax.set_ylabel('Volume (%)')
+        ax.set_ylabel('volume (%)')
         ax.set_xlabel('Dose (cGy)')
         ax.set_xlim([cdvh[key]['dose_axis'][0], cdvh[key]['dose_axis'][-1]])
         ax.legend()

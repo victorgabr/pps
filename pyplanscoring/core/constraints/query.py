@@ -8,21 +8,18 @@ https://rexcardan.github.io/ESAPIX/api/ESAPIX.Constraints.DVH.Query.html
 """
 import re
 
-from pyplanscoring.core.constraints.metrics import MaxDoseConstraint, MinDoseConstraint, MinMeanDoseConstraint, \
-    MaxMeanDoseConstraint, MinDoseAtVolConstraint, MaxDoseAtVolConstraint, MinVolAtDoseConstraint, \
-    MaxVolAtDoseConstraint, MinComplimentVolumeAtDose, MaxComplimentVolumeAtDose, MinComplimentDoseAtVolumeConstraint, \
-    MaxComplimentDoseAtVolumeConstraint
-from pyplanscoring.core.constraints.types import QueryType, Units, DoseUnit, Discriminator, VolumePresentation, \
-    DoseValue, DiscriminatorConverter
+from pyplanscoring.core.constraints.types import QueryType, Units, DoseUnit, VolumePresentation, \
+    DoseValue, DoseValuePresentation, DICOMType
 
+
+# TODO add queries types Conformation Number - CN and Homogeneity Index - HI
 
 class MayoRegex:
-    UnitsDesired = r"\[(cc|%|(c?Gy))\]"
-    QueryType = r"^(V|CV|DC|D|Mean|Max|Min)"
+    UnitsDesired = r"\[(cc|%|(c?Gy)|)\]"
+    QueryType = r"^(V|CV|DC|D|Mean|Max|Min|CI|HI)"
     QueryValue = r"\d+(\.?)(\d+)?"
     QueryUnits = r"((cc)|%|(c?Gy))"
-    # Valid = "(((V|CV|DC|D)(%s%s))|(Mean|Max|Min))%s" % (query_value, query_units, units_desired)
-    Valid = '(((V|CV|DC|D)(\d+(\.?)(\d+)?((cc)|%|(c?Gy))))|(Mean|Max|Min))\[(cc|%|(c?Gy))\]'
+    Valid = '(((V|CV|DC|D|CI|HI)(\d+(\.?)(\d+)?((cc)|%|(c?Gy))))|(Mean|Max|Min))\[(cc|%|(c?Gy)|)\]'
 
 
 class MayoQuery:
@@ -31,10 +28,24 @@ class MayoQuery:
         self._query_units = None
         self._query_value = None
         self._units_desired = None
+        self._query = None
 
-    @staticmethod
-    def read(query):
-        return MayoQueryReader().read(query)
+    def read(self, query):
+        mayo_query = MayoQueryReader().read(query)
+        self.query_type = mayo_query.query_type
+        self.query_units = mayo_query.query_units
+        self.query_value = mayo_query.query_value
+        self.units_desired = mayo_query.units_desired
+        self.query = mayo_query
+        return self
+
+    @property
+    def query(self):
+        return self._query
+
+    @query.setter
+    def query(self, value):
+        self._query = value
 
     @property
     def query_type(self):
@@ -78,7 +89,7 @@ class MayoQuery:
         return self.to_string()
 
 
-class MayoQueryWriter(object):
+class MayoQueryWriter:
     def write(self, mayo_query):
         """
              public static string Write(MayoQuery query)
@@ -91,11 +102,11 @@ class MayoQueryWriter(object):
                     }
         """
         query_type = self.get_type_string(mayo_query.query_type)
-        qUnits = self.get_unit_string(mayo_query.query_units)
-        qValue = self.get_value_string(mayo_query.query_value)
-        dUnits = self.get_unit_string(mayo_query.units_desired)
+        q_units = self.get_unit_string(mayo_query.query_units)
+        q_value = self.get_value_string(mayo_query.query_value)
+        d_units = self.get_unit_string(mayo_query.units_desired)
 
-        return query_type + qValue + qUnits + '[' + dUnits + ']'
+        return query_type + q_value + q_units + '[' + d_units + ']'
 
     @staticmethod
     def get_type_string(query_type):
@@ -106,7 +117,9 @@ class MayoQueryWriter(object):
             QueryType.MAX_DOSE: "Max",
             QueryType.MEAN_DOSE: "Mean",
             QueryType.MIN_DOSE: "Min",
-            QueryType.VOLUME_AT_DOSE: "V"
+            QueryType.VOLUME_AT_DOSE: "V",
+            QueryType.CI: "CI",
+            QueryType.HI: "HI"
         }
 
         return switch.get(query_type)
@@ -114,10 +127,7 @@ class MayoQueryWriter(object):
     @staticmethod
     def get_value_string(query_value):
         if query_value:
-            if query_value > 1.0:
-                return str(int(query_value))
-            else:
-                return str(query_value)
+            return ('%f' % query_value).rstrip('0').rstrip('.')
         else:
             return ''
 
@@ -133,7 +143,7 @@ class MayoQueryWriter(object):
         return switch.get(query_units)
 
 
-class MayoQueryReader(object):
+class MayoQueryReader:
     """
      Class with methods to read a DVH query in "Mayo Format" (https://www.ncbi.nlm.nih.gov/pubmed/26825250)
     """
@@ -198,7 +208,9 @@ class MayoQueryReader(object):
                     "CV": QueryType.COMPLIMENT_VOLUME,
                     "Min": QueryType.MIN_DOSE,
                     "Max": QueryType.MAX_DOSE,
-                    "Mean": QueryType.MEAN_DOSE}
+                    "Mean": QueryType.MEAN_DOSE,
+                    "CI": QueryType.CI,
+                    "HI": QueryType.HI}
 
         return switcher.get(match.group(), QueryType.VOLUME_AT_DOSE)
 
@@ -211,14 +223,15 @@ class MayoQueryReader(object):
         filtered = re.sub(MayoRegex.UnitsDesired, '', query)
         match = re.search(MayoRegex.QueryUnits, filtered, re.IGNORECASE)
         if not match:
-            return Units.NA
+            return self.convert_string_to_unit('NA')
         return self.convert_string_to_unit(match.group())
 
     def read_units_desired(self, query):
         match = re.search(MayoRegex.UnitsDesired, query, re.IGNORECASE)
         if not match:
-            print('Not valid units -> %s' % query)
-            return TypeError
+            # dimensionless
+            return self.convert_string_to_unit('NA')
+
         return self.convert_string_to_unit(match.group().replace('[', '').replace(']', ''))
 
     @staticmethod
@@ -232,434 +245,233 @@ class MayoQueryReader(object):
                     "gy": Units.GY,
                     "Gy": Units.GY,
                     "GY": Units.GY,
-                    "%": Units.PERC}
-        return switcher.get(value, "Unknown query units!")
+                    "%": Units.PERC,
+                    "NA": Units.NA,
+                    "": Units.NA}
+        return switcher.get(value, Units.NA)
 
 
-class MayoConstraint:
+class QueryExtensions(MayoQuery):
     def __init__(self):
-        self._query = None
-        self._discriminator = None
-        self._constraintValue = None
+        super().__init__()
 
-    @property
-    def query(self):
-        return self._query
-
-    @query.setter
-    def query(self, value):
-        self._query = value
-
-    @property
-    def discriminator(self):
-        return self._discriminator
-
-    @discriminator.setter
-    def discriminator(self, value):
-        self._discriminator = value
-
-    @property
-    def constraint_value(self):
-        return self._constraintValue
-
-    @constraint_value.setter
-    def constraint_value(self, value):
-        self._constraintValue = value
-
-    def read(self, constraint):
+    def run_query(self, query, pi, ss):
         """
-             Reads a constraint of the form {MayoQuery} {Discriminator} {ConstraintValue}
-        :param constraint:
+             This helps execute Mayo syntax queries against planning items
+        :param query: MayoQuery string
+        :param pi: PlanningItem
+        :param ss: Structures dict
+        :return: float value
         """
-        split = constraint.split()
-        if len(split) != 3:
-            raise ValueError(
-                "Mayo constraints much be 3 parts separated by whitespace: "
-                "{MayoQuery} {Discriminator} {ConstraintValue}")
 
-        self._query = MayoQuery().read(split[0])
-        self.discriminator = DiscriminatorConverter.read_discriminator(split[1])
-        self._constraintValue = float(split[2])
+        d_pres = self.get_dose_presentation(query)
+        v_pres = self.get_volume_presentation(query)
+        dvh = pi.get_dvh_cumulative_data(ss, d_pres, v_pres)
 
-    def write(self):
-        query = MayoQueryWriter().write(self.query)
-        discriminator = DiscriminatorConverter.write_discriminator(self.discriminator)
-        constraint_value = str(self.constraint_value)
-        return query + ' ' + discriminator + ' ' + constraint_value
+        switch = {QueryType.DOSE_AT_VOLUME: self.query_dose,
+                  QueryType.DOSE_COMPLIMENT: self.query_dose_compliment,
+                  QueryType.VOLUME_AT_DOSE: self.query_volume,
+                  QueryType.COMPLIMENT_VOLUME: self.query_compliment_volume,
+                  QueryType.MAX_DOSE: self.query_max_dose,
+                  QueryType.MEAN_DOSE: self.query_mean_dose,
+                  QueryType.MIN_DOSE: self.query_min_dose,
+                  QueryType.CI: self.query_ci,
+                  QueryType.HI: self.query_hi}
 
+        metric_function = switch.get(query.query_type)
 
-class MayoConstraintConverter:
-    def convert_to_dvh_constraint(self, structure_name, priority, mc):
-        """
-            Converts a Mayo constraint type to a DVH Constraint class
-        :param structure_name: string structure_name
-        :param priority:  PriorityType
-        :param mc: class MayoConstraint
-        :return: IConstraint
-        """
-        switch = {
-            QueryType.MAX_DOSE:
-                self.build_max_dose_constraint(mc, structure_name, priority),
-            QueryType.MIN_DOSE:
-                self.build_min_dose_constraint(mc, structure_name, priority),
-            QueryType.MEAN_DOSE:
-                self.build_mean_dose_constraint(mc, structure_name, priority),
-            QueryType.DOSE_AT_VOLUME:
-                self.build_dose_at_volume_constraint(mc, structure_name, priority),
-            QueryType.VOLUME_AT_DOSE:
-                self.build_volume_at_dose_constraint(mc, structure_name, priority),
-            QueryType.DOSE_COMPLIMENT:
-                self.build_dose_compliment_constraint(mc, structure_name, priority),
-            QueryType.COMPLIMENT_VOLUME:
-                self.build_compliment_volume_constraint(mc, structure_name, priority)
-        }
-        return switch.get(mc.query.query_type)
+        # If conformity index
+        if query.query_type == QueryType.CI:
+            return metric_function(pi, query, ss)
+
+        return metric_function(dvh, query)
 
     @staticmethod
-    def get_volume_units(mayo_unit):
+    def get_dose_presentation(query):
         """
-
-        :param mayo_unit: Units mayo_unit
-        :return: VolumePresentation atribute
+            Returns the dose value presentation for this query, helps in acquiring the correct dvh
+        :param query: MayoQuery
+        :return: dose_value_presentation
         """
-        switcher = {Units.CC: VolumePresentation.absolute_cm3,
-                    Units.PERC: VolumePresentation.relative}
+        # If volume query return query unit to dose unit
+        switch = {Units.CGY: DoseValuePresentation.Absolute,
+                  Units.GY: DoseValuePresentation.Absolute,
+                  Units.PERC: DoseValuePresentation.Relative}
+        if query.query_type == QueryType.COMPLIMENT_VOLUME or query.query_type == QueryType.VOLUME_AT_DOSE:
+            return switch.get(query.query_units, DoseValuePresentation.Unknown)
+        if query.query_type == QueryType.HI or query.query_type == QueryType.CI:
+            return switch.get(query.query_units, DoseValuePresentation.Unknown)
 
-        return switcher.get(mayo_unit, VolumePresentation.relative)
+        return switch.get(query.units_desired, DoseValuePresentation.Unknown)
 
     @staticmethod
-    def get_dose_units(mayo_unit):
+    def get_dose_unit(query):
         """
-        :param mayo_unit: Units mayo_unit
-        :return: DoseUnit
+             Returns the dose value presentation for this query, helps in acquiring the correct dvh
+        :param query: MayoQuery
+        :return: DoseValue.DoseUnit
         """
-        switcher = {Units.CGY: DoseUnit.cGy,
-                    Units.GY: DoseUnit.Gy,
-                    Units.PERC: DoseUnit.Percent}
+        switch = {Units.CGY: DoseUnit.cGy,
+                  Units.GY: DoseUnit.Gy,
+                  Units.PERC: DoseUnit.Percent}
 
-        return switcher.get(mayo_unit, DoseUnit.Unknown)
+        # If volume query return query unit to dose unit
+        if query.query_type == QueryType.COMPLIMENT_VOLUME or query.query_type == QueryType.VOLUME_AT_DOSE:
+            return switch.get(query.query_units, DoseUnit.Unknown)
+        # CI or HI query
+        if query.query_type == QueryType.CI or query.query_type == QueryType.HI:
+            return switch.get(query.query_units, DoseUnit.Unknown)
 
-    def build_max_dose_constraint(self, mc, structure_name, priority):
+        return switch.get(query.units_desired, DoseUnit.Unknown)
+
+    @staticmethod
+    def get_volume_presentation(query):
         """
-        :param mc: MayoConstraint
-        :param structure_name: string
-        :param priority: PriorityType
-        :return: max_dose_constraint
+            Returns the dose value presentation for this query, helps in acquiring the correct dvh
+        :param query: MayoQuery
+        :return: the volume presentation of the query
         """
-        dose_unit = self.get_dose_units(mc.query.units_desired)
-        dose = mc.constraint_value
-        dv = DoseValue(dose, dose_unit)
-        # constraint class
-        c = MaxDoseConstraint()
-        c.constraint_dose = dv
-        c.structure_name = structure_name
-        c.priority = priority
+        # If volume query return query unit to dose unit
+        if query.query_type == QueryType.COMPLIMENT_VOLUME or query.query_type == QueryType.VOLUME_AT_DOSE:
+            switch = {Units.CC: VolumePresentation.absolute_cm3,
+                      Units.PERC: VolumePresentation.relative}
 
-        return c
+            return switch.get(query.units_desired, VolumePresentation.Unknown)
 
-    def build_min_dose_constraint(self, mc, structure_name, priority):
+        switch = {Units.CC: VolumePresentation.absolute_cm3,
+                  Units.PERC: VolumePresentation.relative}
+
+        return switch.get(query.query_units, VolumePresentation.Unknown)
+
+    @staticmethod
+    def query_dose(dvh, query):
         """
-        :param mc: MayoConstraint
-        :param structure_name: string
-        :param priority: PriorityType
-        :return: min_dose_constraint
+        :param dvh: DVHData object dvh
+        :param query: MayoQuery
+        :return: dose at volume
         """
-        dose_unit = self.get_dose_units(mc.query.units_desired)
-        dose = mc.constraint_value
-        dv = DoseValue(dose, dose_unit)
-        # constraint class
-        c = MinDoseConstraint()
-        c.constraint_dose = dv
-        c.structure_name = structure_name
-        c.priority = priority
-        return c
+        dose_unit = query.get_dose_unit(query)
+        volume_presentation = query.get_volume_presentation(query)
+        volume = query.query_value * volume_presentation
+        dose = dvh.get_dose_at_volume(volume)
+        return dose.get_dose(dose_unit)
 
-    def build_mean_dose_constraint(self, mc, structure_name, priority):
-        """
-        :param mc: MayoConstraint
-        :param structure_name: string
-        :param priority: PriorityType
-        :return: mean_dose_constraint
-        """
-        dose_unit = self.get_dose_units(mc.query.units_desired)
-        dose = mc.constraint_value
-        dv = DoseValue(dose, dose_unit)
-        # constraint classes
-        min_mean = MinMeanDoseConstraint()
-        min_mean.constraint_dose = dv
-        min_mean.structure_name = structure_name
-        min_mean.priority = priority
-
-        # constraint classes
-        max_mean = MaxMeanDoseConstraint()
-        max_mean.constraint_dose = dv
-        max_mean.structure_name = structure_name
-        max_mean.priority = priority
-
-        switch = {Discriminator.EQUAL: min_mean,
-                  Discriminator.GREATER_THAN: min_mean,
-                  Discriminator.GREATHER_THAN_OR_EQUAL: min_mean,
-                  Discriminator.LESS_THAN: max_mean,
-                  Discriminator.LESS_THAN_OR_EQUAL: max_mean
-                  }
-
-        return switch.get(mc.discriminator)
-
-    def build_dose_at_volume_constraint(self, mc, structure_name, priority):
+    @staticmethod
+    def query_dose_compliment(dvh, query):
         """
 
-        :param mc: MayoConstraint
-        :param structure_name: string
-        :param priority: PriorityType
-        :return: dose_at_volume_constraint
+        :param dvh: DVHData object dvh
+        :param query: MayoQuery
+        :return: dose_compliment
         """
-        volume = mc.query.query_value
-        volume_unit = self.get_dose_units(mc.query.query_units)
-        dose_unit = self.get_dose_units(mc.query.units_desired)
-        dose = mc.constraint_value
-        dv = DoseValue(dose, dose_unit)
+        dose_unit = query.get_dose_unit(query)
+        volume_presentation = query.get_volume_presentation(query)
+        volume = query.query_value * volume_presentation
+        dose = dvh.get_dose_compliment(volume)
+        return dose.get_dose(dose_unit)
 
-        # constraint classes
-        min_dv = MinDoseAtVolConstraint()
-        min_dv.constraint_dose = dv
-        min_dv.structure_name = structure_name
-        min_dv.priority = priority
-        min_dv.volume = volume
-        min_dv.volume_type = volume_unit
-
-        # constraint classes
-        max_dv = MaxDoseAtVolConstraint()
-        max_dv.constraint_dose = dv
-        max_dv.structure_name = structure_name
-        max_dv.priority = priority
-        max_dv.volume = volume
-        max_dv.volume_type = volume_unit
-
-        switch = {Discriminator.EQUAL: min_dv,
-                  Discriminator.GREATER_THAN: min_dv,
-                  Discriminator.GREATHER_THAN_OR_EQUAL: min_dv,
-                  Discriminator.LESS_THAN: max_dv,
-                  Discriminator.LESS_THAN_OR_EQUAL: max_dv
-                  }
-
-        return switch.get(mc.discriminator)
-
-    def build_volume_at_dose_constraint(self, mc, structure_name, priority):
+    @staticmethod
+    def query_max_dose(dvh, query):
         """
-        :param mc: MayoConstraint
-        :param structure_name: string
-        :param priority: PriorityType
-        :return: volume_at_dose_constraint
+        :param dvh: DVHData object dvh
+        :param query: MayoQuery
+        :return: max dose at volume
         """
-        volume = mc.query.query_value
-        volume_unit = self.get_dose_units(mc.query.query_units)
-        dose_unit = self.get_dose_units(mc.query.units_desired)
-        dose = mc.constraint_value
-        dv = DoseValue(dose, dose_unit)
+        max_dose = dvh.max_dose
+        dose_unit = query.get_dose_unit(query)
+        return max_dose.get_dose(dose_unit)
 
-        # constraint classes
-        min_vd = MinVolAtDoseConstraint()
-        min_vd.constraint_dose = dv
-        min_vd.structure_name = structure_name
-        min_vd.priority = priority
-        min_vd.volume = volume
-        min_vd.volume_type = volume_unit
-
-        # constraint classes
-        max_vd = MaxVolAtDoseConstraint()
-        max_vd.constraint_dose = dv
-        max_vd.structure_name = structure_name
-        max_vd.priority = priority
-        max_vd.volume = volume
-        max_vd.volume_type = volume_unit
-
-        switch = {Discriminator.EQUAL: min_vd,
-                  Discriminator.GREATER_THAN: min_vd,
-                  Discriminator.GREATHER_THAN_OR_EQUAL: min_vd,
-                  Discriminator.LESS_THAN: max_vd,
-                  Discriminator.LESS_THAN_OR_EQUAL: max_vd
-                  }
-
-        return switch.get(mc.discriminator)
-
-    def build_compliment_volume_constraint(self, mc, structure_name, priority):
+    @staticmethod
+    def query_min_dose(dvh, query):
         """
-        :param mc: MayoConstraint
-        :param structure_name: string
-        :param priority: PriorityType
-        :return: compliment_volume_constraint
+        :param dvh: DVHData object dvh
+        :param query: MayoQuery
+        :return: min dose at volume
         """
-        volume = mc.query.query_value
-        volume_unit = self.get_dose_units(mc.query.query_units)
-        dose_unit = self.get_dose_units(mc.query.units_desired)
-        dose = mc.constraint_value
-        dv = DoseValue(dose, dose_unit)
+        min_dose = dvh.min_dose
+        dose_unit = query.get_dose_unit(query)
+        return min_dose.get_dose(dose_unit)
 
-        # constraint classes
-        min_cv = MinComplimentVolumeAtDose()
-        min_cv.constraint_dose = dv
-        min_cv.structure_name = structure_name
-        min_cv.priority = priority
-        min_cv.volume = volume
-        min_cv.volume_type = volume_unit
-
-        # constraint classes
-        max_cv = MaxComplimentVolumeAtDose()
-        max_cv.constraint_dose = dv
-        max_cv.structure_name = structure_name
-        max_cv.priority = priority
-        max_cv.volume = volume
-        max_cv.volume_type = volume_unit
-
-        switch = {Discriminator.EQUAL: min_cv,
-                  Discriminator.GREATER_THAN: min_cv,
-                  Discriminator.GREATHER_THAN_OR_EQUAL: min_cv,
-                  Discriminator.LESS_THAN: max_cv,
-                  Discriminator.LESS_THAN_OR_EQUAL: max_cv
-                  }
-
-        return switch.get(mc.discriminator)
-
-    def build_dose_compliment_constraint(self, mc, structure_name, priority):
+    @staticmethod
+    def query_mean_dose(dvh, query):
         """
-        :param mc: MayoConstraint
-        :param structure_name: string
-        :param priority: PriorityType
-        :return: compliment_volume_constraint
+        :param dvh: DVHData object dvh
+        :param query: MayoQuery
+        :return: mean dose at volume
         """
-        volume = mc.query.query_value
-        volume_unit = self.get_dose_units(mc.query.query_units)
-        dose_unit = self.get_dose_units(mc.query.units_desired)
-        dose = mc.constraint_value
-        dv = DoseValue(dose, dose_unit)
+        mean_dose = dvh.mean_dose
+        dose_unit = query.get_dose_unit(query)
+        return mean_dose.get_dose(dose_unit)
 
-        # constraint classes
-        min_dc = MinComplimentDoseAtVolumeConstraint()
-        min_dc.constraint_dose = dv
-        min_dc.structure_name = structure_name
-        min_dc.priority = priority
-        min_dc.volume = volume
-        min_dc.volume_type = volume_unit
+    @staticmethod
+    def query_volume(dvh, query):
+        """
 
-        # constraint classes
-        max_dc = MaxComplimentDoseAtVolumeConstraint()
-        max_dc.constraint_dose = dv
-        max_dc.structure_name = structure_name
-        max_dc.priority = priority
-        max_dc.volume = volume
-        max_dc.volume_type = volume_unit
+        :param dvh: DVHData object dvh
+        :param query: MayoQuery
+        :return: volume at dose
+        """
+        dose_unit = query.get_dose_unit(query)
+        volume_presentation = query.get_volume_presentation(query)
+        dose = DoseValue(query.query_value, dose_unit)
+        volume = dvh.get_volume_at_dose(dose, volume_presentation)
+        return volume
 
-        switch = {Discriminator.EQUAL: min_dc,
-                  Discriminator.GREATER_THAN: min_dc,
-                  Discriminator.GREATHER_THAN_OR_EQUAL: min_dc,
-                  Discriminator.LESS_THAN: max_dc,
-                  Discriminator.LESS_THAN_OR_EQUAL: max_dc
-                  }
+    @staticmethod
+    def query_compliment_volume(dvh, query):
+        """
 
-        return switch.get(mc.discriminator)
+        :param dvh: DVHData object dvh
+        :param query: MayoQuery
+        :return: compliment volume at dose
+        """
 
+        dose_unit = query.get_dose_unit(query)
+        volume_presentation = query.get_volume_presentation(query)
+        dose = DoseValue(query.query_value, dose_unit)
+        volume = dvh.get_compliment_volume_at_dose(dose, volume_presentation)
 
-def test_MayoConstraint():
-    """
-        Test class MayoConstraint
-    """
+        return volume
 
-    constrain = 'D95%[cGy] > 7000'
-    ctr = MayoConstraint()
-    ctr.read(constrain)
+    @staticmethod
+    def query_ci(pi, query, target_structure_name):
+        ''' var external = pi.GetStructureSet()?.Structures.FirstOrDefault(st => st.DicomType == DICOMType.EXTERNAL);
+            if (external == null) { return double.NaN; }
+            var prescription_volIsodose = pi.GetVolumeAtDose(external, referenceDose, VolumePresentation.AbsoluteCm3);
+            var target_volIsodose = pi.GetVolumeAtDose(s, referenceDose, VolumePresentation.AbsoluteCm3);
+            var target_vol = s.Volume;
+            return (target_volIsodose * target_volIsodose) / (target_vol * prescription_volIsodose);'''
 
-    assert ctr.constraint_value == 7000.0
-    assert ctr.discriminator == 2
+        external = None
+        for k, v in pi.structures.items():
+            if v['RTROIType'] == DICOMType.EXTERNAL:
+                external = v
+                break
 
+        if external is None:
+            return None
 
-def test_MayoQueryReader():
-    """
-        Test class MayoQueryReader
-        The Mayo format is broken down into the following components:
+        target_structure = pi.get_structure(target_structure_name)
+        dose_unit = query.get_dose_unit(query)
+        reference_dose = DoseValue(query.query_value, dose_unit)
+        prescription_vol_isodose = pi.get_volume_at_dose(external['name'], reference_dose,
+                                                         VolumePresentation.absolute_cm3)
 
-        Query Type Qt
-        Query Value Qv (if necessary)
-        Query Units Qu (if necessary)
-        Units Desired Ud
-        They are ordered as :
+        target_vol_isodose = pi.get_volume_at_dose(target_structure_name, reference_dose,
+                                                   VolumePresentation.absolute_cm3)
+        target_vol = target_structure['volume'] * VolumePresentation.absolute_cm3
 
-        QtQvQu[Ud]
-    """
-    rd = MayoQueryReader()
+        ci = (target_vol_isodose * target_vol_isodose) / (target_vol * prescription_vol_isodose)
+        return ci
 
-    # Dose at % volume Gy
-    query0 = 'D90%[Gy]'
+    @staticmethod
+    def query_hi(dvh, query):
+        dose_unit = query.get_dose_unit(query)
+        volume99 = 99 * VolumePresentation.relative
+        dose99 = dvh.get_dose_at_volume(volume99)
+        volume1 = 1 * VolumePresentation.relative
+        dose1 = dvh.get_dose_at_volume(volume1)
 
-    mq0 = rd.read(query0)
-    assert mq0.query_type == 2
-    assert mq0.query_value == 90.0
-    assert mq0.query_units == 1
-    assert mq0.units_desired == 2
-    assert mq0.to_string() == query0
+        h_i = (dose1 - dose99) / DoseValue(query.query_value, dose_unit)
 
-    # Dose at % volume cGy
-    query1 = 'D90%[cGy]'
-    mq1 = rd.read(query1)
-    assert mq1.query_type == 2
-    assert mq1.query_value == 90.0
-    assert mq1.query_units == 1
-    assert mq1.units_desired == 3
-    assert mq1.to_string() == query1
-
-    # Dose at cc volume cGy
-    query = 'D0.1cc[cGy]'
-    mq = rd.read(query)
-    assert mq.query_type == 2
-    assert mq.query_value == 0.1
-    assert mq.query_units == 0
-    assert mq.units_desired == 3
-    assert mq.to_string() == query
-
-    # volume at % dose
-    query1 = 'V95%[%]'
-    mq = rd.read(query1)
-    assert mq.query_type == 0
-    assert mq.query_value == 95.0
-    assert mq.query_units == 1
-    assert mq.units_desired == 1
-    assert mq.to_string() == query1
-
-    # volume at cGy dose
-    query1 = 'V95%[cGy]'
-    mq = rd.read(query1)
-    assert mq.query_type == 0
-    assert mq.query_value == 95.0
-    assert mq.query_units == 1
-    assert mq.units_desired == 3
-    assert mq.to_string() == query1
-
-    # mean dose
-    query1 = 'Mean[cGy]'
-    mq = rd.read(query1)
-    assert mq.query_type == 4
-    assert mq.query_value is None
-    assert mq.query_units == 4
-    assert mq.units_desired == 3
-    assert mq.to_string() == query1
-
-    # min dose
-    query1 = 'Min[cGy]'
-    mq = rd.read(query1)
-    assert mq.query_type == 5
-    assert mq.query_value is None
-    assert mq.query_units == 4
-    assert mq.units_desired == 3
-    assert mq.to_string() == query1
-
-    # max dose
-    query1 = 'Max[cGy]'
-    mq = rd.read(query1)
-    assert mq.query_type == 6
-    assert mq.query_value is None
-    assert mq.query_units == 4
-    assert mq.units_desired == 3
-    assert mq.to_string() == query1
-
-
-if __name__ == '__main__':
-    pass
+        return h_i.value

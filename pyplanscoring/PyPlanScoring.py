@@ -134,7 +134,7 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringQT.Ui_MainWindow):
               "Author: %s\n" \
               "Copyright (C) 2017 Victor Gabriel Leandro Alves, All rights reserved\n" \
               "Platform details: Python %s on %s\n" \
-              "This program aims to calculate an approximate score only.\n" \
+              "This program aims to calculate_integrate an approximate score only.\n" \
               "your final score may be different due to structure boundaries and dose interpolation uncertainties\n" \
               "%s" \
               % (__version__, __author__, platform.python_version(), platform.system(), __license__)

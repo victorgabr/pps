@@ -378,7 +378,7 @@ def get_participant_data(participant_folder):
 
 def get_dicom_data(participant_folder):
     files = [osp.join(root, name) for root, dirs, files in os.walk(participant_folder) for name in files if
-             name.strip().endswith(('.dcm', '.DCM', '.dcm_'))]
+             name.strip().endswith(('.dcm', '.DCM', '.dcm_', '.DCM_'))]
 
     filtered_files = OrderedDict()
     for f in files:
@@ -398,7 +398,7 @@ def get_dicom_data(participant_folder):
         except:
             logger.debug('Error in file %s' % f)
 
-    return True, pd.DataFrame(filtered_files).T
+    return pd.DataFrame(filtered_files).T
 
 
 class CompetitionReports(object):
@@ -549,7 +549,7 @@ class CompetitionReports(object):
             logger.debug("Missing dicom data: %s" % str(truth))
 
     def participant_dvh(self, folder_path):
-        truth, files_data = get_dicom_data(participant_folder=folder_path)
+        files_data = get_dicom_data(participant_folder=folder_path)
         rd = files_data.reset_index().set_index(1).ix['rtdose']['index']
         rp = files_data.reset_index().set_index(1).ix['rtplan']['index']
         rs = files_data.reset_index().set_index(1).ix['rtss']['index']
@@ -777,11 +777,14 @@ def join_entries(entries_folder, csv_files):
 
 
 def parse_participant_plan_data(participant_folder):
-    _, files_data = get_dicom_data(participant_folder)
+    # TODO add default values and error handling
+    files_data = get_dicom_data(participant_folder)
 
-    rd = files_data.reset_index().set_index(1).ix['rtdose']['index']
-    rp = files_data.reset_index().set_index(1).ix['rtplan']['index']
-    rs = files_data.reset_index().set_index(1).ix['rtss']['index']
+    tmp = files_data.reset_index().set_index(1)
+
+    rd = tmp.ix['rtdose']['index'] if 'rtdose' in tmp.index else ''
+    rp = tmp.ix['rtplan']['index'] if 'rtplan' in tmp.index else ''
+    rs = tmp.ix['rtss']['index'] if 'rtss' in tmp.index else ''
 
     plan_dict = dict()
 
@@ -891,9 +894,8 @@ class GenerateReports(object):
         self.reports.set_xls_titles(self.reports_folder)
 
 
-# TODO WRITE PLAN DATA AT REPORT
-
 def get_calculated_dvh_data(participant_folder):
+    # TODO add exeption to no DVH data
     files = [osp.join(participant_folder, name) for root, dirs, files in os.walk(participant_folder) for name in
              files if name.strip().endswith('.dvh')]
     dvh = load(files[0])
@@ -901,26 +903,14 @@ def get_calculated_dvh_data(participant_folder):
     return dvh
 
 
-#
-# def get_xlsx_report_data(participant_folder):
-#     files = [osp.join(participant_folder, name) for root, dirs, files in os.walk(participant_folder) for
-#              name in
-#              files if name.strip().endswith('.xlsx')]
-#
-#     for xls_file in files:
-#         report_df = pd.read_excel(xls_file, header=31).dropna()
-#         report_header = pd.read_excel(xls_file, header=29).dropna().columns[0]
-#         return report_df, report_header
-
-
-def get_xlsx_report_data(participant_folder):
+def get_xlsx_report_data(participant_folder, header_index=17):
     files = [osp.join(participant_folder, name) for root, dirs, files in os.walk(participant_folder) for
              name in
              files if name.strip().endswith('.xlsx')]
 
     for xls_file in files:
-        report_df = pd.read_excel(xls_file, header=17).dropna()
-        report_header = pd.read_excel(xls_file, header=15).dropna().columns[0]
+        report_df = pd.read_excel(xls_file, header=header_index).dropna()
+        report_header = pd.read_excel(xls_file, header=header_index - 2).dropna().columns[0]
         return report_df, report_header
 
 
@@ -952,7 +942,7 @@ def save_dvh_report(DVH, dest_path):
         ax.plot(x, y, label=key, linewidth=1.0)
         ax.legend(loc=7, borderaxespad=-11)
 
-        ax.set_ylabel('Volume (%)')
+        ax.set_ylabel('volume (%)')
         ax.set_xlabel('Dose (cGy)')
 
         apendix = 'PyPlanScoring - Calculated DVH - Voxel Size [mm]: (0.2, 0.2, 0.2) '
@@ -960,6 +950,7 @@ def save_dvh_report(DVH, dest_path):
         # data.append(Paragraph(apendix, styles['Participant Header']))
 
     fig.savefig(dest_path, format='png', dpi=100)
+    plt.close('all')
 
 
 def final_report_snippet():
@@ -1002,7 +993,7 @@ class FinalReportGenerator(object):
             participant_folder = osp.join(self.root_folder, folder)
             self.batch_data.append(participant_folder)
 
-    def gen_final_report(self, participant_folder):
+    def gen_final_report(self, participant_folder, header_index):
         # plan data
         plan_info = parse_participant_plan_data(participant_folder)
 
@@ -1019,7 +1010,7 @@ class FinalReportGenerator(object):
         save_dvh_report(dvh_curves, out_dvh_img)
 
         # getting data from xlsx report
-        report_df, report_header = get_xlsx_report_data(participant_folder)
+        report_df, report_header = get_xlsx_report_data(participant_folder, header_index)
 
         # out report filename
         out_report = osp.join(participant_folder, part_name + '_final_report.pdf')
@@ -1031,11 +1022,36 @@ class FinalReportGenerator(object):
 
     def batch_final_report(self):
         i = 0
+        errors = []
         for p in self.batch_data:
             _, pname = osp.split(p)
             print('Participant %s final report ITERATION: %i' % (pname, i))
-            self.gen_final_report(p)
+            try:
+                self.gen_final_report(p, header_index=17)
+            except:
+                errors.append(p)
+                print('Error in folder', p)
+                print('try new header index')
+                self.gen_final_report(p, header_index=31)
+            finally:
+                print('no report generated for folder ', p)
+                errors.append(p)
             i += 1
+        return errors
+
+    def batch_final_pp(self):
+
+        Parallel(n_jobs=-1, verbose=11)(delayed(self.report_wrapper)(p) for p in self.batch_data)
+
+    def report_wrapper(self, p):
+        _, pname = osp.split(p)
+        print('Participant %s final' % pname)
+        try:
+            self.gen_final_report(p, header_index=17)
+        except:
+            print('Error in folder', p)
+            print('try new header index')
+            self.gen_final_report(p, header_index=31)
 
 
 def download_missing_dicom():
@@ -1196,8 +1212,9 @@ def copy_missing_dicom():
 
 
 if __name__ == '__main__':
-    root_folder = '/home/steeve/Dropbox/Plan_Competition_Project/competition_2017/plans/final_reports/plans_folder'
-    app_folder = '/home/steeve/Dropbox/Plan_Competition_Project/pyplanscoring'
+    root_folder = '/media/victor/TOURO Mobile/COMPETITION 2017/final_plans/ECPLIPSE_VMAT'
+    app_folder = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring'
     frg = FinalReportGenerator(root_folder=root_folder, app_folder=app_folder)
     frg.set_participant_folder()
-    frg.batch_final_report()
+    errors = frg.batch_final_report()
+    # frg.batch_final_pp()

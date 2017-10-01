@@ -1,3 +1,4 @@
+import os
 from collections import OrderedDict
 from itertools import combinations
 
@@ -8,10 +9,14 @@ from joblib import Parallel
 from joblib import delayed
 from shapely.geometry import Polygon
 
+# from pyplanscoring.competition.constrains_evaluation import CompareDVH, save1, load1
 from pyplanscoring.core.dicomparser import ScoringDicomParser
-from pyplanscoring.core.dvhcalculation import Structure, get_boundary_stats
+from pyplanscoring.core.dosimetric import read_scoring_criteria
+from pyplanscoring.core.dvhcalculation import get_boundary_stats, get_capped_structure
 from pyplanscoring.core.geometry import wrap_z_coordinates, calc_area, get_contour_roi_grid, wrap_xy_coordinates, \
-    get_contour_mask_wn, check_contour_inside
+    get_contour_mask_wn, check_contour_inside, calculate_contour_areas_numba, get_dose_grid, get_axis_grid, \
+    get_interpolated_structure_planes, get_dose_grid_3d
+from pyplanscoring.core.scoring import get_matched_names
 from pyplanscoring.core.validation import get_competition_data
 
 
@@ -53,7 +58,7 @@ def msgd(gradient_measure):
 
 
 def plot_plane_contours_gradient(s_plane, structure_name, save_fig=False):
-    ctrs, li = calculate_contours_uncertainty(s_plane, 1)
+    ctrs, li = calculate_contours_uncertainty(s_plane, 0.2)
     fig, ax = plt.subplots()
     txt = structure_name + ' slice z: ' + str(s_plane[0]['contourData'][:, 2][0])
     for c in ctrs:
@@ -87,8 +92,8 @@ def expand_contour(contour_xy, distance):
 
 def calculate_contours_uncertainty(plane, distance):
     """Calculate the area of each contour for the given plane.
-        calculate both expanded and shrunken contours by a distance in mm
-       Additionally calculate and return the largest contour index.
+        calculate_integrate both expanded and shrunken contours by a distance in mm
+       Additionally calculate_integrate and return the largest contour index.
        :param plane: Plane Dictionary
        :param distance: distance in mm
        :return: Contours list and Largest index
@@ -126,9 +131,153 @@ def calculate_contours_uncertainty(plane, distance):
     return contours, largestIndex
 
 
-class StructurePaper(Structure):
+class StructurePaper:
     def __init__(self, dicom_structure, end_cap=False):
-        Structure.__init__(dicom_structure, end_cap)
+        self.structure = dicom_structure
+        self.end_cap = end_cap
+        self.contour_spacing = dicom_structure['thickness']
+        self.grid_spacing = np.zeros(3)
+        self.dose_lut = None
+        self.dose_grid_points = None
+        self.hi_res_structure = None
+        self.vol_lim = 100.0
+        self.dvh = np.array([])
+
+    @property
+    def name(self):
+        return self.structure['name']
+
+    # @poperty Fix python 2.7 compatibility but it is very ineficient
+    # @lazyproperty
+    @property
+    def planes(self):
+        # TODO improve end capping method
+        return get_capped_structure(self.structure, self.end_cap)
+
+    @property
+    def volume_original(self):
+        grid = [self.structure['thickness'], self.structure['thickness'], self.structure['thickness']]
+        vol_cc = self.calculate_volume(self.structure['planes'], grid)
+        return vol_cc
+
+    # @lazyproperty
+    @property
+    def volume_cc(self):
+        grid = [self.structure['thickness'], self.structure['thickness'], self.structure['thickness']]
+        vol_cc = self.calculate_volume(self.planes, grid)
+        return vol_cc
+
+    # Fix python 2.7 compatibility
+    # @lazyproperty
+    @property
+    def ordered_planes(self):
+        """
+            Return a 1D array from structure z planes coordinates
+        :return:
+        """
+        ordered_keys = [z for z in self.planes.keys()]
+        ordered_keys.sort(key=float)
+        return np.array(ordered_keys, dtype=float)
+
+    def up_sampling(self, lut_grid_3d, delta_mm):
+        """
+            Performas structure upsampling
+        :param lut_grid_3d: X,Y,Z grid (mm)
+        :param delta_mm: Voxel size in mm (dx,dy,dz)
+        :return: sPlanes oversampled, dose_grid_points, grid_delta, dose_lut
+
+        """
+        self.dose_grid_points, self.dose_lut, self.grid_spacing = get_dose_grid_3d(lut_grid_3d, delta_mm)
+        zi, dz = get_axis_grid(self.grid_spacing[2], self.ordered_planes)
+        self.grid_spacing[2] = dz
+        self.hi_res_structure = get_interpolated_structure_planes(self.planes, zi)
+
+        return self.hi_res_structure, self.dose_grid_points, self.grid_spacing, self.dose_lut
+
+    @staticmethod
+    def calculate_volume(structure_planes, grid_delta):
+        """Calculates the volume for the given structure.
+        :rtype: float
+        :param structure_planes: Structure planes dict
+        :param grid_delta: Voxel size (dx,dy,xz)
+        :return: Structure volume
+        """
+
+        ordered_keys = [z for z, sPlane in structure_planes.items()]
+        ordered_keys.sort(key=float)
+
+        # Store the total volume of the structure
+        sVolume = 0
+        n = 0
+        for z in ordered_keys:
+            sPlane = structure_planes[z]
+            # calculate_integrate contour areas
+            contours, largestIndex = calculate_contour_areas_numba(sPlane)
+            # See if the rest of the contours are within the largest contour
+            area = contours[largestIndex]['area']
+            for i, contour in enumerate(contours):
+                # Skip if this is the largest contour
+                if not (i == largestIndex):
+                    inside = check_contour_inside(contour['data'], contours[largestIndex]['data'])
+                    # If the contour is inside, subtract it from the total area
+                    if inside:
+                        area = area - contour['area']
+                    # Otherwise it is outside, so add it to the total area
+                    else:
+                        area = area + contour['area']
+
+            # If the plane is the first or last slice
+            # only add half of the volume, otherwise add the full slice thickness
+            if (n == 0) or (n == len(structure_planes) - 1):
+                sVolume = float(sVolume) + float(area) * float(grid_delta[2]) * 0.5
+            else:
+                sVolume = float(sVolume) + float(area) * float(grid_delta[2])
+            # Increment the current plane number
+            n += 1
+
+        # Since DICOM uses millimeters, convert from mm^3 to cm^3
+        volume = sVolume / 1000
+
+        return volume
+
+    def _prepare_data(self, grid_3d, upsample):
+        """
+            Prepare structure data to run DVH loop calculation
+        :param grid_3d: X,Y,Z grid coordinates (mm)
+        :param upsample: True/False
+        :return: sPlanes oversampled, dose_lut, dose_grid_points, grid_delta
+        """
+        if upsample:
+            # upsample only small size structures
+            # get structure slice Position
+            # set up-sample only small size structures
+            if self.volume_original < self.vol_lim:
+                # self._set_upsample_delta()
+                hi_resolution_structure, grid_ds, grid_delta, dose_lut = self.up_sampling(grid_3d, self.delta_mm)
+                dose_grid_points = grid_ds[:, :2]
+                return hi_resolution_structure, dose_lut, dose_grid_points, grid_delta
+
+            else:
+                return self._get_calculation_data(grid_3d)
+
+        else:
+            return self._get_calculation_data(grid_3d)
+
+    def _get_calculation_data(self, grid_3d):
+        """
+            Return all data need to calculate_integrate DVH without up-sampling
+        :param grid_3d: X,Y,Z grid coordinates (mm)
+        :return: sPlanes, dose_lut, dose_grid_points, grid_delta
+        """
+        dose_lut = [grid_3d[0], grid_3d[1]]
+        dose_grid_points = get_dose_grid(dose_lut)
+        x_delta = abs(grid_3d[0][0] - grid_3d[0][1])
+        y_delta = abs(grid_3d[1][0] - grid_3d[1][1])
+        # get structure slice Position
+        # ordered_z = self.ordered_planes
+        z_delta = self.structure['thickness']
+        grid_delta = [x_delta, y_delta, z_delta]
+        return self.planes, dose_lut, dose_grid_points, grid_delta
 
     def calc_boundary_gradient(self, dicom_dose, kind='max-min', up_sample=False, factor=1):
         print(' ----- Boundary Gradient Calculation -----')
@@ -194,7 +343,7 @@ class StructurePaper(Structure):
 
 def calc_gradient_pp(structure, dicom_dose, kind='max', factor=1):
     """
-        Helper function to calculate the structure average boundary gradient difference (cGy)
+        Helper function to calculate_integrate the structure average boundary gradient difference (cGy)
     :param structure: Structure Dict
     :param dicom_dose: RR-DOSE - ScoringDicomParser object
     :return:
@@ -210,7 +359,7 @@ def calc_gradient_pp(structure, dicom_dose, kind='max', factor=1):
 
 def calc_dvh_uncertainty(rd, rs, kind, factor):
     """
-        Helper function to calculate using multiprocessing the average gradient
+        Helper function to calculate_integrate using multiprocessing the average gradient
     :param rd: Path do DICOM-RTDOSE file
     :param rs: Path do DICOM-Structure file
     :return: Pandas Dataframe with estimated uncertainty on maximum dose (cGy)
@@ -219,14 +368,114 @@ def calc_dvh_uncertainty(rd, rs, kind, factor):
     dicom_dose = ScoringDicomParser(filename=rd)
     structures = rtss.GetStructures()
 
+    snames = [  # 'PTV70',
+        # 'PTV63',
+        # 'PTV56',
+        # 'OPTIC CHIASM',
+        # 'OPTIC CHIASM PRV',
+        # 'OPTIC N. RT',
+        # 'OPTIC N. RT PRV',
+        # 'OPTIC N. LT',
+        # 'OPTIC N. LT PRV',
+        # 'EYE RT',
+        # 'EYE LT',
+        # 'LENS RT',
+        # 'LENS LT',
+        # 'BRAINSTEM',
+        # 'BRAINSTEM PRV',
+        'SPINAL CORD',
+        'SPINAL CORD PRV',
+        # 'PAROTID LT',
+        # 'LIPS',
+        # 'POST NECK',
+        # 'ORAL CAVITY',
+        # 'LARYNX',
+        # 'BRACHIAL PLEXUS',
+        # 'ESOPHAGUS']
+    ]
     res = Parallel(n_jobs=-1, verbose=11)(
         delayed(calc_gradient_pp)(structure, dicom_dose, kind, factor) for key, structure in structures.items()
-        if structure['name'] not in ['BODY'])
+        if structure['name'] in snames)
 
     return pd.DataFrame(res, columns=['name', 'mean', 'std', 'median'])
 
 
-if __name__ == '__main__':
-    rs = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\scoring_report\dicom_files\RS.1.2.246.352.71.4.584747638204.248648.20170123083029.dcm'
+def calc_batch_unc():
+    rs = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/RS.1.2.246.352.71.4.584747638204.253443.20170222200317.dcm'
+    sc = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/Scoring Criteria.txt'
+    constrains, scores, criteria_df = read_scoring_criteria(sc)
 
-    rs_obj = ScoringDicomParser(filename=rs)
+    structures = ScoringDicomParser(filename=rs).GetStructures()
+    # calculation_options = {}
+
+    criteria_structure_names, names_dcm = get_matched_names(criteria_df.index.unique(), structures)
+    structure_names = criteria_structure_names
+
+    root_path = '/media/victor/TOURO Mobile/COMPETITION 2017/final_plans/ECLIPSE'
+    cmp = CompareDVH(root=root_path, rs_file=rs)
+    folder_data = cmp.set_folder_data()
+
+    res = []
+    for k, val in folder_data.items():
+        try:
+            df = calc_dvh_uncertainty(val[2], rs, 'max', factor=0.5)
+            tmp = df['mean'].copy()
+            tmp.index = df['name']
+            res.append(tmp)
+        except:
+            print('error')
+    df_res = pd.concat(res, axis=1)
+
+
+def save_all_unc():
+    root_path = '/media/victor/TOURO Mobile/COMPETITION 2017/final_plans/ECLIPSE'
+    boundary_unc_path = os.path.join(root_path, 'Boundary_unceratinty_data.cmp')
+    df = load1(boundary_unc_path)
+
+    plt.style.use('ggplot')
+    dest = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/tests_paper/boundary_gradient'
+    for row in df.iterrows():
+        fig, ax = plt.subplots()
+        row[1].plot(ax=ax, kind='hist')
+        ax.set_xlabel('Mean boundary gradient [cGy]')
+        ax.set_title(row[0])
+        fig_name = row[0] + '_mean_boundary_gradient.png'
+        fig.savefig(os.path.join(dest, fig_name), format='png', dpi=100)
+        plt.close('all')
+
+
+if __name__ == '__main__':
+    rs = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\pyplanscoring\RS.1.2.246.352.71.4.584747638204.253443.20170222200317.dcm'
+    rs_dcm = ScoringDicomParser(filename=rs)
+
+    structures = rs_dcm.GetStructures()
+    structure = structures[7]
+    splanes = structure['planes']
+    s_plane = splanes['34.50']
+    plot_plane_contours_gradient(s_plane, "Brainstem", save_fig=False)
+
+
+
+    # sc = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/Scoring Criteria.txt'
+    # constrains, scores, criteria_df = read_scoring_criteria(sc)
+    #
+    # structures = ScoringDicomParser(filename=rs).get_structures()
+    # # calculation_options = {}
+    #
+    # criteria_structure_names, names_dcm = get_matched_names(criteria_df.index.unique(), structures)
+    # structure_names = criteria_structure_names
+    #
+    # root_path = '/media/victor/TOURO Mobile/COMPETITION 2017/final_plans/ECLIPSE'
+    # cmp = CompareDVH(root=root_path, rs_file=rs)
+    # folder_data = cmp.set_folder_data()
+    #
+    # res = []
+    # for k, val in folder_data.items():
+    #     try:
+    #         df = calc_dvh_uncertainty(val[2], rs, 'max', factor=0.5)
+    #         tmp = df['mean'].copy()
+    #         tmp.index = df['name']
+    #         res.append(tmp)
+    #     except:
+    #         print('error')
+    # df_res = pd.concat(res, axis=1)

@@ -437,17 +437,17 @@ class DicomParser(object):
                 if "DVHMinimumDose" in item:
                     dvhitem['min'] = item.DVHMinimumDose
                 else:
-                    # save the min dose as -1 so we can calculate it later
+                    # save the min dose as -1 so we can calculate_integrate it later
                     dvhitem['min'] = -1
                 if "DVHMaximumDose" in item:
                     dvhitem['max'] = item.DVHMaximumDose
                 else:
-                    # save the max dose as -1 so we can calculate it later
+                    # save the max dose as -1 so we can calculate_integrate it later
                     dvhitem['max'] = -1
                 if "DVHMeanDose" in item:
                     dvhitem['mean'] = item.DVHMeanDose
                 else:
-                    # save the mean dose as -1 so we can calculate it later
+                    # save the mean dose as -1 so we can calculate_integrate it later
                     dvhitem['mean'] = -1
                 self.dvhs[number] = dvhitem
 
@@ -1072,17 +1072,17 @@ class ScoringDicomParser(DicomParser):
                 if "DVHMinimumDose" in item:
                     dvhitem['min'] = float(item.DVHMinimumDose) * cGy
                 else:
-                    # save the min dose as -1 so we can calculate it later
+                    # save the min dose as -1 so we can calculate_integrate it later
                     dvhitem['min'] = -1
                 if "DVHMaximumDose" in item:
                     dvhitem['max'] = float(item.DVHMaximumDose) * cGy
                 else:
-                    # save the max dose as -1 so we can calculate it later
+                    # save the max dose as -1 so we can calculate_integrate it later
                     dvhitem['max'] = -1
                 if "DVHMeanDose" in item:
                     dvhitem['mean'] = float(item.DVHMeanDose) * cGy
                 else:
-                    # save the mean dose as -1 so we can calculate it later
+                    # save the mean dose as -1 so we can calculate_integrate it later
                     dvhitem['mean'] = -1
                 self.dvhs[number] = dvhitem
 
@@ -1272,10 +1272,12 @@ class ScoringDicomParser(DicomParser):
         return beams
 
     def GetDoseData(self):
-        """Return the dose data from a DICOM RT Dose file."""
+        """Return the dose data from a DICOM RT Dose file.
+            DoseUnits - cGy
+        """
 
         data = self.GetImageData()
-        data['doseunits'] = self.ds.DoseUnits
+        data['doseunits'] = 'cGy'
         data['dosetype'] = self.ds.DoseType
         data['dosesummationtype'] = self.ds.DoseSummationType
         data['dosegridscaling'] = self.ds.DoseGridScaling

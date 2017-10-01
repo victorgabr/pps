@@ -70,13 +70,13 @@ def get_dvh(structure, dose, limit=None, callback=None):
     dvhdata['doseunits'] = 'GY'
     dvhdata['volumeunits'] = 'CM3'
     dvhdata['scaling'] = 1
-    # save the min dose as -1 so we can calculate it later
+    # save the min dose as -1 so we can calculate_integrate it later
     # dvhdata['min'] = -1
     dvhdata['min'] = get_dvh_min(dvh)
-    # save the max dose as -1 so we can calculate it later
+    # save the max dose as -1 so we can calculate_integrate it later
     # dvhdata['max'] = -1
     dvhdata['max'] = get_dvh_max(dvh)
-    # save the mean dose as -1 so we can calculate it later
+    # save the mean dose as -1 so we can calculate_integrate it later
     # dvhdata['mean'] = -1
     dvhdata['mean'] = get_dvh_mean(dvh)
     return dvhdata
@@ -99,13 +99,13 @@ def get_dvh_pp(structure, dose, key, limit=None, callback=None):
     dvhdata['doseunits'] = 'GY'
     dvhdata['volumeunits'] = 'CM3'
     dvhdata['scaling'] = 1
-    # save the min dose as -1 so we can calculate it later
+    # save the min dose as -1 so we can calculate_integrate it later
     # dvhdata['min'] = -1
     dvhdata['min'] = get_dvh_min(dvh)
-    # save the max dose as -1 so we can calculate it later
+    # save the max dose as -1 so we can calculate_integrate it later
     # dvhdata['max'] = -1
     dvhdata['max'] = get_dvh_max(dvh)
-    # save the mean dose as -1 so we can calculate it later
+    # save the mean dose as -1 so we can calculate_integrate it later
     # dvhdata['mean'] = -1
     dvhdata['mean'] = get_dvh_mean(dvh)
     return dvhdata
@@ -126,11 +126,11 @@ def get_dvh_numba(structure, dose, limit=None, callback=None):
     dvhdata['doseunits'] = 'GY'
     dvhdata['volumeunits'] = 'CM3'
     dvhdata['scaling'] = 1
-    # save the min dose as -1 so we can calculate it later
+    # save the min dose as -1 so we can calculate_integrate it later
     dvhdata['min'] = -1
-    # save the max dose as -1 so we can calculate it later
+    # save the max dose as -1 so we can calculate_integrate it later
     dvhdata['max'] = -1
-    # save the mean dose as -1 so we can calculate it later
+    # save the mean dose as -1 so we can calculate_integrate it later
     dvhdata['mean'] = -1
     return dvhdata
 
@@ -214,7 +214,7 @@ def calculate_dvh(structure, dose, limit=None, callback=None):
         plane += 1
         if not (callback is None):
             callback(plane, len(sPlanes))
-    # Volume units are given in cm^3
+    # volume units are given in cm^3
     volume /= 1000
     # Rescale the histogram to reflect the total volume
     hist = hist * volume / sum(hist)
@@ -302,7 +302,7 @@ def calculate_dvh_numba(structure, dose, limit=None, callback=None):
         plane += 1
         if not (callback == None):
             callback(plane, len(sPlanes))
-    # Volume units are given in cm^3
+    # volume units are given in cm^3
     volume = volume / 1000
     # Rescale the histogram to reflect the total volume
     hist = hist * volume / sum(hist)
@@ -314,7 +314,7 @@ def calculate_dvh_numba(structure, dose, limit=None, callback=None):
 
 def calculate_contour_areas(plane):
     """Calculate the area of each contour for the given plane.
-       Additionally calculate and return the largest contour index."""
+       Additionally calculate_integrate and return the largest contour index."""
 
     # Calculate the area for each contour in the current plane
     contours = []
@@ -402,7 +402,7 @@ def main():
     except ImportError:
         has_pylab = False
 
-    # Read the example RT structure and RT dose files
+    # read the example RT structure and RT dose files
     # The testdata was downloaded from the dicompyler website as testdata.zip
     rtss = dicomparser.DicomParser(filename=r"C:\Users\Victor\Dropbox\Plan_Competition_Project\testdata\rtss.dcm")
     rtdose = dicomparser.DicomParser(filename=r"C:\Users\Victor\Dropbox\Plan_Competition_Project\testdata\rtdose.dcm")
@@ -417,8 +417,8 @@ def main():
         calcdvhs[key] = get_dvh(structure, rtdose)
 
     # Compare the calculated and original DVH volume for each structure
-    print('\nStructure Name\t\t' + 'Original Volume\t\t' + \
-          'Calculated Volume\t' + 'Percent Difference')
+    print('\nStructure Name\t\t' + 'Original volume\t\t' + \
+          'Calculated volume\t' + 'Percent Difference')
     print('--------------\t\t' + '---------------\t\t' + \
           '-----------------\t' + '------------------')
     for key, structure in iter(structures.items()):

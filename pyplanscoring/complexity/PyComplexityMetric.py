@@ -18,6 +18,7 @@ class PyEdgeMetricBase(EdgeMetricBase):
 
 class PyComplexityMetric(ComplexityMetric):
     # TODO add unit tests
+
     def CalculateForPlan(self, patient=None, plan=None):
         """
             Returns the complexity metric of a plan, calculated as
@@ -211,24 +212,24 @@ class ModulationComplexityScore(PyComplexityMetric):
 
 
 class ModulationIndexScore(PyComplexityMetric):
-    def CalculateForPlan(self, patient=None, plan=None):
+    def CalculateForPlan(self, patient=None, plan=None, k=0.02):
         apertures = []
-        cum_metersets = []
+        cumulative_metersets = []
         meterset_creator = PyMetersetsFromMetersetWeightsCreator()
         for k, beam in plan['beams'].items():
             apertures += PyAperturesFromBeamCreator().Create(beam)
             cum = meterset_creator.GetCumulativeMetersets(beam)
-            cum_metersets.append(cum)
+            cumulative_metersets.append(cum)
 
-        cumulative_mu = np.concatenate(cum_metersets)
+        cumulative_mu = np.concatenate(cumulative_metersets)
         mid = ModulationIndexTotal(apertures, cumulative_mu)
-        return mid.calculate_integrate(k=.5)
+        return mid.calculate_integrate(k=k)
 
-    def CalculateForBeam(self, patient, plan, beam):
+    def CalculateForBeam(self, patient, plan, beam, k=0.02):
         apertures = PyAperturesFromBeamCreator().Create(beam)
         cumulative_metersets = PyMetersetsFromMetersetWeightsCreator().GetCumulativeMetersets(beam)
         mid = ModulationIndexTotal(apertures, cumulative_metersets)
-        return mid.calculate_integrate(k=.5)
+        return mid.calculate_integrate(k=k)
 
 
 class ModulationIndexTotal:
@@ -256,7 +257,8 @@ class ModulationIndexTotal:
         self.gantry['gantry_acc'] = self.gantry['delta_gantry_speed'] / self.cumulative_mu['time']
 
         # dose rate data
-        self.dose_rate = pd.DataFrame(self.cumulative_mu['delta_mu'] / self.cumulative_mu['time'], columns=['DR'])
+        self.dose_rate = pd.DataFrame(
+            self.cumulative_mu['delta_mu'] / self.cumulative_mu['time'], columns=['DR'])
         self.dose_rate['delta_dose_rate'] = self.dose_rate.diff().abs()
 
     def get_mu_data(self, cumulative_mu):
@@ -319,10 +321,10 @@ class ModulationIndexTotal:
 
         z_total = lambda f: (1 / (self.Ncp - 2)) * \
                             np.nansum(np.nansum(np.logical_or(mlc_speed > f * speed_std,
-                                                              mlc_acc > alpha * f * mlc_acc_std), axis=1)
-                                      * WGA * WMU)
+                                                              mlc_acc > alpha * f * mlc_acc_std), axis=1) * WGA * WMU)
 
         res = integrate.quad(z_total, 0, k)
+
         return res[0]
 
     def calculate_integrate(self, k=1.0, beta=2.0, alpha=2.0):
@@ -379,13 +381,13 @@ class ModulationIndexTotal:
         tmp = mask_acc_mi.multiply(WGA, axis='index').multiply(WMU, axis='index')
         Mti = tmp.sum().sum() / (self.Ncp - 2)
 
-        return z_acc, z_acc, Mti
+        return z_speed, z_acc, Mti
 
 
 if __name__ == '__main__':
     from pyplanscoring.complexity.dicomrt import RTPlan
 
-    plan_file = r'D:\Dropbox\Plan_Competition_Project\competition_2017\plans\plans\Victor Alves 3180\RP.2017-PlanComp.Plano2.dcm'
+    plan_file = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/plans/Victor Alves 3180/RD.2017-PlanComp.Dose_PLAN.dcm'
     plan_info = RTPlan(filename=plan_file)
     plan_dict = plan_info.get_plan()
     # test beam creator
@@ -393,5 +395,3 @@ if __name__ == '__main__':
 
     apertures = PyAperturesFromBeamCreator().Create(beam)
     aperture = apertures[0]
-
-    metric = ApertureIrregularityMetric()
