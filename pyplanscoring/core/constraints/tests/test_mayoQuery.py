@@ -1,9 +1,11 @@
 from unittest import TestCase
 
-from pyplanscoring.core.constraints.query import MayoQueryReader, QueryExtensions
+import pytest
+
+from pyplanscoring.core.constraints.query import MayoQueryReader, MayoQuery
 
 # initialize mayo query
-q_obj = QueryExtensions()
+q_obj = MayoQuery()
 
 
 class TestMayoQuery(TestCase):
@@ -11,12 +13,21 @@ class TestMayoQuery(TestCase):
         # Dose at % volume Gy
         query = 'D90%[Gy]'
         q_obj.read(query)
+        with pytest.raises(ValueError):
+            query = 'D90[Gy]'
+            q_obj.read(query)
 
     def test_to_string(self):
         query0 = 'D90%[Gy]'
         q_obj.read(query0)
 
         assert q_obj.to_string() == query0
+        assert str(q_obj) == 'D90%[Gy]'
+
+    def test_query(self):
+        query0 = 'D90%[Gy]'
+        q_obj.read(query0)
+        assert isinstance(q_obj.query, MayoQuery)
 
 
 def test_MayoQueryReader():

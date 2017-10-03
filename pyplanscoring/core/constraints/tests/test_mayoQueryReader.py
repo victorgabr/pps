@@ -1,5 +1,7 @@
 from unittest import TestCase
 
+import pytest
+
 from pyplanscoring.core.constraints.query import MayoQueryReader
 
 # instantiate the MayoReader class
@@ -84,6 +86,9 @@ class TestMayoQueryReader(TestCase):
         assert rd.read_query_type('Max[Gy]') == 6
         assert rd.read_query_type('CI[Gy]') == 7
         assert rd.read_query_type('HI[Gy]') == 8
+
+        with pytest.raises(ValueError):
+            rd.read_query_type('IC[Gy]')
 
     def test_read_query_units(self):
         # test units

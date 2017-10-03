@@ -140,36 +140,6 @@ class DICOMType:
     EXTERNAL = "EXTERNAL"
 
 
-class DVHPoints:
-    def __init__(self, dose, dose_unit, volume, volume_unit):
-        """
-        :param dose: DoseValue
-        :param dose_unit:
-        :param volume: float volume
-        :param volume_unit: string volume_unit
-        """
-        self._dose = dose
-        self._dose_unit = dose_unit
-        self._volume = volume
-        self._volume_unit = volume_unit
-
-    @property
-    def dose_value(self):
-        return self._dose
-
-    @property
-    def dose_unit(self):
-        return self._dose_unit
-
-    @property
-    def volume(self):
-        return self._volume
-
-    @property
-    def volume_unit(self):
-        return self._volume_unit
-
-
 class DVHData:
     def __init__(self, dvh):
         self.dvh = dvh
@@ -707,16 +677,3 @@ class StructureBase:
            Additionally calculate_integrate and return the largest contour index."""
 
         return NotImplementedError
-
-
-if __name__ == '__main__':
-    from pyplanscoring.core.dicomparser import ScoringDicomParser
-
-    filename = r'D:\Dropbox\Plan_Competition_Project\competition_2017\plans\plans\Victor Alves 3180\RP.2017-PlanComp.Plano2.dcm'
-    rs = r'D:\Dropbox\Plan_Competition_Project\competition_2017\plans\plans\Victor Alves 3180\RS.2017-PlanComp.dcm'
-    rd = r'D:\Dropbox\Plan_Competition_Project\competition_2017\plans\plans\Victor Alves 3180\RD.2017-PlanComp.Dose_PLAN.dcm'
-    rp_dcm = ScoringDicomParser(filename=filename)
-    rs_dcm = ScoringDicomParser(filename=rs)
-    rd_dcm = ScoringDicomParser(filename=rd)
-    plan = rp_dcm.GetPlan()
-    dd = rd_dcm.GetDoseData()

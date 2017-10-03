@@ -2,7 +2,6 @@ from __future__ import division
 
 import logging
 
-import numba as nb
 import pandas as pd
 from scipy.interpolate import RegularGridInterpolator, interp1d
 
@@ -759,44 +758,6 @@ class Patient(object):
     def __cmp__(self, other):
         if hasattr(other, 'creation_time'):
             return self.creation_time.__cmp__(other.creation_time)
-
-
-@nb.jit('UniTuple(float64[:], 2)(float64[:,:],int64,int64,float64[:],float64[:],float64[:],float64[:])')
-def get_transform_matrix(m, Rows, Columns, x, y, ix, jy):
-    mx = np.array([[0], [0.0], [0.0], [1.0]])
-    my = np.array([[0.0], [0.0], [0.0], [1.0]])
-    for i in range(0, Columns):
-        vx = ix[i]
-        mx[0] = vx
-        imat = np.dot(m, mx)
-        x[i] = imat[0][0]
-    for j in range(0, Rows):
-        vy = jy[j]
-        my[1] = vy
-        jmat = np.dot(m, my)
-        y[j] = jmat[1][0]
-
-    return x, y
-
-
-def pix_lut_numba(ds):
-    di = ds.PixelSpacing[0]
-    dj = ds.PixelSpacing[1]
-    orientation = ds.ImageOrientationPatient
-    position = ds.ImagePositionPatient
-
-    m = np.array(
-        [[orientation[0] * di, orientation[3] * dj, 0, position[0]],
-         [orientation[1] * di, orientation[4] * dj, 0, position[1]],
-         [orientation[2] * di, orientation[5] * dj, 0, position[2]],
-         [0, 0, 0, 1]])
-
-    x = np.zeros(ds.Columns, dtype=float)
-    y = np.zeros(ds.Rows, dtype=float)
-    ix = np.arange(0, ds.Columns).astype(float)
-    jy = np.arange(0, ds.Rows).astype(float)
-    x, y = get_transform_matrix(m, ds.Rows, ds.Columns, x, y, ix, jy)
-    return x, y
 
 
 class ScoringDicomParser(DicomParser):

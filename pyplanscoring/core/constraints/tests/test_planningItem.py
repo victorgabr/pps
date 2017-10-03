@@ -14,7 +14,7 @@ DATA_DIR = os.path.join(
     'test_data',
 )
 
-DATA_DIR = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\core\constraints\tests\test_data'
+# DATA_DIR = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\core\constraints\tests\test_data'
 
 rp = os.path.join(DATA_DIR, 'RP.dcm')
 rs = os.path.join(DATA_DIR, 'RS.dcm')
@@ -89,11 +89,18 @@ class TestPlanningItem(TestCase):
         ap = pi.approval_status
         self.assertEqual(ap, "UNAPPROVED")
 
+    def test_plan(self):
+        assert pi.plan
+
+    def test_dose_data(self):
+        assert pi.dose_data
+
     def test_beams(self):
         # test property beams
         assert len(pi.beams) > 0
 
     def test_dose_value_presentation(self):
+        pi = PlanningItem(rp_dcm, rs_dcm, rd_dcm)
         assert pi.dose_value_presentation == 1
 
     def test_total_prescribed_dose(self):

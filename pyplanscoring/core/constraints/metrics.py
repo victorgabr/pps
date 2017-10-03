@@ -36,6 +36,10 @@ class PlanningItem:
         return self._plan
 
     @property
+    def dose_data(self):
+        return self._dose_data
+
+    @property
     def approval_status(self):
         txt = self._rp_dcm.ds.ApprovalStatus if 'ApprovalStatus' in self._rp_dcm.ds else ''
         return txt
@@ -47,11 +51,11 @@ class PlanningItem:
     @property
     def dose_value_presentation(self):
         dv = self._rd_dcm.ds.DoseUnits if 'DoseUnits' in self._rd_dcm.ds else ''
-        if not dv:
+        if not dv:  # pragma: no cover
             return DoseValuePresentation.Unknown
         if dv == 'GY':
             return DoseValuePresentation.Absolute
-        else:
+        else:  # pragma: no cover
             return DoseValuePresentation.Relative
 
     @property

@@ -11,7 +11,7 @@ DATA_DIR = os.path.join(
     'test_data',
 )
 
-DATA_DIR = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\core\constraints\tests\test_data'
+# DATA_DIR = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\core\constraints\tests\test_data'
 
 rs = os.path.join(DATA_DIR, 'RS.dcm')
 rs_dcm = ScoringDicomParser(filename=rs)

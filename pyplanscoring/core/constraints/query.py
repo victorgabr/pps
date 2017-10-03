@@ -85,7 +85,7 @@ class MayoQuery:
     def __str__(self):
         return self.to_string()
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return self.to_string()
 
 
@@ -155,8 +155,7 @@ class MayoQueryReader:
         :return: Mayo Query object
         """
         if not self.is_valid(query):
-            print('Not a valid Mayo format')
-            raise ValueError
+            raise ValueError('Not a valid Mayo format')
 
         mq = MayoQuery()
         mq.query_type = self.read_query_type(query)
@@ -199,8 +198,7 @@ class MayoQueryReader:
         """
         match = re.search(MayoRegex.QueryType, query)
         if not match:
-            print('Not a valid query type: %s' % query)
-            raise TypeError
+            raise ValueError('Not a valid query type: %s' % query)
 
         switcher = {"DC": QueryType.DOSE_COMPLIMENT,
                     "V": QueryType.VOLUME_AT_DOSE,
@@ -435,20 +433,22 @@ class QueryExtensions(MayoQuery):
 
     @staticmethod
     def query_ci(pi, query, target_structure_name):
-        ''' var external = pi.GetStructureSet()?.Structures.FirstOrDefault(st => st.DicomType == DICOMType.EXTERNAL);
-            if (external == null) { return double.NaN; }
-            var prescription_volIsodose = pi.GetVolumeAtDose(external, referenceDose, VolumePresentation.AbsoluteCm3);
-            var target_volIsodose = pi.GetVolumeAtDose(s, referenceDose, VolumePresentation.AbsoluteCm3);
-            var target_vol = s.Volume;
-            return (target_volIsodose * target_volIsodose) / (target_vol * prescription_volIsodose);'''
-
+        """
+            Calculates the Paddick conformity index (PMID 11143252) as Paddick CI = (TVPIV)2 / (TV x PIV).
+            TVPIV = Target volume covered by Prescription Isodose volume
+            TV = Target volume
+        :param pi:
+        :param query:
+        :param target_structure_name:
+        :return:
+        """
         external = None
         for k, v in pi.structures.items():
             if v['RTROIType'] == DICOMType.EXTERNAL:
                 external = v
                 break
 
-        if external is None:
+        if external is None:  # pragma: no cover
             return None
 
         target_structure = pi.get_structure(target_structure_name)
