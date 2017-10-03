@@ -12,7 +12,7 @@ DATA_DIR = os.path.join(
     'test_data',
 )
 
-# DATA_DIR = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\core\constraints\tests\test_data'
+# DATA_DIR = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\pyplanscoring\core\constraints\tests\test_data'
 
 rp = os.path.join(DATA_DIR, 'RP.dcm')
 rs = os.path.join(DATA_DIR, 'RS.dcm')
@@ -24,7 +24,7 @@ rd_dcm = ScoringDicomParser(filename=rd)
 
 # initializing the objects
 dvh_all = rd_dcm.GetDVHs()
-dvh = dvh_all[61] = DVHData(dvh_all[61])
+dvh = DVHData(dvh_all[61])
 rd = QueryExtensions()
 
 pi = PlanningItem(rp_dcm, rs_dcm, rd_dcm)

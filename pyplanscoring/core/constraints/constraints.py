@@ -281,7 +281,7 @@ class DoseAtVolumeConstraint(DoseStructureConstraint):
         d_pres = self.constraint_dose.get_presentation()
         v_pres = self.volume_type
         dose_at_vol = pi.get_dose_at_volume(self.structure_name,
-                                            self.volume_type,
+                                            self.volume,
                                             v_pres,
                                             d_pres)
         return dose_at_vol
@@ -311,7 +311,7 @@ class MaxDoseAtVolConstraint(DoseAtVolumeConstraint):
         dose = ('%f' % dose).rstrip('0').rstrip('.')
         return 'D%s%s[%s] <= %s' % (vol, vol_unit, dose_unit, dose)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
 
@@ -324,14 +324,14 @@ class MinDoseAtVolConstraint(DoseAtVolumeConstraint):
 
     def __str__(self):
         # Mayo format
-        vol = ('%f' % self.volume).rstrip('0').rstrip('.')
+        vol = ('%1.3f' % self.volume).rstrip('0').rstrip('.')
         vol_unit = 'cc' if self.volume_type == VolumePresentation.absolute_cm3 else '%'
         dose_unit = self.constraint_dose.unit.symbol
         dose = self.constraint_dose.value
         dose = ('%f' % dose).rstrip('0').rstrip('.')
         return 'D%s%s[%s] >= %s' % (vol, vol_unit, dose_unit, dose)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
 
@@ -375,11 +375,11 @@ class ComplimentDoseAtVolumeConstraint(DoseStructureConstraint):
         """
         d_pres = self.constraint_dose.get_presentation()
         v_pres = self.volume_type
-        dose_at_vol = pi.get_dose_compliment_at_volume(self.structure_name,
-                                                       self.volume_type,
-                                                       v_pres,
-                                                       d_pres)
-        return dose_at_vol
+        dc_at_vol = pi.get_dose_compliment_at_volume(self.structure_name,
+                                                     self.volume,
+                                                     v_pres,
+                                                     d_pres)
+        return dc_at_vol
 
     def constrain(self, pi):
         dc_at_vol = self.get_dose_compliment_at_volume(pi)
@@ -402,14 +402,14 @@ class MaxComplimentDoseAtVolumeConstraint(ComplimentDoseAtVolumeConstraint):
 
     def __str__(self):
         # Mayo format
-        vol = ('%f' % self.volume).rstrip('0').rstrip('.')
+        vol = ('%1.3f' % self.volume).rstrip('0').rstrip('.')
         vol_unit = 'cc' if self.volume_type == VolumePresentation.absolute_cm3 else '%'
         dose_unit = self.constraint_dose.unit.symbol
         dose = self.constraint_dose.value
         dose = ('%f' % dose).rstrip('0').rstrip('.')
         return 'DC%s%s[%s] <= %s' % (vol, vol_unit, dose_unit, dose)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
 
@@ -429,7 +429,7 @@ class MinComplimentDoseAtVolumeConstraint(ComplimentDoseAtVolumeConstraint):
         dose = ('%f' % dose).rstrip('0').rstrip('.')
         return 'DC%s%s[%s] >= %s' % (vol, vol_unit, dose_unit, dose)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
 
@@ -493,14 +493,14 @@ class MinVolAtDoseConstraint(VolumeAtDoseConstraint):
 
     def __str__(self):
         # Mayo format
-        vol = ('%f' % self.volume).rstrip('0').rstrip('.')
+        vol = ('%1.3f' % self.volume).rstrip('0').rstrip('.')
         vol_unit = 'cc' if self.volume_type == VolumePresentation.absolute_cm3 else '%'
         dose_unit = self.constraint_dose.unit.symbol
         dose = self.constraint_dose.value
         dose = ('%f' % dose).rstrip('0').rstrip('.')
         return 'V%s%s[%s] >= %s' % (dose, dose_unit, vol_unit, vol)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
 
@@ -513,14 +513,14 @@ class MaxVolAtDoseConstraint(VolumeAtDoseConstraint):
 
     def __str__(self):
         # Mayo format
-        vol = ('%f' % self.volume).rstrip('0').rstrip('.')
+        vol = ('%1.3f' % self.volume).rstrip('0').rstrip('.')
         vol_unit = 'cc' if self.volume_type == VolumePresentation.absolute_cm3 else '%'
         dose_unit = self.constraint_dose.unit.symbol
         dose = self.constraint_dose.value
         dose = ('%f' % dose).rstrip('0').rstrip('.')
         return 'V%s%s[%s] <= %s' % (dose, dose_unit, vol_unit, vol)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
 
@@ -584,14 +584,14 @@ class MinComplimentVolumeAtDose(ComplimentVolumeAtDoseConstraint):
 
     def __str__(self):
         # Mayo format
-        vol = ('%f' % self.volume).rstrip('0').rstrip('.')
+        vol = ('%1.3f' % self.volume).rstrip('0').rstrip('.')
         vol_unit = 'cc' if self.volume_type == VolumePresentation.absolute_cm3 else '%'
         dose_unit = self.constraint_dose.unit.symbol
         dose = self.constraint_dose.value
         dose = ('%f' % dose).rstrip('0').rstrip('.')
         return 'CV%s%s[%s] >= %s' % (dose, dose_unit, vol_unit, vol)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
 
@@ -611,7 +611,7 @@ class MaxComplimentVolumeAtDose(ComplimentVolumeAtDoseConstraint):
         dose = ('%f' % dose).rstrip('0').rstrip('.')
         return 'CV%s%s[%s] <= %s' % (dose, dose_unit, vol_unit, vol)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
 
@@ -636,7 +636,7 @@ class MaxDoseConstraint(DoseStructureConstraint):
         dose_str = ('%f' % dose).rstrip('0').rstrip('.')
         return 'Max[%s] <= %s' % (dose_unit, dose_str)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
 
@@ -661,7 +661,7 @@ class MinDoseConstraint(DoseStructureConstraint):
         dose_str = ('%f' % dose).rstrip('0').rstrip('.')
         return 'Min[%s] >= %s' % (dose_unit, dose_str)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
 
@@ -686,7 +686,7 @@ class MinMeanDoseConstraint(DoseStructureConstraint):
         dose = ('%f' % dose).rstrip('0').rstrip('.')
         return 'Mean[%s] >= %s' % (dose_unit, dose)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
 
@@ -711,79 +711,7 @@ class MaxMeanDoseConstraint(DoseStructureConstraint):
         dose = ('%f' % dose).rstrip('0').rstrip('.')
         return 'Mean[%s] <= %s' % (dose_unit, dose)
 
-    def __repr__(self):
-        return self.__str__()
-
-
-class StructureNameConstraint:
-    def __init__(self):
-        super().__init__()
-        self._regex = ''
-        self._structure_name = ''
-
-    @property
-    def regex(self):
-        return self._regex
-
-    @regex.setter
-    def regex(self, value):
-        self._regex = value
-
-    @property
-    def structure_name(self):
-        return self._structure_name
-
-    @structure_name.setter
-    def structure_name(self, value):
-        self._structure_name = value
-
-    @property
-    def name(self):
-        return self.structure_name + ' required'
-
-    @property
-    def full_name(self):
-        return self.name
-
-    def can_constrain(self, pi):
-        """
-
-        :param pi: class PlanItem
-        :return: ConstraintResult
-        """
-        message = ''
-        valid = True
-        if not pi.plan:
-            message = 'Plan is None'
-            valid = False
-
-        # Check structure exists
-        valid = valid and pi.get_structures() != {}
-        if not valid:
-            message = "No structure set in {pi.Id}"
-
-        return ConstraintResult(self, ResultType.NOT_APPLICABLE, message)
-
-    def constrain(self, pi):
-
-        msg = ''
-        structure = pi.get_structure(self.structure_name, self.regex)
-        passed = ResultType.ACTION_LEVEL_1
-
-        if structure is not None:
-            passed = ResultType.PASSED
-            msg = 'contains structure %s' % self.structure_name
-
-            if structure.volume_original < 0.0001:
-                passed = ResultType.ACTION_LEVEL_1
-                msg = "%s is empty" % self.structure_name
-
-        return ConstraintResult(self, passed, msg)
-
-    def __str__(self):
-        return "Required Structure %s" % self.structure_name
-
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
 
@@ -1010,7 +938,7 @@ class MayoConstraintConverter:
         min_dv.constraint_dose = dv
         min_dv.structure_name = structure_name
         min_dv.priority = priority
-        min_dv.volume = volume
+        min_dv.volume = volume * volume_unit
         min_dv.volume_type = volume_unit
 
         # constraint classes
@@ -1018,7 +946,7 @@ class MayoConstraintConverter:
         max_dv.constraint_dose = dv
         max_dv.structure_name = structure_name
         max_dv.priority = priority
-        max_dv.volume = volume
+        max_dv.volume = volume * volume_unit
         max_dv.volume_type = volume_unit
 
         switch = {Discriminator.EQUAL: min_dv,
@@ -1036,10 +964,10 @@ class MayoConstraintConverter:
         :param priority: PriorityType
         :return: volume_at_dose_constraint
         """
-        volume = mc.query.query_value
+        volume = mc.constraint_value
         volume_unit = self.get_volume_units(mc.query.units_desired)
         dose_unit = self.get_dose_units(mc.query.query_units)
-        dose = mc.constraint_value
+        dose = mc.query.query_value
         dv = DoseValue(dose, dose_unit)
 
         # constraint classes
@@ -1047,7 +975,7 @@ class MayoConstraintConverter:
         min_vd.constraint_dose = dv
         min_vd.structure_name = structure_name
         min_vd.priority = priority
-        min_vd.volume = volume
+        min_vd.volume = volume * volume_unit
         min_vd.volume_type = volume_unit
 
         # constraint classes
@@ -1055,7 +983,7 @@ class MayoConstraintConverter:
         max_vd.constraint_dose = dv
         max_vd.structure_name = structure_name
         max_vd.priority = priority
-        max_vd.volume = volume
+        max_vd.volume = volume * volume_unit
         max_vd.volume_type = volume_unit
 
         switch = {Discriminator.EQUAL: min_vd,
@@ -1073,10 +1001,10 @@ class MayoConstraintConverter:
         :param priority: PriorityType
         :return: compliment_volume_constraint
         """
-        volume = mc.query.query_value
+        volume = mc.constraint_value
         volume_unit = self.get_volume_units(mc.query.units_desired)
         dose_unit = self.get_dose_units(mc.query.query_units)
-        dose = mc.constraint_value
+        dose = mc.query.query_value
         dv = DoseValue(dose, dose_unit)
 
         # constraint classes
@@ -1084,7 +1012,7 @@ class MayoConstraintConverter:
         min_cv.constraint_dose = dv
         min_cv.structure_name = structure_name
         min_cv.priority = priority
-        min_cv.volume = volume
+        min_cv.volume = volume * volume_unit
         min_cv.volume_type = volume_unit
 
         # constraint classes
@@ -1092,7 +1020,7 @@ class MayoConstraintConverter:
         max_cv.constraint_dose = dv
         max_cv.structure_name = structure_name
         max_cv.priority = priority
-        max_cv.volume = volume
+        max_cv.volume = volume * volume_unit
         max_cv.volume_type = volume_unit
 
         switch = {Discriminator.EQUAL: min_cv,
@@ -1121,7 +1049,7 @@ class MayoConstraintConverter:
         min_dc.constraint_dose = dv
         min_dc.structure_name = structure_name
         min_dc.priority = priority
-        min_dc.volume = volume
+        min_dc.volume = volume * volume_unit
         min_dc.volume_type = volume_unit
 
         # constraint classes
@@ -1129,7 +1057,7 @@ class MayoConstraintConverter:
         max_dc.constraint_dose = dv
         max_dc.structure_name = structure_name
         max_dc.priority = priority
-        max_dc.volume = volume
+        max_dc.volume = volume * volume_unit
         max_dc.volume_type = volume_unit
 
         switch = {Discriminator.EQUAL: min_dc,
@@ -1139,3 +1067,74 @@ class MayoConstraintConverter:
                   Discriminator.LESS_THAN_OR_EQUAL: max_dc}
 
         return switch.get(mc.discriminator)
+
+# class StructureNameConstraint:
+#     def __init__(self):
+#         super().__init__()
+#         self._regex = ''
+#         self._structure_name = ''
+#
+#     @property
+#     def regex(self):
+#         return self._regex
+#
+#     @regex.setter
+#     def regex(self, value):
+#         self._regex = value
+#
+#     @property
+#     def structure_name(self):
+#         return self._structure_name
+#
+#     @structure_name.setter
+#     def structure_name(self, value):
+#         self._structure_name = value
+#
+#     @property
+#     def name(self):
+#         return self.structure_name + ' required'
+#
+#     @property
+#     def full_name(self):
+#         return self.name
+#
+#     def can_constrain(self, pi):
+#         """
+#
+#         :param pi: class PlanItem
+#         :return: ConstraintResult
+#         """
+#         message = ''
+#         valid = True
+#         if not pi.plan:
+#             message = 'Plan is None'
+#             valid = False
+#
+#         # Check structure exists
+#         valid = valid and pi.get_structures() != {}
+#         if not valid:
+#             message = "No structure set in {pi.Id}"
+#
+#         return ConstraintResult(self, ResultType.NOT_APPLICABLE, message)
+#
+#     def constrain(self, pi):
+#
+#         msg = ''
+#         structure = pi.get_structure(self.structure_name, self.regex)
+#         passed = ResultType.ACTION_LEVEL_1
+#
+#         if structure is not None:
+#             passed = ResultType.PASSED
+#             msg = 'contains structure %s' % self.structure_name
+#
+#             if structure.volume_original < 0.0001:
+#                 passed = ResultType.ACTION_LEVEL_1
+#                 msg = "%s is empty" % self.structure_name
+#
+#         return ConstraintResult(self, passed, msg)
+#
+#     def __str__(self):
+#         return "Required Structure %s" % self.structure_name
+#
+#     def __repr__(self):  # pragma: no cover
+#         return self.__str__()

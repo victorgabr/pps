@@ -75,7 +75,7 @@ class PlanningItem:
                 self._structures[k]['cdvh'] = self._dvhs[k] if k in self._dvhs else {}
                 self._structures[k]['volume'] = self._dvhs[k]['data'][0] if k in self._dvhs else None
             return self._structures
-        else:
+        else:  # pragma: no cover
             return self.get_structures()
 
     def get_structures(self):

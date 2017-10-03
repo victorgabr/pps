@@ -3,7 +3,6 @@ Classes to enumerate DVH types
 based on:
 https://rexcardan.github.io/ESAPIX/
 """
-import re
 
 import numpy as np
 import quantities as pq
@@ -23,14 +22,14 @@ class DoseUnit:
 class QuantityRegex:
     @staticmethod
     def string_to_quantity(arg):
-        if re.match('cm3', arg, re.IGNORECASE):
-            return VolumePresentation.absolute_cm3
-        if re.match('cc', arg, re.IGNORECASE):
-            return VolumePresentation.absolute_cm3
-        if re.match('cGy', arg, re.IGNORECASE):
-            return DoseUnit.cGy
-        if re.match('Gy', arg, re.IGNORECASE):
-            return DoseUnit.Gy
+        switch = {'CC': VolumePresentation.absolute_cm3,
+                  'CM3': VolumePresentation.absolute_cm3,
+                  'CGY': DoseUnit.cGy,
+                  'GY': DoseUnit.Gy,
+                  '%': DoseUnit.Percent,
+                  'NA': DoseUnit.Unknown,
+                  '': DoseUnit.Unknown}
+        return switch.get(arg.upper(), DoseUnit.Unknown)
 
 
 class QueryType:
@@ -422,7 +421,10 @@ class DoseValue:
         return self.rescale(dose_unit)
 
     def __str__(self):
-        return str(self.dose)
+        dose_unit = self.unit.symbol
+        dose = self.value
+        dose_txt = ('%1.3f' % dose).rstrip('0').rstrip('.')
+        return '%s %s' % (dose_txt, dose_unit)
 
     def __repr__(self):
         return self.__str__()
@@ -478,202 +480,201 @@ class DoseValue:
     def __gt__(self, other):
         return self.dose >= other.dose
 
-
-class Dose3D:
-    # TODO encapsulate 3D trilinear interpolation from RD_FILE
-    @property
-    def dose_max_3d(self):
-        """
-        :return:  DoseValue class
-        """
-        return 'DoseValue'
-
-    @property
-    def dose_max_3d_location(self):
-        return 'VVector'
-
-    @property
-    def origin(self):
-        return
-
-    @property
-    def series(self):
-        return 'Series'
-
-    @property
-    def x_direction(self):
-        return 'VVector'
-
-    @property
-    def x_res(self):
-        return 'resolution in mm'
-
-    @property
-    def x_size(self):
-        return 'int num pixels x'
-
-    @property
-    def y_direction(self):
-        return 'VVector'
-
-    @property
-    def y_res(self):
-        return 'resolution in mm'
-
-    @property
-    def y_size(self):
-        return 'int num pixels y'
-
-    @property
-    def z_direction(self):
-        return 'VVector'
-
-    @property
-    def z_res(self):
-        return 'resolution in mm'
-
-    @property
-    def z_size(self):
-        return 'int num pixels x'
-
-    def get_dose_profile(self, start, stop):
-        """
-
-        :param start: VVector
-        :param stop: VVector
-        :return: DoseProfile class
-        """
-        return NotImplementedError
-
-    def get_dose_to_point(self, at):
-        """
-
-        :param at: VVector
-        :return: DoseValue class
-        """
-        return NotImplementedError
-
-    def get_voxels(self, plane_index):
-        """
-        :param plane_index:
-        :return:
-        """
-        return NotImplementedError
-
-    def set_voxels(self, plane_index):
-        """
-        :param plane_index:
-        :return:
-        """
-        return NotImplementedError
-
-    def voxel_to_dose_value(self, voxel_value):
-        return
-
-
-class StructureBase:
-    """
-        class to encapsulate structure contour data
-    """
-
-    def __init__(self, structure_dict):
-        self.structure_dict = structure_dict
-        self._is_high_resolution = False
-
-    @property
-    def point_cloud(self):
-        return self.planes2array(self.structure_dict['planes'])
-
-    @property
-    def center_point(self):
-        return np.median(self.point_cloud, axis=0)
-
-    @property
-    def color(self):
-        return self.structure_dict['color']
-
-    @property
-    def dicom_type(self):
-        return self.structure_dict['RTROIType']
-
-    @property
-    def is_high_resolution(self):
-        return self._is_high_resolution
-
-    @is_high_resolution.setter
-    def is_high_resolution(self, value):
-        self._is_high_resolution = value
-
-    @property
-    def mesh_geometry(self):
-        return NotImplementedError
-
-    @property
-    def roi_number(self):
-        return self.structure_dict['id']
-
-    @property
-    def volume(self):
-        return NotImplementedError
-
-    @property
-    def id(self):
-        return self.structure_dict['name']
-
-    def add_contour_on_image_plane(self, contour, z):
-        """
-
-        :param contour: VVector[]
-        :param z: plane z
-        """
-        return NotImplementedError
-
-    def to_high_resolution(self, z_grid_resolution):
-        # TODO implement z axis upsampling
-
-        return NotImplementedError
-
-    def get_contours_on_image_plane(self, z):
-        """
-        :param z: Image z plane - string e.g. 19.50
-        :return: VVector[][]
-        """
-        return self.structure_dict['planes'].get(z)
-
-    @staticmethod
-    def planes2array(s_planes):
-        """
-            Return all structure contour points as Point cloud array (x,y,z) points
-        :param s_planes: Structure planes dict
-        :return: points cloud contour points
-        """
-        zval = [z for z, sPlane in s_planes.items()]
-        zval.sort(key=float)
-        # sorted Z axis planes
-        structure_planes = []
-        zplanes = []
-        for z in zval:
-            plane_i = s_planes[z]
-            for i in range(len(plane_i)):
-                polygon = np.asarray(plane_i[i]['contourData'])
-                structure_planes.append(polygon)
-
-        return np.concatenate(structure_planes)
-
-    @staticmethod
-    def calculate_volume(structure_planes, grid_delta):
-        """Calculates the volume for the given structure.
-        :rtype: float
-        :param structure_planes: Structure planes dict
-        :param grid_delta: Voxel size (dx,dy,xz)
-        :return: Structure volume
-        """
-
-        return NotImplementedError
-
-    @staticmethod
-    def calculate_contour_areas(plane):
-        """Calculate the area of each contour for the given plane.
-           Additionally calculate_integrate and return the largest contour index."""
-
-        return NotImplementedError
+# TODO encapsulate 3D trilinear interpolation from RD_FILE
+# class Dose3D:
+#     @property
+#     def dose_max_3d(self):
+#         """
+#         :return:  DoseValue class
+#         """
+#         return 'DoseValue'
+#
+#     @property
+#     def dose_max_3d_location(self):
+#         return 'VVector'
+#
+#     @property
+#     def origin(self):
+#         return
+#
+#     @property
+#     def series(self):
+#         return 'Series'
+#
+#     @property
+#     def x_direction(self):
+#         return 'VVector'
+#
+#     @property
+#     def x_res(self):
+#         return 'resolution in mm'
+#
+#     @property
+#     def x_size(self):
+#         return 'int num pixels x'
+#
+#     @property
+#     def y_direction(self):
+#         return 'VVector'
+#
+#     @property
+#     def y_res(self):
+#         return 'resolution in mm'
+#
+#     @property
+#     def y_size(self):
+#         return 'int num pixels y'
+#
+#     @property
+#     def z_direction(self):
+#         return 'VVector'
+#
+#     @property
+#     def z_res(self):
+#         return 'resolution in mm'
+#
+#     @property
+#     def z_size(self):
+#         return 'int num pixels x'
+#
+#     def get_dose_profile(self, start, stop):
+#         """
+#
+#         :param start: VVector
+#         :param stop: VVector
+#         :return: DoseProfile class
+#         """
+#         return NotImplementedError
+#
+#     def get_dose_to_point(self, at):
+#         """
+#
+#         :param at: VVector
+#         :return: DoseValue class
+#         """
+#         return NotImplementedError
+#
+#     def get_voxels(self, plane_index):
+#         """
+#         :param plane_index:
+#         :return:
+#         """
+#         return NotImplementedError
+#
+#     def set_voxels(self, plane_index):
+#         """
+#         :param plane_index:
+#         :return:
+#         """
+#         return NotImplementedError
+#
+#     def voxel_to_dose_value(self, voxel_value):
+#         return
+#
+# TODO encapsulate Structure in a class
+# class StructureBase:
+#     """
+#         class to encapsulate structure contour data
+#     """
+#
+#     def __init__(self, structure_dict):
+#         self.structure_dict = structure_dict
+#         self._is_high_resolution = False
+#
+#     @property
+#     def point_cloud(self):
+#         return self.planes2array(self.structure_dict['planes'])
+#
+#     @property
+#     def center_point(self):
+#         return np.median(self.point_cloud, axis=0)
+#
+#     @property
+#     def color(self):
+#         return self.structure_dict['color']
+#
+#     @property
+#     def dicom_type(self):
+#         return self.structure_dict['RTROIType']
+#
+#     @property
+#     def is_high_resolution(self):
+#         return self._is_high_resolution
+#
+#     @is_high_resolution.setter
+#     def is_high_resolution(self, value):
+#         self._is_high_resolution = value
+#
+#     @property
+#     def mesh_geometry(self):
+#         return NotImplementedError
+#
+#     @property
+#     def roi_number(self):
+#         return self.structure_dict['id']
+#
+#     @property
+#     def volume(self):
+#         return NotImplementedError
+#
+#     @property
+#     def id(self):
+#         return self.structure_dict['name']
+#
+#     def add_contour_on_image_plane(self, contour, z):
+#         """
+#
+#         :param contour: VVector[]
+#         :param z: plane z
+#         """
+#         return NotImplementedError
+#
+#     def to_high_resolution(self, z_grid_resolution):
+#         # TODO implement z axis upsampling
+#
+#         return NotImplementedError
+#
+#     def get_contours_on_image_plane(self, z):
+#         """
+#         :param z: Image z plane - string e.g. 19.50
+#         :return: VVector[][]
+#         """
+#         return self.structure_dict['planes'].get(z)
+#
+#     @staticmethod
+#     def planes2array(s_planes):
+#         """
+#             Return all structure contour points as Point cloud array (x,y,z) points
+#         :param s_planes: Structure planes dict
+#         :return: points cloud contour points
+#         """
+#         zval = [z for z, sPlane in s_planes.items()]
+#         zval.sort(key=float)
+#         # sorted Z axis planes
+#         structure_planes = []
+#         zplanes = []
+#         for z in zval:
+#             plane_i = s_planes[z]
+#             for i in range(len(plane_i)):
+#                 polygon = np.asarray(plane_i[i]['contourData'])
+#                 structure_planes.append(polygon)
+#
+#         return np.concatenate(structure_planes)
+#
+#     @staticmethod
+#     def calculate_volume(structure_planes, grid_delta):
+#         """Calculates the volume for the given structure.
+#         :rtype: float
+#         :param structure_planes: Structure planes dict
+#         :param grid_delta: Voxel size (dx,dy,xz)
+#         :return: Structure volume
+#         """
+#
+#         return NotImplementedError
+#
+#     @staticmethod
+#     def calculate_contour_areas(plane):
+#         """Calculate the area of each contour for the given plane.
+#            Additionally calculate_integrate and return the largest contour index."""
+#
+#         return NotImplementedError
