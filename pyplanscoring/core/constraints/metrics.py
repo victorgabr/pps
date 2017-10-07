@@ -10,6 +10,7 @@ https://rexcardan.github.io/ESAPIX/
 import difflib
 
 import numpy as np
+import pandas as pd
 
 from pyplanscoring.core.constraints.query import QueryExtensions
 from pyplanscoring.core.constraints.types import DoseValuePresentation, DoseValue, DoseUnit, DVHData
@@ -30,6 +31,19 @@ class PlanningItem:
         self._dose_data = rd_dcm.GetDoseData()
         self._dvhs = rd_dcm.GetDVHs()
         self._structures = rs_dcm.GetStructures()
+
+    @property
+    def dvh_data(self):
+        return self._dvhs
+
+    @dvh_data.setter
+    def dvh_data(self, value):
+        # swap, keys - values
+        """
+            set calculated dvh data by pyplanscoring
+        :param value: dvh dictionary
+        """
+        self._dvhs = {v['key']: value[k] for k, v in value.items()}
 
     @property
     def plan(self):
@@ -70,10 +84,10 @@ class PlanningItem:
 
     @property
     def structures(self):
-        if self._dvhs:
+        if self.dvh_data:
             for k in self._structures.keys():
-                self._structures[k]['cdvh'] = self._dvhs[k] if k in self._dvhs else {}
-                self._structures[k]['volume'] = self._dvhs[k]['data'][0] if k in self._dvhs else None
+                self._structures[k]['cdvh'] = self.dvh_data[k] if k in self.dvh_data else {}
+                self._structures[k]['volume'] = self.dvh_data[k]['data'][0] if k in self.dvh_data else None
             return self._structures
         else:  # pragma: no cover
             return self.get_structures()
@@ -203,3 +217,103 @@ class PlanningItem:
         query = QueryExtensions()
         query.read(mayo_format_query)
         return query.run_query(query, self, ss)
+
+
+class MetricType:
+    MIN = 'min'
+    MAX = 'max'
+
+
+class ConstrainMetric:
+    def __init__(self, structure_name, query, metric_type, target, max_score):
+        self._criteria = None
+        self._target = target
+        self._metric_type = metric_type
+        self._max_score = max_score
+        self._structure_name = structure_name
+        self._query = query
+        self._query_result = None
+
+    @property
+    def query_result(self):
+        return self._query_result
+
+    @property
+    def structure_name(self):
+        return self._structure_name
+
+    @property
+    def query(self):
+        return self._query
+
+    @query.setter
+    def query(self, value):
+        self._query = value
+
+    def metric_function(self, pi):
+        constraint_value = pi.execute_query(self.query, self.structure_name)
+        self._query_result = float(constraint_value)
+        if self.metric_type == MetricType.MAX:
+            score_points = [self.max_score, 0]
+            return np.interp(self.query_result, self.target, score_points)
+        if self.metric_type == MetricType.MIN:
+            score_points = [0, self.max_score]
+            return np.interp(self.query_result, self.target, score_points)
+
+    @property
+    def metric_type(self):
+        return self._metric_type
+
+    @property
+    def max_score(self):
+        return self._max_score
+
+    @max_score.setter
+    def max_score(self, value):
+        self._max_score = value
+
+    @property
+    def target(self):
+        """
+            This property holds the constraint objective and limit
+        :return: [constrain_objective, constraint_limit]
+        """
+        return self._target
+
+    @target.setter
+    def target(self, value):
+        self._target = value
+
+
+class PlanEvaluation:
+    def __init__(self):
+        self._criteria = None
+
+    def read(self, file_path):
+        self._criteria = pd.read_excel(file_path)
+        return self._criteria
+
+    @property
+    def criteria(self):
+        return self._criteria
+
+    def eval_plan(self, pi):
+        report_data = self.criteria.copy()
+        score_res = []
+        constraint_result = []
+        for row in self.criteria.iterrows():
+            row_val = row[1].to_dict()
+            structure_name = row_val['Structure Name']
+            query = row_val['Query']
+            metric_type = row_val['Metric Type']
+            target = [row_val['Target'], row_val['Tolerance']]
+            score = row_val['Score']
+            # eval metrics
+            cm = ConstrainMetric(structure_name, query, metric_type, target, score)
+            sc = cm.metric_function(pi)
+            score_res.append(sc)
+            constraint_result.append(cm.query_result)
+        report_data['Result'] = constraint_result
+        report_data['Raw score'] = score_res
+
+        return report_data

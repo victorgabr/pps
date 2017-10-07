@@ -142,10 +142,6 @@ class DoseStructureConstraint:
 
         return switch.get(self.priority, ResultType.ACTION_LEVEL_1)
 
-    @staticmethod
-    def get_merged_dvh(pi):
-        return NotImplementedError
-
     def get_structures(self, pi):
         """
             Implement it from DICOM RS files
@@ -715,6 +711,84 @@ class MaxMeanDoseConstraint(DoseStructureConstraint):
         return self.__str__()
 
 
+# TODO implement Conformation and HI constraints
+
+class ConformationIndexConstraint(DoseStructureConstraint):
+    def __init__(self):
+        super().__init__()
+        self._mc = None
+        self._constraint_value = None
+
+    @property
+    def constraint_value(self):
+        return self._constraint_value
+
+    @constraint_value.setter
+    def constraint_value(self, value):
+        self._constraint_value = value
+
+    @property
+    def mc(self):
+        return self._mc
+
+    @mc.setter
+    def mc(self, value):
+        self._mc = value
+
+    def constrain(self, pi):
+        dm = pi.execute_query(str(self.mc.query), self.structure_name)
+        value = str(dm)
+        passed = ResultType.PASSED if dm >= self.constraint_value else self.get_failed_result_type()
+        msg = '%s to %s is %s.' % (str(self.mc.query), self.structure_name, value)
+
+        return ConstraintResult(self, passed, msg, value)
+
+    def __str__(self):
+        txt = '%s <= %s' % (str(self.mc.query), str(self.mc.constraint_value))
+        return txt
+
+    def __repr__(self):
+        return self.__str__()
+
+
+class HomogeneityIndexConstraint(DoseStructureConstraint):
+    def __init__(self):
+        super().__init__()
+        self._mc = None
+        self._constraint_value = None
+
+    @property
+    def constraint_value(self):
+        return self._constraint_value
+
+    @constraint_value.setter
+    def constraint_value(self, value):
+        self._constraint_value = value
+
+    @property
+    def mc(self):
+        return self._mc
+
+    @mc.setter
+    def mc(self, value):
+        self._mc = value
+
+    def constrain(self, pi):
+        dm = pi.execute_query(str(self.mc.query), self.structure_name)
+        value = str(dm)
+        passed = ResultType.PASSED if dm <= self.constraint_value else self.get_failed_result_type()
+        msg = '%s to %s is %s.' % (str(self.mc.query), self.structure_name, value)
+
+        return ConstraintResult(self, passed, msg, value)
+
+    def __str__(self):
+        txt = '%s <= %s' % (str(self.mc.query), str(self.mc.constraint_value))
+        return txt
+
+    def __repr__(self):
+        return self.__str__()
+
+
 class MayoConstraint:
     def __init__(self):
         self._query = None
@@ -824,7 +898,9 @@ class MayoConstraintConverter:
                   QueryType.DOSE_AT_VOLUME: self.build_dose_at_volume_constraint,
                   QueryType.VOLUME_AT_DOSE: self.build_volume_at_dose_constraint,
                   QueryType.DOSE_COMPLIMENT: self.build_dose_compliment_constraint,
-                  QueryType.COMPLIMENT_VOLUME: self.build_compliment_volume_constraint}
+                  QueryType.COMPLIMENT_VOLUME: self.build_compliment_volume_constraint,
+                  QueryType.CI: self.build_ci_constraint,
+                  QueryType.HI: self.build_hi_constraint}
 
         build_function = switch.get(mc.query.query_type)
 
@@ -840,7 +916,7 @@ class MayoConstraintConverter:
         switcher = {Units.CC: VolumePresentation.absolute_cm3,
                     Units.PERC: VolumePresentation.relative}
 
-        return switcher.get(mayo_unit, VolumePresentation.relative)
+        return switcher.get(mayo_unit, VolumePresentation.Unknown)
 
     @staticmethod
     def get_dose_units(mayo_unit):
@@ -1067,6 +1143,48 @@ class MayoConstraintConverter:
                   Discriminator.LESS_THAN_OR_EQUAL: max_dc}
 
         return switch.get(mc.discriminator)
+
+    def build_hi_constraint(self, mc, structure_name, priority):
+        """
+        :param mc: MayoConstraint
+        :param structure_name: string
+        :param priority: PriorityType
+        :return: Homogeneity index constraint
+        """
+        dose = mc.query.query_value
+        dose_unit = self.get_dose_units(mc.query.query_units)
+        dv = DoseValue(dose, dose_unit)
+
+        # constraint classes
+        hi = HomogeneityIndexConstraint()
+        hi.constraint_dose = dv
+        hi.constraint_value = mc.constraint_value
+        hi.structure_name = structure_name
+        hi.priority = priority
+        hi.mc = mc
+
+        return hi
+
+    def build_ci_constraint(self, mc, structure_name, priority):
+        """
+        :param mc: MayoConstraint
+        :param structure_name: string
+        :param priority: PriorityType
+        :return: Paddick conformality index constraint
+        """
+        dose = mc.query.query_value
+        dose_unit = self.get_dose_units(mc.query.query_units)
+        dv = DoseValue(dose, dose_unit)
+
+        # constraint classes
+        ci = ConformationIndexConstraint()
+        ci.constraint_dose = dv
+        ci.constraint_value = mc.constraint_value
+        ci.structure_name = structure_name
+        ci.priority = priority
+        ci.mc = mc
+
+        return ci
 
 # class StructureNameConstraint:
 #     def __init__(self):

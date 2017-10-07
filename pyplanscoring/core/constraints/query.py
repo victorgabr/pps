@@ -12,8 +12,6 @@ from pyplanscoring.core.constraints.types import QueryType, Units, DoseUnit, Vol
     DoseValue, DoseValuePresentation, DICOMType
 
 
-# TODO add queries types Conformation Number - CN and Homogeneity Index - HI
-
 class MayoRegex:
     UnitsDesired = r"\[(cc|%|(c?Gy)|)\]"
     QueryType = r"^(V|CV|DC|D|Mean|Max|Min|CI|HI)"
@@ -462,16 +460,17 @@ class QueryExtensions(MayoQuery):
         target_vol = target_structure['volume'] * VolumePresentation.absolute_cm3
 
         ci = (target_vol_isodose * target_vol_isodose) / (target_vol * prescription_vol_isodose)
-        return ci
+        return float(ci)
 
     @staticmethod
     def query_hi(dvh, query):
         dose_unit = query.get_dose_unit(query)
+        reference_dose = DoseValue(query.query_value, dose_unit)
         volume99 = 99 * VolumePresentation.relative
         dose99 = dvh.get_dose_at_volume(volume99)
         volume1 = 1 * VolumePresentation.relative
         dose1 = dvh.get_dose_at_volume(volume1)
 
-        h_i = (dose1 - dose99) / DoseValue(query.query_value, dose_unit)
+        h_i = (dose1 - dose99) / reference_dose
 
-        return h_i.value
+        return float(h_i)

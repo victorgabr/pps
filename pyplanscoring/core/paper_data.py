@@ -49,7 +49,10 @@ def msgd(gradient_measure):
     if len(gradient_measure) == 3:
         test = np.array(tmp)
         grad = np.sqrt(np.sum((test[:, 0] - test[:, 1]) ** 2) / len(tmp))
-        return grad
+
+        mae = np.sum(np.abs(np.array(gradient_measure) - np.mean(gradient_measure))) / len(gradient_measure)
+
+        return mae
 
     else:
         return np.NaN
@@ -58,7 +61,7 @@ def msgd(gradient_measure):
 
 
 def plot_plane_contours_gradient(s_plane, structure_name, save_fig=False):
-    ctrs, li = calculate_contours_uncertainty(s_plane, 0.2)
+    ctrs, li = calculate_contours_uncertainty(s_plane, 1)
     fig, ax = plt.subplots()
     txt = structure_name + ' slice z: ' + str(s_plane[0]['contourData'][:, 2][0])
     for c in ctrs:
@@ -384,7 +387,8 @@ def calc_dvh_uncertainty(rd, rs, kind, factor):
         # 'BRAINSTEM',
         # 'BRAINSTEM PRV',
         'SPINAL CORD',
-        'SPINAL CORD PRV',
+        'MANDIBLE'
+        # 'SPINAL CORD PRV',
         # 'PAROTID LT',
         # 'LIPS',
         # 'POST NECK',
@@ -445,37 +449,68 @@ def save_all_unc():
 
 
 if __name__ == '__main__':
-    rs = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\pyplanscoring\RS.1.2.246.352.71.4.584747638204.253443.20170222200317.dcm'
+    rs = r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/RS.1.2.246.352.71.4.584747638204.253443.20170222200317.dcm'
+    rd = r'/home/victor/Dropbox/Plan_Competition_Project/competition_2017/plans/plans/Victor Alves 3180/RD.2017-PlanComp.Dose_PLAN.dcm'
     rs_dcm = ScoringDicomParser(filename=rs)
 
     structures = rs_dcm.GetStructures()
-    structure = structures[7]
-    splanes = structure['planes']
-    s_plane = splanes['34.50']
-    plot_plane_contours_gradient(s_plane, "Brainstem", save_fig=False)
+
+    # plt.style.use('ggplot')
+    # structure = structures[24]
+    # splanes = structure['planes']
+    # s_plane = splanes['-1.50']
+    # plot_plane_contours_gradient(s_plane, structure['name'], save_fig=False)
+
+    # res_df = calc_dvh_uncertainty(rd, rs, 'max', 1)
+
+    rtss = ScoringDicomParser(filename=rs)
+    dicom_dose = ScoringDicomParser(filename=rd)
+    structures = rtss.GetStructures()
+
+    snames = ['SPINAL CORD', 'MANDIBLE']
+
+    res = []
+    grads = {}
+    for key, structure in structures.items():
+        if structure['name'] in snames:
+            tmp = calc_gradient_pp(structure, dicom_dose, kind='max', factor=1)
+            res.append(tmp)
+            struc_test = StructurePaper(structure)
+            grad_z = struc_test.calc_boundary_gradient(dicom_dose, kind='max', factor=1)
+            grads[structure['name']] = grad_z
+    res_df = pd.DataFrame(res, columns=['name', 'mean', 'std', 'median'])
+
+    plt.style.use('ggplot')
+    sc = pd.DataFrame(grads['SPINAL CORD']).T
+    fig, ax = plt.subplots()
+    ax.plot(sc.index, sc.values)
+    ax.set_xlabel('Axial slice position - z[mm]')
+    ax.set_ylabel('Maximum dose - MAE [cGy]')
+    ax.set_title('H&N case - VMAT plan - SPINAL CORD - Mean Absolute Error')
+    plt.show()
 
 
 
-    # sc = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/Scoring Criteria.txt'
-    # constrains, scores, criteria_df = read_scoring_criteria(sc)
-    #
-    # structures = ScoringDicomParser(filename=rs).get_structures()
-    # # calculation_options = {}
-    #
-    # criteria_structure_names, names_dcm = get_matched_names(criteria_df.index.unique(), structures)
-    # structure_names = criteria_structure_names
-    #
-    # root_path = '/media/victor/TOURO Mobile/COMPETITION 2017/final_plans/ECLIPSE'
-    # cmp = CompareDVH(root=root_path, rs_file=rs)
-    # folder_data = cmp.set_folder_data()
-    #
-    # res = []
-    # for k, val in folder_data.items():
-    #     try:
-    #         df = calc_dvh_uncertainty(val[2], rs, 'max', factor=0.5)
-    #         tmp = df['mean'].copy()
-    #         tmp.index = df['name']
-    #         res.append(tmp)
-    #     except:
-    #         print('error')
-    # df_res = pd.concat(res, axis=1)
+# sc = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/Scoring Criteria.txt'
+# constrains, scores, criteria_df = read_scoring_criteria(sc)
+#
+# structures = ScoringDicomParser(filename=rs).get_structures()
+# # calculation_options = {}
+#
+# criteria_structure_names, names_dcm = get_matched_names(criteria_df.index.unique(), structures)
+# structure_names = criteria_structure_names
+#
+# root_path = '/media/victor/TOURO Mobile/COMPETITION 2017/final_plans/ECLIPSE'
+# cmp = CompareDVH(root=root_path, rs_file=rs)
+# folder_data = cmp.set_folder_data()
+#
+# res = []
+# for k, val in folder_data.items():
+#     try:
+#         df = calc_dvh_uncertainty(val[2], rs, 'max', factor=0.5)
+#         tmp = df['mean'].copy()
+#         tmp.index = df['name']
+#         res.append(tmp)
+#     except:
+#         print('error')
+# df_res = pd.concat(res, axis=1)

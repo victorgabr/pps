@@ -263,3 +263,19 @@ class TestMayoConstraintConverter(TestCase):
         mc.read(constrain)
         max_dv = converter.build_dose_compliment_constraint(mc, structure_name, PriorityType.IDEAL)
         self.assertEqual(str(max_dv), constrain)
+
+    def test_build_hi_constraint(self):
+        constrain = 'HI70Gy[] <= 0.08'
+        structure_name = 'PTV70-BR.PLX 4MM'
+        mc = MayoConstraint()
+        mc.read(constrain)
+        max_dv = converter.build_hi_constraint(mc, structure_name, PriorityType.IDEAL)
+        self.assertEqual(str(max_dv), constrain)
+
+    def test_build_ci_constraint(self):
+        constrain = 'HI70Gy[] <= 0.08'
+        structure_name = 'PTV70-BR.PLX 4MM'
+        mc = MayoConstraint()
+        mc.read(constrain)
+        max_dv = converter.build_hi_constraint(mc, structure_name, PriorityType.IDEAL)
+        self.assertEqual(str(max_dv), constrain)

@@ -8,6 +8,7 @@ import numpy.testing as npt
 from pyplanscoring.core.constraints.metrics import PlanningItem
 from pyplanscoring.core.constraints.types import DoseValuePresentation, DoseUnit, DoseValue, VolumePresentation
 from pyplanscoring.core.dicomparser import ScoringDicomParser
+from pyplanscoring.core.dvhcalculation import load
 
 DATA_DIR = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
@@ -20,12 +21,17 @@ rp = os.path.join(DATA_DIR, 'RP.dcm')
 rs = os.path.join(DATA_DIR, 'RS.dcm')
 rd = os.path.join(DATA_DIR, 'RD.dcm')
 
+dvh_path = os.path.join(DATA_DIR, 'PyPlanScoring_dvh.dvh')
+
 rp_dcm = ScoringDicomParser(filename=rp)
 rs_dcm = ScoringDicomParser(filename=rs)
 rd_dcm = ScoringDicomParser(filename=rd)
 
 pi = PlanningItem(rp_dcm, rs_dcm, rd_dcm)
 
+pyplan_dvh = load(dvh_path)
+dvh = pyplan_dvh['DVH']
+# swap, keys - values
 # dvhs = rd_dcm.GetDVHs()
 # structures = rs_dcm.GetStructures()
 #
@@ -291,7 +297,6 @@ class TestPlanningItem(TestCase):
         target_dose = DoseValue(49.385912696626995, DoseUnit.Percent)
         self.assertAlmostEqual(dm, target_dose)
 
-        # Todo implement CI and HI queries
         struc_name = 'PTV70-BR.PLX 4MM'
         # teste HI index
         mayo_format_query = 'HI70Gy[]'

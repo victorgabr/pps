@@ -420,6 +420,9 @@ class DoseValue:
     def get_dose(self, dose_unit):
         return self.rescale(dose_unit)
 
+    def __float__(self):
+        return self.value
+
     def __str__(self):
         dose_unit = self.unit.symbol
         dose = self.value
