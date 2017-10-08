@@ -128,7 +128,3 @@ class TestDVHData(TestCase):
         a = 1
         assert len(v) == 31
         assert len(d) == 31
-        # import matplotlib.pyplot as plt
-        # plt.plot(d, v)
-        # plt.show()
-        pass

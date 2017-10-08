@@ -24,7 +24,6 @@ class PlanningItem:
 
     def __init__(self, rp_dcm, rs_dcm, rd_dcm):
         self.id = ''
-
         self._plan = rp_dcm.GetPlan()
         self._rp_dcm = rp_dcm
         self._rs_dcm = rs_dcm

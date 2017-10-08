@@ -136,17 +136,17 @@ class TestPlanningItem(TestCase):
         struc = pi.get_structure('PTV56')
         assert struc
 
-        struc = pi.get_structure('Spinal Cord')
-        assert struc
+        struc1 = pi.get_structure('Spinal Cord')
+        assert struc1
 
-        struc = pi.get_structure('spinal cord')
-        assert struc
+        struc2 = pi.get_structure('spinal cord')
+        assert struc2
 
-        struc = pi.get_structure('SPINAL CORD')
-        assert struc
+        struc3 = pi.get_structure('SPINAL CORD')
+        assert struc3
 
-        struc = pi.get_structure('SPINAL Coord')
-        assert struc
+        struc4 = pi.get_structure('SPINAL Coord')
+        assert struc4
 
         struc = pi.get_structure('XSUGUA')
         assert struc == "Structure XSUGUA not found"

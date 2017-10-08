@@ -921,7 +921,9 @@ class ScoringDicomParser(DicomParser):
                             plane['centroid'] = centroid_of_polygon(contour_data[:, 0], contour_data[:, 1])
                             # Each plane which coincides with a image slice will have a unique ID
                         except:
-                            plane['centroid'] = (contour_data[:, 0].mean(), contour_data[:, 1][0].mean())
+                            plane['centroid'] = (contour_data[:, 0].mean(), contour_data[:, 1].mean())
+                        # plane['centroid'] = np.median(contour_data[:, 0]), np.median(contour_data[:, 1])
+
                         if 'ContourImages' in contour:
                             plane['UID'] = contour.ContourImages[0].ReferencedSOPInstanceUID
 
