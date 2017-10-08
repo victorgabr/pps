@@ -141,6 +141,8 @@ class DICOMType:
 
 class DVHData:
     def __init__(self, dvh):
+        self._dose_format = None
+        self._volume_format = None
         self.dvh = dvh
         self._volume = dvh['data'][0]
         self._dose_units = QuantityRegex.string_to_quantity(dvh['doseunits'])
@@ -155,6 +157,7 @@ class DVHData:
         self._max_dose = dvh['max']
         self._bin_width = dvh['scaling']
         self.set_interpolation_data()
+        self.set_volume_focused_data()
 
     def set_interpolation_data(self):
         # setting constrain interpolation functions
@@ -162,6 +165,33 @@ class DVHData:
         self.fv_cc = itp.interp1d(self.dose_axis, self.volume_cc, fill_value='extrapolate')  # cc
         self.fd = itp.interp1d(self.volume_pp, self.dose_axis, fill_value='extrapolate')  # pp
         self.fd_cc = itp.interp1d(self.volume_cc, self.dose_axis, fill_value='extrapolate')  # cc
+
+    def set_volume_focused_data(self):
+        """
+            Volume-Focused Format
+            The use of a volume-focused DVH format facilitated the construction of a statistical representation
+            of DVH curves and ensures the ability to represent DVH curves independently of Max[Gy] with a small,
+            fixed set of points.
+
+             ref. http://www.sciencedirect.com/science/article/pii/S2452109417300611
+        """
+        s0 = [0, 0.5]
+        s1 = np.arange(1, 5, 1)
+        s2 = np.arange(5, 96, 5)
+        s3 = np.arange(96, 100, 1)
+        s4 = [99.5, 100.0]
+        volume_focused_format = np.concatenate((s0, s1, s2, s3, s4))[::-1]
+        dose_focused_format = self.fd(volume_focused_format)
+        self._volume_format = volume_focused_format
+        self._dose_format = dose_focused_format
+
+    @property
+    def volume_focused_format(self):
+        return self._volume_format
+
+    @property
+    def dose_focused_format(self):
+        return self._dose_format
 
     @property
     def dose_axis(self):

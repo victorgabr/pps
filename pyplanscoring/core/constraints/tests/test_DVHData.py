@@ -121,3 +121,14 @@ class TestDVHData(TestCase):
         # execute the static method
         md = rd.query_dose(dvh, rd)
         self.assertAlmostEqual(md.value, 6103.854532025905 / 7000.0 * 100)
+
+    def test_set_volume_focused_data(self):
+        v = dvh.volume_focused_format
+        d = dvh.dose_focused_format
+        a = 1
+        assert len(v) == 31
+        assert len(d) == 31
+        # import matplotlib.pyplot as plt
+        # plt.plot(d, v)
+        # plt.show()
+        pass
