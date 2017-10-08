@@ -8,6 +8,7 @@ https://rexcardan.github.io/ESAPIX/
 
 """
 import difflib
+import string
 
 import numpy as np
 import pandas as pd
@@ -112,9 +113,24 @@ class PlanningItem:
         :rtype: bool and Structure
         """
         structure_names = [self.structures[k]['name'] for k in self.structures.keys()]
-        matches = difflib.get_close_matches(struct_id, structure_names, n=1)
 
-        return True if matches else False
+        # normalize structure names
+        struct_id = self.normalize_string(struct_id)
+        norm_struc_names = [self.normalize_string(s) for s in structure_names]
+
+        # map normalized and original strings
+        structure_names_map = dict(zip(norm_struc_names, structure_names))
+
+        matches = difflib.get_close_matches(struct_id, norm_struc_names, n=1)
+
+        return matches, structure_names_map
+
+    @staticmethod
+    def normalize_string(s):
+        for p in string.punctuation:
+            s = s.replace(p, '')
+
+        return s.upper().strip()
 
     def get_structure(self, struct_id):
         """
@@ -122,9 +138,11 @@ class PlanningItem:
         :param struct_id:
         :return: Structure
         """
-        if self.contains_structure(struct_id):
+        match, names_map = self.contains_structure(struct_id)
+        if match:
+            original_name = names_map[match[0]]
             for k in self.structures.keys():
-                if struct_id == self.structures[k]['name']:
+                if original_name == self.structures[k]['name']:
                     return self.structures[k]
         else:
             return "Structure %s not found" % struct_id

@@ -120,14 +120,34 @@ class TestPlanningItem(TestCase):
         assert len(pi.get_structures()) > 0
 
     def test_contains_structure(self):
-        assert pi.contains_structure('PTV70 GH')
-        assert not pi.contains_structure('P')
-        assert not pi.contains_structure('O')
-        assert pi.contains_structure('PTV70-BR.PLX 4MM')
+        # pi.contains_structure('spinal cord')
+        m, sm = pi.contains_structure('Spinal Cord')
+        assert m
+        m, sm = pi.contains_structure('PTV70 GH')
+        assert m
+        m, sm = pi.contains_structure('P')
+        assert not m
+        m, sm = pi.contains_structure('O')
+        assert not m
+        m, sm = pi.contains_structure('PTV70-BR.PLX 4MM')
+        assert m
 
     def test_get_structure(self):
         struc = pi.get_structure('PTV56')
         assert struc
+
+        struc = pi.get_structure('Spinal Cord')
+        assert struc
+
+        struc = pi.get_structure('spinal cord')
+        assert struc
+
+        struc = pi.get_structure('SPINAL CORD')
+        assert struc
+
+        struc = pi.get_structure('SPINAL Coord')
+        assert struc
+
         struc = pi.get_structure('XSUGUA')
         assert struc == "Structure XSUGUA not found"
 
