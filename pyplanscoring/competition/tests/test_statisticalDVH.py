@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 from pyplanscoring.competition.statistical_dvh import HistoricPlanData, StatisticalDVH
 
-root_folder = '/media/victor/TOURO Mobile/COMPETITION 2017/final_plans/ECLIPSE/ECPLIPSE_VMAT'
+root_folder = r'C:\final_plans\ECLIPSE\ECPLIPSE_VMAT'
 hist_data = HistoricPlanData(root_folder)
 hist_data.set_participant_folder()
 hist_data.load_dvh()
@@ -46,5 +46,7 @@ class TestStatisticalDVH(TestCase):
     def test_plot_historical_dvh(self):
         for str_name in str_names:
             stats_dvh.plot_historical_dvh(str_name)
+
+        plt.show()
 
         plt.close('all')
