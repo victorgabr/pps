@@ -1,18 +1,8 @@
 from unittest import TestCase
 
 import matplotlib.pyplot as plt
-
-from pyplanscoring.competition.statistical_dvh import HistoricPlanData, StatisticalDVH
-
-root_folder = r'C:\final_plans\ECLIPSE\ECPLIPSE_VMAT'
-hist_data = HistoricPlanData(root_folder)
-hist_data.set_participant_folder()
-hist_data.load_dvh()
-
-# set stats dvh
-
-stats_dvh = StatisticalDVH()
-stats_dvh.set_data(hist_data.dvh_data)
+from competition.tests import root_folder, database_file
+from pyplanscoring.competition.statistical_dvh import HistoricPlanDVH, StatisticalDVH
 
 str_names = ['LENS LT',
              'PAROTID LT',
@@ -41,9 +31,32 @@ str_names = ['LENS LT',
 
 class TestStatisticalDVH(TestCase):
     def test_set_data(self):
-        assert len(stats_dvh.df_data) == len(stats_dvh.structure_names)
+        hist_data = HistoricPlanDVH(root_folder)
+        hist_data.set_participant_folder()
+        hist_data.load_dvh()
+        stats_dvh = StatisticalDVH()
+        stats_dvh.set_data(hist_data.dvh_data)
+
+    def test_calc_quantiles(self):
+
+        stat_dvh = StatisticalDVH()
+        stat_dvh.load_data_from_hdf(database_file)
+
+        # calculate quantiles using volume focused format
+        volume_focused_data = stat_dvh.vf_data
+        for k, dvh in volume_focused_data.items():
+            quantiles = stat_dvh.calc_quantiles(structure_dvhs=dvh)
+            quantiles.to_hdf(database_file, key=k)
+
+    def test_get_quantiles(self):
+        stat_dvh = StatisticalDVH()
+        stat_dvh.load_data_from_hdf(database_file)
+        qtl = stat_dvh.get_quantiles('LIPS')
+        pass
 
     def test_plot_historical_dvh(self):
+        stats_dvh = StatisticalDVH()
+        stats_dvh.load_data_from_hdf(database_file)
         for str_name in str_names:
             stats_dvh.plot_historical_dvh(str_name)
 

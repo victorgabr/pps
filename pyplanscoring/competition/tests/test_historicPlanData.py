@@ -12,6 +12,7 @@ from pyplanscoring.core.dvhcalculation import load
 
 DATA_DIR = r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/core/constraints/tests/test_data'
 
+DATA_DIR = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\pyplanscoring\core\constraints\tests\test_data'
 rp = os.path.join(DATA_DIR, 'RP.dcm')
 rs = os.path.join(DATA_DIR, 'RS.dcm')
 rd = os.path.join(DATA_DIR, 'RD.dcm')

@@ -1,7 +1,6 @@
 import logging
 
 import numpy as np
-
 from pyplanscoring.complexity.ApertureMetric import Aperture, LeafPair
 from pyplanscoring.complexity.EsapiApertureMetric import MetersetsFromMetersetWeightsCreator
 from pyplanscoring.complexity.dicomrt import RTPlan
@@ -83,7 +82,7 @@ class PyAperturesFromBeamCreator:
         top = float(beam['ASYMY'][0]) if 'ASYMY' in beam else -200.0
         bottom = float(beam['ASYMY'][1]) if 'ASYMY' in beam else 200.0
 
-        # invert y axis to match apperture class -top, -botton
+        # invert y axis to match apperture class -top, -botton that uses Varian standard ESAPI
         return [left, -top, right, -bottom]
 
     def GetLeafWidths(self, beam_dict):

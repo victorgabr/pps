@@ -1,9 +1,10 @@
 from unittest import TestCase
 
-from pyplanscoring.competition.statistical_dvh import HistoricPlanData, StatisticalDVH, WeightedExperienceScore
+from competition.tests import root_folder, database_file
+from pyplanscoring.competition.statistical_dvh import HistoricPlanDVH, StatisticalDVH, WeightedExperienceScore, \
+    WeightedExperienceScoreBase
 
-root_folder = r'E:\COMPETITION 2017\final_plans\ECLIPSE\ECPLIPSE_VMAT'
-hist_data = HistoricPlanData(root_folder)
+hist_data = HistoricPlanDVH(root_folder)
 hist_data.set_participant_folder()
 hist_data.load_dvh()
 
@@ -38,7 +39,7 @@ str_names = ['LENS LT',
 
 # stats_dvh
 sn = 'PAROTID LT'
-sc = stats_dvh.df_data[sn]
+sc = stats_dvh.vf_data[sn]
 
 stats_dvh.plot_historical_dvh(sn)
 
@@ -85,10 +86,9 @@ class TestWeightedExperienceScore(TestCase):
         # query dvh
         dvh1 = sc.loc[1]
         probs1 = wes.weighted_cumulative_probability(dvh1)
-        # assert probs > probs1
-        self.fail()
-        #
-        # import matplotlib.pyplot as plt
-        #
-        # plt.plot(dvh.values, dvh.index)
-        # plt.plot(dvh1.values, dvh1.index)
+
+        # test_loding database
+        wb = WeightedExperienceScoreBase()
+        wb.stats_dvh = database_file
+        score_base = wb.weighted_cumulative_probability(101, sn)
+        self.assertAlmostEqual(probs, score_base)

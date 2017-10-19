@@ -21,6 +21,7 @@ class DoseStructureConstraint:
             The string structure name corresponding to the structure ID in Eclipse.
             Separate with '&' character for multiple structures
         """
+        self._mc = None
         self._structure_name = None
         self._constraint_dose = None
         self._dose = None
@@ -28,6 +29,27 @@ class DoseStructureConstraint:
         self._priority = None
         self._volume = None
         self._volume_type = None
+        self._constraint_result = None
+
+    @property
+    def mayo_constraint(self):
+        return self._mc
+
+    @mayo_constraint.setter
+    def mayo_constraint(self, value):
+        self._mc = value
+
+    @property
+    def constraint_result(self):
+        """
+            Return DoseValue, Volume or Dimensionless results
+        :return: Numeric value of constraint result
+        """
+        return self._constraint_result
+
+    @constraint_result.setter
+    def constraint_result(self, value):
+        self._constraint_result = value
 
     @property
     def volume(self):
@@ -177,6 +199,10 @@ class ConstraintResult:
         self._constraint = value
 
     @property
+    def constraint_result(self):
+        return self.constraint.constraint_result
+
+    @property
     def is_success(self):
         """
              Signifies if constraint passed.
@@ -236,6 +262,12 @@ class ConstraintResult:
     def value(self, value):
         self._value = value
 
+    def __str__(self):
+        return str(self.constraint_result)
+
+    def __repr__(self):  # pragma: no cover
+        return self.__str__()
+
 
 class DoseAtVolumeConstraint(DoseStructureConstraint):
     def __init__(self):
@@ -287,6 +319,7 @@ class DoseAtVolumeConstraint(DoseStructureConstraint):
         passed = self.passing_func(dose_at_vol)
         string_unit = self.volume_type.symbol
         dose_value = dose_at_vol.get_dose(self.constraint_dose.unit)
+        self.constraint_result = dose_value
         msg = 'Dose to %1.3f %s of %s is %s' % (self.volume, string_unit, self.structure_name, str(dose_value))
         return ConstraintResult(self, passed, msg, str(dose_value))
 
@@ -382,6 +415,8 @@ class ComplimentDoseAtVolumeConstraint(DoseStructureConstraint):
         passed = self.passing_func(dc_at_vol)
         string_unit = self.volume_type.symbol
         dose_value = dc_at_vol.get_dose(self.constraint_dose.unit)
+        # encapsulate numeric constraint result
+        self.constraint_result = dose_value
         msg = 'Dose compliment to %1.3f %s of %s is %s' % (self.volume,
                                                            string_unit,
                                                            self.structure_name,
@@ -472,6 +507,7 @@ class VolumeAtDoseConstraint(DoseStructureConstraint):
 
     def constrain(self, pi):
         volume_at_dose = self.get_volume_at_dose(pi)
+        self.constraint_result = volume_at_dose
         passed = self.passing_func(volume_at_dose)
         # string_unit = self.volume_type.symbol
         msg = 'Volume of %s at %s was %s.' % (self.structure_name,
@@ -563,6 +599,7 @@ class ComplimentVolumeAtDoseConstraint(DoseStructureConstraint):
 
     def constrain(self, pi):
         cv_at_dose = self.get_compliment_volume_at_dose(pi)
+        self.constraint_result = cv_at_dose
         passed = self.passing_func(cv_at_dose)
         # string_unit = self.volume_type.symbol
         msg = 'Compliment volume of %s at %s was %s.' % (self.structure_name,
@@ -619,8 +656,14 @@ class MaxDoseConstraint(DoseStructureConstraint):
         d_pres = self.constraint_dose.get_presentation()
         v_pres = self.volume_type
         dvh = pi.get_dvh_cumulative_data(self.structure_name, d_pres, v_pres)
-        value = str(dvh.max_dose)
-        passed = ResultType.PASSED if dvh.max_dose <= self.constraint_dose else self.get_failed_result_type()
+
+        # set unit to query's
+        dose = dvh.max_dose
+        dose_value = dose.get_dose(self.constraint_dose.unit)
+        self.constraint_result = dose_value
+        value = str(dose_value)
+
+        passed = ResultType.PASSED if dose_value <= self.constraint_dose else self.get_failed_result_type()
         msg = 'Maximum dose to %s is %s.' % (self.structure_name, value)
 
         return ConstraintResult(self, passed, msg, value)
@@ -644,8 +687,13 @@ class MinDoseConstraint(DoseStructureConstraint):
         d_pres = self.constraint_dose.get_presentation()
         v_pres = self.volume_type
         dvh = pi.get_dvh_cumulative_data(self.structure_name, d_pres, v_pres)
-        value = str(dvh.min_dose)
-        passed = ResultType.PASSED if dvh.min_dose >= self.constraint_dose else self.get_failed_result_type()
+        # set unit to query's
+        dose = dvh.min_dose
+        dose_value = dose.get_dose(self.constraint_dose.unit)
+        self.constraint_result = dose_value
+        value = str(dose_value)
+
+        passed = ResultType.PASSED if dose_value >= self.constraint_dose else self.get_failed_result_type()
         msg = 'Minimum dose to %s is %s.' % (self.structure_name, value)
 
         return ConstraintResult(self, passed, msg, value)
@@ -669,8 +717,14 @@ class MinMeanDoseConstraint(DoseStructureConstraint):
         d_pres = self.constraint_dose.get_presentation()
         v_pres = self.volume_type
         dvh = pi.get_dvh_cumulative_data(self.structure_name, d_pres, v_pres)
-        value = str(dvh.mean_dose)
-        passed = ResultType.PASSED if dvh.mean_dose >= self.constraint_dose else self.get_failed_result_type()
+
+        # set unit to query's
+        dose = dvh.mean_dose
+        dose_value = dose.get_dose(self.constraint_dose.unit)
+        self.constraint_result = dose_value
+        value = str(dose_value)
+
+        passed = ResultType.PASSED if dose_value >= self.constraint_dose else self.get_failed_result_type()
         msg = 'Mean dose to %s is %s.' % (self.structure_name, value)
 
         return ConstraintResult(self, passed, msg, value)
@@ -694,8 +748,14 @@ class MaxMeanDoseConstraint(DoseStructureConstraint):
         d_pres = self.constraint_dose.get_presentation()
         v_pres = self.volume_type
         dvh = pi.get_dvh_cumulative_data(self.structure_name, d_pres, v_pres)
-        value = str(dvh.mean_dose)
-        passed = ResultType.PASSED if dvh.mean_dose <= self.constraint_dose else self.get_failed_result_type()
+
+        # set unit to query's
+        dose = dvh.mean_dose
+        dose_value = dose.get_dose(self.constraint_dose.unit)
+        self.constraint_result = dose_value
+        value = str(dose_value)
+
+        passed = ResultType.PASSED if dose_value <= self.constraint_dose else self.get_failed_result_type()
         msg = 'Mean dose to %s is %s.' % (self.structure_name, value)
 
         return ConstraintResult(self, passed, msg, value)
@@ -737,6 +797,7 @@ class ConformationIndexConstraint(DoseStructureConstraint):
 
     def constrain(self, pi):
         dm = pi.execute_query(str(self.mc.query), self.structure_name)
+        self.constraint_result = dm
         value = str(dm)
         passed = ResultType.PASSED if dm >= self.constraint_value else self.get_failed_result_type()
         msg = '%s to %s is %s.' % (str(self.mc.query), self.structure_name, value)
@@ -775,6 +836,7 @@ class HomogeneityIndexConstraint(DoseStructureConstraint):
 
     def constrain(self, pi):
         dm = pi.execute_query(str(self.mc.query), self.structure_name)
+        self.constraint_result = dm
         value = str(dm)
         passed = ResultType.PASSED if dm <= self.constraint_value else self.get_failed_result_type()
         msg = '%s to %s is %s.' % (str(self.mc.query), self.structure_name, value)
@@ -942,6 +1004,7 @@ class MayoConstraintConverter:
         dv = DoseValue(dose, dose_unit)
         # constraint class
         c = MaxDoseConstraint()
+        c.mayo_constraint = mc
         c.constraint_dose = dv
         c.structure_name = structure_name
         c.priority = priority
@@ -960,6 +1023,7 @@ class MayoConstraintConverter:
         dv = DoseValue(dose, dose_unit)
         # constraint class
         c = MinDoseConstraint()
+        c.mayo_constraint = mc
         c.constraint_dose = dv
         c.structure_name = structure_name
         c.priority = priority
@@ -977,12 +1041,14 @@ class MayoConstraintConverter:
         dv = DoseValue(dose, dose_unit)
         # constraint classes
         min_mean = MinMeanDoseConstraint()
+        min_mean.mayo_constraint = mc
         min_mean.constraint_dose = dv
         min_mean.structure_name = structure_name
         min_mean.priority = priority
 
         # constraint classes
         max_mean = MaxMeanDoseConstraint()
+        max_mean.mayo_constraint = mc
         max_mean.constraint_dose = dv
         max_mean.structure_name = structure_name
         max_mean.priority = priority
@@ -1011,6 +1077,7 @@ class MayoConstraintConverter:
 
         # constraint classes
         min_dv = MinDoseAtVolConstraint()
+        min_dv.mayo_constraint = mc
         min_dv.constraint_dose = dv
         min_dv.structure_name = structure_name
         min_dv.priority = priority
@@ -1019,6 +1086,7 @@ class MayoConstraintConverter:
 
         # constraint classes
         max_dv = MaxDoseAtVolConstraint()
+        max_dv.mayo_constraint = mc
         max_dv.constraint_dose = dv
         max_dv.structure_name = structure_name
         max_dv.priority = priority
@@ -1048,6 +1116,7 @@ class MayoConstraintConverter:
 
         # constraint classes
         min_vd = MinVolAtDoseConstraint()
+        min_vd.mayo_constraint = mc
         min_vd.constraint_dose = dv
         min_vd.structure_name = structure_name
         min_vd.priority = priority
@@ -1056,6 +1125,7 @@ class MayoConstraintConverter:
 
         # constraint classes
         max_vd = MaxVolAtDoseConstraint()
+        max_vd.mayo_constraint = mc
         max_vd.constraint_dose = dv
         max_vd.structure_name = structure_name
         max_vd.priority = priority
@@ -1085,6 +1155,7 @@ class MayoConstraintConverter:
 
         # constraint classes
         min_cv = MinComplimentVolumeAtDose()
+        min_cv.mayo_constraint = mc
         min_cv.constraint_dose = dv
         min_cv.structure_name = structure_name
         min_cv.priority = priority
@@ -1093,6 +1164,7 @@ class MayoConstraintConverter:
 
         # constraint classes
         max_cv = MaxComplimentVolumeAtDose()
+        max_cv.mayo_constraint = mc
         max_cv.constraint_dose = dv
         max_cv.structure_name = structure_name
         max_cv.priority = priority
@@ -1122,6 +1194,7 @@ class MayoConstraintConverter:
 
         # constraint classes
         min_dc = MinComplimentDoseAtVolumeConstraint()
+        min_dc.mayo_constraint = mc
         min_dc.constraint_dose = dv
         min_dc.structure_name = structure_name
         min_dc.priority = priority
@@ -1130,6 +1203,7 @@ class MayoConstraintConverter:
 
         # constraint classes
         max_dc = MaxComplimentDoseAtVolumeConstraint()
+        max_dc.mayo_constraint = mc
         max_dc.constraint_dose = dv
         max_dc.structure_name = structure_name
         max_dc.priority = priority
@@ -1157,6 +1231,7 @@ class MayoConstraintConverter:
 
         # constraint classes
         hi = HomogeneityIndexConstraint()
+        hi.mayo_constraint = mc
         hi.constraint_dose = dv
         hi.constraint_value = mc.constraint_value
         hi.structure_name = structure_name
@@ -1178,6 +1253,7 @@ class MayoConstraintConverter:
 
         # constraint classes
         ci = ConformationIndexConstraint()
+        ci.mayo_constraint = mc
         ci.constraint_dose = dv
         ci.constraint_value = mc.constraint_value
         ci.structure_name = structure_name

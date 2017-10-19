@@ -268,7 +268,13 @@ class DVHData:
         # If the max dose is less than the queried dose, then there is no volume at the queried dose (out of range)
         # If the min dose is greater than the queried dose, then 100% of the volume is at the queried dose
         if self.max_dose < dv or dv < self.min_dose:
-            return 0 * self.volume_unit if self.max_dose < dv else self.volume
+            if self.max_dose < dv:
+                return 0 * volume_unit
+            else:
+                if volume_unit == VolumePresentation.absolute_cm3:
+                    return self.volume
+                elif volume_unit == VolumePresentation.relative:
+                    return 100 * volume_unit
 
         if volume_unit == VolumePresentation.absolute_cm3:
             return float(self.fv_cc(dv.value)) * VolumePresentation.absolute_cm3

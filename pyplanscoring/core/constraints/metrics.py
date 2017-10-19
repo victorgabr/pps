@@ -12,7 +12,6 @@ import string
 
 import numpy as np
 import pandas as pd
-
 from pyplanscoring.core.constraints.query import QueryExtensions
 from pyplanscoring.core.constraints.types import DoseValuePresentation, DoseValue, DoseUnit, DVHData
 
@@ -22,15 +21,22 @@ class PlanningItem:
         Planning items extensions
     """
 
-    def __init__(self, rp_dcm, rs_dcm, rd_dcm):
-        self.id = ''
-        self._plan = rp_dcm.GetPlan()
+    def __init__(self, rp_dcm=None, rs_dcm=None, rd_dcm=None):
         self._rp_dcm = rp_dcm
         self._rs_dcm = rs_dcm
         self._rd_dcm = rd_dcm
-        self._dose_data = rd_dcm.GetDoseData()
-        self._dvhs = rd_dcm.GetDVHs()
-        self._structures = rs_dcm.GetStructures()
+
+        # TODO REFACTOR THIS LATER
+        try:
+            self._plan = rp_dcm.GetPlan()
+            self._dose_data = rd_dcm.GetDoseData()
+            self._dvhs = rd_dcm.GetDVHs()
+            self._structures = rs_dcm.GetStructures()
+        except:
+            self._plan = {}
+            self._dose_data = {}
+            self._dvhs = {}
+            self._structures = {}
 
     @property
     def dvh_data(self):
