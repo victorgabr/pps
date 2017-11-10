@@ -689,7 +689,20 @@ class GeneralizedEvaluationMetric:
 
         self._priority = value['Priority'].astype(float)
         self._constraints_values = value['constraint_value']
+        value['Metric Type'] = value['Mayo Constraints'].apply(lambda x: x.constraint_type)
         self._discrete_constraints = value
+
+    @property
+    def confidence_intervals(self):
+        # Calc quantiles 90% quantile
+        # upper_90 = self.constraints_stats.quantile(0.9, axis=1)
+        lower_90, upper_90 = self.empirical_ci(self.constraints_stats, 0.9)
+        quantile_90 = np.zeros(len(lower_90))
+        mask_min = self.discrete_constraints['Metric Type'] == ConstraintType.MINIMUM
+        mask_max = self.discrete_constraints['Metric Type'] == ConstraintType.MAXIMUM
+        quantile_90[mask_min] = lower_90[mask_min]
+        quantile_90[mask_max] = upper_90[mask_max]
+        return quantile_90
 
     @property
     def constraints_stats(self):
@@ -758,7 +771,7 @@ class GeneralizedEvaluationMetric:
         """Appendix B: Sigmoidal curve using Normal C.D.F.
         The normal p.d.f. is frequently used for values that can range over positive and negative values.
         In that case the sigmoidal function used in the GEM calculation is the normal c.d.f.."""
-
+        # TODO VECTORIZE IT
         if mc_type == 0:
             delta = plan_value - constraint_value
             return 1 / 2 * (1 + sp.erf((delta) / (q * constraint_value)))
@@ -779,17 +792,18 @@ class GeneralizedEvaluationMetric:
         :param target_prob: desired ALARA target probability
         :return: scale parameter of normal CDF
         """
+        # TODO REVIEW IT STEP BY STEP
         u = constraint_ci
         c = constraint_value
         g = target_prob
-        if mc_type == 0:  # maximum constraint
+        if mc_type == ConstraintType.MAXIMUM:  # maximum constraint
             if constraint_ci >= constraint_value:
                 q = (c - u) / (c * sp.erfinv(1 - 2 * g))
                 return abs(q)
 
             else:
                 return 1 - target_prob
-        if mc_type == 1:  # minimum constraint
+        if mc_type == ConstraintType.MINIMUM:  # minimum  constraint
             if constraint_ci <= constraint_value:
                 q = (c - u) / (c * sp.erfinv(1 - 2 * g))
                 return abs(q)
@@ -826,13 +840,10 @@ class GeneralizedEvaluationMetric:
         # get constraints results
         plan_constraints_results = self.eval_constraints(pi)
 
-        # Calc quantiles 90% quantile
-        # upper_90 = self.constraints_stats.quantile(0.9, axis=1)
-        lower_90, upper_90 = self.empirical_ci(self.constraints_stats, 0.9)
-
         # pre allocating memory
         cdf = [0] * len(plan_constraints_results)
         b2_exp = 2 ** -(self.priority_constraints - 1)
+        ci_90 = self.confidence_intervals
 
         for row in plan_constraints_results.iterrows():
             plan_value = row[1]['Result']
@@ -843,12 +854,7 @@ class GeneralizedEvaluationMetric:
                 return None
 
             mc = row[1]['Mayo Constraints']
-            quantile_90 = upper_90[row[0]]
-            # check constraint type
-            if mc.constraint_type == ConstraintType.MINIMUM:
-                quantile_90 = lower_90[row[0]]
-
-            qi = self.get_q_parameter(quantile_90, constraint_value, mc_type=mc.constraint_type)
+            qi = self.get_q_parameter(ci_90[row[0]], constraint_value, mc_type=mc.constraint_type)
             cdfi = self.sigmoidal_curve_using_normal_cdf(plan_value, constraint_value, qi, mc_type=mc.constraint_type)
             cdf[row[0]] = cdfi
 
@@ -934,21 +940,38 @@ class GeneralizedEvaluationMetricWES(GeneralizedEvaluationMetric, WeightedExperi
             calculated for all selected constraints
         :return: array of q parameters
         """
-        _, upper_90 = self.empirical_ci(self.constraints_stats, 0.9)
+        ctr_type = self.discrete_constraints['Metric Type'].values
         calc_q_parameter = np.vectorize(self.get_q_parameter)
-        q = calc_q_parameter(upper_90, self.constraints_values.values)
+        q = calc_q_parameter(self.confidence_intervals, self.constraints_values.values, mc_type=ctr_type)
         return q
+
+    @staticmethod
+    def sigmoidal_curve_using_normal_cdf(plan_value, constraint_value, q, mc_type=0):
+        """Appendix B: Sigmoidal curve using Normal C.D.F.
+        The normal p.d.f. is frequently used for values that can range over positive and negative values.
+        In that case the sigmoidal function used in the GEM calculation is the normal c.d.f.."""
+        # TODO VECTORIZE IT
+        delta0 = plan_value - constraint_value
+        delta1 = constraint_value - plan_value
+        delta = np.zeros(plan_value.shape)
+        delta[mc_type == 0, :] = delta0[mc_type == 0, :]
+        delta[mc_type == 1, :] = delta1[mc_type == 1, :]
+        return 1 / 2 * (1 + sp.erf((delta) / (q * constraint_value)))
 
     @property
     def constraints_gem(self):
+        ctr_type = self.discrete_constraints['Metric Type'].values
         plan_values = self.constraints_stats.values
         constraint_values = self.constraints_values.values[:, np.newaxis]
         qi = self.constraints_q_parameter[:, np.newaxis]
-        cdfi = self.sigmoidal_curve_using_normal_cdf(plan_values, constraint_values, qi)
+
+        cdfi = self.sigmoidal_curve_using_normal_cdf(plan_values, constraint_values, qi, mc_type=ctr_type)
+
         sn = self.discrete_constraints['Structure Name']
         cm = self.discrete_constraints['Mayo Constraints']
         c_index = sn.astype(str) + ' - ' + cm.astype(str)
         gem_df = pd.DataFrame(cdfi, index=c_index)
+
         return gem_df
 
     def get_structure_gem(self, plan_id, constraint_string):
@@ -971,6 +994,8 @@ class GeneralizedEvaluationMetricWES(GeneralizedEvaluationMetric, WeightedExperi
         :param structure_name: string
         """
         bp_data = self.stats_dvh.vf_data[structure_name].copy()
+
+        constraint = structure_name + ' - ' + constraint
         col_gem = self.constraints_gem.loc[constraint]
         bp_data['gem'] = col_gem
         res_corr = bp_data.corr(method='kendall')
