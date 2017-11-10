@@ -440,6 +440,7 @@ class QueryExtensions(MayoQuery):
         :param target_structure_name:
         :return:
         """
+        # TODO implement getting data only from structures
         external = None
         for k, v in pi.structures.items():
             if v['RTROIType'] == DICOMType.EXTERNAL:

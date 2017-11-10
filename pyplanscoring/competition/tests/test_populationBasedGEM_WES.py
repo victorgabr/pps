@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 import pandas as pd
+
 # TODO STORE PRECOMPUTED STATISTICS
 from competition.tests import data_path, sheet, database_file
 from pyplanscoring.competition.statistical_dvh import StatisticalDVH, GeneralizedEvaluationMetricWES, \
@@ -40,12 +41,24 @@ stats_dvh.load_data_from_hdf(database_file)
 
 class TestPopulationBasedGEM_WES(TestCase):
     def test_load_constraints_stats(self):
-        structure_name = 'LIPS'
+        structure_name = 'PAROTID LT'
+        nplans = 147
+        plan_id = 100
         gem_wes_obj = GeneralizedEvaluationMetricWES(stats_dvh, df)
         gem_wes_obj.load_constraints_stats(database_file, sheet)
-        gem_wes = gem_wes_obj.get_gem_wes(0, structure_name)
-
+        gem_wes = gem_wes_obj.get_gem_wes(plan_id, structure_name, )
+        wes = gem_wes_obj.weighted_cumulative_probability(plan_id, structure_name)
         gem_wes_obj1 = PopulationBasedGEM_WES(stats_dvh, df)
         gem_wes_obj1.load_constraints_stats(database_file, sheet)
-        gem_wes1 = gem_wes_obj1.get_gem_wes(0, structure_name)
+        gem_wes1 = gem_wes_obj1.get_gem_wes(0, structure_name, )
         self.assertNotAlmostEqual(gem_wes, gem_wes1)
+
+    def test_plot_scores(self):
+        structure_name = 'PAROTID LT'
+        plan_id = 100
+        constraint = structure_name
+        gem_wes_obj = PopulationBasedGEM_WES(stats_dvh, df)
+        gem_wes_obj.load_constraints_stats(database_file, sheet)
+        gem_wes_obj.plot_scores(plan_id, structure_name, constraint)
+        import matplotlib.pyplot as plt
+        plt.show()

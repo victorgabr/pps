@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numba as nb
 import numpy as np
 
+from core.dvhdoses import get_cdvh_numba
+
 
 def get_dose_vol_array(dvh_file, what):
     f = open(dvh_file)
@@ -72,8 +74,11 @@ def relative_seriality_model(dose_vol_array, s, gamma, TD50):
 
 
 if __name__ == '__main__':
-    dvh_file = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\pyplanscoring\radiobiology\example_differential_DVH_CC.txt'
+    dvh_file = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\radiobiology\example_differential_DVH_CC.txt'
 
     dvh = get_dose_vol_array(dvh_file, 'Tumorbett')
     plt.plot(dvh[:, 0], dvh[:, 1])
+
+    cdvh = get_cdvh_numba(dvh[:, 1])
+    plt.plot(dvh[:, 0], cdvh)
     calc_Deff(dvh[:, 0], dvh[:, 1], 1)

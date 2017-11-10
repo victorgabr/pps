@@ -1,8 +1,13 @@
+import re
 from unittest import TestCase
 
+import matplotlib.pyplot as plt
 import pandas as pd
-from competition.tests import data_path, database_file, sheet
-from pyplanscoring.competition.statistical_dvh import StatisticalDVH, GeneralizedEvaluationMetric, PlanningItemDVH
+
+from competition.tests import data_path, database_file, sheet, low_score, high_score, root_folder
+from core.dvhcalculation import load
+from pyplanscoring.competition.statistical_dvh import StatisticalDVH, GeneralizedEvaluationMetric, PlanningItemDVH, \
+    HistoricPlanDVH
 
 # set stats dvh
 
@@ -28,13 +33,18 @@ str_names = ['LENS LT',
              'PTV63',
              'OPTIC N. LT',
              'LIPS',
-             'ESOPHAGUS']
+             'ESOPHAGUS',
+             'PTV70']
 
 # global constraints data
 df = pd.read_excel(data_path, sheetname=sheet)
 stats_dvh = StatisticalDVH()
 stats_dvh.load_data_from_hdf(database_file)
+hist_data = HistoricPlanDVH(root_folder)
+hist_data.set_participant_folder()
 
+
+# calculate STATS for all plans
 
 class TestGeneralizedEvaluationMetric(TestCase):
     def test_discrete_constraints(self):
@@ -45,12 +55,23 @@ class TestGeneralizedEvaluationMetric(TestCase):
 
     def test_eval_constraints(self):
         # init PlanningItemDVH
+        plan_dvh = stats_dvh.get_plan_dvh(16)
+        pi = PlanningItemDVH(plan_dvh=plan_dvh)
+
+        gem = GeneralizedEvaluationMetric(stats_dvh, df)
+        gem.discrete_constraints = df
+        res = gem.eval_constraints(pi)
+
+        # init PlanningItemDVH
         plan_dvh = stats_dvh.get_plan_dvh(0)
         pi = PlanningItemDVH(plan_dvh=plan_dvh)
 
         gem = GeneralizedEvaluationMetric(stats_dvh, df)
         gem.discrete_constraints = df
         res = gem.eval_constraints(pi)
+
+        # debug error in plan 16
+
         assert 'Result' in res
 
     def test_stats_constraints(self):
@@ -58,6 +79,7 @@ class TestGeneralizedEvaluationMetric(TestCase):
         gem.discrete_constraints = df
         constraints_stats = gem.calc_constraints_stats()
         # test save
+        pass
 
     def test_save_constraints_stats(self):
         gem = GeneralizedEvaluationMetric(stats_dvh, df)
@@ -90,14 +112,49 @@ class TestGeneralizedEvaluationMetric(TestCase):
 
         self.assertAlmostEqual(gem_1, gem_0)
 
-        # todo DEBUG confidence interval
-        # plan_values = gem.constraints_stats
-        # import matplotlib.pyplot as plt
-        # for i in range(len(plan_values)):
-        #     plt.figure()
-        #     plan_values.loc[i].hist()
-        #     plt.title(gem.discrete_constraints['Structure Name'].loc[i])
-        #
+        # test method overloading
+        gem_2 = gem.calc_gem(0)
+        self.assertAlmostEqual(gem_0, gem_2)
+
+        # test low score plan
+        pi = PlanningItemDVH(plan_dvh=low_score)
+        low_gem = gem.calc_gem(pi)
+
+        # test high score plan
+        pi = PlanningItemDVH(plan_dvh=high_score)
+        hig_gem = gem.calc_gem(pi)
+
+        assert low_gem > hig_gem
+
+    def calc_stats_gem(self):
+        # First load constraint stats from HDF
+        df = pd.read_excel(data_path, sheetname=sheet)
+        gem = GeneralizedEvaluationMetric(stats_dvh, df)
+        gem.load_constraints_stats(database_file, sheet)
+
+        # TODO evaluate new ranking against classic scores
+        gem_plans = []
+        for part in hist_data.map_part:
+            dvh = load(part[1][0])['DVH']
+            pi_t = PlanningItemDVH(plan_dvh=dvh)
+            gem_t = gem.calc_gem(pi_t)
+            if gem_t:
+                gem_plans.append([part[0], gem_t])
+        df = pd.DataFrame(gem_plans)
+        df['sc'] = df[0].apply(lambda row: re.findall("\d+\.\d+", row)[0] if re.findall("\d+\.\d+", row) else None)
+
+        df = df.dropna()
+        plt.plot(df['sc'], df[1], '.')
+
+        # load winner DVH
+        winner_df = df.sort_values(1).iloc[0]
+
+        from sklearn.neighbors import KDTree
+
+        cstats = gem.constraints_stats.T.values
+        tree = KDTree(cstats)
+
+        dist, ind = tree.query([cstats[20]], k=5)
 
     def test_calculated_priority(self):
         import numpy as np

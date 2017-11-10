@@ -7,17 +7,24 @@ http://www.sciencedirect.com/science/article/pii/S2452109417300611
 import difflib
 import os
 
+import hdbscan
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy.interpolate as itp
-# Todo historic plan data from each folder
 import scipy.special as sp
-from pyplanscoring.core.constraints.constraints import MayoConstraintConverter
+import seaborn as sns
+from sklearn.covariance import ShrunkCovariance, LedoitWolf
+from sklearn.decomposition import PCA, FactorAnalysis
+from sklearn.manifold import TSNE
+from sklearn.model_selection import cross_val_score, GridSearchCV
+
+from core.constraints.query import QueryExtensions
+from pyplanscoring.core.constraints.constraints import MayoConstraintConverter, ConstraintType
 from pyplanscoring.core.constraints.metrics import PlanningItem
-from pyplanscoring.core.constraints.types import DVHData, QuantityRegex, DoseUnit, DoseValuePresentation
+from pyplanscoring.core.constraints.types import DVHData, QuantityRegex, DoseUnit, DoseValuePresentation, DoseValue, \
+    VolumePresentation, QueryType
 from pyplanscoring.core.dvhcalculation import load
-from sklearn.decomposition import PCA
 
 
 class PlanningItemDVH(PlanningItem):
@@ -96,6 +103,57 @@ class PlanningItemDVH(PlanningItem):
         dvh = self.get_structure(structure)
         return DVHData(dvh)
 
+    def execute_query(self, mayo_format_query, ss):
+        """
+        :param pi: PlanningItem
+        :param mayo_format_query: String Mayo query
+        :param ss: Structure string
+        :return: Query result
+        """
+        # TODO Refactor CI calculation
+        query = QueryExtensions()
+        query.read(mayo_format_query)
+        if query.query_type == QueryType.CI:
+            return self.query_ci_stats(query, ss)
+        else:
+            return query.run_query(query, self, ss)
+
+    def query_ci_stats(self, query, target_name):
+        """
+            Calculates the Paddick conformity index (PMID 11143252) as Paddick CI = (TVPIV)2 / (TV x PIV).
+            TVPIV = Target volume covered by Prescription Isodose volume
+            TV = Target volume
+            using plan DVH data of BODY
+        :param target_name: string structure name
+        :param query: Query extensions
+        :return: CI
+        """
+        # getting external
+        max_volume_key = max(self.dvh_data, key=lambda i: self.dvh_data[i]['data'][0])
+
+        target_structure = self.get_structure(target_name)
+        dose_unit = query.get_dose_unit(query)
+        reference_dose = DoseValue(query.query_value, dose_unit)
+        prescription_vol_isodose = self.get_volume_at_dose(max_volume_key, reference_dose,
+                                                           VolumePresentation.absolute_cm3)
+
+        target_vol_isodose = self.get_volume_at_dose(target_name, reference_dose,
+                                                     VolumePresentation.absolute_cm3)
+        target_vol = target_structure['data'][0] * VolumePresentation.absolute_cm3
+
+        ci = (target_vol_isodose * target_vol_isodose) / (target_vol * prescription_vol_isodose)
+
+        # if not np.isfinite(ci):
+        #     raise Exception('Error')
+
+        d_pres = reference_dose.get_presentation()
+        dvh = self.get_dvh_cumulative_data(max_volume_key, d_pres, VolumePresentation.absolute_cm3)
+        tmp = dvh.get_volume_at_dose(reference_dose, VolumePresentation.absolute_cm3)
+
+        fci = float(ci)
+
+        return fci
+
 
 class HistoricPlanDVH:
     def __init__(self, root_folder=''):
@@ -103,6 +161,7 @@ class HistoricPlanDVH:
         self.folder_data = []
         self.dvh_files = []
         self.dvh_data = []
+        self.map_part = []
 
     @property
     def root_folder(self):
@@ -115,6 +174,8 @@ class HistoricPlanDVH:
             dvh = self.get_calculated_dvh(participant_folder)
             if dvh:
                 self.dvh_files.append(dvh)
+                _, part = os.path.split(participant_folder)
+                self.map_part.append([part, dvh])
 
     @staticmethod
     def get_calculated_dvh(participant_folder):
@@ -184,12 +245,32 @@ class StatisticalDVH:
             doses = []
             volume = []
             for row in self.dvh_data.iterrows():
-                dvh = DVHData(row[1][s])
-                doses.append(dvh.dose_focused_format)
-                volume = dvh.volume_focused_format
+                try:
+                    dvh = DVHData(row[1][s])
+                    doses.append(dvh.dose_focused_format)
+                    volume = dvh.volume_focused_format
+                except:
+                    # todo debug this
+                    pass
             vf_data[s] = pd.DataFrame(doses, columns=volume)
 
         self._vf_data = vf_data
+
+    @staticmethod
+    def get_vf_dvh(dvh_data):
+        """
+            Convert plan DVH data to VF format
+        :param dvh_data: Plan DVH data
+        :return: Plan DVH in VF format
+        """
+        vf_data = {}
+        for s, val in dvh_data.items():
+            dvh = DVHData(val)
+            doses = dvh.dose_focused_format
+            volume = dvh.volume_focused_format
+            vf_data[s] = pd.Series(doses, index=volume)
+
+        return vf_data
 
     def set_data(self, dvh_data):
         self._dvh_data = dvh_data
@@ -215,6 +296,24 @@ class StatisticalDVH:
         for k, dvh in self.vf_data.items():
             quantiles = self.calc_quantiles(structure_dvhs=dvh)
             quantiles.to_hdf(path_to_hdf_file, key=k)
+
+    def save_t_sne_data(self, path_to_hdf_file):
+        """
+            Saves pre calculated quantiles at HDF database file.
+            key: structure name
+        :param path_to_hdf_file:
+        """
+        for k, dvh in self.vf_data.items():
+            projected = TSNE().fit_transform(dvh)
+            key = 'T_SNE_' + k
+            projected = pd.DataFrame(projected)
+            projected.to_hdf(path_to_hdf_file, key=key)
+
+    def get_t_sne(self, structure_name):
+        structure_name = 'T_SNE_' + structure_name
+
+        t_sne = pd.read_hdf(self._path_to_hdf_file, structure_name)
+        return t_sne.values.T
 
     def get_quantiles(self, structure_name):
         qtl = pd.read_hdf(self._path_to_hdf_file, structure_name)
@@ -261,10 +360,11 @@ class StatisticalDVH:
 
         return prob_interp
 
-    def plot_historical_dvh(self, structure_name):
+    def plot_historical_dvh(self, structure_name, xlabel, ylabel, title):
         # Todo implement structure name matching
         plot_data = self.vf_data[structure_name]
-        fig, ax = self.statistical_dvh_plot(plot_data, structure_name, 'Dose [cGy]', 'Volume [%]')
+        fig, ax = self.statistical_dvh_plot(plot_data, xlabel, ylabel, title)
+        return fig, ax
 
     def get_plan_dvh(self, plan_id):
         """
@@ -285,7 +385,7 @@ class StatisticalDVH:
         upper = data_samples.quantile(pu)
         return lower.values, upper.values
 
-    def statistical_dvh_plot(self, structure_vf_data, title='', x_label='', y_label=''):
+    def statistical_dvh_plot(self, structure_vf_data, x_label='', y_label='', title=''):
         """
             Plots statistical DVH with confidence intervals
 
@@ -553,6 +653,7 @@ class GeneralizedEvaluationMetric:
         self._constraints_stats = pd.DataFrame()
         self._priority = []
         self._constraints_values = pd.DataFrame()
+        self.plan_constraints_results = pd.DataFrame()
 
         self.discrete_constraints = discrete_constraints
 
@@ -600,6 +701,7 @@ class GeneralizedEvaluationMetric:
 
     def eval_constraints(self, pi_dvh):
         """
+        :rtype: pd.DataFrame
         :param pi_dvh: PlanningItemDVH object
         :return: DataFrame - Constraint Results
         """
@@ -618,14 +720,17 @@ class GeneralizedEvaluationMetric:
     def calc_constraints_stats(self):
         n = len(self._stats_dvh_data.dvh_data)
         # pre alocating
-        constraints_stats = [0] * n
-        constraints_result_df = None
+        constraints_stats = []
         for i in range(n):
-            plan_dvh = self._stats_dvh_data.get_plan_dvh(i)
-            pi = PlanningItemDVH(plan_dvh=plan_dvh)
-            constraints_result_df = self.eval_constraints(pi)
-            # getting values to later save it using hdf5 store
-            constraints_stats[i] = constraints_result_df['Result']
+            try:
+                plan_dvh = self._stats_dvh_data.get_plan_dvh(i)
+                pi = PlanningItemDVH(plan_dvh=plan_dvh)
+                constraints_result_df = self.eval_constraints(pi)
+                # getting values to later save it using hdf5 store
+                constraints_stats.append(constraints_result_df['Result'])
+            except:
+                # TODO debug it
+                pass
 
         self._constraints_stats = pd.concat(constraints_stats, axis=1)
         self._constraints_stats.columns = range(len(self._constraints_stats.columns))
@@ -649,37 +754,48 @@ class GeneralizedEvaluationMetric:
         self.constraints_stats = pd.read_hdf(path_to_hdf, key)
 
     @staticmethod
-    def sigmoidal_curve_using_normal_cdf(plan_value, constraint_value, q):
+    def sigmoidal_curve_using_normal_cdf(plan_value, constraint_value, q, mc_type=0):
         """Appendix B: Sigmoidal curve using Normal C.D.F.
         The normal p.d.f. is frequently used for values that can range over positive and negative values.
         In that case the sigmoidal function used in the GEM calculation is the normal c.d.f.."""
 
-        sig_curve = 1 / 2 * (1 + sp.erf((plan_value - constraint_value) / (q * constraint_value)))
-
-        return sig_curve
+        if mc_type == 0:
+            delta = plan_value - constraint_value
+            return 1 / 2 * (1 + sp.erf((delta) / (q * constraint_value)))
+        if mc_type == 1:
+            delta = constraint_value - plan_value
+            return 1 / 2 * (1 + sp.erf((delta) / (q * constraint_value)))
 
     @staticmethod
-    def get_q_parameter(upper_90_ci, constraint_value, target_prob=0.95):
+    def get_q_parameter(constraint_ci, constraint_value, target_prob=0.95, mc_type=0):
         """
             If Upper 90% CI ≥ Constraint Value, q is selected for this equation B.2
             Appendix B.
 
             Ref. http://www.sciencedirect.com/science/article/pii/S2452109417300611
 
-        :param upper_90_ci: upper_90_ci
+        :param constraint_ci: {max: upper_90_ci, low: lower_ci}
         :param constraint_value: Protocol's Constraint Value
-        :param target_prob:
-        :return:
+        :param target_prob: desired ALARA target probability
+        :return: scale parameter of normal CDF
         """
-        u = upper_90_ci
+        u = constraint_ci
         c = constraint_value
         g = target_prob
-        if upper_90_ci >= constraint_value:
-            q = (c - u) / (c * sp.erfinv(1 - 2 * g))
-            return q
+        if mc_type == 0:  # maximum constraint
+            if constraint_ci >= constraint_value:
+                q = (c - u) / (c * sp.erfinv(1 - 2 * g))
+                return abs(q)
 
-        else:
-            return 0.05
+            else:
+                return 1 - target_prob
+        if mc_type == 1:  # minimum constraint
+            if constraint_ci <= constraint_value:
+                q = (c - u) / (c * sp.erfinv(1 - 2 * g))
+                return abs(q)
+
+            else:
+                return 1 - target_prob
 
     @staticmethod
     def empirical_ci(data_samples, alpha):
@@ -695,9 +811,14 @@ class GeneralizedEvaluationMetric:
             In keeping with clinical practice, low numerical values for prioritization (eg, 1)
             conveyed greater weight than higher values (eg, 3)
 
-        :param pi:  PlanningItemDVH
-        :return: GEM
+        :param pi:  PlanningItemDVH or DataFrame plan index [0-indexed]
+        :return: Plan GEM
         """
+        # method overloading
+        if not isinstance(pi, PlanningItemDVH) and isinstance(pi, int):
+            plan_dvh = self._stats_dvh_data.get_plan_dvh(pi)
+            pi = PlanningItemDVH(plan_dvh=plan_dvh)
+
         if self.constraints_stats.empty:
             # calculate stats if not loaded
             self.calc_constraints_stats()
@@ -705,20 +826,34 @@ class GeneralizedEvaluationMetric:
         # get constraints results
         plan_constraints_results = self.eval_constraints(pi)
 
-        # Calc upper 90% quantile
+        # Calc quantiles 90% quantile
         # upper_90 = self.constraints_stats.quantile(0.9, axis=1)
-        _, upper_90 = self.empirical_ci(self.constraints_stats, 0.9)
+        lower_90, upper_90 = self.empirical_ci(self.constraints_stats, 0.9)
+
         # pre allocating memory
         cdf = [0] * len(plan_constraints_results)
         b2_exp = 2 ** -(self.priority_constraints - 1)
 
         for row in plan_constraints_results.iterrows():
-            constraint_value = self.constraints_values[row[0]]
-            upper_90i = upper_90[row[0]]
             plan_value = row[1]['Result']
-            qi = self.get_q_parameter(upper_90i, constraint_value)
-            cdfi = self.sigmoidal_curve_using_normal_cdf(plan_value, constraint_value, qi)
+            constraint_value = self.constraints_values[row[0]]
+
+            # check plan value
+            if not np.isfinite(plan_value):
+                return None
+
+            mc = row[1]['Mayo Constraints']
+            quantile_90 = upper_90[row[0]]
+            # check constraint type
+            if mc.constraint_type == ConstraintType.MINIMUM:
+                quantile_90 = lower_90[row[0]]
+
+            qi = self.get_q_parameter(quantile_90, constraint_value, mc_type=mc.constraint_type)
+            cdfi = self.sigmoidal_curve_using_normal_cdf(plan_value, constraint_value, qi, mc_type=mc.constraint_type)
             cdf[row[0]] = cdfi
+
+        plan_constraints_results['GEM'] = cdf
+        self.plan_constraints_results = plan_constraints_results
 
         gem_score = np.sum(b2_exp * cdf) / np.sum(b2_exp)
 
@@ -791,20 +926,6 @@ class GeneralizedEvaluationMetricWES(GeneralizedEvaluationMetric, WeightedExperi
     def __init__(self, statistical_dvh_data, discrete_constraints):
         super().__init__(statistical_dvh_data, discrete_constraints)
 
-    def weighted_cumulative_probability(self, plan_id, structure_name):
-        struc_vf_data = self.stats_dvh.vf_data[structure_name]
-        dvh = struc_vf_data.loc[plan_id]
-        quantiles = self.stats_dvh.get_quantiles(structure_name)
-        prob_interp = self.get_probability_interpolator(quantiles)
-        weight_bin_width = np.asarray(dvh.index, dtype=float)
-        pi = self.calc_probabilities(dvh, prob_interp)
-        weight_pca = self.get_pca_eingenvector(struc_vf_data)
-
-        num = np.sum(weight_bin_width * weight_pca * pi)
-        den = np.sum(weight_bin_width * weight_pca)
-        wes = num / den if den != 0 else None
-        return wes
-
     @property
     def constraints_q_parameter(self):
         """
@@ -824,21 +945,33 @@ class GeneralizedEvaluationMetricWES(GeneralizedEvaluationMetric, WeightedExperi
         constraint_values = self.constraints_values.values[:, np.newaxis]
         qi = self.constraints_q_parameter[:, np.newaxis]
         cdfi = self.sigmoidal_curve_using_normal_cdf(plan_values, constraint_values, qi)
-        ctr_str_names = self.discrete_constraints['Structure Name']
-        gem_df = pd.DataFrame(cdfi, index=ctr_str_names)
+        sn = self.discrete_constraints['Structure Name']
+        cm = self.discrete_constraints['Mayo Constraints']
+        c_index = sn.astype(str) + ' - ' + cm.astype(str)
+        gem_df = pd.DataFrame(cdfi, index=c_index)
         return gem_df
 
-    def get_kendall_weights(self, structure_name):
+    def get_structure_gem(self, plan_id, constraint_string):
+        """
+            Get structure Generalized evaluation metric
+        :param plan_id: DataFrame column plan id
+        :param constraint_string:constraint_string
+        :return: Structure GEM
+        """
+        return self.constraints_gem[plan_id].loc[constraint_string]
+
+    def get_kendall_weights(self, structure_name, constraint=''):
         """
             Not all points along the DVH curve are equally relevant.
             Toxicities may be more strongly driven by Max[Gy], Mean[Gy] or Dx%[Gy] values,
             dependent on the organ at risk structure.
             To reflect this, an additional weighting factor(wkti) was calculated using the Kendall's tau
             (kti) correlation of Dx%[Gy] values with structure GEM scores.
-        :param structure_name:
+        :param constraint: Constraint string
+        :param structure_name: string
         """
         bp_data = self.stats_dvh.vf_data[structure_name].copy()
-        col_gem = self.constraints_gem.loc[structure_name]
+        col_gem = self.constraints_gem.loc[constraint]
         bp_data['gem'] = col_gem
         res_corr = bp_data.corr(method='kendall')
 
@@ -849,9 +982,10 @@ class GeneralizedEvaluationMetricWES(GeneralizedEvaluationMetric, WeightedExperi
         kt[kt < 0] = 0
         return kt
 
-    def get_gem_wes(self, plan_id, structure_name):
+    def get_gem_wes(self, plan_id, structure_name, structure_constraint=''):
         """
             Generalized evaluation metric–correlated weighted experience score
+        :param structure_constraint:
         :param plan_id: int - plan id
         :param structure_name: string
         :return: gem_wes
@@ -864,8 +998,7 @@ class GeneralizedEvaluationMetricWES(GeneralizedEvaluationMetric, WeightedExperi
         pi = self.calc_probabilities(dvh, prob_interp)
         weight_pca = self.get_pca_eingenvector(struc_vf_data)
         # adding (kti) correlation
-
-        kti = self.get_kendall_weights(structure_name)
+        kti = self.get_kendall_weights(structure_name, structure_constraint)
 
         num = np.sum(weight_bin_width * weight_pca * kti * pi)
         den = np.sum(weight_bin_width * weight_pca * kti)
@@ -873,6 +1006,58 @@ class GeneralizedEvaluationMetricWES(GeneralizedEvaluationMetric, WeightedExperi
         gem_wes = num / den if den != 0 else None
 
         return gem_wes
+
+    def calc_plan_gem_wes(self):
+        pass
+
+    def difficulty_ranking_score(self):
+        """
+            The difficulty in meeting each threshold-priority constraint value on the basis of historical experience
+            was quantified with a difficulty ranking score (DRS)
+
+            DRS = (2 ** -(Priority - 1)) * GEM upper 50% CI
+
+        :return: difficulty_ranking_score
+        """
+
+        _, upper = self.empirical_ci(self.constraints_gem, 0.5)
+        b2_exp = 2 ** -(self.priority_constraints - 1.0)
+        values = b2_exp.values * upper
+        drs = pd.DataFrame(values, index=self.constraints_gem.index, columns=['DRS'])
+
+        return drs
+
+    def plot_scores(self, plan_id, structure_name, constraint='', x_label='Dose [cGy]', y_label='Volume [%]', title=''):
+        """
+                Plot statistical scores
+                ref: http://www.sciencedirect.com/science/article/pii/S2452109417300611
+        :param plan_id: Dataframe plan index [0-indexed]
+        :param structure_name: string: Structure name
+        :param constraint: string: Structure constraint
+        :param x_label: x-axis label
+        :param y_label: y-axis label
+        :param title: Plot title
+        :return: Figure and axis object
+        """
+        plan_dvh = self.stats_dvh.get_plan_dvh(plan_id)
+        dvh = plan_dvh[structure_name]
+        fig, ax = self.stats_dvh.plot_historical_dvh(structure_name, x_label, y_label, title)
+
+        ax.plot(dvh['dose_axis'], dvh['data'] / dvh['data'][0] * 100, linewidth=2, color='r', label='Plan DVH')
+        props = dict(boxstyle='round', facecolor='DarkGreen', alpha=0.3)
+
+        # getting scores
+        wes = self.weighted_cumulative_probability(plan_id, structure_name)
+        plan_gem = self.calc_gem(plan_id)
+        gem_wes = self.get_gem_wes(plan_id, structure_name, constraint)
+        textstr = 'Structure WES: %1.3f\n' \
+                  'Constraint GEM_WES: %1.3f\n' \
+                  'Plan GEM: %1.3f' % (wes, gem_wes, plan_gem)
+        ax.text(0.7, 0.90, textstr, transform=ax.transAxes, fontsize=14,
+                verticalalignment='bottom', bbox=props)
+        ax.legend()
+
+        return fig, ax
 
 
 class PopulationBasedGEM_WES(GeneralizedEvaluationMetricWES):
@@ -889,3 +1074,158 @@ class PopulationBasedGEM_WES(GeneralizedEvaluationMetricWES):
         :return:
         """
         return self.constraints_stats.quantile(0.5, axis=1)
+
+    def plot_scores(self, plan_id, structure_name, constraint='', x_label='Dose [cGy]', y_label='Volume [%]', title=''):
+        plan_dvh = self.stats_dvh.get_plan_dvh(plan_id)
+        dvh = plan_dvh[structure_name]
+        fig, ax = self.stats_dvh.plot_historical_dvh(structure_name, x_label, y_label, title)
+
+        ax.plot(dvh['dose_axis'], dvh['data'] / dvh['data'][0] * 100, linewidth=2, color='r', label='Plan DVH')
+        props = dict(boxstyle='round', facecolor='DarkGreen', alpha=0.3)
+
+        # getting scores
+        wes = self.weighted_cumulative_probability(plan_id, structure_name)
+        plan_gem = self.calc_gem(plan_id)
+        gem_wes = self.get_gem_wes(plan_id, structure_name, constraint)
+        textstr = 'Structure WES: %1.3f\n' \
+                  'Constraint GEM_WESpop: %1.3f\n' \
+                  'Plan GEMpop: %1.3f' % (wes, gem_wes, plan_gem)
+        ax.text(0.7, 0.90, textstr, transform=ax.transAxes, fontsize=14,
+                verticalalignment='bottom', bbox=props)
+        ax.legend()
+
+
+class ModelSelection:
+    """
+        with Probabilistic PCA and Factor Analysis (FA)
+        ref.  http://scikit-learn.org/stable/auto_examples/decomposition/plot_pca_vs_fa_model_selection.html#sphx-glr-auto-examples-decomposition-plot-pca-vs-fa-model-selection-py
+    """
+
+    def __init__(self, data):
+        """
+        :param data: [n obs, n features] matrix
+        """
+        self.data = data
+        self.n_components = np.arange(0, data.shape[1])
+
+    def get_fa_weights(self, fit=False):
+        if fit:
+            n_components_pca, n_components_fa, n_components_pca_mle = self.fit()
+        else:
+            n_components_fa = 1
+
+        fa = FactorAnalysis(n_components=n_components_fa)
+        fa.fit(self.data)
+
+        return abs(fa.components_[0])
+
+    def get_pca_weights(self, fit=False):
+        if fit:
+            n_components_pca, n_components_fa, n_components_pca_mle = self.fit()
+        else:
+            n_components_fa = 1
+
+        pca = PCA(svd_solver='full', n_components=n_components_fa)
+        pca.fit(self.data)
+
+        return abs(pca.components_[0])
+
+    def fit(self, plot=False):
+        pca_scores, fa_scores = self.compute_scores(self.data)
+        n_components_pca = self.n_components[np.argmax(pca_scores)]
+        n_components_fa = self.n_components[np.argmax(fa_scores)]
+
+        pca = PCA(svd_solver='full', n_components='mle')
+        pca.fit(self.data)
+        n_components_pca_mle = pca.n_components_
+
+        print("best n_components by PCA CV = %d" % n_components_pca)
+        print("best n_components by FactorAnalysis CV = %d" % n_components_fa)
+        print("best n_components by PCA MLE = %d" % n_components_pca_mle)
+
+        if plot:
+            self.plot_fit(pca_scores, fa_scores, n_components_pca, n_components_fa, n_components_pca_mle)
+
+        return n_components_pca, n_components_fa, n_components_pca_mle
+
+    def compute_scores(self, X):
+        pca = PCA(svd_solver='full')
+        fa = FactorAnalysis()
+
+        pca_scores, fa_scores = [], []
+        for n in self.n_components:
+            pca.n_components = n
+            fa.n_components = n
+            pca_scores.append(np.mean(cross_val_score(pca, X)))
+            fa_scores.append(np.mean(cross_val_score(fa, X)))
+
+        return pca_scores, fa_scores
+
+    @staticmethod
+    def shrunk_cov_score(X):
+        shrinkages = np.logspace(-2, 0, 30)
+        cv = GridSearchCV(ShrunkCovariance(), {'shrinkage': shrinkages})
+        return np.mean(cross_val_score(cv.fit(X).best_estimator_, X))
+
+    @staticmethod
+    def lw_score(X):
+        return np.mean(cross_val_score(LedoitWolf(), X))
+
+    def plot_fit(self, pca_scores, fa_scores, n_components_pca, n_components_fa, n_components_pca_mle):
+        fig, ax = plt.subplots()
+        ax.plot(self.n_components, pca_scores, 'b', label='PCA scores')
+        ax.plot(self.n_components, fa_scores, 'r', label='FA scores')
+        # plt.axvline(rank, color='g', label='TRUTH: %d' % rank, linestyle='-')
+        ax.axvline(n_components_pca, color='b',
+                   label='PCA CV: %d' % n_components_pca, linestyle='--')
+        ax.axvline(n_components_fa, color='r',
+                   label='FactorAnalysis CV: %d' % n_components_fa,
+                   linestyle='--')
+        ax.axvline(n_components_pca_mle, color='k',
+                   label='PCA MLE: %d' % n_components_pca_mle, linestyle='--')
+
+        # compare with other covariance estimators
+        ax.axhline(self.shrunk_cov_score(self.data), color='violet',
+                   label='Shrunk Covariance MLE', linestyle='-.')
+        ax.axhline(self.lw_score(self.data), color='orange',
+                   label='LedoitWolf MLE' % n_components_pca_mle, linestyle='-.')
+
+        ax.set_xlabel('nb of components')
+        ax.set_xlabel('CV scores')
+        ax.legend(loc='lower right')
+        plt.show()
+
+
+class EDAClustering:
+    def __init__(self, data, projected):
+        self.data = data
+        self.projection = projected
+
+    def get_projected_clusters(self, title):
+        self.plot_clusters(self.data,
+                           self.projection,
+                           hdbscan.HDBSCAN,
+                           (), {},
+                           {'alpha': 1, 's': 80, 'linewidths': 0})
+
+        txt = '%s - Clusters found by %s' % (title, hdbscan.HDBSCAN.__name__)
+        plt.title(txt, fontsize=8)
+        plt.show()
+
+    @staticmethod
+    def plot_clusters(data, projection, algorithm, args, kwds, plot_kwds):
+        clusterer = algorithm(*args, **kwds).fit(data)
+        labels = algorithm(*args, **kwds).fit_predict(data)
+        palette = sns.color_palette('deep', np.unique(labels).max() + 1)
+        colors = [palette[x] if x >= 0 else (0.0, 0.0, 0.0) for x in labels]
+        plt.scatter(*projection, c=colors, **plot_kwds)
+        frame = plt.gca()
+        frame.axes.get_xaxis().set_visible(False)
+        frame.axes.get_yaxis().set_visible(False)
+
+        plt.figure()
+        clusterer.condensed_tree_.plot(select_clusters=True,
+                                       selection_palette=sns.color_palette('deep', 8))
+
+        plt.figure()
+        clusterer.single_linkage_tree_.plot()

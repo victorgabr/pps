@@ -1,8 +1,10 @@
 from unittest import TestCase
 
 import matplotlib.pyplot as plt
+
 from competition.tests import root_folder, database_file
-from pyplanscoring.competition.statistical_dvh import HistoricPlanDVH, StatisticalDVH
+from core.dvhcalculation import load
+from pyplanscoring.competition.statistical_dvh import HistoricPlanDVH, StatisticalDVH, PlanningItemDVH
 
 str_names = ['LENS LT',
              'PAROTID LT',
@@ -28,6 +30,9 @@ str_names = ['LENS LT',
              'LIPS',
              'ESOPHAGUS']
 
+hist_data = HistoricPlanDVH(root_folder)
+hist_data.set_participant_folder()
+
 
 class TestStatisticalDVH(TestCase):
     def test_set_data(self):
@@ -36,6 +41,26 @@ class TestStatisticalDVH(TestCase):
         hist_data.load_dvh()
         stats_dvh = StatisticalDVH()
         stats_dvh.set_data(hist_data.dvh_data)
+
+    def test_get_vf_dvh(self):
+        stats_dvh = StatisticalDVH()
+        stats_dvh.load_data_from_hdf(database_file)
+
+        dvh = load(hist_data.map_part[0][1][0])['DVH']
+        pi_t = PlanningItemDVH(plan_dvh=dvh)
+        dvhi = stats_dvh.get_vf_dvh(dvh)
+
+        assert dvhi
+
+    def test_save_quantiles_data(self):
+        stats_dvh = StatisticalDVH()
+        stats_dvh.load_data_from_hdf(database_file)
+        stats_dvh.save_quantiles_data(database_file)
+
+    def test_save_t_sne_data(self):
+        stats_dvh = StatisticalDVH()
+        stats_dvh.load_data_from_hdf(database_file)
+        stats_dvh.save_t_sne_data(database_file)
 
     def test_calc_quantiles(self):
 
@@ -54,11 +79,24 @@ class TestStatisticalDVH(TestCase):
         qtl = stat_dvh.get_quantiles('LIPS')
         pass
 
+    def test_get_t_sne(self):
+        stat_dvh = StatisticalDVH()
+        stat_dvh.load_data_from_hdf(database_file)
+        t_sne = stat_dvh.get_t_sne('SPINAL CORD')
+        plt.scatter(*t_sne)
+        plt.show()
+        pass
+
     def test_plot_historical_dvh(self):
         stats_dvh = StatisticalDVH()
         stats_dvh.load_data_from_hdf(database_file)
+
         for str_name in str_names:
-            stats_dvh.plot_historical_dvh(str_name)
+            plot_data = stats_dvh.vf_data[str_name]
+            nplans = len(plot_data)
+            xlabel, ylabel = 'Dose [cGy]', 'Volume [%]'
+            title = 'ECLIPSE VMAT - %s - N= %i' % (str_name, nplans)
+            stats_dvh.plot_historical_dvh(str_name, xlabel, ylabel, title)
 
         plt.show()
 

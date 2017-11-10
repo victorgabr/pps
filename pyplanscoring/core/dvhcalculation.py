@@ -757,7 +757,7 @@ def calc_dvhs_upsampled(name, rs_file, rd_file, struc_names, out_file=False, cal
     return cdvh
 
 
-def calc_dvhs_pp(name, rtdose, structures, struc_names, out_file=False, calculalltion_options=None):
+def calc_dvhs_pp(name, rtdose, structures, struc_names, out_file=False, calculation_options=None):
     """
         Computes structures cDVH
 

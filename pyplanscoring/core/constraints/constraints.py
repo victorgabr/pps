@@ -13,6 +13,11 @@ from pyplanscoring.core.constraints.types import ResultType, QueryType, Units, V
     Discriminator, PriorityType
 
 
+class ConstraintType:
+    MAXIMUM = 0
+    MINIMUM = 1
+
+
 class DoseStructureConstraint:
     def __init__(self):
         """
@@ -30,6 +35,15 @@ class DoseStructureConstraint:
         self._volume = None
         self._volume_type = None
         self._constraint_result = None
+        self._constraint_type = None
+
+    @property
+    def constraint_type(self):
+        return self._constraint_type
+
+    @constraint_type.setter
+    def constraint_type(self, value):
+        self._constraint_type = value
 
     @property
     def mayo_constraint(self):
@@ -327,6 +341,7 @@ class DoseAtVolumeConstraint(DoseStructureConstraint):
 class MaxDoseAtVolConstraint(DoseAtVolumeConstraint):
     def __init__(self):
         super().__init__()
+        self.constraint_type = ConstraintType.MAXIMUM
 
     def passing_func(self, dose_at_vol):
         return ResultType.PASSED if dose_at_vol <= self.constraint_dose else self.get_failed_result_type()
@@ -347,6 +362,7 @@ class MaxDoseAtVolConstraint(DoseAtVolumeConstraint):
 class MinDoseAtVolConstraint(DoseAtVolumeConstraint):
     def __init__(self):
         super().__init__()
+        self.constraint_type = ConstraintType.MINIMUM
 
     def passing_func(self, dose_at_vol):
         return ResultType.PASSED if dose_at_vol >= self.constraint_dose else self.get_failed_result_type()
@@ -427,6 +443,7 @@ class ComplimentDoseAtVolumeConstraint(DoseStructureConstraint):
 class MaxComplimentDoseAtVolumeConstraint(ComplimentDoseAtVolumeConstraint):
     def __init__(self):
         super().__init__()
+        self.constraint_type = ConstraintType.MAXIMUM
 
     def passing_func(self, dc_at_vol):
         return ResultType.PASSED if dc_at_vol <= self.constraint_dose else self.get_failed_result_type()
@@ -447,6 +464,7 @@ class MaxComplimentDoseAtVolumeConstraint(ComplimentDoseAtVolumeConstraint):
 class MinComplimentDoseAtVolumeConstraint(ComplimentDoseAtVolumeConstraint):
     def __init__(self):
         super().__init__()
+        self.constraint_type = ConstraintType.MINIMUM
 
     def passing_func(self, dc_at_vol):
         return ResultType.PASSED if dc_at_vol >= self.constraint_dose else self.get_failed_result_type()
@@ -519,6 +537,7 @@ class VolumeAtDoseConstraint(DoseStructureConstraint):
 class MinVolAtDoseConstraint(VolumeAtDoseConstraint):
     def __init__(self):
         super().__init__()
+        self.constraint_type = ConstraintType.MINIMUM
 
     def passing_func(self, vol):
         return ResultType.PASSED if vol >= self.volume else self.get_failed_result_type()
@@ -539,6 +558,7 @@ class MinVolAtDoseConstraint(VolumeAtDoseConstraint):
 class MaxVolAtDoseConstraint(VolumeAtDoseConstraint):
     def __init__(self):
         super().__init__()
+        self.constraint_type = ConstraintType.MAXIMUM
 
     def passing_func(self, vol):
         return ResultType.PASSED if vol <= self.volume else self.get_failed_result_type()
@@ -611,6 +631,7 @@ class ComplimentVolumeAtDoseConstraint(DoseStructureConstraint):
 class MinComplimentVolumeAtDose(ComplimentVolumeAtDoseConstraint):
     def __init__(self):
         super().__init__()
+        self.constraint_type = ConstraintType.MINIMUM
 
     def passing_func(self, volume):
         return ResultType.PASSED if volume >= self.volume else self.get_failed_result_type()
@@ -631,6 +652,7 @@ class MinComplimentVolumeAtDose(ComplimentVolumeAtDoseConstraint):
 class MaxComplimentVolumeAtDose(ComplimentVolumeAtDoseConstraint):
     def __init__(self):
         super().__init__()
+        self.constraint_type = ConstraintType.MAXIMUM
 
     def passing_func(self, vol):
         return ResultType.PASSED if vol <= self.volume else self.get_failed_result_type()
@@ -651,6 +673,7 @@ class MaxComplimentVolumeAtDose(ComplimentVolumeAtDoseConstraint):
 class MaxDoseConstraint(DoseStructureConstraint):
     def __init__(self):
         super().__init__()
+        self.constraint_type = ConstraintType.MAXIMUM
 
     def constrain(self, pi):
         d_pres = self.constraint_dose.get_presentation()
@@ -682,6 +705,7 @@ class MaxDoseConstraint(DoseStructureConstraint):
 class MinDoseConstraint(DoseStructureConstraint):
     def __init__(self):
         super().__init__()
+        self.constraint_type = ConstraintType.MINIMUM
 
     def constrain(self, pi):
         d_pres = self.constraint_dose.get_presentation()
@@ -712,6 +736,7 @@ class MinDoseConstraint(DoseStructureConstraint):
 class MinMeanDoseConstraint(DoseStructureConstraint):
     def __init__(self):
         super().__init__()
+        self.constraint_type = ConstraintType.MINIMUM
 
     def constrain(self, pi):
         d_pres = self.constraint_dose.get_presentation()
@@ -743,6 +768,7 @@ class MinMeanDoseConstraint(DoseStructureConstraint):
 class MaxMeanDoseConstraint(DoseStructureConstraint):
     def __init__(self):
         super().__init__()
+        self.constraint_type = ConstraintType.MAXIMUM
 
     def constrain(self, pi):
         d_pres = self.constraint_dose.get_presentation()
@@ -778,6 +804,7 @@ class ConformationIndexConstraint(DoseStructureConstraint):
         super().__init__()
         self._mc = None
         self._constraint_value = None
+        self.constraint_type = ConstraintType.MINIMUM
 
     @property
     def constraint_value(self):
@@ -805,7 +832,7 @@ class ConformationIndexConstraint(DoseStructureConstraint):
         return ConstraintResult(self, passed, msg, value)
 
     def __str__(self):
-        txt = '%s <= %s' % (str(self.mc.query), str(self.mc.constraint_value))
+        txt = '%s >= %s' % (str(self.mc.query), str(self.mc.constraint_value))
         return txt
 
     def __repr__(self):
@@ -817,6 +844,7 @@ class HomogeneityIndexConstraint(DoseStructureConstraint):
         super().__init__()
         self._mc = None
         self._constraint_value = None
+        self.constraint_type = ConstraintType.MAXIMUM
 
     @property
     def constraint_value(self):

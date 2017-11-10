@@ -1,21 +1,11 @@
-import os
 from unittest import TestCase
 
+from competition.tests import high_score
+from core.constraints.query import QueryExtensions
 from pyplanscoring.competition.statistical_dvh import PlanningItemDVH
 from pyplanscoring.core.constraints.types import DoseValuePresentation
-from pyplanscoring.core.dvhcalculation import load
 
-DATA_DIR = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\core\constraints\tests\test_data'
-rp = os.path.join(DATA_DIR, 'RP.dcm')
-rs = os.path.join(DATA_DIR, 'RS.dcm')
-rd = os.path.join(DATA_DIR, 'RD.dcm')
-
-dvh_path = os.path.join(DATA_DIR, 'PyPlanScoring_dvh.dvh')
-
-pyplan_dvh = load(dvh_path)
-dvh = pyplan_dvh['DVH']
-
-plan_dvh = PlanningItemDVH(plan_dvh=dvh)
+plan_dvh = PlanningItemDVH(plan_dvh=high_score)
 
 
 class TestPlanningItemDVH(TestCase):
@@ -57,3 +47,14 @@ class TestPlanningItemDVH(TestCase):
         s2 = 'ANIFANF'
         t2 = plan_dvh.get_dvh_cumulative_data(s2)
         assert "Structure ANIFANF not found"
+
+    def test_query_ci_stats(self):
+        pi = PlanningItemDVH(plan_dvh=high_score)
+        # confomity index calculation
+        query_str = 'CI66.5Gy[]'
+        target_name = 'PTV70-BR.PLX 4MM'
+        mc = QueryExtensions()
+        mc.read(query_str)
+        ci = pi.query_ci_stats(mc, target_name)
+        # fantasy Friedemann Herberth  - FANTASY - 21 APRIL FINAL - 100.0
+        self.assertAlmostEqual(ci, 0.924595466114167, places=1)

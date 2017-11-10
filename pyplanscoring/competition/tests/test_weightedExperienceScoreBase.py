@@ -12,3 +12,4 @@ class TestWeightedExperienceScoreBase(TestCase):
         self.fail()
         # wb = WeightedExperienceScoreBase()
         # score_base = wb.weighted_cumulative_probability(101, structure_name)
+

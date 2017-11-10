@@ -64,13 +64,13 @@ class PlanReportCreator(object):
         calculation_options = dict()
         calculation_options['end_cap'] = 0.2
         calculation_options['use_tps_dvh'] = False
-        calculation_options['up_sampling'] = True
+        calculation_options['up_sampling'] = False
         calculation_options['maximum_upsampled_volume_cc'] = 100.0
         calculation_options['voxel_size'] = 0.2
-        calculation_options['num_cores'] = 8
+        calculation_options['num_cores'] = 1
         calculation_options['save_dvh_figure'] = False
         calculation_options['save_dvh_data'] = False
-        calculation_options['mp_backend'] = 'threading'
+        calculation_options['mp_backend'] = 'multiprocessing'
 
         print('------------- Calculating DVH and score --------------')
         participant = Participant(self.rp_file, self.rs_file, self.rd_file, calculation_options=calculation_options)
