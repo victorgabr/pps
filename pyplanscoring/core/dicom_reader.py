@@ -889,10 +889,13 @@ class PyDicomParser(DicomParserBase):
             return True
 
     def GetDVHs(self):
-        """Returns the dose-volume histograms (DVHs)."""
+        """
+            Returns the dose-volume histograms (DVHs).
+            RT-
+            https://dicom.innolitics.com/ciods/rt-dose/rt-dvh/300c0060
+        """
 
         self.dvhs = {}
-
         if self.HasDVHs():
             for item in self.ds.DVHSequence:
                 # Make sure that the DVH has a referenced structure / ROI
@@ -902,18 +905,18 @@ class PyDicomParser(DicomParserBase):
                 # logger.debug("Found DVH for ROI #%s", str(number))
                 dvhitem = {}
                 # If the DVH is differential, convert it to a cumulative DVH
-                if self.ds.DVHSequence[0].DVHType == 'DIFFERENTIAL':
-                    dvhitem['data'] = self.GenerateCDVH(item.DVHData)
-                    dvhitem['bins'] = len(dvhitem['data'])
+                if not self.ds.DVHSequence[0].DVHType == 'CUMULATIVE':
+                    raise TypeError("Exported DVH should be CUMULATIVE")
                 # Otherwise the DVH is cumulative
                 # Remove "filler" values from DVH data array (even values are DVH values)
-                else:
-                    dvhitem['data'] = np.array(item.DVHData[1::2])
-                    dvhitem['bins'] = int(item.DVHNumberOfBins)
-                dvhitem['type'] = 'CUMULATIVE'
 
+                dvhitem['data'] = np.array(item.DVHData[1::2])
+                dvhitem['bins'] = int(item.DVHNumberOfBins)
+                dvhitem['type'] = 'CUMULATIVE'
                 dvhitem['volumeunits'] = item.DVHVolumeUnits
-                dvhitem['scaling'] = item.DVHDoseScaling
+                dvhitem['doseunits'] = item.DoseUnits
+                # ref  https://dicom.innolitics.com/ciods/rt-dose/rt-dvh/30040050/30040052
+                dvhitem['scaling'] = float(item.DVHDoseScaling) * float(float(item.DVHData[0]))
 
                 if "DVHMinimumDose" in item:
                     dvhitem['min'] = float(item.DVHMinimumDose)
