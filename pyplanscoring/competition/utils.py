@@ -19,8 +19,8 @@ import pandas as pd
 from joblib import Parallel, delayed
 from xlsxwriter.utility import xl_rowcol_to_cell
 
+from core.dicom_reader import ScoringDicomParser
 from pyplanscoring.competition.report_generator import CompetitionReportPDF, FinalReportPDF
-from pyplanscoring.core.dicomparser import ScoringDicomParser
 from pyplanscoring.core.dosimetric import read_scoring_criteria
 from pyplanscoring.core.dvhcalculation import load
 from pyplanscoring.core.scoring import Participant

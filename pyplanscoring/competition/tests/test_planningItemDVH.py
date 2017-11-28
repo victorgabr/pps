@@ -1,9 +1,9 @@
 from unittest import TestCase
 
 from competition.tests import high_score
-from core.constraints.query import QueryExtensions
+from constraints import DoseValuePresentation
+from constraints import QueryExtensions
 from pyplanscoring.competition.statistical_dvh import PlanningItemDVH
-from pyplanscoring.core.constraints.types import DoseValuePresentation
 
 plan_dvh = PlanningItemDVH(plan_dvh=high_score)
 

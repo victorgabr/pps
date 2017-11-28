@@ -11,7 +11,7 @@ import pandas as pd
 import scipy.interpolate as itp
 from xlsxwriter.utility import xl_rowcol_to_cell
 
-from pyplanscoring.core.dicomparser import ScoringDicomParser
+from core.dicomparser import ScoringDicomParser
 from pyplanscoring.core.dvhcalculation import Structure, calc_dvhs_pp
 from pyplanscoring.core.dvhcalculation import load
 

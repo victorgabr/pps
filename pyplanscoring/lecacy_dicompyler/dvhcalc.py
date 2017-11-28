@@ -3,6 +3,8 @@ from __future__ import division
 # !/usr/bin/env python
 # -*- coding: ISO-8859-1 -*-
 # dvhcalc.py
+import core.dicom_reader
+
 """Calculate dose volume histogram (DVH) from DICOM RT Structure / Dose data."""
 # Copyright (c) 2011-2012 Aditya Panchal
 # Copyright (c) 2010 Roy Keyes
@@ -20,8 +22,8 @@ from joblib import Parallel
 from joblib import delayed
 from matplotlib.path import Path
 
-from pyplanscoring.core.geometry import calculate_contour_areas_numba
-from pyplanscoring.core.dicomparser import ScoringDicomParser
+from pyplanscoring.core.geometry import calculate_contour_areas
+from core.dicom_reader import ScoringDicomParser
 from pyplanscoring.core.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean, get_cdvh_numba
 
 if sys.version_info[0] == 3:
@@ -264,7 +266,7 @@ def calculate_dvh_numba(structure, dose, limit=None, callback=None):
     for z, sPlane in sPlanes.items():
 
         # Get the contours with calculated areas and the largest contour index
-        contours, largestIndex = calculate_contour_areas_numba(sPlane)
+        contours, largestIndex = calculate_contour_areas(sPlane)
 
         # Get the dose plane for the current structure plane
         doseplane = dose.GetDoseGrid(z)
@@ -395,7 +397,6 @@ def get_cdvh(ddvh):
 ############################# Test DVH Calculation #############################
 
 def main():
-    from pyplanscoring.core import dicomparser
     has_pylab = True
     try:
         import matplotlib.pyplot as pl
@@ -404,8 +405,9 @@ def main():
 
     # read the example RT structure and RT dose files
     # The testdata was downloaded from the dicompyler website as testdata.zip
-    rtss = dicomparser.DicomParser(filename=r"C:\Users\Victor\Dropbox\Plan_Competition_Project\testdata\rtss.dcm")
-    rtdose = dicomparser.DicomParser(filename=r"C:\Users\Victor\Dropbox\Plan_Competition_Project\testdata\rtdose.dcm")
+    rtss = core.dicom_reader.DicomParser(filename=r"C:\Users\Victor\Dropbox\Plan_Competition_Project\testdata\rtss.dcm")
+    rtdose = core.dicom_reader.DicomParser(
+        filename=r"C:\Users\Victor\Dropbox\Plan_Competition_Project\testdata\rtdose.dcm")
 
     # Obtain the structures and DVHs from the DICOM data
     structures = rtss.GetStructures()

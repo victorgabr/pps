@@ -14,16 +14,16 @@ import pandas as pd
 import scipy.interpolate as itp
 import scipy.special as sp
 import seaborn as sns
+from core.constraints.query import QueryExtensions
+from pyplanscoring.core.constraints.metrics import PlanningItem
+from pyplanscoring.core.constraints.types import DVHData, QuantityRegex, DoseUnit, DoseValuePresentation, DoseValue, \
+    VolumePresentation, QueryType
 from sklearn.covariance import ShrunkCovariance, LedoitWolf
 from sklearn.decomposition import PCA, FactorAnalysis
 from sklearn.manifold import TSNE
 from sklearn.model_selection import cross_val_score, GridSearchCV
 
-from core.constraints.query import QueryExtensions
-from pyplanscoring.core.constraints.constraints import MayoConstraintConverter, ConstraintType
-from pyplanscoring.core.constraints.metrics import PlanningItem
-from pyplanscoring.core.constraints.types import DVHData, QuantityRegex, DoseUnit, DoseValuePresentation, DoseValue, \
-    VolumePresentation, QueryType
+from constraints.constraints import MayoConstraintConverter, ConstraintType
 from pyplanscoring.core.dvhcalculation import load
 
 
@@ -102,6 +102,12 @@ class PlanningItemDVH(PlanningItem):
         """
         dvh = self.get_structure(structure)
         return DVHData(dvh)
+
+    def get_dvh_vf_data(self, structure_name):
+        dvh = self.get_dvh_cumulative_data(structure=structure_name)
+        doses = dvh.dose_focused_format
+        volume = dvh.volume_focused_format
+        return pd.Series(doses, index=volume)
 
     def execute_query(self, mayo_format_query, ss):
         """
@@ -972,16 +978,20 @@ class GeneralizedEvaluationMetricWES(GeneralizedEvaluationMetric, WeightedExperi
         c_index = sn.astype(str) + ' - ' + cm.astype(str)
         gem_df = pd.DataFrame(cdfi, index=c_index)
 
-        return gem_df
+        # remove NaN values
+        return gem_df.dropna(axis=1)
 
-    def get_structure_gem(self, plan_id, constraint_string):
+    def get_structure_gem(self, plan_id, structure_name, constraint_string):
         """
             Get structure Generalized evaluation metric
+        :param structure_name:
         :param plan_id: DataFrame column plan id
         :param constraint_string:constraint_string
         :return: Structure GEM
         """
-        return self.constraints_gem[plan_id].loc[constraint_string]
+        query = structure_name + ' - ' + constraint_string
+
+        return self.constraints_gem.loc[:, plan_id].loc[query]
 
     def get_kendall_weights(self, structure_name, constraint=''):
         """
@@ -1007,33 +1017,62 @@ class GeneralizedEvaluationMetricWES(GeneralizedEvaluationMetric, WeightedExperi
         kt[kt < 0] = 0
         return kt
 
-    def get_gem_wes(self, plan_id, structure_name, structure_constraint=''):
+    def get_gem_wes(self, pi, structure_name, structure_constraint=''):
         """
             Generalized evaluation metric–correlated weighted experience score
         :param structure_constraint:
-        :param plan_id: int - plan id
+        :param pi: int - plan id
         :param structure_name: string
         :return: gem_wes
         """
+
+        # Todo
+
+        # method overloading
+        if not isinstance(pi, PlanningItemDVH) and isinstance(pi, int):
+            plan_dvh = self._stats_dvh_data.get_plan_dvh(pi)
+            pi = PlanningItemDVH(plan_dvh=plan_dvh)
+
         struc_vf_data = self.stats_dvh.vf_data[structure_name]
-        dvh = struc_vf_data.loc[plan_id]
+
+        dvh = pi.get_dvh_vf_data(structure_name)
+
         quantiles = self.stats_dvh.get_quantiles(structure_name)
         prob_interp = self.get_probability_interpolator(quantiles)
         weight_bin_width = np.asarray(dvh.index, dtype=float)
-        pi = self.calc_probabilities(dvh, prob_interp)
+        prob_i = self.calc_probabilities(dvh, prob_interp)
         weight_pca = self.get_pca_eingenvector(struc_vf_data)
         # adding (kti) correlation
         kti = self.get_kendall_weights(structure_name, structure_constraint)
 
-        num = np.sum(weight_bin_width * weight_pca * kti * pi)
+        num = np.sum(weight_bin_width * weight_pca * kti * prob_i)
         den = np.sum(weight_bin_width * weight_pca * kti)
 
         gem_wes = num / den if den != 0 else None
 
         return gem_wes
 
-    def calc_plan_gem_wes(self):
-        pass
+    def calc_plan_gem_wes(self, pi):
+        # method overloading
+        if not isinstance(pi, PlanningItemDVH) and isinstance(pi, int):
+            plan_dvh = self._stats_dvh_data.get_plan_dvh(pi)
+            pi = PlanningItemDVH(plan_dvh=plan_dvh)
+
+        if self.constraints_stats.empty:
+            # calculate stats if not loaded
+            self.calc_constraints_stats()
+
+        # pre allocating memory
+        cdf = np.zeros(len(self.discrete_constraints))
+        b2_exp = 2 ** -(self.priority_constraints - 1)
+        idx_label = [0] * len(self.discrete_constraints)
+        for row in self.discrete_constraints.iterrows():
+            sname = row[1]['Structure Name']
+            constraint_string = str(row[1]['Mayo Constraints'])
+            cdf[row[0]] = self.get_gem_wes(pi, sname, constraint_string)
+            idx_label[row[0]] = sname + ' - ' + constraint_string
+
+        return np.sum(b2_exp.values * cdf) / b2_exp.values.sum()
 
     def difficulty_ranking_score(self):
         """

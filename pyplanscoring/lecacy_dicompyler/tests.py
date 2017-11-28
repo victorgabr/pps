@@ -5,8 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from joblib import Parallel, delayed
 
-from pyplanscoring.core.contours3d import plot_contours
-from pyplanscoring.core.dicomparser import DicomParser, ScoringDicomParser
+from core.dicom_reader import DicomParser, ScoringDicomParser
 from pyplanscoring.core.dosimetric import constrains
 from pyplanscoring.core.dvhcalculation import Structure
 from pyplanscoring.core.dvhdoses import get_cdvh_numba
@@ -15,6 +14,7 @@ from pyplanscoring.lecacy_dicompyler.dvhcalc import get_dvh, get_dvh_pp, calc_dv
     calculate_contour_dvh, \
     calculate_contour_areas, \
     get_cdvh
+from vis.contours3d import plot_contours
 
 
 # from pyplanscoring.dosimetric import scores

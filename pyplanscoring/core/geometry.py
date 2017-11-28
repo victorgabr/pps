@@ -1001,9 +1001,12 @@ def get_z_planes_dict(struc_planes, ordered_z, z_interp_positions):
     return result
 
 
-def calculate_contour_areas_numba(plane):
+def calculate_contour_areas(plane):
     """Calculate the area of each contour for the given plane.
-       Additionally calculate_integrate and return the largest contour index."""
+       Additionally calculate_integrate and return the largest contour index.
+       :param plane: Contour Plane
+       :type: Dict
+       :return: contour area """
 
     # Calculate the area for each contour in the current plane
     contours = []
@@ -1274,10 +1277,13 @@ def ordered_planes(planes):
 def get_oversampled_structure(structure, delta_mm):
     """
         Performas structure upsampling
+    :param structure: Structure Planes
+    :rtype: dict
     :param delta_mm: Voxel size in mm (dx,dy,dz)
     :return: sPlanes oversampled, dose_grid_points, grid_delta, dose_lut
 
     """
+
     tmp_str = structure.copy()
     planes = structure['planes']
     o_planes = ordered_planes(planes)

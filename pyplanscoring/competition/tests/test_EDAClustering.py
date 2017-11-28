@@ -1,7 +1,6 @@
 from unittest import TestCase
 
 import pandas as pd
-from sklearn.manifold import TSNE
 
 from competition.statistical_dvh import StatisticalDVH, GeneralizedEvaluationMetric, EDAClustering
 from competition.tests import data_path, database_file, sheet
@@ -61,7 +60,7 @@ class TestEDAClustering(TestCase):
             ec = EDAClustering(dvh, proj)
             ec.get_projected_clusters(sname)
 
-            projected = TSNE().fit_transform(dvh)
+            # projected = TSNE().fit_transform(dvh)
 
     def test_plot_clusters(self):
         self.fail()

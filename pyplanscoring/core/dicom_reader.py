@@ -1,25 +1,21 @@
-from __future__ import division
+"""Class that parses and returns formatted DICOM RT data."""
+# Copyright (c) 2017      Victor Gabriel Leandro Alves
+# Copyright (c) 2009-2016 Aditya Panchal
+# Copyright (c) 2009-2010 Roy Keyes
+# This file based on part of dicompyler-core, released under a BSD license.
 
-import logging
-
-import pandas as pd
-from scipy.interpolate import RegularGridInterpolator, interp1d
-
-from pyplanscoring.core.geometry import centroid_of_polygon
-
-logger = logging.getLogger('dicomparser')
-import numpy as np
-
-try:
-    import pydicom as dicom
-except:
-    import dicom
 import random
+from math import sqrt, pow
+
+import numpy as np
+import pydicom as dicom
 from PIL import Image
-from math import pow, sqrt
+from scipy.interpolate import interp1d, RegularGridInterpolator
+
+from core.geometry import centroid_of_polygon
 
 
-class DicomParser(object):
+class DicomParserBase(object):
     """Class that parses and returns formatted DICOM RT data."""
     """Parses DICOM / DICOM RT files."""
 
@@ -335,9 +331,10 @@ class DicomParser(object):
                             np.array(color, dtype=float)
                     # Otherwise fail and fallback on the random color
                     except:
-                        logger.debug(
-                            "Unable to decode display color for ROI #%s",
-                            str(number))
+                        pass
+                        # logger.debug(
+                        #     "Unable to decode display color for ROI #%s",
+                        #     str(number))
 
                 planes = {}
                 if 'Contours' in roi:
@@ -632,12 +629,12 @@ class DicomParser(object):
                     if "DoseReferenceDescription" in item:
                         self.plan['name'] = item.DoseReferenceDescription
                     if 'TargetPrescriptionDose' in item:
-                        rxdose = item.TargetPrescriptionDose * 100
+                        rxdose = item.TargetPrescriptionDose
                         if rxdose > self.plan['rxdose']:
                             self.plan['rxdose'] = rxdose
                 elif item.DoseReferenceStructureType == 'VOLUME':
                     if 'TargetPrescriptionDose' in item:
-                        self.plan['rxdose'] = item.TargetPrescriptionDose * 100
+                        self.plan['rxdose'] = item.TargetPrescriptionDose
         if ("FractionGroups" in self.ds) and (self.plan['rxdose'] == 0):
             fg = self.ds.FractionGroups[0]
             if ("ReferencedBeams" in fg) and ("NumberofFractionsPlanned" in fg):
@@ -645,7 +642,7 @@ class DicomParser(object):
                 fx = fg.NumberofFractionsPlanned
                 for beam in beams:
                     if "BeamDose" in beam:
-                        self.plan['rxdose'] += beam.BeamDose * fx * 100
+                        self.plan['rxdose'] += beam.BeamDose * fx
 
         if "FractionGroups" in self.ds:
             fg = self.ds.FractionGroups[0]
@@ -693,77 +690,15 @@ class DicomParser(object):
                 nfx = fg.NumberofFractionsPlanned
                 for b in rb:
                     if "BeamDose" in b:
-                        beams[b.ReferencedBeamNumber]['dose'] = b.BeamDose * nfx * 100
+                        beams[b.ReferencedBeamNumber]['dose'] = b.BeamDose * nfx
                     if 'BeamMeterset' in b:
                         beams[b.ReferencedBeamNumber]['MU'] = b.BeamMeterset
         return beams
 
 
-class lazyproperty:
-    def __init__(self, func):
-        self.func = func
-
-    def __get__(self, instance, cls):
-        if instance is None:
-            return self
-        else:
-            value = self.func(instance)
-            setattr(instance, self.func.__name__, value)
-            return value
-
-
-class Patient(object):
-    def __init__(self, plans):
-        self.plan = plans
-        self.creation_time = plans['creation_time']
-
-    @lazyproperty
-    def total_dose(self):
-        return self.plan['rxdose']
-
-    @lazyproperty
-    def fractions(self):
-        return float(self.plan['fractions'])
-
-    @lazyproperty
-    def site(self):
-        return self.plan['description']
-
-    @lazyproperty
-    def fx_dose(self):
-        return self.plan['rxdose'] / float(self.plan['fractions'])
-
-    @lazyproperty
-    def name(self):
-        return self.plan['patient_name'].upper()
-
-    @lazyproperty
-    def start_date(self):
-        return pd.to_datetime(self.plan['date'])
-
-    @lazyproperty
-    def fields(self):
-        return pd.DataFrame(self.plan['beams']).ix['MU'].astype(float).round()
-
-    def receive_fraction(self):
-        if self.fractions > 0:
-            self.fractions -= 1
-            return self.fields.sum()
-
-    def __repr__(self):
-        txt = self.plan['label'] + '\n' + self.plan['description'] + '\n' + self.plan['plan_name']
-
-        return txt
-
-    def __cmp__(self, other):
-        if hasattr(other, 'creation_time'):
-            return self.creation_time.__cmp__(other.creation_time)
-
-
-class ScoringDicomParser(DicomParser):
+class PyDicomParser(DicomParserBase):
     def __init__(self, dataset=None, filename=None):
-        DicomParser.__init__(self, dataset=dataset, filename=filename)
-        self.interp_dose_plane = None
+        DicomParserBase.__init__(self, dataset=dataset, filename=filename)
 
     def get_tps_data(self):
         """
@@ -787,60 +722,16 @@ class ScoringDicomParser(DicomParser):
     def get_iso_position(self):
 
         iso = self.ds.BeamSequence[0].ControlPointSequence[0].IsocenterPosition
-
         return np.array(iso, dtype=float)
 
-    def GetPatientToPixelLUT(self):
-        """Get the image transformation matrix from the DICOM standard Part 3
-            Section C.7.6.2.1.1"""
-
-        di = self.ds.PixelSpacing[0]
-        dj = self.ds.PixelSpacing[1]
-
-        orientation = self.ds.ImageOrientationPatient
-        position = self.ds.ImagePositionPatient
-
-        m = np.matrix(
-            [[orientation[0] * di, orientation[3] * dj, 0, position[0]],
-             [orientation[1] * di, orientation[4] * dj, 0, position[1]],
-             [orientation[2] * di, orientation[5] * dj, 0, position[2]],
-             [0, 0, 0, 1]])
-
-        x = []
-        y = []
-        for i in range(0, self.ds.Columns):
-            imat = m * np.matrix([[i], [0], [0], [1]])
-            x.append(float(imat[0]))
-        for j in range(0, self.ds.Rows):
-            jmat = m * np.matrix([[0], [j], [0], [1]])
-            y.append(float(jmat[1]))
-
-        return x, y
-
-    def pixel2lut(self, di, dj, rows, columns):
-
-        orientation = self.ds.ImageOrientationPatient
-        position = self.ds.ImagePositionPatient
-
-        m = np.matrix(
-            [[orientation[0] * di, orientation[3] * dj, 0, position[0]],
-             [orientation[1] * di, orientation[4] * dj, 0, position[1]],
-             [orientation[2] * di, orientation[5] * dj, 0, position[2]],
-             [0, 0, 0, 1]])
-
-        x = []
-        y = []
-        for i in range(0, columns):
-            imat = m * np.matrix([[i], [0], [0], [1]])
-            x.append(float(imat[0]))
-        for j in range(0, rows):
-            jmat = m * np.matrix([[0], [j], [0], [1]])
-            y.append(float(jmat[1]))
-
-        return x, y
-
     def GetContourPoints(self, array):
-        """Parses an array of xyz points and returns a array of point dictionaries."""
+        """Parses an array of xyz points and returns a array of point dictionaries.
+
+        :param array: list of xyz points
+        :type array: list
+        :return: array of contour points
+        :rtype:numpy.ndarray
+        """
 
         return np.asarray(list(zip(*[iter(array)] * 3)), dtype=float)
 
@@ -945,16 +836,13 @@ class ScoringDicomParser(DicomParser):
         return structures
 
     def get_grid_3d(self):
-
         # Get the dose to pixel LUT
         doselut = self.GetPatientToPixelLUT()
-
         # Get the initial self grid Position (z) in patient coordinates
-        imagepatpos = self.ds.ImagePositionPatient[2]
-        orientation = self.ds.ImageOrientationPatient[0]
+        imagepatpos = float(self.ds.ImagePositionPatient[2])
+        orientation = float(self.ds.ImageOrientationPatient[0])
 
         # Add the Position to the offset vector to determine the
-
         # z coordinate of each dose plane
         z = orientation * np.array(self.ds.GridFrameOffsetVector) + imagepatpos
         x = np.asarray(doselut[0])
@@ -962,11 +850,14 @@ class ScoringDicomParser(DicomParser):
 
         return x, y, z
 
+    def get_dose_matrix(self):
+        return self.ds.pixel_array * float(self.ds.DoseGridScaling)  # 3D dose matrix in Gy
+
     def DoseRegularGridInterpolator(self):
 
         x, y, z = self.get_grid_3d()
 
-        values = self.ds.pixel_array * float(self.ds.DoseGridScaling) * 100  # 3D dose matrix in cGy
+        values = self.ds.pixel_array * float(self.ds.DoseGridScaling)  # 3D dose matrix in Gy
 
         # ascending x,y z coordinates
         x_coord = np.arange(len(x))
@@ -985,9 +876,9 @@ class ScoringDicomParser(DicomParser):
     @property
     def global_max(self):
 
-        dose_matrix = self.ds.pixel_array * float(self.ds.DoseGridScaling) * 100  # 3D dose matrix in cGy
+        dose_matrix = self.ds.pixel_array * float(self.ds.DoseGridScaling)  # 3D dose matrix in Gy
 
-        return np.max(dose_matrix)  # 3D dose matrix in cGy
+        return np.max(dose_matrix)  # 3D dose matrix in Gy
 
     def HasDVHs(self):
         """Returns whether dose-volume histograms (DVHs) exist."""
@@ -1003,7 +894,6 @@ class ScoringDicomParser(DicomParser):
         self.dvhs = {}
 
         if self.HasDVHs():
-            cGy = 100
             for item in self.ds.DVHSequence:
                 # Make sure that the DVH has a referenced structure / ROI
                 if not 'DVHReferencedROISequence' in item:
@@ -1022,28 +912,21 @@ class ScoringDicomParser(DicomParser):
                     dvhitem['bins'] = int(item.DVHNumberOfBins)
                 dvhitem['type'] = 'CUMULATIVE'
 
-                if item.DoseUnits == 'GY':
-                    # print(item.DoseUnits)
-                    dvhitem['doseunits'] = 'cGy'
-                else:
-                    cGy = 1.0
-
                 dvhitem['volumeunits'] = item.DVHVolumeUnits
                 dvhitem['scaling'] = item.DVHDoseScaling
-                # Convert all point doses to cGy
 
                 if "DVHMinimumDose" in item:
-                    dvhitem['min'] = float(item.DVHMinimumDose) * cGy
+                    dvhitem['min'] = float(item.DVHMinimumDose)
                 else:
                     # save the min dose as -1 so we can calculate_integrate it later
                     dvhitem['min'] = -1
                 if "DVHMaximumDose" in item:
-                    dvhitem['max'] = float(item.DVHMaximumDose) * cGy
+                    dvhitem['max'] = float(item.DVHMaximumDose)
                 else:
                     # save the max dose as -1 so we can calculate_integrate it later
                     dvhitem['max'] = -1
                 if "DVHMeanDose" in item:
-                    dvhitem['mean'] = float(item.DVHMeanDose) * cGy
+                    dvhitem['mean'] = float(item.DVHMeanDose)
                 else:
                     # save the mean dose as -1 so we can calculate_integrate it later
                     dvhitem['mean'] = -1
@@ -1088,12 +971,12 @@ class ScoringDicomParser(DicomParser):
                     if "DoseReferenceDescription" in item:
                         self.plan['name'] = item.DoseReferenceDescription
                     if 'TargetPrescriptionDose' in item:
-                        rxdose = item.TargetPrescriptionDose * 100
+                        rxdose = item.TargetPrescriptionDose
                         if rxdose > self.plan['rxdose']:
                             self.plan['rxdose'] = rxdose
                 elif item.DoseReferenceStructureType == 'VOLUME':
                     if 'TargetPrescriptionDose' in item:
-                        self.plan['rxdose'] = item.TargetPrescriptionDose * 100
+                        self.plan['rxdose'] = item.TargetPrescriptionDose
         if ("FractionGroupSequence" in self.ds) and (self.plan['rxdose'] == 0):
             fg = self.ds.FractionGroupSequence[0]
             if ("ReferencedBeamSequence" in fg) and ("NumberofFractionsPlanned" in fg):
@@ -1101,7 +984,7 @@ class ScoringDicomParser(DicomParser):
                 fx = fg.NumberofFractionsPlanned
                 for beam in beams:
                     if "BeamDose" in beam:
-                        self.plan['rxdose'] += beam.BeamDose * fx * 100
+                        self.plan['rxdose'] += beam.BeamDose * fx
 
         if "FractionGroupSequence" in self.ds:
             fg = self.ds.FractionGroupSequence[0]
@@ -1228,48 +1111,7 @@ class ScoringDicomParser(DicomParser):
                 nfx = fg.NumberOfFractionsPlanned
                 for bi in rb:
                     if "BeamDose" in bi:
-                        # dose in cGy
-                        beams[bi.ReferencedBeamNumber]['dose'] = bi.BeamDose * nfx * 100
+                        beams[bi.ReferencedBeamNumber]['dose'] = bi.BeamDose * nfx
                     if 'BeamMeterset' in bi:
                         beams[bi.ReferencedBeamNumber]['MU'] = bi.BeamMeterset
         return beams
-
-    def GetDoseData(self):
-        """Return the dose data from a DICOM RT Dose file.
-            DoseUnits - cGy
-        """
-
-        data = self.GetImageData()
-        data['doseunits'] = 'cGy'
-        data['dosetype'] = self.ds.DoseType
-        data['dosesummationtype'] = self.ds.DoseSummationType
-        data['dosegridscaling'] = self.ds.DoseGridScaling
-        data['dosemax'] = self.global_max
-
-        return data
-
-
-def test_rtss_eclipse(f):
-    ds = dicom.read_file(f, force=True)
-    print('SpecificCharacterSet: %s' % ds.SpecificCharacterSet)
-    print('Manufacturer: %s' % ds.Manufacturer)
-    print('ManufacturersModelName: %s' % ds.ManufacturersModelName)
-    print('SoftwareVersions: %s' % ds.SoftwareVersions)
-    print('Modality: %s' % ds.Modality)
-    print('StructureSetDescription: %s' % ds.StructureSetDescription)
-    print('StructureSetROISequence length: %i' % len(ds.StructureSetROISequence))
-    print('ROIContourSequence length: %i' % len(ds.ROIContourSequence))
-
-    rois = []
-    for roi in ds.ROIContours:
-        rois.append(roi)
-
-    print(rois)
-
-
-if __name__ == '__main__':
-    # test RS file reading
-
-    rs_file = r'D:\Dropbox\Plan_Competition_Project\scoring_report\dicom_files\RP.1.2.246.352.71.5.584747638204.952069.20170122155706.dcm'
-    plan = ScoringDicomParser(filename=rs_file)
-    plan_data = plan.GetPlan()

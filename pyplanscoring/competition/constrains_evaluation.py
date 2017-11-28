@@ -7,12 +7,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from core.dicom_reader import ScoringDicomParser
 from pyplanscoring.competition.utils import get_dicom_data
-from pyplanscoring.core.dicomparser import ScoringDicomParser
 from pyplanscoring.core.dosimetric import read_scoring_criteria
 from pyplanscoring.core.dvhcalculation import load, calc_dvhs_pp  # , save
 from pyplanscoring.core.scoring import get_matched_names
-from pyplanscoring.core.validation import CurveCompare
+from validation.validation import CurveCompare
 
 logger = logging.getLogger('constrains_evaluation')
 

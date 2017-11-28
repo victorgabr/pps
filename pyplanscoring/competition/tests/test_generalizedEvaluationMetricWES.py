@@ -40,6 +40,7 @@ str_names = ['LENS LT',
 df = pd.read_excel(data_path, sheetname=sheet)
 stats_dvh = StatisticalDVH()
 stats_dvh.load_data_from_hdf(database_file)
+
 hist_data = HistoricPlanDVH(root_folder)
 hist_data.set_participant_folder()
 
@@ -62,6 +63,15 @@ class TestGeneralizedEvaluationMetricWES(TestCase):
 
         assert not gem_stats.empty
 
+    def test_get_structure_gem(self):
+        gem_wes = GeneralizedEvaluationMetricWES(stats_dvh, df)
+        gem_wes.load_constraints_stats(database_file, sheet)
+        gem_stats = gem_wes.constraints_gem
+        str_name = 'PTV70'
+        constraint = 'D95%[Gy] >= 64'
+        res = gem_wes.get_structure_gem(0, str_name, constraint)
+        assert res
+
     def test_get_kendall_weights(self):
         gem_wes = GeneralizedEvaluationMetricWES(stats_dvh, df)
         gem_wes.load_constraints_stats(database_file, sheet)
@@ -74,6 +84,7 @@ class TestGeneralizedEvaluationMetricWES(TestCase):
         gem_wes_obj = GeneralizedEvaluationMetricWES(stats_dvh, df)
         gem_wes_obj.load_constraints_stats(database_file, sheet)
         gem_wes = gem_wes_obj.get_gem_wes(plan_id, structure_name, structure_name)
+        # todo fix it
         wes = gem_wes_obj.weighted_cumulative_probability(plan_id, structure_name)
         self.assertNotAlmostEqual(wes, gem_wes)
 
@@ -102,21 +113,47 @@ class TestGeneralizedEvaluationMetricWES(TestCase):
         gem.load_constraints_stats(database_file, sheet)
 
         # get wes
+        # gem.weighted_cumulative_probability(0, structure_name='LIPS')
+        #
+        # # TODO evaluate new ranking against classic scores
+        # gem_plans = []
+        #
+        # for part in hist_data.map_part:
+        #     dvh = load(part[1][0])['DVH']
+        #     pi_t = PlanningItemDVH(plan_dvh=dvh)
+        #     gem_t = gem.calc_gem(pi_t)
+        #     if gem_t:
+        #         gem_plans.append([part[0], gem_t])
+        # df = pd.DataFrame(gem_plans)
+        # df['sc'] = df[0].apply(lambda row: re.findall("\d+\.\d+", row)[0])
+        #
+        # plt.plot(df['sc'], df[1], '.')
+        #
+        # # load winner DVH
+        # winner_df = df.sort_values(1).iloc[0]
 
-        gem.weighted_cumulative_probability(0, structure_name='LIPS')
+    def test_calc_plan_gem_wes(self):
+        plan_dvh = stats_dvh.get_plan_dvh(100)
+        pi = PlanningItemDVH(plan_dvh=plan_dvh)
+        # First load constraint stats from HDF
+        df = pd.read_excel(data_path, sheetname=sheet)
+        gem = GeneralizedEvaluationMetricWES(stats_dvh, df)
+        gem.load_constraints_stats(database_file, sheet)
+        res = gem.calc_plan_gem_wes(pi)
 
-        # TODO evaluate new ranking against classic scores
+        # assert res
         gem_plans = []
-
+        #
         for part in hist_data.map_part:
+            pass
             dvh = load(part[1][0])['DVH']
             pi_t = PlanningItemDVH(plan_dvh=dvh)
-            gem_t = gem.calc_gem(pi_t)
+            gem_t = gem.calc_plan_gem_wes(pi_t)
             if gem_t:
                 gem_plans.append([part[0], gem_t])
         df = pd.DataFrame(gem_plans)
-        df['sc'] = df[0].apply(lambda row: re.findall("\d+\.\d+", row)[0])
-
+        df['sc'] = df[0].apply(lambda row: re.findall("\d+\.\d+", row)[0] if re.findall("\d+\.\d+", row) else None)
+        df = df.dropna()
         plt.plot(df['sc'], df[1], '.')
 
         # load winner DVH

@@ -20,8 +20,8 @@ from joblib import delayed
 from pyplanscoring.core.geometry import get_contour_mask_wn, get_dose_grid_3d, \
     get_axis_grid, get_dose_grid, \
     get_interpolated_structure_planes, contour_rasterization_numba, check_contour_inside, \
-    get_contour_roi_grid, wrap_xy_coordinates, wrap_z_coordinates, calculate_contour_areas_numba
-from pyplanscoring.core.dicomparser import ScoringDicomParser
+    get_contour_roi_grid, wrap_xy_coordinates, wrap_z_coordinates, calculate_contour_areas
+from core.dicomparser import ScoringDicomParser
 from pyplanscoring.core.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean, get_cdvh_numba
 
 float_formatter = lambda x: "%.2f" % x
@@ -408,7 +408,7 @@ class Structure(object):
             s_plane = sPlanes[z]
             # print('calculating slice z: %.1f' % float(z))
             # Get the contours with calculated areas and the largest contour index
-            contours, largest_index = calculate_contour_areas_numba(s_plane)
+            contours, largest_index = calculate_contour_areas(s_plane)
 
             # Calculate the histogram for each contour
             for j, contour in enumerate(contours):
@@ -497,7 +497,7 @@ class Structure(object):
             sPlane = sPlanes[z]
 
             # Get the contours with calculated areas and the largest contour index
-            contours, largestIndex = calculate_contour_areas_numba(sPlane)
+            contours, largestIndex = calculate_contour_areas(sPlane)
 
             # Calculate the histogram for each contour
             for j, contour in enumerate(contours):
@@ -579,7 +579,7 @@ class Structure(object):
             sPlane = sPlanes[z]
 
             # Get the contours with calculated areas and the largest contour index
-            contours, largestIndex = calculate_contour_areas_numba(sPlane)
+            contours, largestIndex = calculate_contour_areas(sPlane)
 
             # Get the dose plane for the current structure plane
             doseplane = dose_interp((z_cord[i], y_cord, x_cord))
@@ -651,7 +651,7 @@ class Structure(object):
         for z in ordered_keys:
             sPlane = structure_planes[z]
             # calculate_integrate contour areas
-            contours, largestIndex = calculate_contour_areas_numba(sPlane)
+            contours, largestIndex = calculate_contour_areas(sPlane)
             # See if the rest of the contours are within the largest contour
             area = contours[largestIndex]['area']
             for i, contour in enumerate(contours):
@@ -696,7 +696,7 @@ class Structure(object):
             z = ordered_keys[i]
             s_plane = planes_dict[z]
             # Get the contours with calculated areas and the largest contour index
-            contours, largest_index = calculate_contour_areas_numba(s_plane)
+            contours, largest_index = calculate_contour_areas(s_plane)
 
             # Calculate the histogram for each contour
             for j, contour in enumerate(contours):
