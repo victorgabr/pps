@@ -26,7 +26,7 @@ class TestPyDicomParser(TestCase):
         assert rd_dcm.global_max
 
     def test_GetDVHs(self):
-        assert rd_dcm.GetsDVHs()
+        assert rd_dcm.GetDVHs()
 
     def test_GetSOPClassUID(self):
         assert rd_dcm.GetSOPClassUID() == 'rtdose'

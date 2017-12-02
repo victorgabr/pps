@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from core.dicom_reader import ScoringDicomParser
+# from core.dicom_reader import ScoringDicomParser
+from core.dicom_reader import PyDicomParser
 from pyplanscoring.competition.utils import get_dicom_data
 from pyplanscoring.core.dosimetric import read_scoring_criteria
 from pyplanscoring.core.dvhcalculation import load, calc_dvhs_pp  # , save
@@ -100,7 +101,7 @@ class CompareDVH:
         for k, val in self.folder_data.items():
             print('entering folder %s' % k)
             try:
-                rd_dcm = ScoringDicomParser(filename=val[2])
+                rd_dcm = PyDicomParser(filename=val[2])
                 _, key = os.path.split(k)
 
                 data_curves[key] = rd_dcm.get_tps_data()
@@ -114,7 +115,7 @@ class CompareDVH:
         for k, val in self.folder_data.items():
             print('entering folder %s' % k)
             try:
-                rd_dcm = ScoringDicomParser(filename=val[2])
+                rd_dcm = PyDicomParser(filename=val[2])
                 tps_dvh = rd_dcm.GetDVHs()
                 py_dvh = val[3][0]
                 if tps_dvh and py_dvh:
@@ -256,7 +257,7 @@ def calculate_and_save_matched_dvh(root, pyplanscoring_folder):
     path = os.path.join(pyplanscoring_folder, 'Scoring Criteria.txt')
     constrains, scores, criteria_df = read_scoring_criteria(path)
 
-    structures = ScoringDicomParser(filename=rs_file).GetStructures()
+    structures = PyDicomParser(filename=rs_file).GetStructures()
     # calculation_options = {}
 
     criteria_structure_names, names_dcm = get_matched_names(criteria_df.index.unique(), structures)
@@ -265,7 +266,7 @@ def calculate_and_save_matched_dvh(root, pyplanscoring_folder):
     for i, val in cmp.folder_data.items():
         rp_file = ''
         try:
-            rd_dcm = ScoringDicomParser(filename=val[2])
+            rd_dcm = PyDicomParser(filename=val[2])
             tps_dvh = rd_dcm.GetDVHs()
             if tps_dvh:
                 dvh_file = ''

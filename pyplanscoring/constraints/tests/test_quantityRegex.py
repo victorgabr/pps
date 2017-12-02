@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from constraints import QuantityRegex, VolumePresentation, DoseUnit
+from core.types import QuantityRegex, VolumePresentation, DoseUnit
 
 strings = ["cc",
            "CC",

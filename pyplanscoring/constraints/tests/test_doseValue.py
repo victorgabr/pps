@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from constraints import DoseValue, DoseUnit, DoseValuePresentation
+from core.types import DoseValue, DoseUnit, DoseValuePresentation
 
 
 class TestDoseValue(TestCase):

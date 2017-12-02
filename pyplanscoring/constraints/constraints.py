@@ -8,9 +8,9 @@ https://rexcardan.github.io/ESAPIX/api/ESAPIX.Constraints
 Extended to use pydicom packages
 
 """
-from constraints import MayoQueryWriter, QueryExtensions
-from constraints import ResultType, QueryType, Units, VolumePresentation, DoseUnit, DoseValue, \
-    Discriminator, PriorityType
+from constraints.query import MayoQueryWriter, QueryExtensions
+from core.types import ResultType, QueryType, Units, VolumePresentation, DoseUnit, DoseValue, Discriminator, \
+    PriorityType
 
 
 class ConstraintType:

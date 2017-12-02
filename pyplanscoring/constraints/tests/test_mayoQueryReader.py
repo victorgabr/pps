@@ -2,7 +2,9 @@ from unittest import TestCase
 
 import pytest
 
-from constraints import MayoQueryReader
+from constraints.query import MayoQueryReader
+
+MayoQueryReader
 
 # instantiate the MayoReader class
 

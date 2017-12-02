@@ -1,31 +1,12 @@
-import os
 from unittest import TestCase
 
-from constraints import PlanningItem, ConstrainMetric, MetricType
-from core.dicom_reader import ScoringDicomParser
-
-DATA_DIR = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    'test_data',
-)
-
-# DATA_DIR = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\pyplanscoring\core\constraints\tests\test_data'
-
-filename = os.path.join(DATA_DIR, 'Scoring_criteria.xlsx')
-
-rp = os.path.join(DATA_DIR, 'RP.dcm')
-rs = os.path.join(DATA_DIR, 'RS.dcm')
-rd = os.path.join(DATA_DIR, 'RD.dcm')
-
-rp_dcm = ScoringDicomParser(filename=rp)
-rs_dcm = ScoringDicomParser(filename=rs)
-rd_dcm = ScoringDicomParser(filename=rd)
+from constraints.metrics import ConstrainMetric, MetricType
+from constraints.tests import pi
 
 
 class TestConstrainMetric(TestCase):
     def test_metric_function(self):
         # test Min value constrain
-        pi = PlanningItem(rp_dcm, rs_dcm, rd_dcm)
         structure_name = 'PTV70'
         query = 'D95%[Gy]'
         metric_type = MetricType.MIN

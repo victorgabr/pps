@@ -8,8 +8,7 @@ https://rexcardan.github.io/ESAPIX/api/ESAPIX.Constraints.DVH.Query.html
 """
 import re
 
-from constraints import QueryType, Units, DoseUnit, VolumePresentation, \
-    DoseValue, DoseValuePresentation, DICOMType
+from core.types import QueryType, Units, DoseUnit, VolumePresentation, DoseValuePresentation, DoseValue, DICOMType
 
 
 class MayoRegex:

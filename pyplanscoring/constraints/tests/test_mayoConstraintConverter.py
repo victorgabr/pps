@@ -1,31 +1,9 @@
-import os
 from unittest import TestCase
 
-from pyplanscoring.core.constraints.metrics import PlanningItem
-from pyplanscoring.core.constraints.types import PriorityType
-
 from constraints.constraints import MayoConstraintConverter, MayoConstraint
-from core.dicom_reader import ScoringDicomParser
-
-DATA_DIR = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    'test_data',
-)
-
-# DATA_DIR = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\core\constraints\tests\test_data'
-
-rp = os.path.join(DATA_DIR, 'RP.dcm')
-rs = os.path.join(DATA_DIR, 'RS.dcm')
-rd = os.path.join(DATA_DIR, 'RD.dcm')
-
-rp_dcm = ScoringDicomParser(filename=rp)
-rs_dcm = ScoringDicomParser(filename=rs)
-rd_dcm = ScoringDicomParser(filename=rd)
-
-pi = PlanningItem(rp_dcm, rs_dcm, rd_dcm)
+from core.types import PriorityType
 
 converter = MayoConstraintConverter()
-
 
 class TestMayoConstraintConverter(TestCase):
     def test_convert_to_dvh_constraint(self):

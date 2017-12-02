@@ -1,1 +1,6 @@
-{}
+{
+  "tests/test_planEvaluation.py::TestCase": true,
+  "tests/test_planEvaluation.py::TestPlanEvaluation": true,
+  "tests/test_planningItem.py::TestCase": true,
+  "tests/test_planningItem.py::TestPlanningItem": true
+}

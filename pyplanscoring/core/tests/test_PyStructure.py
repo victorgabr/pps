@@ -36,7 +36,6 @@ class TestPyStructure(TestCase):
         # assert name
         assert obj.name == 'Brain'
         assert obj1.name == obj.name
-        assert obj.id == 'Brain'
 
         # testing different point clouds
         pc = obj.point_cloud

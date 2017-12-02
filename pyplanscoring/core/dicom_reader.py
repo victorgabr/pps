@@ -960,7 +960,9 @@ class PyDicomParser(DicomParserBase):
     ############################### RT Plan Methods ###############################
 
     def GetPlan(self):
-        """Returns the plan information."""
+        """Returns the plan information.
+            https://dicom.innolitics.com/ciods/rt-plan/rt-prescription/300a0010/300a0026
+        """
 
         self.plan = dict()
         self.plan['label'] = self.ds.RTPlanLabel
@@ -968,6 +970,7 @@ class PyDicomParser(DicomParserBase):
         self.plan['time'] = self.ds.RTPlanTime
         self.plan['name'] = ''
         self.plan['rxdose'] = 0
+        self.plan['doseunits'] = 'GY'
         if "DoseReferenceSequence" in self.ds:
             for item in self.ds.DoseReferenceSequence:
                 if item.DoseReferenceStructureType == 'SITE':
@@ -994,7 +997,7 @@ class PyDicomParser(DicomParserBase):
             fg = self.ds.FractionGroupSequence[0]
             if "ReferencedBeamSequence" in fg:
                 self.plan['fractions'] = fg.NumberOfFractionsPlanned
-        self.plan['rxdose'] = int(self.plan['rxdose'])
+        self.plan['rxdose'] = float(self.plan['rxdose'])
         ref_beams = self.GetReferencedBeamsInFraction()
         self.plan['beams'] = ref_beams
 

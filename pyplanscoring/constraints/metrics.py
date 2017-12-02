@@ -13,10 +13,13 @@ import string
 import numpy as np
 import pandas as pd
 
-from constraints import DoseValuePresentation, DoseValue, DoseUnit, DVHData
-from constraints import QueryExtensions
+# from constraints import DoseValuePresentation, DoseValue, DoseUnit, DVHData
+# from constraints import QueryExtensions
+from constraints.query import QueryExtensions
+from core.types import DoseValuePresentation, DoseValue, DoseUnit, DVHData
 
 
+# TODO refactor to use PyDicomParser class and PyStructure
 class PlanningItem:
     """
         Planning items extensions
@@ -81,8 +84,7 @@ class PlanningItem:
 
     @property
     def total_prescribed_dose(self):
-        # Todo not hard Coding cGy as default
-        return DoseValue(self._plan['rxdose'], DoseUnit.cGy)
+        return DoseValue(self._plan['rxdose'], DoseUnit.Gy)
 
     @property
     def treatment_orientation(self):

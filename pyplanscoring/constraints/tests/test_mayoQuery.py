@@ -2,7 +2,7 @@ from unittest import TestCase
 
 import pytest
 
-from constraints import MayoQueryReader, MayoQuery
+from constraints.query import MayoQueryReader, MayoQuery
 
 # initialize mayo query
 q_obj = MayoQuery()

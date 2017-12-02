@@ -1,22 +1,12 @@
-import os
 from unittest import TestCase
 
-from constraints import DVHData, DoseValue, DoseUnit, VolumePresentation
-from constraints import QueryExtensions
-from core.dicom_reader import ScoringDicomParser
-
-DATA_DIR = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    'test_data',
-)
-filename = os.path.join(DATA_DIR, 'RD.dcm')
+from constraints.query import QueryExtensions
+from constraints.tests import rd_dcm
+from core.types import DVHData, DoseValue, DoseUnit, VolumePresentation
 
 # GETTING dvh DATA FROM DOSE
-rd_dcm = ScoringDicomParser(filename=filename)
 dvh_all = rd_dcm.GetDVHs()
-
 dvh = DVHData(dvh_all[61])
-
 rd = QueryExtensions()
 
 
@@ -56,13 +46,13 @@ class TestDVHData(TestCase):
         rd.read(query_str)
         # execute the static method
         md = rd.query_dose(dvh, rd)
-        self.assertAlmostEqual(md.value, dvh.min_dose.value)
+        self.assertAlmostEqual(md, dvh.min_dose)
         # Do 100 from absolute values
         query_str = 'D689.501173445633cc[cGy]'
         rd.read(query_str)
         # execute the static method
         md = rd.query_dose(dvh, rd)
-        self.assertAlmostEqual(md.value, dvh.min_dose.value)
+        self.assertAlmostEqual(md, dvh.min_dose)
 
         query_str = 'D95%[cGy]'
         # read query into que object

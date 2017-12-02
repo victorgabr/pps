@@ -4,31 +4,14 @@ from unittest import TestCase
 import numpy.testing as npt
 import pandas as pd
 
-from constraints import PlanEvaluation, PlanningItem
-from core.dicom_reader import ScoringDicomParser
+from constraints.metrics import PlanEvaluation
+from constraints.tests import DATA_DIR, pi
 from pyplanscoring.core.dvhcalculation import load
 
-DATA_DIR = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    'test_data',
-)
-
-# DATA_DIR = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\pyplanscoring\core\constraints\tests\test_data'
-
 filename = os.path.join(DATA_DIR, 'Scoring_criteria.xlsx')
-
-rp = os.path.join(DATA_DIR, 'RP.dcm')
-rs = os.path.join(DATA_DIR, 'RS.dcm')
-rd = os.path.join(DATA_DIR, 'RD.dcm')
 dvh_path = os.path.join(DATA_DIR, 'PyPlanScoring_dvh.dvh')
-
-rp_dcm = ScoringDicomParser(filename=rp)
-rs_dcm = ScoringDicomParser(filename=rs)
-rd_dcm = ScoringDicomParser(filename=rd)
-
 # report data pyplanscoring
 plan_report = os.path.join(DATA_DIR, 'plan_report.xlsx')
-
 report_df = pd.read_excel(plan_report, skiprows=31)
 pyplan_dvh = load(dvh_path)
 dvh = pyplan_dvh['DVH']
@@ -41,19 +24,17 @@ class TestPlanEvaluation(TestCase):
         plan_eval = PlanEvaluation()
         plan_eval.read(filename)
 
-        pi = PlanningItem(rp_dcm, rs_dcm, rd_dcm)
         df = plan_eval.eval_plan(pi)
         self.assertAlmostEqual(df['Raw score'].sum(), 76.097797709986182)
 
         # using pyplanscoring data
         # Ci calculated from DVH data
-        pi1 = PlanningItem(rp_dcm, rs_dcm, rd_dcm)
+        pi1 = pi
         pi1.dvh_data = dvh
         df1 = plan_eval.eval_plan(pi1)
         self.assertAlmostEqual(df1['Raw score'].sum(), 74.288403194174222, places=1)
 
     def test_failed_structures(self):
-        pi = PlanningItem(rp_dcm, rs_dcm, rd_dcm)
         struc_name = 'LIPS'
         mayo_format_query = 'D0.1cc[Gy]'
         dose = pi.execute_query(mayo_format_query, struc_name)
@@ -77,7 +58,7 @@ class TestPlanEvaluation(TestCase):
 
         # using pyplanscoring data
         # Ci calculated from DVH data
-        pi1 = PlanningItem(rp_dcm, rs_dcm, rd_dcm)
+        pi1 = pi
         pi1.dvh_data = dvh
         df1 = plan_eval.eval_plan(pi1)
         total_score = df1['Raw score'].sum()

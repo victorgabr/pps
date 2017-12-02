@@ -14,16 +14,15 @@ import pandas as pd
 import scipy.interpolate as itp
 import scipy.special as sp
 import seaborn as sns
-from core.constraints.query import QueryExtensions
-from pyplanscoring.core.constraints.metrics import PlanningItem
-from pyplanscoring.core.constraints.types import DVHData, QuantityRegex, DoseUnit, DoseValuePresentation, DoseValue, \
-    VolumePresentation, QueryType
 from sklearn.covariance import ShrunkCovariance, LedoitWolf
 from sklearn.decomposition import PCA, FactorAnalysis
 from sklearn.manifold import TSNE
 from sklearn.model_selection import cross_val_score, GridSearchCV
 
 from constraints.constraints import MayoConstraintConverter, ConstraintType
+from constraints.metrics import PlanningItem
+from constraints.query import QueryExtensions
+from core.types import QuantityRegex, DoseUnit, DoseValuePresentation, DoseValue, VolumePresentation, DVHData, QueryType
 from pyplanscoring.core.dvhcalculation import load
 
 
@@ -385,6 +384,12 @@ class StatisticalDVH:
     # confidence intervals
     @staticmethod
     def empirical_ci(data_samples, alpha):
+        """
+            https://machinelearningmastery.com/calculate-bootstrap-confidence-intervals-machine-learning-results-python/
+        :param data_samples:
+        :param alpha:
+        :return:
+        """
         pl = ((1.0 - alpha) / 2.0)
         lower = data_samples.quantile(pl)
         pu = (alpha + ((1.0 - alpha) / 2.0))

@@ -5,41 +5,17 @@ from unittest import TestCase
 import numpy as np
 import numpy.testing as npt
 
-from constraints import DoseValuePresentation, DoseUnit, DoseValue, VolumePresentation
-from constraints import PlanningItem
-from core.dicom_reader import ScoringDicomParser
+from constraints.metrics import PlanningItem
+from constraints.tests import rp_dcm, rs_dcm, rd_dcm, DATA_DIR
+from core.types import DoseValue, DoseUnit, VolumePresentation, DoseValuePresentation
 from pyplanscoring.core.dvhcalculation import load
 
-DATA_DIR = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    'test_data',
-)
-
-# DATA_DIR = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\core\constraints\tests\test_data'
-
-rp = os.path.join(DATA_DIR, 'RP.dcm')
-rs = os.path.join(DATA_DIR, 'RS.dcm')
-rd = os.path.join(DATA_DIR, 'RD.dcm')
-
 dvh_path = os.path.join(DATA_DIR, 'PyPlanScoring_dvh.dvh')
-
-rp_dcm = ScoringDicomParser(filename=rp)
-rs_dcm = ScoringDicomParser(filename=rs)
-rd_dcm = ScoringDicomParser(filename=rd)
 
 pi = PlanningItem(rp_dcm, rs_dcm, rd_dcm)
 
 pyplan_dvh = load(dvh_path)
 dvh = pyplan_dvh['DVH']
-# swap, keys - values
-# dvhs = rd_dcm.GetDVHs()
-# structures = rs_dcm.GetStructures()
-#
-# for k in structures.keys():
-#     structures[k]['cdvh'] = dvhs[k] if k in dvhs else {}
-
-# rs = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring\core\constraints\tests\test_data\RS.dcm'
-# rs_dcm = ScoringDicomParser(filename=rs)
 
 names = ['PTV70 GH',
          'PTV63 GH',
@@ -110,7 +86,7 @@ class TestPlanningItem(TestCase):
         assert pi.dose_value_presentation == 1
 
     def test_total_prescribed_dose(self):
-        self.assertAlmostEqual(pi.total_prescribed_dose.value, 7000.0)
+        self.assertAlmostEqual(pi.total_prescribed_dose.value, 70.0)
 
     def test_treatment_orientation(self):
         target = np.array(['1', '0', '0', '0', '1', '0'], dtype=float)
@@ -156,12 +132,12 @@ class TestPlanningItem(TestCase):
         assert a_dt == '20170331'
 
     def test_get_dvh_cumulative_data(self):
-        struc_name = 'PTV_70_3mm'
+        struc_name = 'PTV70'
         dvh_dose_abs = pi.get_dvh_cumulative_data(struc_name, DoseValuePresentation.Absolute)
         dvh_dose_rel = pi.get_dvh_cumulative_data(struc_name, DoseValuePresentation.Relative)
 
         # check relative and absolute representations
-        assert dvh_dose_abs.dose_unit == DoseUnit.cGy
+        assert dvh_dose_abs.dose_unit == DoseUnit.Gy
         assert dvh_dose_rel.dose_unit == DoseUnit.Percent
 
     def test_get_dose_at_volume(self):

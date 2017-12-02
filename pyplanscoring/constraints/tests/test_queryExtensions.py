@@ -1,33 +1,13 @@
-import os
 from unittest import TestCase
 
-from constraints import DVHData, VolumePresentation, DoseValue, DoseUnit
-from constraints import PlanningItem
-from constraints import QueryExtensions
-from core.dicom_reader import ScoringDicomParser
-
-# GETTING dvh DATA FROM DOSE
-DATA_DIR = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    'test_data',
-)
-
-# DATA_DIR = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\pyplanscoring\core\constraints\tests\test_data'
-
-rp = os.path.join(DATA_DIR, 'RP.dcm')
-rs = os.path.join(DATA_DIR, 'RS.dcm')
-rd = os.path.join(DATA_DIR, 'RD.dcm')
-
-rp_dcm = ScoringDicomParser(filename=rp)
-rs_dcm = ScoringDicomParser(filename=rs)
-rd_dcm = ScoringDicomParser(filename=rd)
-
 # initializing the objects
+from constraints.query import QueryExtensions
+from constraints.tests import rd_dcm
+from core.types import DVHData, VolumePresentation, DoseValue, DoseUnit
+
 dvh_all = rd_dcm.GetDVHs()
 dvh = DVHData(dvh_all[61])
 rd = QueryExtensions()
-
-pi = PlanningItem(rp_dcm, rs_dcm, rd_dcm)
 
 
 class TestQueryExtensions(TestCase):
