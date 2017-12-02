@@ -910,6 +910,7 @@ class PyDicomParser(DicomParserBase):
                 # Otherwise the DVH is cumulative
                 # Remove "filler" values from DVH data array (even values are DVH values)
 
+                dvhitem['roi_number'] = number
                 dvhitem['data'] = np.array(item.DVHData[1::2])
                 dvhitem['bins'] = int(item.DVHNumberOfBins)
                 dvhitem['type'] = 'CUMULATIVE'
@@ -1118,3 +1119,13 @@ class PyDicomParser(DicomParserBase):
                     if 'BeamMeterset' in bi:
                         beams[bi.ReferencedBeamNumber]['MU'] = bi.BeamMeterset
         return beams
+
+
+if __name__ == '__main__':
+    filename = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/core/tests/test_data/RD.dcm'
+    s = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/core/tests/test_data/RS.dcm'
+    rd_dcm = PyDicomParser(filename=filename)
+    dvh = rd_dcm.GetDVHs()
+
+    rs_dcm = PyDicomParser(filename=s)
+    structures = rs_dcm.GetStructures()

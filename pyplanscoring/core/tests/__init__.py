@@ -10,6 +10,9 @@ DATA_DIR = os.path.join(
     'test_data',
 )
 
+# plot flag
+plot_flag = True
+
 rs = os.path.join(DATA_DIR, 'RS.dcm')
 rd = os.path.join(DATA_DIR, 'RD.dcm')
 rp = os.path.join(DATA_DIR, 'RP.dcm')
@@ -19,11 +22,6 @@ rd_dcm = PyDicomParser(filename=rd)
 rp_dcm = PyDicomParser(filename=rp)
 
 structures = rs_dcm.GetStructures()
-brain = structures[6]
-body = structures[4]
-
-# plot flag
-plot_flag = True
 
 # dose 3D
 
@@ -60,3 +58,6 @@ to_index = {v['name']: k for k, v in structures.items()}
 
 ptv70 = structures[to_index['PTV70']]
 lens = structures[to_index['LENS LT']]
+spinal_cord = structures[to_index['SPINAL CORD']]
+brain = structures[6]
+body = structures[4]

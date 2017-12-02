@@ -1,6 +1,5 @@
 from __future__ import division
 
-import functools
 from copy import deepcopy
 from math import factorial
 
@@ -8,11 +7,7 @@ import numba as nb
 import numpy as np
 from scipy.interpolate import interp1d
 
-# add fast-math
-if int(nb.__version__.split('.')[1]) >= 34:
-    njit = functools.partial(nb.njit, fastmath=True, cache=False, nogil=True, parallel=True)
-else:
-    njit = functools.partial(nb.njit, cache=False, nogil=True)
+from core import njit
 
 
 def cn_PnPoly(P, V):

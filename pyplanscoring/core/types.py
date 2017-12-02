@@ -617,10 +617,6 @@ class StructureBase:
     def volume(self):
         return NotImplementedError
 
-    @property
-    def id(self):
-        return self.structure['name']
-
     def to_high_resolution(self, z_grid_resolution):
         """
         :param z_grid_resolution:
@@ -692,6 +688,12 @@ class StructureBase:
         structure_dict['planes'] = out_Dict
 
         return structure_dict
+
+    def __str__(self):
+        return "{} : {}".format(self.roi_number, self.name)
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class Dose3D:

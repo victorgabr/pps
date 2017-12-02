@@ -1,7 +1,5 @@
 from __future__ import division
 
-import functools
-
 """Functions to calculate_integrate minimum, maximum, and mean dose to ROI from a cDVH."""
 # Copyright (c) 2009 Roy Keyes (roy.coding)
 # Copyright (c) 2011 Aditya Panchal
@@ -12,14 +10,8 @@ import functools
 # Start - 20 Nov. 2009
 # It is assumed that the bin width of the cDVH is fixed at 1 cGy.
 # speed up numba by victor
+from core import njit
 import numpy as np
-import numba as nb
-
-# add fast-math
-if int(nb.__version__.split('.')[1]) >= 34:
-    njit = functools.partial(nb.njit, fastmath=True, cache=False, nogil=True, parallel=True)
-else:
-    njit = functools.partial(nb.njit, cache=False, nogil=True)
 
 
 def get_dvh_min_slow(dvh):
@@ -198,6 +190,7 @@ def get_ddvh_slow(cdvh):
 
     return ddvh
 
+
 @njit
 def get_ddvh(cdvh):
     '''Return dDVH from cDVH array.'''
@@ -253,7 +246,14 @@ def test_all():
 
 
 if __name__ == '__main__':
-    doses = np.arange(150, 100000004)
+    doses = np.arange(150, 100000000)
+
+    # timings
+
+
+
+
+
     a = get_ddvh_slow(doses)
     b = get_ddvh(doses)
     np.testing.assert_array_almost_equal(b, a)

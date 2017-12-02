@@ -10,6 +10,7 @@ Copyright (c) 2017      Victor Gabriel Leandro Alves
 import time
 
 import numpy as np
+from joblib import Parallel, delayed
 from numpy import ma
 
 from core.dvhdoses import get_cdvh_numba, get_dvh_min, get_dvh_max, get_dvh_mean
@@ -169,7 +170,7 @@ class DVHCalculation:
         :param dose: Dose3D instance
         :type dose: Dose3D
         :param calc_grid: (dx,dy,dz) up-sampling grid delta in mm
-        :type calc_grid: np.ndarray
+        :type calc_grid: tuple
         """
         self._structure = None
         self._dose = None
@@ -228,12 +229,12 @@ class DVHCalculation:
         if value is None:
             self._calc_grid = (self.dose.x_res, self.dose.y_res, self.structure.contour_spacing)
         elif len(value) != 3:
-            raise ValueError('Calculation grid should be size 3, (dx,dy,dz)')
+            raise ValueError('Calculation grid should be size 3, (dx, dy, dz) mm')
         else:
             self._calc_grid = value
 
-    @timeit
-    def calculate(self, verbose=False):
+    # @timeit
+    def calculate(self, verbose=True):
         """
             Calculate a DVH
         :param structure: Structure obj
@@ -248,8 +249,7 @@ class DVHCalculation:
         """
         if verbose:
             print(' ----- DVH Calculation -----')
-            print('Structure: {}  \n volume [cc]: {}'.format(self.structure.name, self.structure.volume))
-            print('Elapsed:')
+            print('Structure: {}  \n volume [cc]: {:0.1f}'.format(self.structure.name, self.structure.volume))
         max_dose = float(self.dose.dose_max_3d)
         hist = np.zeros(self.n_bins)
         volume = 0
@@ -376,6 +376,7 @@ class DVHCalculation:
 
     def prepare_dvh_data(self, volume, hist):
         # TODO prepare it to be like DICOM-RD dvh data
+        # TODO create a serialised DVH storage format
         # volume units are given in cm^3
         volume /= 1000
         # Rescale the histogram to reflect the total volume
@@ -385,42 +386,37 @@ class DVHCalculation:
         idx = np.nonzero(chist)  # remove 0 volumes from DVH
         cdvh = chist[idx]
 
+        # DICOM DVH FORMAT
+        scaling = float(self.bin_size)
+        units = str(self.dose.unit.symbol).upper()
+
         dvhdata = {'data': cdvh,
                    'bins': self.n_bins,
                    'type': 'CUMULATIVE',
-                   'doseunits': self.dose.unit.symbol,
+                   'doseunits': units,
                    'volumeunits': 'cm3',
-                   'scaling': float(self.bin_size),
-                   'min': get_dvh_min(cdvh),
-                   'max': get_dvh_max(cdvh),
-                   'mean': get_dvh_mean(cdvh)}
+                   'scaling': scaling,
+                   'min': get_dvh_min(cdvh) * scaling,
+                   'max': get_dvh_max(cdvh) * scaling,
+                   'mean': get_dvh_mean(cdvh) * scaling}
 
         return dvhdata
 
 
-# TODO implement multiprocessing
 class DVHCalculationMP:
-    def __init__(self, dose, structures):
+    def __init__(self, dose, structures, grids, verbose=False):
+        self._grids = None
         self._dose = None
-
         self._structures = None
+        self.dvhs = {}
+        self.verbose = verbose
         # setters
         self.structures = structures
         self.dose = dose
-
-    @property
-    def structures(self):
-        return self._structures
-
-    @structures.setter
-    def structures(self, value):
-        if isinstance(value, list):
-            if not isinstance(value[0], PyStructure):
-                raise TypeError("list element should be PyStructure")
-
-            self._structures = value
-        else:
-            TypeError("Argument should be a list.")
+        self.grids = grids
+        # sanity check
+        if not len(self.structures) == len(self.grids):
+            raise ValueError("PyStructure and grid lists should be equal sized")
 
     @property
     def dose(self):
@@ -438,9 +434,87 @@ class DVHCalculationMP:
 
         self._dose = value
 
+    @property
+    def structures(self):
+        return self._structures
+
+    @structures.setter
+    def structures(self, value):
+        if isinstance(value, list):
+            if not isinstance(value[0], PyStructure):
+                raise TypeError("list element should be PyStructure")
+
+            self._structures = value
+        else:
+            raise TypeError("Argument should be a list.")
+
+    @property
+    def grids(self):
+        return self._grids
+
+    @grids.setter
+    def grids(self, value):
+        if isinstance(value, list):
+            for g in value:
+                if g is not None:
+                    if len(g) != 3:
+                        raise ValueError('Calculation grid should be size 3, (dx,dy,dz)')
+
+            self._grids = value
+        else:
+            raise TypeError("Argument grid should be a list.")
+
+    @property
+    def calc_data(self):
+        return dict(zip(self.structures, self.grids))
+
+    @staticmethod
+    def calculate(structure, grid, dose, verbose):
+        """
+            Calculate DVH per structure
+
+        :param structure: PyStructure instance
+        :type structure: PyStructure
+        :param grid: grid delta
+        :type grid: tuple
+        :param dose: Dose3D instance
+        :type dose: Dose3D
+        :param verbose: Prints message to terminal
+        :type verbose: bool
+        :return: DVH calculated
+        :rtype: dict
+        """
+
+        dvh_calc = DVHCalculation(structure, dose, calc_grid=grid)
+        res = dvh_calc.calculate(verbose)
+        # map thread/process result to its roi number
+
+        res['roi_number'] = structure.roi_number
+        return res
+
+    @timeit
     def calculate_dvh_mp(self):
 
-        for structure in self.structures:
-            bodyi = PyStructure(body)
-            dvh_calc = DVHCalculation(bodyi, dose)
-            dvh = dvh_calc.calculate()
+        if self.verbose:
+            print(" ---- Starting multiprocessing -----")
+
+        res = Parallel()(delayed(self.calculate)(s, g, self.dose, self.verbose) for s, g in self.calc_data.items())
+        # map name, grid and roi_number
+        cdvh = {}
+        for struc_dvh in res:
+            cdvh[struc_dvh['roi_number']] = struc_dvh
+
+        if self.verbose:
+            print("----- End multiprocessing -------")
+
+        return cdvh
+
+
+if __name__ == '__main__':
+    from core.tests import dose_3d, structures
+
+    # call all structures DVH without up-sampling
+    structures_py = [PyStructure(v) for k, v in structures.items()]
+    grids = [None] * len(structures_py)
+    calc_mp = DVHCalculationMP(dose_3d, structures_py, grids, True)
+    result_mp = calc_mp.calculate_dvh_mp()
