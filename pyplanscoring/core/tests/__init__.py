@@ -59,5 +59,6 @@ to_index = {v['name']: k for k, v in structures.items()}
 ptv70 = structures[to_index['PTV70']]
 lens = structures[to_index['LENS LT']]
 spinal_cord = structures[to_index['SPINAL CORD']]
+parotid_lt = structures[to_index['PAROTID LT']]
 brain = structures[6]
 body = structures[4]

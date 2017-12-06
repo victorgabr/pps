@@ -90,14 +90,20 @@ class TestStatisticalDVH(TestCase):
     def test_plot_historical_dvh(self):
         stats_dvh = StatisticalDVH()
         stats_dvh.load_data_from_hdf(database_file)
-
+        tech_df = stats_dvh.db_df['Technique']
+        txt = tech_df.value_counts().to_string()
         for str_name in str_names:
             plot_data = stats_dvh.vf_data[str_name]
             nplans = len(plot_data)
             xlabel, ylabel = 'Dose [cGy]', 'Volume [%]'
-            title = 'ECLIPSE VMAT - %s - N= %i' % (str_name, nplans)
+            title = 'Nasopharynx plans - %s - N=%i' % (str_name, nplans)
             stats_dvh.plot_historical_dvh(str_name, xlabel, ylabel, title)
-
+            plt.figtext(0.2, 0.2, txt)
         plt.show()
 
         plt.close('all')
+
+    def test_get_db(self):
+
+        stats_dvh = StatisticalDVH()
+        stats_dvh.load_data_from_hdf(database_file)

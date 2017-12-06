@@ -72,11 +72,11 @@ def get_dvh_max_slow(dvh):
 
 
 @njit
-def get_dvh_max(dvh):
+def get_dvh_max(dvh, dd):
     '''Return maximum dose to ROI derived from cDVH.'''
 
     # Calulate dDVH
-    ddvh = get_ddvh(dvh)
+    ddvh = get_ddvh(dvh, dd)
 
     maxdose = 0
     j = len(ddvh) - 1
@@ -161,7 +161,7 @@ def get_dvh_mean(dvh):
     v1 = dvh[0]
 
     # Calculate dDVH
-    ddvh = get_ddvh(dvh)
+    ddvh = get_ddvh(dvh, 1.0)
 
     # Calculate total dose
     j = 1
@@ -192,9 +192,13 @@ def get_ddvh_slow(cdvh):
 
 
 @njit
-def get_ddvh(cdvh):
-    '''Return dDVH from cDVH array.'''
-
+def get_ddvh(cdvh, dd):
+    """
+        Return differential DVH from cumulative
+    :param cdvh: Cumulative volume DVH
+    :param dd: dose scaling e.g. 0.01 Gy
+    :return:
+    """
     # dDVH is the negative "slope" of the cDVH
 
     j = 0
@@ -205,7 +209,7 @@ def get_ddvh(cdvh):
         j += 1
     ddvh[j] = cdvh[j]
 
-    return ddvh
+    return ddvh / dd
 
 
 @njit
@@ -249,10 +253,6 @@ if __name__ == '__main__':
     doses = np.arange(150, 100000000)
 
     # timings
-
-
-
-
 
     a = get_ddvh_slow(doses)
     b = get_ddvh(doses)

@@ -7,7 +7,7 @@ import pandas as pd
 from competition.tests import data_path, database_file, sheet, low_score, high_score, root_folder
 from core.dvhcalculation import load
 from pyplanscoring.competition.statistical_dvh import StatisticalDVH, GeneralizedEvaluationMetric, PlanningItemDVH, \
-    HistoricPlanDVH
+    HistoricPlanDVH, PopulationBasedGEM
 
 # set stats dvh
 
@@ -196,3 +196,42 @@ class TestGeneralizedEvaluationMetric(TestCase):
         #     return g1(k, t, constraint_value), g2(k, t, upper_90_ci)
         #
         # fsolve(gamma_equations, (7.5, 1), args=(100, 10))
+
+    def test_stats_paper(self):
+        import matplotlib.pyplot as plt
+
+        # First load constraint stats from HDF
+        df = pd.read_excel(data_path, sheetname=sheet)
+        gem = GeneralizedEvaluationMetric(stats_dvh, df)
+        gem.load_constraints_stats(database_file, sheet)
+
+        gem_pop = PopulationBasedGEM(stats_dvh, df)
+        gem_pop.load_constraints_stats(database_file, sheet)
+
+        # get wes
+        # gem.weighted_cumulative_probability(0, structure_name='LIPS')
+        # matching db and dvhs
+        db_df = stats_dvh.db_df
+        dvh_df = stats_dvh.dvh_data
+        gem_plans = []
+        gemp = []
+        for row in range(len(db_df)):
+            dvh_i = dvh_df.iloc[row]
+            pi_t = PlanningItemDVH(plan_dvh=dvh_i)
+            gem_t = gem.calc_gem(pi_t)
+            gem_p = gem_pop.calc_gem(pi_t)
+            gem_plans.append(gem_t)
+            gemp.append(gem_p)
+
+        db_df['GEM'] = gem_plans
+        db_df['GEM_pop'] = gemp
+
+        plt.plot(db_df['score'], db_df['GEM'], '.')
+
+        ranking = db_df.sort_values('GEM').drop("Path", axis=1)
+        ranking_pop = db_df.sort_values('GEM_pop').drop("Path", axis=1)
+        # removing outliers of fake planes
+
+        ranking = ranking.drop([197, 198])
+        ranking_pop = ranking_pop.drop([197, 198])
+        pass

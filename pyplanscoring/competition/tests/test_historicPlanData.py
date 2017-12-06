@@ -1,8 +1,7 @@
 import os
 from unittest import TestCase
 
-from constraints import PlanningItem
-from core.dicom_reader import ScoringDicomParser
+from constraints.metrics import PlanningItem
 from pyplanscoring.core.dvhcalculation import load
 
 # DATA_DIR = os.path.join(

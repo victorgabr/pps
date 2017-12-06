@@ -115,22 +115,22 @@ class TestGeneralizedEvaluationMetricWES(TestCase):
         # get wes
         # gem.weighted_cumulative_probability(0, structure_name='LIPS')
         #
-        # # TODO evaluate new ranking against classic scores
-        # gem_plans = []
-        #
-        # for part in hist_data.map_part:
-        #     dvh = load(part[1][0])['DVH']
-        #     pi_t = PlanningItemDVH(plan_dvh=dvh)
-        #     gem_t = gem.calc_gem(pi_t)
-        #     if gem_t:
-        #         gem_plans.append([part[0], gem_t])
-        # df = pd.DataFrame(gem_plans)
-        # df['sc'] = df[0].apply(lambda row: re.findall("\d+\.\d+", row)[0])
-        #
-        # plt.plot(df['sc'], df[1], '.')
-        #
-        # # load winner DVH
-        # winner_df = df.sort_values(1).iloc[0]
+        # TODO evaluate new ranking against classic scores
+        gem_plans = []
+
+        for part in hist_data.map_part:
+            dvh = load(part[1][0])['DVH']
+            pi_t = PlanningItemDVH(plan_dvh=dvh)
+            gem_t = gem.calc_gem(pi_t)
+            if gem_t:
+                gem_plans.append([part[0], gem_t])
+        df = pd.DataFrame(gem_plans)
+        df['sc'] = df[0].apply(lambda row: re.findall("\d+\.\d+", row)[0])
+
+        plt.plot(df['sc'], df[1], '.')
+
+        # load winner DVH
+        winner_df = df.sort_values(1).iloc[0]
 
     def test_calc_plan_gem_wes(self):
         plan_dvh = stats_dvh.get_plan_dvh(100)

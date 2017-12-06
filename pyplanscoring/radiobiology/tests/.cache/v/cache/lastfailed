@@ -1,0 +1,4 @@
+{
+  "test_NTCP.py::TestNTCP::test_dvh": true,
+  "test_NTCP.py::TestNTCP::test_model_data": true
+}

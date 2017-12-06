@@ -389,15 +389,16 @@ class DVHCalculation:
         # DICOM DVH FORMAT
         scaling = float(self.bin_size)
         units = str(self.dose.unit.symbol).upper()
-
+        # TODO inspect nbins change
         dvhdata = {'data': cdvh,
-                   'bins': self.n_bins,
+                   'bins': len(cdvh),
                    'type': 'CUMULATIVE',
                    'doseunits': units,
                    'volumeunits': 'cm3',
                    'scaling': scaling,
+                   'roi_number': self.structure.roi_number,
                    'min': get_dvh_min(cdvh) * scaling,
-                   'max': get_dvh_max(cdvh) * scaling,
+                   'max': get_dvh_max(cdvh, scaling),
                    'mean': get_dvh_mean(cdvh) * scaling}
 
         return dvhdata

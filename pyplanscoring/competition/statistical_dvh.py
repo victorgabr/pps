@@ -6,6 +6,7 @@ http://www.sciencedirect.com/science/article/pii/S2452109417300611
 """
 import difflib
 import os
+import re
 
 import hdbscan
 import matplotlib.pyplot as plt
@@ -203,6 +204,9 @@ class HistoricPlanDVH:
         key = self.__class__.__name__
         data_df.to_hdf(path_to_filename, key)
 
+        # save db mappings
+        self.map_db(path_to_filename)
+
     def load_hdf(self, path_to_filename):
         """
             Load HDF DVH file. Key data - HistoricPlanDVH
@@ -212,12 +216,35 @@ class HistoricPlanDVH:
         key = self.__class__.__name__
         return pd.read_hdf(path_to_filename, key)
 
+    def map_db(self, path_to_filename):
+        tmp = [f.split('/') for f in self.dvh_files[0]]
+
+        folders = [f[-3] for f in tmp]
+        part = [f[-2] for f in tmp]
+        score = []
+        for s in part:
+            res = re.findall("\d+\.\d+", s)
+            if res:
+                score.append(res)
+            else:
+                score.append(s)
+        # assert same size
+        assert len(folders) == len(part) and len(part) == len(score)
+
+        df = pd.DataFrame(folders, columns=["Technique"])
+        df['Participant'] = part
+        df['score'] = np.array(score, dtype=float)
+        df['Path'] = self.dvh_files[0]
+        # save to hdf as db mappings
+        df.to_hdf(path_to_filename, 'db')
+
 
 class StatisticalDVH:
     def __init__(self):
         self._dvh_data = None
         self._structure_names = []
         self._vf_data = {}
+        self.db_df = None
         self._path_to_hdf_file = ''
 
     @property
@@ -250,16 +277,15 @@ class StatisticalDVH:
             doses = []
             volume = []
             for row in self.dvh_data.iterrows():
-                try:
-                    dvh = DVHData(row[1][s])
-                    doses.append(dvh.dose_focused_format)
-                    volume = dvh.volume_focused_format
-                except:
-                    # todo debug this
-                    pass
+                dvh = DVHData(row[1][s])
+                doses.append(dvh.dose_focused_format)
+                volume = dvh.volume_focused_format
+
             vf_data[s] = pd.DataFrame(doses, columns=volume)
 
         self._vf_data = vf_data
+
+        self.db_df = pd.read_hdf(path_to_hdf_file, 'db')
 
     @staticmethod
     def get_vf_dvh(dvh_data):
@@ -961,7 +987,6 @@ class GeneralizedEvaluationMetricWES(GeneralizedEvaluationMetric, WeightedExperi
         """Appendix B: Sigmoidal curve using Normal C.D.F.
         The normal p.d.f. is frequently used for values that can range over positive and negative values.
         In that case the sigmoidal function used in the GEM calculation is the normal c.d.f.."""
-        # TODO VECTORIZE IT
         delta0 = plan_value - constraint_value
         delta1 = constraint_value - plan_value
         delta = np.zeros(plan_value.shape)
@@ -1032,7 +1057,6 @@ class GeneralizedEvaluationMetricWES(GeneralizedEvaluationMetric, WeightedExperi
         """
 
         # Todo
-
         # method overloading
         if not isinstance(pi, PlanningItemDVH) and isinstance(pi, int):
             plan_dvh = self._stats_dvh_data.get_plan_dvh(pi)

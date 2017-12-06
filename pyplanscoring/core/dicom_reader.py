@@ -161,7 +161,6 @@ class DicomParserBase(object):
 
         return patient
 
-
         ################################ Image Methods #################################
 
     def GetImageData(self):
@@ -304,7 +303,6 @@ class DicomParserBase(object):
                 structures[number]['RTROIType'] = item.RTROIInterpretedType
 
         # TODO handle XIO less than 5.00
-
 
         # The coordinate data of each ROI is stored within ROIContourSequence
         if 'ROIContours' in self.ds:
@@ -787,7 +785,6 @@ class PyDicomParser(DicomParserBase):
                     except:
                         pass
 
-
                         # logger.debug(
                         #     "Unable to decode display color for ROI #%s",
                         #     str(number))
@@ -905,15 +902,21 @@ class PyDicomParser(DicomParserBase):
                 # logger.debug("Found DVH for ROI #%s", str(number))
                 dvhitem = {}
                 # If the DVH is differential, convert it to a cumulative DVH
-                if not self.ds.DVHSequence[0].DVHType == 'CUMULATIVE':
-                    raise TypeError("Exported DVH should be CUMULATIVE")
+                if self.ds.DVHSequence[0].DVHType == 'DIFFERENTIAL':
+                    dvhitem['data'] = np.array(item.DVHData[1::2])
+                    dvhitem['bins'] = len(dvhitem['data'])
+                    dvhitem['type'] = 'DIFFERENTIAL'
+                if self.ds.DVHSequence[0].DVHType == 'CUMULATIVE':
+                    dvhitem['data'] = np.array(item.DVHData[1::2])
+                    dvhitem['bins'] = len(dvhitem['data'])
+                    dvhitem['type'] = 'CUMULATIVE'
+                    # raise TypeError("Exported DVH should be CUMULATIVE")
                 # Otherwise the DVH is cumulative
                 # Remove "filler" values from DVH data array (even values are DVH values)
 
                 dvhitem['roi_number'] = number
                 dvhitem['data'] = np.array(item.DVHData[1::2])
                 dvhitem['bins'] = int(item.DVHNumberOfBins)
-                dvhitem['type'] = 'CUMULATIVE'
                 dvhitem['volumeunits'] = item.DVHVolumeUnits
                 dvhitem['doseunits'] = item.DoseUnits
                 # ref  https://dicom.innolitics.com/ciods/rt-dose/rt-dvh/30040050/30040052
