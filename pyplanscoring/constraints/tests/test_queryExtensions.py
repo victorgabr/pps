@@ -62,6 +62,10 @@ class TestQueryExtensions(TestCase):
         mq = rd.read(query)
         assert rd.get_dose_presentation(mq) == 1
 
+        query = "GI47.5Gy[]"
+        mq = rd.read(query)
+        assert rd.get_dose_presentation(mq) == 1
+
     def test_get_dose_unit(self):
         # Dose at % volume Gy
         query = 'D90%[Gy]'
@@ -121,6 +125,12 @@ class TestQueryExtensions(TestCase):
         un = rd.get_dose_unit(mq)
         assert un.symbol == 'Gy'
 
+        # HI
+        query = 'GI47Gy[]'
+        mq = rd.read(query)
+        un = rd.get_dose_unit(mq)
+        assert un.symbol == 'Gy'
+
     def test_get_volume_presentation(self):
         query = 'D90%[Gy]'
         mq = rd.read(query)
@@ -148,6 +158,16 @@ class TestQueryExtensions(TestCase):
         assert un.symbol == '%'
 
         query = 'CI47Gy[]'
+        mq = rd.read(query)
+        un = rd.get_volume_presentation(mq)
+        assert un.symbol == 'dimensionless'
+
+        query = 'HI47Gy[]'
+        mq = rd.read(query)
+        un = rd.get_volume_presentation(mq)
+        assert un.symbol == 'dimensionless'
+
+        query = 'GI47Gy[]'
         mq = rd.read(query)
         un = rd.get_volume_presentation(mq)
         assert un.symbol == 'dimensionless'

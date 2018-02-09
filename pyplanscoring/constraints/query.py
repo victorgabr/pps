@@ -13,10 +13,10 @@ from core.types import QueryType, Units, DoseUnit, VolumePresentation, DoseValue
 
 class MayoRegex:
     UnitsDesired = r"\[(cc|%|(c?Gy)|)\]"
-    QueryType = r"^(V|CV|DC|D|Mean|Max|Min|CI|HI)"
+    QueryType = r"^(V|CV|DC|D|Mean|Max|Min|CI|HI|GI)"
     QueryValue = r"\d+(\.?)(\d+)?"
     QueryUnits = r"((cc)|%|(c?Gy))"
-    Valid = '(((V|CV|DC|D|CI|HI)(\d+(\.?)(\d+)?((cc)|%|(c?Gy))))|(Mean|Max|Min))\[(cc|%|(c?Gy)|)\]'
+    Valid = '(((V|CV|DC|D|CI|HI|GI)(\d+(\.?)(\d+)?((cc)|%|(c?Gy))))|(Mean|Max|Min))\[(cc|%|(c?Gy)|)\]'
 
 
 class MayoQuery:
@@ -116,7 +116,8 @@ class MayoQueryWriter:
             QueryType.MIN_DOSE: "Min",
             QueryType.VOLUME_AT_DOSE: "V",
             QueryType.CI: "CI",
-            QueryType.HI: "HI"
+            QueryType.HI: "HI",
+            QueryType.GI: "GI"
         }
 
         return switch.get(query_type)
@@ -205,7 +206,8 @@ class MayoQueryReader:
                     "Max": QueryType.MAX_DOSE,
                     "Mean": QueryType.MEAN_DOSE,
                     "CI": QueryType.CI,
-                    "HI": QueryType.HI}
+                    "HI": QueryType.HI,
+                    "GI": QueryType.GI}
 
         return switcher.get(match.group(), QueryType.VOLUME_AT_DOSE)
 
@@ -271,13 +273,18 @@ class QueryExtensions(MayoQuery):
                   QueryType.MEAN_DOSE: self.query_mean_dose,
                   QueryType.MIN_DOSE: self.query_min_dose,
                   QueryType.CI: self.query_ci,
-                  QueryType.HI: self.query_hi}
+                  QueryType.HI: self.query_hi,
+                  QueryType.GI: self.query_gi}
 
         metric_function = switch.get(query.query_type)
 
         # If conformity index
         if query.query_type == QueryType.CI:
             return metric_function(pi, query, ss)
+
+        # If gradient index
+        if query.query_type == QueryType.GI:
+            return metric_function(pi, query)
 
         return metric_function(dvh, query)
 
@@ -292,9 +299,14 @@ class QueryExtensions(MayoQuery):
         switch = {Units.CGY: DoseValuePresentation.Absolute,
                   Units.GY: DoseValuePresentation.Absolute,
                   Units.PERC: DoseValuePresentation.Relative}
-        if query.query_type == QueryType.COMPLIMENT_VOLUME or query.query_type == QueryType.VOLUME_AT_DOSE:
-            return switch.get(query.query_units, DoseValuePresentation.Unknown)
-        if query.query_type == QueryType.HI or query.query_type == QueryType.CI:
+
+        query_types = [QueryType.COMPLIMENT_VOLUME,
+                       QueryType.VOLUME_AT_DOSE,
+                       QueryType.HI,
+                       QueryType.CI,
+                       QueryType.GI]
+
+        if query.query_type in query_types:
             return switch.get(query.query_units, DoseValuePresentation.Unknown)
 
         return switch.get(query.units_desired, DoseValuePresentation.Unknown)
@@ -310,11 +322,13 @@ class QueryExtensions(MayoQuery):
                   Units.GY: DoseUnit.Gy,
                   Units.PERC: DoseUnit.Percent}
 
+        query_types = [QueryType.COMPLIMENT_VOLUME,
+                       QueryType.VOLUME_AT_DOSE,
+                       QueryType.HI,
+                       QueryType.CI,
+                       QueryType.GI]
         # If volume query return query unit to dose unit
-        if query.query_type == QueryType.COMPLIMENT_VOLUME or query.query_type == QueryType.VOLUME_AT_DOSE:
-            return switch.get(query.query_units, DoseUnit.Unknown)
-        # CI or HI query
-        if query.query_type == QueryType.CI or query.query_type == QueryType.HI:
+        if query.query_type in query_types:
             return switch.get(query.query_units, DoseUnit.Unknown)
 
         return switch.get(query.units_desired, DoseUnit.Unknown)
@@ -327,7 +341,7 @@ class QueryExtensions(MayoQuery):
         :return: the volume presentation of the query
         """
         # If volume query return query unit to dose unit
-        if query.query_type == QueryType.COMPLIMENT_VOLUME or query.query_type == QueryType.VOLUME_AT_DOSE:
+        if query.query_type in [QueryType.COMPLIMENT_VOLUME, QueryType.VOLUME_AT_DOSE]:
             switch = {Units.CC: VolumePresentation.absolute_cm3,
                       Units.PERC: VolumePresentation.relative}
 
@@ -474,3 +488,38 @@ class QueryExtensions(MayoQuery):
         h_i = (dose1 - dose99) / reference_dose
 
         return float(h_i)
+
+    @staticmethod
+    def query_gi(pi, query):
+        """
+            Calculates the Paddick grdient index (PMID 18503356) as Paddick GI = PIV_half/PIV
+
+            PIV_half = Prescripition isodose volume at half by prescription isodose
+            PIV = Prescripition isodose volume
+
+        :param pi:
+        :param query:
+        :param target_structure_name:
+        :return:
+        """
+
+        external = None
+        for k, v in pi.structures.items():
+            if v['RTROIType'] == DICOMType.EXTERNAL:
+                external = v
+                break
+
+        if external is None:  # pragma: no cover
+            return None
+
+        dose_unit = query.get_dose_unit(query)
+        reference_dose = DoseValue(query.query_value, dose_unit)
+        vol_prescription_isodose = pi.get_volume_at_dose(external['name'],
+                                                         reference_dose,
+                                                         VolumePresentation.absolute_cm3)
+
+        half_vol_prescription_isodose = pi.get_volume_at_dose(external['name'],
+                                                              reference_dose / 2.0,
+                                                              VolumePresentation.absolute_cm3)
+
+        return float(half_vol_prescription_isodose / vol_prescription_isodose) if vol_prescription_isodose > 0 else None

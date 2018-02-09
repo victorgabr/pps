@@ -797,8 +797,6 @@ class MaxMeanDoseConstraint(DoseStructureConstraint):
         return self.__str__()
 
 
-# TODO implement Conformation and HI constraints
-
 class ConformationIndexConstraint(DoseStructureConstraint):
     def __init__(self):
         super().__init__()
@@ -877,6 +875,11 @@ class HomogeneityIndexConstraint(DoseStructureConstraint):
 
     def __repr__(self):
         return self.__str__()
+
+
+class GradientIndexConstraint(HomogeneityIndexConstraint):
+    def __init__(self):
+        super().__init__()
 
 
 class MayoConstraint:
@@ -990,7 +993,8 @@ class MayoConstraintConverter:
                   QueryType.DOSE_COMPLIMENT: self.build_dose_compliment_constraint,
                   QueryType.COMPLIMENT_VOLUME: self.build_compliment_volume_constraint,
                   QueryType.CI: self.build_ci_constraint,
-                  QueryType.HI: self.build_hi_constraint}
+                  QueryType.HI: self.build_hi_constraint,
+                  QueryType.GI: self.build_gi_constraint}
 
         build_function = switch.get(mc.query.query_type)
 
@@ -1289,6 +1293,28 @@ class MayoConstraintConverter:
         ci.mc = mc
 
         return ci
+
+    def build_gi_constraint(self, mc, structure_name, priority):
+        """
+        :param mc: MayoConstraint
+        :param structure_name: string
+        :param priority: PriorityType
+        :return: Paddick gradient index constraint
+        """
+        dose = mc.query.query_value
+        dose_unit = self.get_dose_units(mc.query.query_units)
+        dv = DoseValue(dose, dose_unit)
+
+        # constraint classes
+        gi = GradientIndexConstraint()
+        gi.mayo_constraint = mc
+        gi.constraint_dose = dv
+        gi.constraint_value = mc.constraint_value
+        gi.structure_name = structure_name
+        gi.priority = priority
+        gi.mc = mc
+
+        return gi
 
 # class StructureNameConstraint:
 #     def __init__(self):

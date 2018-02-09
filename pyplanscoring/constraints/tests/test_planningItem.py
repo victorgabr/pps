@@ -300,8 +300,15 @@ class TestPlanningItem(TestCase):
         dm = pi.execute_query(mayo_format_query, struc_name)
         self.assertAlmostEqual(dm, target, places=3)
 
-        # teste CI
+        # test CI
         mayo_format_query = 'CI66.5Gy[]'
         target = 0.684301239322868
         dm = pi.execute_query(mayo_format_query, struc_name)
         self.assertAlmostEqual(dm, target, places=1)
+
+        # teste GI
+        mayo_format_query = 'GI66.5Gy[]'
+        target = 0.684301239322868
+        dm = pi.execute_query(mayo_format_query, struc_name)
+
+        self.assertAlmostEqual(dm, dm, places=1)

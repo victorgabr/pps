@@ -5,6 +5,7 @@ from core.types import PriorityType
 
 converter = MayoConstraintConverter()
 
+
 class TestMayoConstraintConverter(TestCase):
     def test_convert_to_dvh_constraint(self):
         # test string representation
@@ -243,18 +244,18 @@ class TestMayoConstraintConverter(TestCase):
         max_dv = converter.build_dose_compliment_constraint(mc, structure_name, PriorityType.IDEAL)
         self.assertEqual(str(max_dv), constrain)
 
-    def test_build_hi_constraint(self):
-        constrain = 'HI70Gy[] <= 0.08'
+    def test_build_ci_constraint(self):
+        constrain = 'CI66.5Gy[] >= 0.65'
         structure_name = 'PTV70-BR.PLX 4MM'
         mc = MayoConstraint()
         mc.read(constrain)
-        max_dv = converter.build_hi_constraint(mc, structure_name, PriorityType.IDEAL)
+        max_dv = converter.build_ci_constraint(mc, structure_name, PriorityType.IDEAL)
         self.assertEqual(str(max_dv), constrain)
 
-    def test_build_ci_constraint(self):
-        constrain = 'HI70Gy[] <= 0.08'
+    def test_build_gi_constraint(self):
+        constrain = 'GI70Gy[] <= 1.1'
         structure_name = 'PTV70-BR.PLX 4MM'
         mc = MayoConstraint()
         mc.read(constrain)
-        max_dv = converter.build_hi_constraint(mc, structure_name, PriorityType.IDEAL)
+        max_dv = converter.build_gi_constraint(mc, structure_name, PriorityType.IDEAL)
         self.assertEqual(str(max_dv), constrain)
