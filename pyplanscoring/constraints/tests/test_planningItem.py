@@ -11,7 +11,6 @@ from core.types import DoseValue, DoseUnit, VolumePresentation, DoseValuePresent
 from pyplanscoring.core.dvhcalculation import load
 
 dvh_path = os.path.join(DATA_DIR, 'PyPlanScoring_dvh.dvh')
-
 pi = PlanningItem(rp_dcm, rs_dcm, rd_dcm)
 
 pyplan_dvh = load(dvh_path)
@@ -307,8 +306,8 @@ class TestPlanningItem(TestCase):
         self.assertAlmostEqual(dm, target, places=1)
 
         # teste GI
+        # TODO add real GK case
         mayo_format_query = 'GI66.5Gy[]'
         target = 0.684301239322868
         dm = pi.execute_query(mayo_format_query, struc_name)
-
         self.assertAlmostEqual(dm, dm, places=1)

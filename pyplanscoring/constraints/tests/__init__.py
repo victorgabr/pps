@@ -25,4 +25,6 @@ rd = os.path.join(DATA_DIR, 'RD.dcm')
 
 # planning item
 pi = PlanningItem(rp_dcm, rs_dcm, rd_dcm)
+
+structures_dict = rs_dcm.GetStructures()
 pass

@@ -1316,73 +1316,74 @@ class MayoConstraintConverter:
 
         return gi
 
-# class StructureNameConstraint:
-#     def __init__(self):
-#         super().__init__()
-#         self._regex = ''
-#         self._structure_name = ''
-#
-#     @property
-#     def regex(self):
-#         return self._regex
-#
-#     @regex.setter
-#     def regex(self, value):
-#         self._regex = value
-#
-#     @property
-#     def structure_name(self):
-#         return self._structure_name
-#
-#     @structure_name.setter
-#     def structure_name(self, value):
-#         self._structure_name = value
-#
-#     @property
-#     def name(self):
-#         return self.structure_name + ' required'
-#
-#     @property
-#     def full_name(self):
-#         return self.name
-#
-#     def can_constrain(self, pi):
-#         """
-#
-#         :param pi: class PlanItem
-#         :return: ConstraintResult
-#         """
-#         message = ''
-#         valid = True
-#         if not pi.plan:
-#             message = 'Plan is None'
-#             valid = False
-#
-#         # Check structure exists
-#         valid = valid and pi.get_structures() != {}
-#         if not valid:
-#             message = "No structure set in {pi.Id}"
-#
-#         return ConstraintResult(self, ResultType.NOT_APPLICABLE, message)
-#
-#     def constrain(self, pi):
-#
-#         msg = ''
-#         structure = pi.get_structure(self.structure_name, self.regex)
-#         passed = ResultType.ACTION_LEVEL_1
-#
-#         if structure is not None:
-#             passed = ResultType.PASSED
-#             msg = 'contains structure %s' % self.structure_name
-#
-#             if structure.volume_original < 0.0001:
-#                 passed = ResultType.ACTION_LEVEL_1
-#                 msg = "%s is empty" % self.structure_name
-#
-#         return ConstraintResult(self, passed, msg)
-#
-#     def __str__(self):
-#         return "Required Structure %s" % self.structure_name
-#
-#     def __repr__(self):  # pragma: no cover
-#         return self.__str__()
+
+class StructureNameConstraint:
+    def __init__(self):
+        super().__init__()
+        self._regex = ''
+        self._structure_name = ''
+
+    @property
+    def regex(self):
+        return self._regex
+
+    @regex.setter
+    def regex(self, value):
+        self._regex = value
+
+    @property
+    def structure_name(self):
+        return self._structure_name
+
+    @structure_name.setter
+    def structure_name(self, value):
+        self._structure_name = value
+
+    @property
+    def name(self):
+        return self.structure_name + ' required'
+
+    @property
+    def full_name(self):
+        return self.name
+
+    def can_constrain(self, pi):
+        """
+
+        :param pi: class PlanItem
+        :return: ConstraintResult
+        """
+        message = ''
+        valid = True
+        if not pi.plan:
+            message = 'Plan is None'
+            valid = False
+
+        # Check structure exists
+        valid = valid and pi.get_structures() != {}
+        if not valid:
+            message = "No structure set in {pi.Id}"
+
+        return ConstraintResult(self, ResultType.NOT_APPLICABLE, message)
+
+    def constrain(self, pi):
+
+        msg = ''
+        structure = pi.get_structure(self.structure_name, self.regex)
+        passed = ResultType.ACTION_LEVEL_1
+
+        if structure is not None:
+            passed = ResultType.PASSED
+            msg = 'contains structure %s' % self.structure_name
+
+            if structure.volume_original < 0.0001:
+                passed = ResultType.ACTION_LEVEL_1
+                msg = "%s is empty" % self.structure_name
+
+        return ConstraintResult(self, passed, msg)
+
+    def __str__(self):
+        return "Required Structure %s" % self.structure_name
+
+    def __repr__(self):  # pragma: no cover
+        return self.__str__()

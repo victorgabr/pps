@@ -22,7 +22,7 @@ class TestPlanEvaluation(TestCase):
         # test using eclipse DVH data
         filename = os.path.join(DATA_DIR, 'Scoring_criteria.xlsx')
         plan_eval = PlanEvaluation()
-        plan_eval.read(filename)
+        crit = plan_eval.read(filename)
 
         df = plan_eval.eval_plan(pi)
         self.assertAlmostEqual(df['Raw score'].sum(), 76.097797709986182)

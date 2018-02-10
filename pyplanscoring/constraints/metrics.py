@@ -1,11 +1,9 @@
 """
 Classes to DVH metrics
-
 Author: Victor Alves
 
 based on:
 https://rexcardan.github.io/ESAPIX/
-
 """
 import difflib
 import string
@@ -246,8 +244,8 @@ class PlanningItem:
 
 
 class MetricType:
-    MIN = 'min'
-    MAX = 'max'
+    MIN = "min"
+    MAX = "max"
 
 
 class ConstrainMetric:
@@ -343,3 +341,73 @@ class PlanEvaluation:
         report_data['Raw score'] = score_res
 
         return report_data
+
+
+class StringMatcher:
+
+    def match(self, test_string, list_of_strings):
+        """
+            Helper method to match string to a list of strings
+        :param test_string:
+        :param list_of_strings:
+        :return:
+        """
+        # normalize structure names
+        test_strig_normlized = self.normalize_string(test_string)
+        list_of_strings_normalzed = [self.normalize_string(s) for s in list_of_strings]
+
+        # map normalized and original strings
+        structure_names_map = dict(zip(list_of_strings_normalzed, list_of_strings))
+        matches = difflib.get_close_matches(test_strig_normlized, list_of_strings_normalzed, n=1)
+
+        return matches, structure_names_map
+
+    @staticmethod
+    def normalize_string(s):
+        for p in string.punctuation:
+            s = s.replace(p, '')
+
+        return s.upper().strip()
+
+
+class RTCase:
+    def __init__(self, name, case_id, structures, metrics_df):
+        self._case_id = case_id
+        self._name = name
+        self._stuctures = structures
+        self._metrics = metrics_df
+
+    @property
+    def metrics(self):
+        return self._metrics
+
+    @property
+    def structures(self):
+        return self._stuctures
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def case_id(self):
+        return self._case_id
+
+    def get_structure(self, structure_name, matcher=StringMatcher):
+        """
+             Gets a structure (if it exists from the structure set reference
+        :param structure_name:
+        :param matcher:  Helper class to match strings
+        :return: Structure
+
+        """
+        structure_names = [self.structures[k]['name'] for k in self.structures.keys()]
+
+        match, names_map = matcher().match(structure_name, structure_names)
+        if match:
+            original_name = names_map[match[0]]
+            for k in self.structures.keys():
+                if original_name == self.structures[k]['name']:
+                    return self.structures[k]
+        else:
+            return "Structure %s not found" % structure_name
