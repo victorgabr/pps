@@ -733,6 +733,15 @@ class PyDicomParser(DicomParserBase):
 
         return np.asarray(list(zip(*[iter(array)] * 3)), dtype=float)
 
+    def GetStructureInfo(self):
+        structure = {}
+        structure['label'] = self.ds.StructureSetLabel
+        structure['date'] = self.ds.StructureSetDate
+        structure['time'] = self.ds.StructureSetTime
+        structure['numcontours'] = len(self.ds.ROIContourSequence)
+
+        return structure
+
     def GetStructures(self):
         """Returns the structures (ROIs) with their coordinates."""
 

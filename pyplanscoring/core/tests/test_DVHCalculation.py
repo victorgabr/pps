@@ -51,14 +51,20 @@ class TestDVHCalculation(TestCase):
 
         # Small volume no end cap and upsampling
         braini = PyStructure(lens)
-        dvh_calci = DVHCalculation(braini, dose_3d, calc_grid=(0.1, 0.1, 0.1))
-        dvh_lu = dvh_calci.calculate()
+        dvh_calc_cpu = DVHCalculation(braini, dose_3d, calc_grid=(0.05, 0.05, 0.05))
+        dvh_lu = dvh_calc_cpu.calculate()
+
+        # Small volume no end cap and upsampling and GPU
+        # braini = PyStructure(lens)
+        # dvh_calc_gpu = DVHCalculation(braini, dose_3d, calc_grid=(0.05, 0.05, 0.05))
+        # dvh_lu_gpu = dvh_calc_gpu.calculate_gpu()
 
         if plot_flag:
             plot_dvh(dvh, "BODY")
             plot_dvh(dvhb, "PTV 70")
             plot_dvh(dvh_l, "LENS LT")
-            plot_dvh(dvh_lu, "LENS LT - voxel size: (0.1, 0.1, 0.1)")
+            plot_dvh(dvh_lu, "LENS LT - voxel size [mm3]: (0.1, 0.1, 0.1)")
+            # plot_dvh(dvh_lu_gpu, "GPU LENS LT - voxel size [mm3]: (0.1, 0.1, 0.1)")
 
             # compare with TPS DVH
             dvhs = rd_dcm.GetDVHs()

@@ -11,7 +11,7 @@ DATA_DIR = os.path.join(
 )
 
 # plot flag
-plot_flag = False
+plot_flag = True
 
 rs = os.path.join(DATA_DIR, 'RS.dcm')
 rd = os.path.join(DATA_DIR, 'RD.dcm')

@@ -44,6 +44,7 @@ class QueryType:
     MAX_DOSE = 6
     CI = 7
     HI = 8
+    GI = 9
 
 
 class Units:

@@ -159,7 +159,7 @@ class PyStructure(StructureBase):
 
 class DVHCalculation:
     """
-        Abstract class to encapsulate pyplanscoring upsampling and dvh calculation
+        class to encapsulate pyplanscoring upsampling and dvh calculation
     """
 
     def __init__(self, structure, dose, calc_grid=None):
@@ -234,7 +234,7 @@ class DVHCalculation:
             self._calc_grid = value
 
     # @timeit
-    def calculate(self, verbose=True):
+    def calculate(self, verbose=False):
         """
             Calculate a DVH
         :param structure: Structure obj
@@ -385,23 +385,24 @@ class DVHCalculation:
 
         idx = np.nonzero(chist)  # remove 0 volumes from DVH
         cdvh = chist[idx]
+        # cdvh = chist
 
         # DICOM DVH FORMAT
         scaling = float(self.bin_size)
         units = str(self.dose.unit.symbol).upper()
         # TODO inspect nbins change
-        dvhdata = {'data': cdvh,
-                   'bins': len(cdvh),
-                   'type': 'CUMULATIVE',
-                   'doseunits': units,
-                   'volumeunits': 'cm3',
-                   'scaling': scaling,
-                   'roi_number': self.structure.roi_number,
-                   'min': get_dvh_min(cdvh) * scaling,
-                   'max': get_dvh_max(cdvh, scaling),
-                   'mean': get_dvh_mean(cdvh) * scaling}
+        dvh_data = {'data': list(np.round(cdvh, 6)),
+                    'bins': len(cdvh),
+                    'type': 'CUMULATIVE',
+                    'doseunits': units,
+                    'volumeunits': 'cm3',
+                    'scaling': scaling,
+                    'roi_number': self.structure.roi_number,
+                    'min': round(get_dvh_min(cdvh) * scaling, 6),
+                    'max': round(get_dvh_max(cdvh, scaling), 6),
+                    'mean': round(get_dvh_mean(cdvh) * scaling, 6)}
 
-        return dvhdata
+        return dvh_data
 
 
 class DVHCalculationMP:
