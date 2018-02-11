@@ -375,7 +375,7 @@ class DVHCalculation:
         return hist, vol
 
     def prepare_dvh_data(self, volume, hist):
-        # TODO prepare it to be like DICOM-RD dvh data
+        # TODO prepare it to be like DICOM RD dvh data
         # TODO create a serialised DVH storage format
         # volume units are given in cm^3
         volume /= 1000
@@ -391,16 +391,16 @@ class DVHCalculation:
         scaling = float(self.bin_size)
         units = str(self.dose.unit.symbol).upper()
         # TODO inspect nbins change
-        dvh_data = {'data': list(np.round(cdvh, 6)),
+        dvh_data = {'data': list(cdvh),
                     'bins': len(cdvh),
                     'type': 'CUMULATIVE',
                     'doseunits': units,
                     'volumeunits': 'cm3',
                     'scaling': scaling,
                     'roi_number': self.structure.roi_number,
-                    'min': round(get_dvh_min(cdvh) * scaling, 6),
-                    'max': round(get_dvh_max(cdvh, scaling), 6),
-                    'mean': round(get_dvh_mean(cdvh) * scaling, 6)}
+                    'min': get_dvh_min(cdvh) * scaling,
+                    'max': get_dvh_max(cdvh, scaling),
+                    'mean': get_dvh_mean(cdvh) * scaling}
 
         return dvh_data
 

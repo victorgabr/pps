@@ -5,7 +5,7 @@ import numpy as np
 from core.calculation import PyStructure, DVHCalculation
 from core.dicom_reader import PyDicomParser
 from core.tests import parotid_lt, dose_3d
-from radiobiology.ntcp_models import NTCPLKBModel
+from radiobiology.ntcp_models import NTCPLKBModel, calc_eud
 from radiobiology.tests import dvh_diff_file
 
 """
@@ -45,31 +45,13 @@ def get_dose_vol_array(dvh_file, what):
     return dose_vol_array
 
 
-# stats_dvh = StatisticalDVH()
-# stats_dvh.load_data_from_hdf(database_file)
-# plan_dvh = stats_dvh.get_plan_dvh(0)
-# # pi = PlanningItemDVH(plan_dvh)
-# structure_dvh = plan_dvh['PAROTID LT']
-# # pi.get_structure(structure_id)
-# # change to differential DVH
-# ddvh = get_ddvh(structure_dvh["data"])
-# dose = structure_dvh['dose_axis'] / 100
-#
-# dose_step = (dose[-1] - dose[0]) / (len(dose) - 1)  # [Gy]
-# dose_vol_array = np.zeros((len(dose), 2))
-#
-# dose_vol_array[:, 0] = dose
-# dose_vol_array[:, 1] = ddvh / (dose_step * 100)
-#
-# import matplotlib.pyplot as plt
-# plt.plot(dose_vol_array[:, 0], dose_vol_array[:, 1])
-
 class TestNTCP(TestCase):
     def test_calc_model(self):
         # test DVH diff from DICOM
         # TPS CALCULATED dDVHs
         dvh_dcm = PyDicomParser(filename=dvh_diff_file)
         diff_dvhs = dvh_dcm.GetDVHs()
+        # DVH of parotid LT
         dvh_diff = diff_dvhs[23]
 
         # calculate cDVH
@@ -93,3 +75,35 @@ class TestNTCP(TestCase):
 
         # NTCP result coincides within 3 places
         self.assertAlmostEqual(ntcp0, ntcp1, places=3)
+
+    def test_calc_eud(self):
+        # test DVH diff from DICOM
+        # TPS CALCULATED dDVHs
+        dvh_dcm = PyDicomParser(filename=dvh_diff_file)
+        diff_dvhs = dvh_dcm.GetDVHs()
+        # DVH of parotid LT
+        TD50 = 39.9
+        m = 0.40
+        n = 1.0
+
+        dvh_diff = diff_dvhs[23]
+        ncalc = NTCPLKBModel(dvh_diff, [TD50, m, n])
+        dose_array = ncalc.dose_array
+        vol_array = ncalc.volume_array
+        eud = calc_eud(dose_array, vol_array, n)
+
+        # assert eud == mean dose  (n = 1)
+        self.assertAlmostEqual(eud, dvh_diff['mean'], places=4)
+
+        # calculate cDVH
+        # Voxel size 0.2 mm
+        bodyi = PyStructure(parotid_lt)
+        dvh_calc = DVHCalculation(bodyi, dose_3d, (.2, .2, .2))
+        dvh = dvh_calc.calculate()
+
+        # calculated dDVH
+        ncalc1 = NTCPLKBModel(dvh, [TD50, m, n])
+        dose_array1 = ncalc1.dose_array
+        vol_array1 = ncalc1.volume_array
+        eud = calc_eud(dose_array1, vol_array1, n)
+        self.assertAlmostEqual(eud, dvh['mean'], places=1)

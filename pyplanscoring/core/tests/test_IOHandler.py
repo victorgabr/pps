@@ -2,7 +2,7 @@ import os
 from unittest import TestCase
 
 from core.calculation import PyStructure, DVHCalculationMP
-from core.io import IOHandler
+from core.io import IOHandler, load_dvh_json
 from core.tests import ptv70, brain, body, lens, spinal_cord, dose_3d, DATA_DIR
 
 # calculating a DVH
@@ -10,7 +10,6 @@ grid_up = (0.2, 0.2, 0.2)
 structures_dicom = [lens, body, brain, ptv70, spinal_cord]
 structures_py = [PyStructure(s) for s in structures_dicom]
 grids = [grid_up, None, None, None, None]
-
 calc_mp = DVHCalculationMP(dose_3d, structures_py, grids, verbose=True)
 dvh_data = calc_mp.calculate_dvh_mp()
 
@@ -44,6 +43,7 @@ class TestIOHandler(TestCase):
         # try to test function
         # TODO debug slow reading in pytests
         file_path = os.path.join(DATA_DIR, "test_json_dvh.jdvh")
-        obj = IOHandler(dvh_data)
-        j_dvh_dict = obj.read_json_file(file_path)
+        # obj = IOHandler(dvh_data)
+        # j_dvh_dict = obj.read_json_file(file_path)
+        j_dvh_dict = load_dvh_json(file_path)
         self.assertDictEqual(j_dvh_dict, dvh_data)

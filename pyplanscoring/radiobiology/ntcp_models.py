@@ -64,6 +64,10 @@ class NTCPLKBModel:
             # set private variables
             self._dose_array = np.arange(value['bins']) * value['scaling']
             self._volume_array = ddvh
+            if value['doseunits'] == 'cGY':
+                # dirty fix to cGy data
+                self._dose_array /= 100
+
         if value["type"] == "DIFFERENTIAL":
             self._cdvh = value
             self._dose_array = np.arange(value['bins']) * value['scaling']
@@ -157,20 +161,21 @@ class NTCPLKBModel:
         return pMap
 
     def calc_model(self):
+        # TODO debug EUD
         deff = calc_eud(self.dose_array, self.volume_array, self.n)
         ntcp = self.lkb(deff, self.td50, self.m)
         return ntcp
 
-    def lkb(self, dose_eff, TD50, m):
+    def lkb(self, dose_eff, td_50, m):
         """
             Calculates NTCP via LKB movel
 
         :param dose_eff: gEUD
-        :param TD50: TD 50 is the uniform dose given to the entire organ
+        :param td_50: TD 50 is the uniform dose given to the entire organ
         :param m:  m is a measure of the slope of the sigmoid curve
         :return:
         """
-        t = (dose_eff - TD50) / (m * TD50)
+        t = (dose_eff - td_50) / (m * td_50)
         return self.integrate_lkb(t)
 
     @staticmethod
@@ -194,19 +199,18 @@ def calc_eud(dose, volume, n):
     """
         GENERALIZED EQUIVALENT UNIFORM DOSE
     :param dose: Dose axis
-    :param volume: dDVH
+    :param volume: dDVH in cc
     :param n: n is the volume effect parameter
     :return: gEUD
     """
-    eud = 0.0
+    eud = 0.
     n_voxels = len(dose)
-    a = 1.0 / n
+    a = 1. / n
     delta_dose = dose[1] - dose[0]
     for i in range(len(dose)):
         di = (i + 0.5) * delta_dose
-        relative_volume_i = volume[i] / n_voxels
-        eud += np.power(di, a) * relative_volume_i
+        eud += np.power(di, a) * volume[i]
 
-    eud = np.power(eud, 1.0 / a)
+    eud = np.power(eud, 1. / a) / np.sum(volume)
 
     return eud

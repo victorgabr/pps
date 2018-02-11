@@ -2,6 +2,8 @@ import bz2
 import json
 import pickle
 
+from pydicom.valuerep import IS
+
 
 def load(filename):
     """
@@ -34,7 +36,9 @@ def save_dvh_json(dvh_data_dict, file_path_name):
     """
 
     with open(file_path_name, 'w', encoding='utf-8') as json_file:
-        json.dump(dvh_data_dict, json_file, ensure_ascii=False)
+        json.dump(dvh_data_dict,
+                  json_file,
+                  ensure_ascii=False)
 
 
 def load_dvh_json(file_path_name):
@@ -45,7 +49,10 @@ def load_dvh_json(file_path_name):
     """
 
     with open(file_path_name, 'r', encoding='utf-8') as json_file:
-        return json.load(json_file)
+        json_dict = json.load(json_file)
+        # add pydicom key type (int)
+        json_dict = {IS(k): v for k, v in json_dict.items()}
+        return json_dict
 
 
 def normalize_data(dvh_data_dict):
