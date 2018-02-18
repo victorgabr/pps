@@ -399,7 +399,7 @@ class DVHCalculation:
                     'scaling': scaling,
                     'roi_number': self.structure.roi_number,
                     'min': get_dvh_min(cdvh) * scaling,
-                    'max': get_dvh_max(cdvh, scaling),
+                    'max': get_dvh_max(cdvh, scaling) * scaling,
                     'mean': get_dvh_mean(cdvh) * scaling}
 
         return dvh_data
