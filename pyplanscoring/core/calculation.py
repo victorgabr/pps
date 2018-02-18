@@ -107,8 +107,8 @@ class PyStructure(StructureBase):
         if not self.is_high_resolution:
             if not np.isclose(z_grid_resolution, self.contour_spacing):
                 structure = get_oversampled_structure(self.structure, z_grid_resolution)
-                self.structure = structure
-                self.planes = structure['planes']
+                self._structure_dict = structure
+                self._planes = structure['planes']
                 self._contour_spacing = z_grid_resolution
                 # set high resolution structure
                 self.is_high_resolution = True
@@ -406,7 +406,7 @@ class DVHCalculation:
 
 
 class DVHCalculationMP:
-    def __init__(self, dose, structures, grids, verbose=False):
+    def __init__(self, dose, structures, grids, verbose=True):
         self._grids = None
         self._dose = None
         self._structures = None
@@ -494,7 +494,7 @@ class DVHCalculationMP:
         res['roi_number'] = structure.roi_number
         return res
 
-    @timeit
+    # @timeit
     def calculate_dvh_mp(self):
 
         if self.verbose:
@@ -512,11 +512,103 @@ class DVHCalculationMP:
         return cdvh
 
 
-if __name__ == '__main__':
-    from core.tests import dose_3d, structures
+class DVHCalculator:
 
-    # call all structures DVH without up-sampling
-    structures_py = [PyStructure(v) for k, v in structures.items()]
-    grids = [None] * len(structures_py)
-    calc_mp = DVHCalculationMP(dose_3d, structures_py, grids, True)
-    result_mp = calc_mp.calculate_dvh_mp()
+    def __init__(self, rt_case, calculation_options):
+        self.rt_case = rt_case
+        self.calculation_options = calculation_options
+        self._dvh_data = {}
+
+    @property
+    def dvh_data(self):
+        return self._dvh_data
+
+    @property
+    def calculation_setup(self):
+        """
+            Return wrapped structures and calculation grids
+        :return: structures_py, grids
+        """
+        # setup PysStructures and calculation grid
+        structures_py = [PyStructure(s, self.end_cap) for s in self.rt_case.calc_structures]
+        grids = self.get_grid_array(structures_py)
+        return structures_py, grids
+
+    @property
+    def voxel_size(self):
+        return tuple([self.calculation_options['voxel_size']] * 3)
+
+    @property
+    def end_cap(self):
+        return self.calculation_options['end_cap']
+
+    @property
+    def max_vol_upsampling(self):
+        """
+            Return maximum volume to be upsampled
+        :return: Threshold volume in cc
+        """
+        return self.calculation_options['maximum_upsampled_volume_cc']
+
+    @property
+    def up_sampling(self):
+        return self.calculation_options['up_sampling']
+
+    def get_grid_array(self, structures_py):
+        grids = []
+        for s in structures_py:
+            grids.append(self.voxel_size if s.volume < self.max_vol_upsampling else None)
+
+        return grids
+
+    def calculate_mp(self, dose_3d):
+        """
+            Recieves a dose3D object, calculate DVH's and return dvh dict
+        :param dose_3d:
+        :return:
+        """
+        structures_py, grids = self.calculation_setup
+        calc_mp = DVHCalculationMP(dose_3d, structures_py, grids)
+        self._dvh_data = calc_mp.calculate_dvh_mp()
+        return dict(self._dvh_data)
+
+    def calculate_serial(self, dose_3d):
+        structures_py, grids = self.calculation_setup
+
+        cdvh = {}
+        for structure, grid in zip(structures_py, grids):
+            dvh_calc = DVHCalculation(structure, dose_3d, calc_grid=grid)
+            res = dvh_calc.calculate(True)
+            # map thread/process result to its roi number
+            res['roi_number'] = structure.roi_number
+            cdvh[structure.roi_number] = res
+
+        self._dvh_data = cdvh
+
+        return cdvh
+
+
+def get_calculation_options(ini_file_path):
+    """
+        Helper method to read app *.ini file
+    :param ini_file_path:
+    :return:
+    """
+    import configparser
+
+    # Get calculation defaults
+    config = configparser.ConfigParser()
+    config.read(ini_file_path)
+    calculation_options = dict()
+    calculation_options['end_cap'] = config.getfloat('DEFAULT', 'end_cap')
+    calculation_options['use_tps_dvh'] = config.getboolean('DEFAULT', 'use_tps_dvh')
+    calculation_options['use_tps_structures'] = config.getboolean('DEFAULT', 'use_tps_structures')
+    calculation_options['up_sampling'] = config.getboolean('DEFAULT', 'up_sampling')
+    calculation_options['maximum_upsampled_volume_cc'] = config.getfloat('DEFAULT', 'maximum_upsampled_volume_cc')
+    calculation_options['voxel_size'] = config.getfloat('DEFAULT', 'voxel_size')
+    calculation_options['num_cores'] = config.getint('DEFAULT', 'num_cores')
+    calculation_options['save_dvh_figure'] = config.getboolean('DEFAULT', 'save_dvh_figure')
+    calculation_options['save_dvh_data'] = config.getboolean('DEFAULT', 'save_dvh_data')
+    calculation_options['mp_backend'] = config['DEFAULT']['mp_backend']
+
+    return calculation_options
