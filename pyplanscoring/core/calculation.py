@@ -398,6 +398,7 @@ class DVHCalculation:
                     'volumeunits': 'cm3',
                     'scaling': scaling,
                     'roi_number': self.structure.roi_number,
+                    'name': self.structure.name,
                     'min': get_dvh_min(cdvh) * scaling,
                     'max': get_dvh_max(cdvh, scaling) * scaling,
                     'mean': get_dvh_mean(cdvh) * scaling}
@@ -490,7 +491,6 @@ class DVHCalculationMP:
         dvh_calc = DVHCalculation(structure, dose, calc_grid=grid)
         res = dvh_calc.calculate(verbose)
         # map thread/process result to its roi number
-
         res['roi_number'] = structure.roi_number
         return res
 

@@ -1,1 +1,3 @@
-{}
+{
+  "test_DVHCalculator.py::test_get_grid_array": true
+}

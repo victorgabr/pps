@@ -82,7 +82,7 @@ class TestStatisticalDVH(TestCase):
     def test_get_t_sne(self):
         stat_dvh = StatisticalDVH()
         stat_dvh.load_data_from_hdf(database_file)
-        t_sne = stat_dvh.get_t_sne('SPINAL CORD')
+        t_sne = stat_dvh.get_t_sne('BRACHIAL PLEXUS')
         plt.scatter(*t_sne)
         plt.show()
         pass
@@ -90,7 +90,7 @@ class TestStatisticalDVH(TestCase):
     def test_plot_historical_dvh(self):
         stats_dvh = StatisticalDVH()
         stats_dvh.load_data_from_hdf(database_file)
-        tech_df = stats_dvh.db_df['Technique']
+        tech_df = stats_dvh.db_df['Technique'].apply(lambda x: "VMAT" if x != "IMPT" else "IMPT")
         txt = tech_df.value_counts().to_string()
         for str_name in str_names:
             plot_data = stats_dvh.vf_data[str_name]

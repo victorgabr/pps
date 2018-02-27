@@ -28,8 +28,6 @@ class TestIOHandler(TestCase):
         obj = IOHandler(dvh_data)
         obj.to_dvh_file(file_path)
 
-        # def test_read_dvh_file(self):
-
         obj = IOHandler(dvh_data)
         f_dvh_dict = obj.read_dvh_file(file_path)
         self.assertDictEqual(f_dvh_dict, dvh_data)
@@ -41,9 +39,8 @@ class TestIOHandler(TestCase):
 
     def test_read_json_file(self):
         # try to test function
-        # TODO debug slow reading in pytests
         file_path = os.path.join(DATA_DIR, "test_json_dvh.jdvh")
-        # obj = IOHandler(dvh_data)
-        # j_dvh_dict = obj.read_json_file(file_path)
-        j_dvh_dict = load_dvh_json(file_path)
+        obj = IOHandler(dvh_data)
+        j_dvh_dict = obj.read_json_file(file_path)
+        # j_dvh_dict = load_dvh_json(file_path)
         self.assertDictEqual(j_dvh_dict, dvh_data)

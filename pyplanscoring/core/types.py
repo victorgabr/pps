@@ -9,7 +9,7 @@ from copy import deepcopy
 import numpy as np
 import quantities as pq
 from scipy import interpolate as itp
-
+from enum import IntEnum, unique
 
 class DoseUnit:
     Gy = pq.Gy
@@ -34,7 +34,8 @@ class QuantityRegex:
         return switch.get(arg.upper(), DoseUnit.Unknown)
 
 
-class QueryType:
+@unique
+class QueryType(IntEnum):
     VOLUME_AT_DOSE = 0
     COMPLIMENT_VOLUME = 1
     DOSE_AT_VOLUME = 2
@@ -47,7 +48,7 @@ class QueryType:
     GI = 9
 
 
-class Units:
+class Units(IntEnum):
     CC = 0
     PERC = 1
     GY = 2
@@ -55,13 +56,13 @@ class Units:
     NA = 4
 
 
-class DoseValuePresentation:
+class DoseValuePresentation(IntEnum):
     Relative = 0
     Absolute = 1
     Unknown = 2
 
 
-class Discriminator:
+class Discriminator(IntEnum):
     LESS_THAN = 0
     LESS_THAN_OR_EQUAL = 1
     GREATER_THAN = 2
@@ -78,8 +79,8 @@ class VolumePresentation:
     absolute_cm3 = pq.cubic_centimeter
     Unknown = pq.dimensionless
 
-
-class PriorityType:
+@unique
+class PriorityType(IntEnum):
     IDEAL = 0
     ACCEPTABLE = 1
     MINOR_DEVIATION = 2
@@ -90,8 +91,8 @@ class PriorityType:
     PRIORITY_1 = 7
     PRIORITY_2 = 8
 
-
-class ResultType:
+@unique
+class ResultType(IntEnum):
     PASSED = 0
     ACTION_LEVEL_1 = 1
     ACTION_LEVEL_2 = 2
@@ -102,14 +103,19 @@ class ResultType:
     INCONCLUSIVE = 7
 
 
-class TargetStat:
-    CONFORMITY_INDEX_RTOG = 0
-    CONFORMITY_INDEX_PADDICK = 1
-    HOMOGENEITY_INDEX = 2
-    VOXEL_BASED_HOMOGENEITY_INDEX = 3
+class TargetStat(IntEnum):
+    # CONFORMITY_INDEX_RTOG = 0
+    # CONFORMITY_INDEX_PADDICK = 1
+    # HOMOGENEITY_INDEX = 2
+    # VOXEL_BASED_HOMOGENEITY_INDEX = 3
+    CONFORMITY_INDEX_PADDICK = 0
+    HOMOGENEITY_INDEX = 1
+    GRADIENT_INDEX = 2
+    SBRT_INDEX = 3
 
 
-class PatientOrientation:
+@unique
+class PatientOrientation(IntEnum):
     NoOrientation = 0
     HeadFirstSupine = 1
     HeadFirstProne = 2

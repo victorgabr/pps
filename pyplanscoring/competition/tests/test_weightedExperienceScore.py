@@ -41,7 +41,7 @@ str_names = ['LENS LT',
 sn = 'PAROTID LT'
 sc = stats_dvh.vf_data[sn]
 
-stats_dvh.plot_historical_dvh(sn)
+# stats_dvh.plot_historical_dvh(sn)
 
 
 class TestWeightedExperienceScore(TestCase):

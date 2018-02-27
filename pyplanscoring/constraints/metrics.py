@@ -11,10 +11,8 @@ import string
 import numpy as np
 import pandas as pd
 
-# from constraints import DoseValuePresentation, DoseValue, DoseUnit, DVHData
-# from constraints import QueryExtensions
-from constraints.query import QueryExtensions
-from core.types import DoseValuePresentation, DoseValue, DoseUnit, DVHData
+from constraints.query import QueryExtensions, PyQueryExtensions
+from core.types import DoseValuePresentation, DoseValue, DoseUnit, DVHData, DICOMType, QueryType
 
 
 # TODO refactor to use PyDicomParser class and PyStructure
@@ -33,6 +31,7 @@ class PlanningItem:
             self._plan = rp_dcm.GetPlan()
             self._dose_data = rd_dcm.GetDoseData()
             self._dvhs = rd_dcm.GetDVHs()
+            # TODO remove get structures call inside the constructor
             self._structures = rs_dcm.GetStructures()
         except:
             self._plan = {}
@@ -370,12 +369,38 @@ class StringMatcher:
         return s.upper().strip()
 
 
+def string_matcher(test_string, list_of_strings):
+    """
+        Helper method to match string to a list of strings
+    :param test_string:
+    :param list_of_strings:
+    :return:
+    """
+
+    def normalize_string(s):
+        for p in string.punctuation:
+            s = s.replace(p, '')
+
+        return s.upper().strip()
+
+    # normalize structure names
+    test_strig_normlized = normalize_string(test_string)
+    list_of_strings_normalzed = [normalize_string(s) for s in list_of_strings]
+
+    # map normalized and original strings
+    structure_names_map = dict(zip(list_of_strings_normalzed, list_of_strings))
+    matches = difflib.get_close_matches(test_strig_normlized, list_of_strings_normalzed, n=1)
+
+    return matches, structure_names_map
+
+
 class RTCase:
     def __init__(self, name, case_id, structures, metrics_df):
         self._case_id = case_id
         self._name = name
         self._stuctures = structures
         self._metrics = metrics_df
+        self._calc_structures_names = []
 
     @property
     def metrics(self):
@@ -390,24 +415,202 @@ class RTCase:
         return self._name
 
     @property
+    def structure_names(self):
+        return [self.structures[k]['name'] for k in self.structures.keys()]
+
+    @property
+    def calc_structure_names(self):
+        snames = list(self.metrics['Structure Name'].unique())
+        # add external to calculate CI
+        external = self.get_external()
+        snames.append(external['name'])
+
+        return list(set(snames))
+
+    @property
+    def external_name(self):
+        external = self.get_external()
+        return external['name']
+
+    @property
+    def calc_structures(self):
+        list_struct_dict = [self.get_structure(name) for name in self.calc_structure_names]
+        return list_struct_dict
+
+    @property
     def case_id(self):
         return self._case_id
 
-    def get_structure(self, structure_name, matcher=StringMatcher):
+    def get_structure(self, structure_name, matcher=string_matcher):
         """
              Gets a structure (if it exists from the structure set reference
         :param structure_name:
         :param matcher:  Helper class to match strings
-        :return: Structure
+        :return: PyStructure
 
         """
-        structure_names = [self.structures[k]['name'] for k in self.structures.keys()]
-
-        match, names_map = matcher().match(structure_name, structure_names)
+        match, names_map = matcher(structure_name, self.structure_names)
         if match:
             original_name = names_map[match[0]]
             for k in self.structures.keys():
                 if original_name == self.structures[k]['name']:
                     return self.structures[k]
         else:
-            return "Structure %s not found" % structure_name
+            raise ValueError('Structure %s not found' % structure_name)
+
+    def get_external(self):
+        external = None
+        for k, v in self.structures.items():
+            if v['RTROIType'] == DICOMType.EXTERNAL:
+                external = v
+                break
+
+        if external is None:
+            raise ValueError('External  not found')
+        else:
+            return external
+
+
+class PyPlanningItem:
+
+    def __init__(self, plan_dict, rt_case, dose_3d, dvh_calculator):
+        self.plan_dict = plan_dict
+        self.rt_case = rt_case
+        self.dose_3d = dose_3d
+        self.dvh_calculator = dvh_calculator
+        self.dvh_data = {}
+
+    @property
+    def external_name(self):
+        return self.rt_case.external_name
+
+    @property
+    def total_prescribed_dose(self):
+        return DoseValue(self.plan_dict['rxdose'], DoseUnit.Gy)
+
+    def calculate_dvh(self):
+        if not self.dvh_data:
+            self.dvh_data = self.dvh_calculator.calculate_serial(self.dose_3d)
+
+    def get_dvh_cumulative_data(self, structure, dose_presentation, volume_presentation=None):
+        """
+            Get CDVH data from DICOM-RTDOSE file
+        :param structure: Structure
+        :param dose_presentation: DoseValuePresentation
+        :param volume_presentation: VolumePresentation
+        :return: DVHData
+        """
+        if self.dvh_data:
+            struc_dict = self.rt_case.get_structure(structure)
+            for k, v in self.dvh_data.items():
+                if struc_dict['name'] == v['name']:
+                    dvh = DVHData(v)
+                    if dose_presentation == DoseValuePresentation.Absolute:
+                        return dvh
+                    if dose_presentation == DoseValuePresentation.Relative:
+                        dvh.to_relative_dose(self.total_prescribed_dose)
+                        return dvh
+
+    def get_dose_at_volume(self, ss, volume, v_pres, d_pres):
+        """
+             Finds the dose at a certain volume input of a structure
+        :param ss: Structure - the structure to analyze
+        :param volume: the volume (cc or %)
+        :param v_pres: VolumePresentation - the units of the input volume
+        :param d_pres: DoseValuePresentation - the dose value presentation you want returned
+        :return: DoseValue
+        """
+
+        dvh = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        return dvh.get_dose_at_volume(volume)
+
+    def get_dose_compliment_at_volume(self, ss, volume, v_pres, d_pres):
+        """
+            Return the compliment dose (coldspot) for a given volume.
+            This is equivalent to taking the total volume of the
+            object and subtracting the input volume
+
+        :param ss: Structure - the structure to analyze
+        :param volume: the volume to sample
+        :param v_pres: VolumePresentation - the units of the input volume
+        :param d_pres: DoseValuePresentation - the dose value presentation you want returned
+        :return: DoseValue
+        """
+        dvh = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        return dvh.get_dose_compliment(volume)
+
+    def get_volume_at_dose(self, ss, dv, v_pres):
+        """
+             Returns the volume of the input structure at a given input dose
+        :param ss: Structure - the structure to analyze
+        :param dv: DoseValue
+        :param v_pres: VolumePresentation - the units of the input volume
+        :return: the volume at the requested presentation
+        """
+        d_pres = dv.get_presentation()
+        dvh = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        vol_at_dose = dvh.get_volume_at_dose(dv, v_pres)
+        return vol_at_dose
+
+    def get_compliment_volume_at_dose(self, ss, dv, v_pres):
+        """
+             Returns the compliment volume of the input structure at a given input dose
+        :param ss: Structure - the structure to analyze
+        :param dv: DoseValue
+        :param v_pres: VolumePresentation - the units of the input volume
+        :return: the volume at the requested presentation
+        """
+        d_pres = dv.get_presentation()
+        dvh = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        return dvh.get_compliment_volume_at_dose(dv, v_pres)
+
+    def get_ci(self, ss, dv, v_pres):
+        """
+            Helper method to calculate conformity index
+        :param ss: Structure name
+        :param dv: Dose Value
+        :param v_pres: Volume presentation
+        :return:
+        """
+        d_pres = dv.get_presentation()
+        target_dvh_data = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        # target
+        target_vol = target_dvh_data.volume
+        target_volume_at_dose = self.get_volume_at_dose(ss, dv, v_pres)
+        prescription_vol_isodose = self.get_volume_at_dose(self.external_name, dv, v_pres)
+
+        ci = (target_volume_at_dose * target_volume_at_dose) / (target_vol * prescription_vol_isodose)
+
+        return float(ci)
+
+    def get_gi(self, ss, dv, v_pres):
+        """
+            Helper method to calculate gradient index
+
+            Calculates the Paddick gradient index (PMID 18503356) as Paddick GI = PIV_half/PIV
+            PIV_half = Prescripition isodose volume at half by prescription isodose
+            PIV = Prescripition isodose volume
+
+        :param ss: Structure name
+        :param dv: Dose Value
+        :param v_pres: Volume presentation
+        :return:
+        """
+
+        piv = self.get_volume_at_dose(self.external_name, dv, v_pres)
+        piv_half = self.get_volume_at_dose(self.external_name, dv / 2.0, v_pres)
+
+        gi = piv_half / piv
+
+        return float(gi)
+
+    def execute_query(self, mayo_format_query, ss):
+        """
+        :param pi: PlanningItem
+        :param mayo_format_query: String Mayo query
+        :param ss: Structure string
+        :return: Query result
+        """
+        query = PyQueryExtensions()
+        query.read(mayo_format_query)
+        return query.run_query(query, self, ss)

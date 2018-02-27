@@ -772,15 +772,15 @@ class GeneralizedEvaluationMetric:
         # pre alocating
         constraints_stats = []
         for i in range(n):
-            try:
-                plan_dvh = self._stats_dvh_data.get_plan_dvh(i)
-                pi = PlanningItemDVH(plan_dvh=plan_dvh)
-                constraints_result_df = self.eval_constraints(pi)
-                # getting values to later save it using hdf5 store
-                constraints_stats.append(constraints_result_df['Result'])
-            except:
-                # TODO debug it
-                pass
+            # try:
+            plan_dvh = self._stats_dvh_data.get_plan_dvh(i)
+            pi = PlanningItemDVH(plan_dvh=plan_dvh)
+            constraints_result_df = self.eval_constraints(pi)
+            # getting values to later save it using hdf5 store
+            constraints_stats.append(constraints_result_df['Result'])
+            # except:
+            #     TODO debug it
+            # pass
 
         self._constraints_stats = pd.concat(constraints_stats, axis=1)
         self._constraints_stats.columns = range(len(self._constraints_stats.columns))

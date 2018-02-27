@@ -278,6 +278,7 @@ class QueryExtensions(MayoQuery):
 
         metric_function = switch.get(query.query_type)
 
+        # TODO add interface to target stats
         # If conformity index
         if query.query_type == QueryType.CI:
             return metric_function(pi, query, ss)
@@ -492,7 +493,7 @@ class QueryExtensions(MayoQuery):
     @staticmethod
     def query_gi(pi, query):
         """
-            Calculates the Paddick grdient index (PMID 18503356) as Paddick GI = PIV_half/PIV
+            Calculates the Paddick gradient index (PMID 18503356) as Paddick GI = PIV_half/PIV
 
             PIV_half = Prescripition isodose volume at half by prescription isodose
             PIV = Prescripition isodose volume
@@ -523,3 +524,298 @@ class QueryExtensions(MayoQuery):
                                                               VolumePresentation.absolute_cm3)
 
         return float(half_vol_prescription_isodose / vol_prescription_isodose) if vol_prescription_isodose > 0 else None
+
+
+class PyQueryExtensions(MayoQuery):
+    def __init__(self):
+        super().__init__()
+
+    def run_query(self, query, pi, ss):
+        """
+             This helps execute Mayo syntax queries against planning items
+        :param query: MayoQuery string
+        :param pi: PlanningItem
+        :param ss: Structures dict
+        :return: float value
+        """
+
+        switch = {QueryType.DOSE_AT_VOLUME: self.query_dose,
+                  QueryType.DOSE_COMPLIMENT: self.query_dose_compliment,
+                  QueryType.VOLUME_AT_DOSE: self.query_volume,
+                  QueryType.COMPLIMENT_VOLUME: self.query_compliment_volume,
+                  QueryType.MAX_DOSE: self.query_max_dose,
+                  QueryType.MEAN_DOSE: self.query_mean_dose,
+                  QueryType.MIN_DOSE: self.query_min_dose,
+                  QueryType.CI: self.query_ci,
+                  QueryType.HI: self.query_hi,
+                  QueryType.GI: self.query_gi}
+
+        metric_function = switch.get(query.query_type)
+
+        return metric_function(query, pi, ss)
+
+    def query_dose(self, query, pi, ss):
+        """
+            Gets dose at volume
+
+        :param query: MayoQuery string
+        :param pi: PlanningItem
+        :param ss: Structures dict
+        :return: float value
+        """
+        d_pres, dose_unit, v_pres = self.get_query_parameters(query)
+
+        dvh = pi.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        volume = query.query_value * v_pres
+
+        dose = dvh.get_dose_at_volume(volume)
+
+        return dose.get_dose(dose_unit)
+
+    def query_dose_compliment(self, query, pi, ss):
+        """
+            Gets dose compliment
+        :param query: MayoQuery string
+        :param pi: PlanningItem
+        :param ss: Structures dict
+        :return: float value
+        """
+        # units
+        d_pres, dose_unit, v_pres = self.get_query_parameters(query)
+
+        # dvh_data
+        dvh = pi.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        volume = query.query_value * v_pres
+        dose = dvh.get_dose_compliment(volume)
+
+        return dose.get_dose(dose_unit)
+
+    def query_max_dose(self, query, pi, ss):
+        """
+            Gets max dose at volume
+
+        :param query: MayoQuery string
+        :param pi: PlanningItem
+        :param ss: Structures dict
+        :return: float value
+        """
+        # units
+        d_pres, dose_unit, v_pres = self.get_query_parameters(query)
+
+        # dvh_data
+        dvh = pi.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        max_dose = dvh.max_dose
+
+        return max_dose.get_dose(dose_unit)
+
+    def query_min_dose(self, query, pi, ss):
+        """
+            Gets min dose at volume
+
+        :param query: MayoQuery string
+        :param pi: PlanningItem
+        :param ss: Structures dict
+        :return: float value
+        """
+        # units
+        d_pres, dose_unit, v_pres = self.get_query_parameters(query)
+
+        # dvh_data
+        dvh = pi.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        min_dose = dvh.min_dose
+
+        return min_dose.get_dose(dose_unit)
+
+    def query_mean_dose(self, query, pi, ss):
+        """
+            Gets mean dose at volume
+
+        :param query: MayoQuery string
+        :param pi: PlanningItem
+        :param ss: Structures dict
+        :return: float value
+        """
+        # units
+        d_pres, dose_unit, v_pres = self.get_query_parameters(query)
+
+        # dvh_data
+        dvh = pi.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        mean_dose = dvh.mean_dose
+
+        return mean_dose.get_dose(dose_unit)
+
+    def query_volume(self, query, pi, ss):
+        """
+            Gets volume at dose
+
+        :param query: MayoQuery string
+        :param pi: PlanningItem
+        :param ss: Structures dict
+        :return: float value
+        """
+        d_pres, dose_unit, v_pres = self.get_query_parameters(query)
+
+        # dvh_data
+        dvh = pi.get_dvh_cumulative_data(ss, d_pres, v_pres)
+
+        dose = DoseValue(query.query_value, dose_unit)
+        volume = dvh.get_volume_at_dose(dose, v_pres)
+
+        return volume
+
+    def query_compliment_volume(self, query, pi, ss):
+        """
+            Gets compliment volume at dose
+
+        :param query: MayoQuery string
+        :param pi: PlanningItem
+        :param ss: Structures dict
+        :return: float value
+        """
+
+        d_pres, dose_unit, v_pres = self.get_query_parameters(query)
+
+        # dvh_data
+        dvh = pi.get_dvh_cumulative_data(ss, d_pres, v_pres)
+
+        dose = DoseValue(query.query_value, dose_unit)
+        volume = dvh.get_compliment_volume_at_dose(dose, v_pres)
+
+        return volume
+
+    def query_ci(self, query, pi, ss):
+        """
+            Calculates the Paddick conformity index (PMID 11143252) as Paddick CI = (TVPIV)2 / (TV x PIV).
+            TVPIV = Target volume covered by Prescription Isodose volume
+            TV = Target volume
+
+        :param query: MayoQuery string
+        :param pi: PlanningItem
+        :param ss: Structures dict
+        :return: float value
+        """
+        v_pres = VolumePresentation.absolute_cm3
+        dose_unit = self.get_dose_unit(query)
+        dv = DoseValue(query.query_value, dose_unit)
+        ci = pi.get_ci(ss, dv, v_pres)
+
+        return float(ci)
+
+    def query_hi(self, query, pi, ss):
+        """
+            Gets homogeneity index.
+
+        :param query: MayoQuery string
+        :param pi: PlanningItem
+        :param ss: Structures dict
+        :return: float value
+        """
+        d_pres, dose_unit, v_pres = self.get_query_parameters(query)
+
+        # dvh_data
+        dvh = pi.get_dvh_cumulative_data(ss, d_pres, v_pres)
+
+        reference_dose = DoseValue(query.query_value, dose_unit)
+        volume99 = 99 * VolumePresentation.relative
+        dose99 = dvh.get_dose_at_volume(volume99)
+        volume1 = 1 * VolumePresentation.relative
+        dose1 = dvh.get_dose_at_volume(volume1)
+
+        h_i = (dose1 - dose99) / reference_dose
+
+        return float(h_i)
+
+    def query_gi(self, query, pi, ss=''):
+        """
+            Calculates the Paddick gradient index (PMID 18503356) as Paddick GI = PIV_half/PIV
+
+            PIV_half = Prescripition isodose volume at half by prescription isodose
+            PIV = Prescripition isodose volume
+
+        :param query: MayoQuery string
+        :param pi: PlanningItem
+        :param ss: Structures dict
+        :return: float value
+        """
+
+        v_pres = VolumePresentation.absolute_cm3
+        dose_unit = self.get_dose_unit(query)
+        dv = DoseValue(query.query_value, dose_unit)
+        gi = pi.get_gi(ss, dv, v_pres)
+
+        return gi
+
+    @staticmethod
+    def get_dose_presentation(query):
+        """
+            Returns the dose value presentation for this query, helps in acquiring the correct dvh
+        :param query: MayoQuery
+        :return: dose_value_presentation
+        """
+        # If volume query return query unit to dose unit
+        switch = {Units.CGY: DoseValuePresentation.Absolute,
+                  Units.GY: DoseValuePresentation.Absolute,
+                  Units.PERC: DoseValuePresentation.Relative}
+
+        query_types = [QueryType.COMPLIMENT_VOLUME,
+                       QueryType.VOLUME_AT_DOSE,
+                       QueryType.HI,
+                       QueryType.CI,
+                       QueryType.GI]
+
+        if query.query_type in query_types:
+            return switch.get(query.query_units, DoseValuePresentation.Unknown)
+
+        return switch.get(query.units_desired, DoseValuePresentation.Unknown)
+
+    @staticmethod
+    def get_dose_unit(query):
+        """
+             Returns the dose value presentation for this query, helps in acquiring the correct dvh
+        :param query: MayoQuery
+        :return: DoseValue.DoseUnit
+        """
+        switch = {Units.CGY: DoseUnit.cGy,
+                  Units.GY: DoseUnit.Gy,
+                  Units.PERC: DoseUnit.Percent}
+
+        query_types = [QueryType.COMPLIMENT_VOLUME,
+                       QueryType.VOLUME_AT_DOSE,
+                       QueryType.HI,
+                       QueryType.CI,
+                       QueryType.GI]
+        # If volume query return query unit to dose unit
+        if query.query_type in query_types:
+            return switch.get(query.query_units, DoseUnit.Unknown)
+
+        return switch.get(query.units_desired, DoseUnit.Unknown)
+
+    @staticmethod
+    def get_volume_presentation(query):
+        """
+            Returns the dose value presentation for this query, helps in acquiring the correct dvh
+        :param query: MayoQuery
+        :return: the volume presentation of the query
+        """
+        # If volume query return query unit to dose unit
+        if query.query_type in [QueryType.COMPLIMENT_VOLUME, QueryType.VOLUME_AT_DOSE]:
+            switch = {Units.CC: VolumePresentation.absolute_cm3,
+                      Units.PERC: VolumePresentation.relative}
+
+            return switch.get(query.units_desired, VolumePresentation.Unknown)
+
+        switch = {Units.CC: VolumePresentation.absolute_cm3,
+                  Units.PERC: VolumePresentation.relative}
+
+        return switch.get(query.query_units, VolumePresentation.Unknown)
+
+    def get_query_parameters(self, query):
+        """
+            Get parameters from query
+        :param query: mayo query
+        :return: dose_presentation, dose_unit, volume presentation
+        """
+        d_pres = self.get_dose_presentation(query)
+        v_pres = self.get_volume_presentation(query)
+        dose_unit = self.get_dose_unit(query)
+        return d_pres, dose_unit, v_pres
