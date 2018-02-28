@@ -72,10 +72,10 @@ def test_calculate_dvh(test_case, py_planning_item):
     assert dm == target_dose
 
     # # teste HI index
-    # mayo_format_query = 'HI70Gy[]'
-    # target = 0.14336163265306154
-    # dm = py_planning_item.execute_query(mayo_format_query, struc_name)
-    # assert dm == target
+    mayo_format_query = 'HI70Gy[]'
+    target = 0.14336163265306154
+    dm = py_planning_item.execute_query(mayo_format_query, struc_name)
+    assert dm == target
 
     # test CI
     mayo_format_query = 'CI66.5Gy[]'

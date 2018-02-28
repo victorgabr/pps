@@ -108,7 +108,7 @@ def py_planning_item():
     plan_dict = PyDicomParser(filename=rp).GetPlan()
     rs_dvh = os.path.join(DATA_DIR, 'RS_dvh.dcm')
     structures_tmp1 = PyDicomParser(filename=rs_dvh).GetStructures()
-    criteria1 = pd.read_excel(file_path,sheetname='calc_dvh')
+    criteria1 = pd.read_excel(file_path,sheet_name='calc_dvh')
     rt_case_tmp = RTCase("H&N", 123, structures_tmp1, criteria1)
     dose_values = PyDicomParser(filename=rd).get_dose_matrix()
     grid = PyDicomParser(filename=rd).get_grid_3d()
