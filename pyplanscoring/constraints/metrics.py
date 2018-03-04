@@ -312,13 +312,17 @@ class PlanEvaluation:
     def __init__(self):
         self._criteria = None
 
-    def read(self, file_path):
-        self._criteria = pd.read_excel(file_path)
+    def read(self, file_path, sheet_name):
+        self._criteria = pd.read_excel(file_path, sheet_name=sheet_name)
         return self._criteria
 
     @property
     def criteria(self):
         return self._criteria
+
+    @criteria.setter
+    def criteria(self, value):
+        self._criteria = value
 
     def eval_plan(self, pi):
         report_data = self.criteria.copy()
@@ -478,7 +482,11 @@ class PyPlanningItem:
         self.rt_case = rt_case
         self.dose_3d = dose_3d
         self.dvh_calculator = dvh_calculator
-        self.dvh_data = {}
+        self._dvh_data = {}
+
+    @property
+    def dvh_data(self):
+        return self._dvh_data
 
     @property
     def external_name(self):
@@ -489,8 +497,9 @@ class PyPlanningItem:
         return DoseValue(self.plan_dict['rxdose'], DoseUnit.Gy)
 
     def calculate_dvh(self):
-        if not self.dvh_data:
-            self.dvh_data = self.dvh_calculator.calculate_serial(self.dose_3d)
+        if not self._dvh_data:
+            self._dvh_data = self.dvh_calculator.calculate_serial(self.dose_3d)
+
 
     def get_dvh_cumulative_data(self, structure, dose_presentation, volume_presentation=None):
         """
@@ -500,9 +509,9 @@ class PyPlanningItem:
         :param volume_presentation: VolumePresentation
         :return: DVHData
         """
-        if self.dvh_data:
+        if self._dvh_data:
             struc_dict = self.rt_case.get_structure(structure)
-            for k, v in self.dvh_data.items():
+            for k, v in self._dvh_data.items():
                 if struc_dict['name'] == v['name']:
                     dvh = DVHData(v)
                     if dose_presentation == DoseValuePresentation.Absolute:

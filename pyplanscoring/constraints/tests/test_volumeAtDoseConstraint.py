@@ -7,7 +7,6 @@ from core.types import PriorityType, VolumePresentation, ResultType
 converter = MayoConstraintConverter()
 
 
-
 class TestVolumeAtDoseConstraint(TestCase):
     def test_volume(self):
         structure_name = 'PTV70'

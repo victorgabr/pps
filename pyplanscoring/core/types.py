@@ -11,6 +11,7 @@ import quantities as pq
 from scipy import interpolate as itp
 from enum import IntEnum, unique
 
+
 class DoseUnit:
     Gy = pq.Gy
     cGy = pq.UnitQuantity('cGy',
@@ -79,6 +80,7 @@ class VolumePresentation:
     absolute_cm3 = pq.cubic_centimeter
     Unknown = pq.dimensionless
 
+
 @unique
 class PriorityType(IntEnum):
     IDEAL = 0
@@ -90,6 +92,7 @@ class PriorityType(IntEnum):
     REPORT = 6
     PRIORITY_1 = 7
     PRIORITY_2 = 8
+
 
 @unique
 class ResultType(IntEnum):
@@ -756,7 +759,6 @@ class Dose3D:
         self._x_coord = z_coord
 
     # properties
-
 
     @property
     def fx(self):

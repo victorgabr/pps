@@ -1,8 +1,11 @@
 import bz2
 import json
+import os
 import pickle
 
 from pydicom.valuerep import IS
+
+from core.dicom_reader import PyDicomParser
 
 
 def load(filename):
@@ -61,12 +64,14 @@ def normalize_data(dvh_data_dict):
 
 class IOHandler:
 
-    def __init__(self, dvh_data_dict, header_info=None):
+    def __init__(self, dvh_data_dict=None, header_info=None):
         """
             Class to encapsulate IO methods for DVH data storage
             It receives a PyPlanScoring DVH data dictionary
         :param dvh_data_dict: PyPlanScoring DVH data dictionary
         """
+        if dvh_data_dict is None:
+            dvh_data_dict = {}
         self._header = None
         self._dvh_data = {}
 
@@ -122,3 +127,29 @@ class IOHandler:
         """
         self.dvh_data = load_dvh_json(file_path_name)
         return self.dvh_data
+
+
+def get_participant_folder_data(root_path):
+    """
+        Provide all participant required files (RP,RS an RD DICOM FILES)
+    :param root_path: participant folder
+    :return: Pandas DataFrame containing path to files
+    """
+    files = [os.path.join(root, name) for root, dirs, files in os.walk(root_path) for name in files if
+             name.endswith(('.dcm', '.DCM'))]
+
+    data_truth = []
+    filtered_files = {'rtdose': False, 'rtplan': False, 'rtss': False}
+    for f in files:
+        obj = PyDicomParser(filename=f)
+        rt_type = obj.GetSOPClassUID()
+        if rt_type in ['rtdose', 'rtplan', 'rtss']:
+            filtered_files[rt_type] = f
+            data_truth.append(True)
+
+    missing_files = [key for key, value in filtered_files.items() if value is False]
+
+    if len(data_truth) == 3 and not missing_files:
+        return filtered_files, True
+    else:
+        return missing_files, False

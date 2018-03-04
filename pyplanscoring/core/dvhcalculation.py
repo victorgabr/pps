@@ -482,7 +482,6 @@ class Structure(object):
         # print('End caping:  ' + str(self.end_cap))
         # print('Grid delta (mm): ', grid_delta)
 
-
         # wrap z axis
         z_c, ordered_keys = wrap_z_coordinates(sPlanes, mapped_coord)
 

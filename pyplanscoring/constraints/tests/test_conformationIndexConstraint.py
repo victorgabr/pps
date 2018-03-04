@@ -7,7 +7,6 @@ from core.types import PriorityType, ResultType
 converter = MayoConstraintConverter()
 
 
-
 class TestConformationIndexConstraint(TestCase):
     def test_constrain(self):
         structure_name = 'PTV70-BR.PLX 4MM'

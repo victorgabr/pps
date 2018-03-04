@@ -256,12 +256,6 @@ class AperturesFromBeamCreator:
         return NotImplementedError
 
     def GetLeafPositions(self, controlPoint):
-        #        m = controlPoint.LeafPositions.GetLength(0)
-        #        n = controlPoint.LeafPositions.GetLength(1)
-        #        leafPositions = np.zeros((m, n))
-
-        #        for i in range(m):
-        #            for j in range(n):
         # Leaf positions are given from bottom to top by ESAPI,
         # but the Aperture class expects them from top to bottom
         #                leafPositions[i, j] = controlPoint.LeafPositions[i, n - j - 1]

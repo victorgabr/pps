@@ -8,7 +8,7 @@ Copyright (c) 2017      Victor Gabriel Leandro Alves
 """
 
 import time
-
+import configparser
 import numpy as np
 from joblib import Parallel, delayed
 from numpy import ma
@@ -190,8 +190,6 @@ class DVHCalculation:
 
     @structure.setter
     def structure(self, value):
-        if not isinstance(value, PyStructure):
-            raise TypeError("Not a PyStruture instance")
         self._structure = value
 
     # Create an empty array of bins to store the histogram in Gy
@@ -214,8 +212,8 @@ class DVHCalculation:
         :param value: Dose3D instance
         :type value: Dose3D
         """
-        if not isinstance(value, Dose3D):
-            raise TypeError('Dose instance should be type Dose3D')
+        # if not isinstance(value, Dose3D):
+        #     raise TypeError('Dose instance should be type Dose3D')
 
         self._dose = value
 
@@ -383,15 +381,20 @@ class DVHCalculation:
         hist = hist * volume / sum(hist)
         chist = get_cdvh_numba(hist)
 
+        # todo clean up negative volumes or just enforce structures inside external ?
+        chist[chist < 0] = 0
+
         idx = np.nonzero(chist)  # remove 0 volumes from DVH
         cdvh = chist[idx]
+
         # cdvh = chist
 
         # DICOM DVH FORMAT
         scaling = float(self.bin_size)
         units = str(self.dose.unit.symbol).upper()
         # TODO inspect nbins change
-        dvh_data = {'data': list(cdvh),
+        # TODO round data to 3 decimal places ?
+        dvh_data = {'data': list(cdvh),  # round 3 decimal
                     'bins': len(cdvh),
                     'type': 'CUMULATIVE',
                     'doseunits': units,
@@ -432,8 +435,8 @@ class DVHCalculationMP:
         :param value: Dose3D instance
         :type value: Dose3D
         """
-        if not isinstance(value, Dose3D):
-            raise TypeError('Dose instance should be type Dose3D')
+        # if not isinstance(value, Dose3D):
+        #     raise TypeError('Dose instance should be type Dose3D')
 
         self._dose = value
 
@@ -444,9 +447,6 @@ class DVHCalculationMP:
     @structures.setter
     def structures(self, value):
         if isinstance(value, list):
-            if not isinstance(value[0], PyStructure):
-                raise TypeError("list element should be PyStructure")
-
             self._structures = value
         else:
             raise TypeError("Argument should be a list.")
@@ -576,7 +576,9 @@ class DVHCalculator:
         structures_py, grids = self.calculation_setup
 
         cdvh = {}
+        print('Calculating DVH')
         for structure, grid in zip(structures_py, grids):
+            print(structure.name, grid)
             dvh_calc = DVHCalculation(structure, dose_3d, calc_grid=grid)
             res = dvh_calc.calculate(True)
             # map thread/process result to its roi number
@@ -594,7 +596,6 @@ def get_calculation_options(ini_file_path):
     :param ini_file_path:
     :return:
     """
-    import configparser
 
     # Get calculation defaults
     config = configparser.ConfigParser()

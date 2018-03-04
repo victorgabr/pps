@@ -19,7 +19,7 @@ def cn_PnPoly(P, V):
     # loop through all edges of the polygon
     for i in range(len(V) - 1):  # edge from V[i] to V[i+1]
         if ((V[i][1] <= P[1] and V[i + 1][1] > P[1])  # an upward crossing
-            or (V[i][1] > P[1] and V[i + 1][1] <= P[1])):  # a downward crossing
+                or (V[i][1] > P[1] and V[i + 1][1] <= P[1])):  # a downward crossing
             # compute the actual edge-ray intersect x-coordinate
             vt = (P[1] - V[i][1]) / float(V[i + 1][1] - V[i][1])
             if P[0] < V[i][0] + vt * (V[i + 1][0] - V[i][0]):  # P[0] < intersect

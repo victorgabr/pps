@@ -165,7 +165,6 @@ class DicomParser(object):
 
         return patient
 
-
         ################################ Image Methods #################################
 
     def GetImageData(self):
@@ -308,7 +307,6 @@ class DicomParser(object):
                 structures[number]['RTROIType'] = item.RTROIInterpretedType
 
         # TODO handle XIO less than 5.00
-
 
         # The coordinate data of each ROI is stored within ROIContourSequence
         if 'ROIContours' in self.ds:
@@ -895,7 +893,6 @@ class ScoringDicomParser(DicomParser):
                     # Otherwise fail and fallback on the random color
                     except:
                         pass
-
 
                         # logger.debug(
                         #     "Unable to decode display color for ROI #%s",
