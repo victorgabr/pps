@@ -1,5 +1,3 @@
-
-
 from constraints.constraints import MayoConstraint
 
 
@@ -19,11 +17,11 @@ def test_MayoConstraint():
 ctr = MayoConstraint()
 
 
-
 def test_query():
     constrain = 'D95%[cGy] > 7000'
     ctr.read(constrain)
     assert ctr.query.to_string() == 'D95%[cGy]'
+
 
 def test_discriminator():
     constrain = 'D95%[cGy] < 7000'
@@ -46,6 +44,7 @@ def test_discriminator():
     ctr.read(constrain)
     assert ctr.discriminator == 4
 
+
 def test_constraint_value():
     constrain = 'D95%[cGy] >= 7000'
     ctr.read(constrain)
@@ -55,12 +54,14 @@ def test_constraint_value():
     ctr.read(constrain)
     assert ctr.constraint_value == 47.5
 
+
 def test_read():
     constrain = 'D95%[cGy] > 7000'
     ctr.read(constrain)
     assert ctr.query.to_string() == 'D95%[cGy]'
     assert ctr.discriminator == 2
     assert ctr.constraint_value == 7000
+
 
 def test_write():
     constrain = 'D95%[cGy] < 7000'

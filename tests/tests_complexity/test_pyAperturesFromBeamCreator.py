@@ -12,4 +12,3 @@ def test_Create(plan_dcm):
     assert len(apertures) == 4
     assert apertures[0].Area() == 100 * 100
     assert apertures[2].Area() == 50 * 50
-

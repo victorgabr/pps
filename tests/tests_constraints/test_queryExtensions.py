@@ -341,8 +341,8 @@ def test_query_volume(test_case, dvh):
 
     query_str = 'V87.19792188608436%[cc]'
     # read query into que object
-    rd.read(query_str)\
-    # execute the static method
+    rd.read(query_str) \
+        # execute the static method
     md_cc = rd.query_volume(local_dvh, rd)
     test_case.assertAlmostEqual(md_cc, 655.0261147733513 * VolumePresentation.absolute_cm3)
 

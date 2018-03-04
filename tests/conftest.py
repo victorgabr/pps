@@ -18,10 +18,35 @@ DATA_DIR = os.path.join(
 )
 
 ini_file = os.path.join(DATA_DIR, "PyPlanScoring.ini")
-
 file_path = os.path.join(DATA_DIR, 'Scoring_criteria.xlsx')
 criteria = pd.read_excel(file_path)
 calculation_options = get_calculation_options(ini_file)
+
+
+@pytest.fixture()
+def ini_file_path():
+    return os.path.join(DATA_DIR, "PyPlanScoring.ini")
+
+@pytest.fixture()
+def setup_calculation_options():
+    return get_calculation_options(ini_file)
+
+
+@pytest.fixture()
+def data_dir():
+    return DATA_DIR
+
+@pytest.fixture()
+def dicom_folder():
+    return  os.path.join(DATA_DIR, 'lungSBRT')
+
+
+# criteria 2018
+@pytest.fixture()
+def criteria_lung():
+    file_path = os.path.join(DATA_DIR, 'Scoring_criteria_2018.xlsx')
+    return pd.read_excel(file_path, sheet_name='BiLateralLungSBRTCase')
+
 
 rs = os.path.join(DATA_DIR, 'RS.dcm')
 rd = os.path.join(DATA_DIR, 'RD.dcm')
@@ -108,7 +133,7 @@ def py_planning_item():
     plan_dict = PyDicomParser(filename=rp).GetPlan()
     rs_dvh = os.path.join(DATA_DIR, 'RS_dvh.dcm')
     structures_tmp1 = PyDicomParser(filename=rs_dvh).GetStructures()
-    criteria1 = pd.read_excel(file_path,sheet_name='calc_dvh')
+    criteria1 = pd.read_excel(file_path, sheet_name='calc_dvh')
     rt_case_tmp = RTCase("H&N", 123, structures_tmp1, criteria1)
     dose_values = PyDicomParser(filename=rd).get_dose_matrix()
     grid = PyDicomParser(filename=rd).get_grid_3d()

@@ -121,5 +121,4 @@ def test_to_relative(dvh, query_extensions):
 def test_set_volume_focused_data(dvh):
     v = dvh.volume_focused_format
     d = dvh.dose_focused_format
-    assert len(v) ==  len(d)
-
+    assert len(v) == len(d)

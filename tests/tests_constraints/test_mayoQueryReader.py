@@ -4,8 +4,6 @@ import pytest
 
 from constraints.query import MayoQueryReader
 
-
-
 # instantiate the MayoReader class
 
 rd = MayoQueryReader()

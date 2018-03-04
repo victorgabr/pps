@@ -36,7 +36,6 @@ def test_get_structure(rt_case):
         struc = rt_case.get_structure('XSUGUA')
 
 
-
 def test_get_external(rt_case):
     external = rt_case.get_external()
     assert external

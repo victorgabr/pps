@@ -27,4 +27,3 @@ def test_get_dose_compliment_at_volume(test_case, converter):
     test_case.assertAlmostEqual(mdc.volume, 655.0261147733513 * VolumePresentation.absolute_cm3)
     constrain_result = mdc.constrain(planning_item)
     assert constrain_result.result_type == ResultType.PASSED
-

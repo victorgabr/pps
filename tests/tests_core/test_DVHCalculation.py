@@ -116,3 +116,9 @@ def test_calculate(structures, optic_chiasm, body, ptv70, lens, plot_flag, rd_dc
         for roi_number in dvhs.keys():
             plot_dvh_comp(dvh_calculated[roi_number], dvhs[roi_number], structures[roi_number]['name'])
             plt.show()
+
+
+
+        # lung SBRT case
+
+

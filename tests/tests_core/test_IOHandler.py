@@ -3,10 +3,8 @@ import os
 from core.calculation import PyStructure, DVHCalculationMP
 from core.io import IOHandler
 
-from tests.conftest import DATA_DIR
 
-
-def test_dvh_data(lens, body, brain, ptv70, spinal_cord, dose_3d):
+def test_dvh_data(lens, body, brain, ptv70, spinal_cord, dose_3d, tmpdir):
     # calculating DVH
     grid_up = (0.2, 0.2, 0.2)
     structures_dicom = [lens, body, brain, ptv70, spinal_cord]
@@ -19,7 +17,7 @@ def test_dvh_data(lens, body, brain, ptv70, spinal_cord, dose_3d):
     assert obj.dvh_data
 
     # saving dvh file
-    file_path = os.path.join(DATA_DIR, "test_dvh.dvh")
+    file_path = os.path.join(tmpdir, "test_dvh.dvh")
     obj = IOHandler(dvh_data)
     obj.to_dvh_file(file_path)
 
@@ -27,7 +25,7 @@ def test_dvh_data(lens, body, brain, ptv70, spinal_cord, dose_3d):
     f_dvh_dict = obj.read_dvh_file(file_path)
     assert f_dvh_dict == dvh_data
 
-    file_path = os.path.join(DATA_DIR, "test_json_dvh.jdvh")
+    file_path = os.path.join(tmpdir, "test_json_dvh.jdvh")
     obj = IOHandler(dvh_data)
     obj.to_json_file(file_path)
 

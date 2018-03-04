@@ -5,6 +5,7 @@ from core.types import PriorityType
 
 converter = MayoConstraintConverter()
 
+
 class TestMayoConstraintConverter(TestCase):
     def test_convert_to_dvh_constraint(self):
         # test string representation

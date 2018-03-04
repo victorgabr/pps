@@ -17,7 +17,7 @@ class TestJaw(TestCase):
         assert jaw.Top == -50
 
     def test_Right(self):
-        assert jaw.Right== 50
+        assert jaw.Right == 50
 
     def test_Bottom(self):
         assert jaw.Bottom == 50
