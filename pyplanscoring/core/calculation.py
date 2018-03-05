@@ -217,6 +217,16 @@ class DVHCalculation:
 
         self._dose = value
 
+    def get_dose_plane(self, z, ctr_dose_lut):
+        """
+            Wrapper method to delegate the dose plane extraction.
+
+        :param z: Plane position in mm
+        :param ctr_dose_lut: Lookup table
+        :return: Dose plane
+        """
+        return self.dose.get_z_dose_plane(float(z), ctr_dose_lut)
+
     @property
     def calc_grid(self):
         return self._calc_grid
@@ -243,46 +253,49 @@ class DVHCalculation:
         :type grid_delta: np.ndarray
         :param verbose: Print or not verbose messages
         :type verbose: bool
-        :return: dvh
+        :return: dvh dict
         """
         if verbose:
             print(' ----- DVH Calculation -----')
             print('Structure: {}  \n volume [cc]: {:0.1f}'.format(self.structure.name, self.structure.volume))
+
         max_dose = float(self.dose.dose_max_3d)
         hist = np.zeros(self.n_bins)
         volume = 0
+        # integrate DVH over all planes (z axis)
         for z in self.structure.planes.keys():
             # Get the contours with calculated areas and the largest contour index
             contours, largest_index = self.structure.get_plane_contours_areas(z)
+
             # Calculate the histogram for each contour
-            for j, contour in enumerate(contours):
-                # Get the dose plane for the current structure contour at plane
-                contour_dose_grid, ctr_dose_lut = self.get_contour_roi_grid(contour['data'], self.calc_grid)
+            hist_plane, volume_plane = self.calculate_plane_dvh(contours, max_dose, z)
 
-                # get contour roi doseplane
-                dose_plane = self.dose.get_z_dose_plane(float(z), ctr_dose_lut)
-                m = get_contour_mask_wn(ctr_dose_lut, contour_dose_grid, contour['data'])
-                h, vol = self.calculate_contour_dvh(m, dose_plane, self.n_bins, max_dose, self.calc_grid)
+            hist += hist_plane
+            volume += volume_plane
 
-                # If this is the largest contour, just add to the total histogram
-                if j == largest_index:
-                    hist += h
-                    volume += vol
-                # Otherwise, determine whether to add or subtract histogram
-                # depending if the contour is within the largest contour or not
-                else:
-                    inside = check_contour_inside(contour['data'], contours[largest_index]['data'])
-                    # If the contour is inside, subtract it from the total histogram
-                    if inside:
-                        hist -= h
-                        volume -= vol
-                    # Otherwise it is outside, so add it to the total histogram
-                    else:
-                        hist += h
-                        volume += vol
-
-        # generate dvh curve
+        # generate dvh dictionary
         return self.prepare_dvh_data(volume, hist)
+
+    def calculate_plane_dvh(self, contours, max_dose, z):
+
+        # Get Grid and Dose plane for the largest contour
+        plane_contour_points = np.vstack([c['data'] for c in contours])
+        contour_dose_grid, ctr_dose_lut = self.get_contour_roi_grid(plane_contour_points, self.calc_grid)
+
+        dose_plane = self.get_dose_plane(z, ctr_dose_lut)
+
+        # pre allocate dose grid matrix
+        grid = np.zeros((len(ctr_dose_lut[1]), len(ctr_dose_lut[0])), dtype=np.uint8)
+        for j, contour in enumerate(contours):
+            # rasterized dose plane inside contour
+            m = get_contour_mask_wn(ctr_dose_lut, contour_dose_grid, contour['data'])
+
+            # using exclusive or operator to remove holes from each rasterized contour
+            grid = np.logical_xor(m.astype(np.uint8), grid).astype(np.bool)
+
+        hist_plane, volume_plane = self.calculate_contour_dvh(grid, dose_plane, self.n_bins, max_dose, self.calc_grid)
+
+        return hist_plane, volume_plane
 
     def get_dose_grid_3d(self, grid_3d, delta_mm=(2, 2, 2)):
         """
@@ -382,10 +395,8 @@ class DVHCalculation:
         chist = get_cdvh_numba(hist)
 
         # todo clean up negative volumes or just enforce structures inside external ?
-        chist[chist < 0] = 0
-
-        idx = np.nonzero(chist)  # remove 0 volumes from DVH
-        cdvh = chist[idx]
+        # chist[chist < 0] = 0.
+        cdvh = np.trim_zeros(chist, trim='b')
 
         # cdvh = chist
 
