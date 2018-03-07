@@ -12,11 +12,10 @@ from gui import PyPlanScoringLungCaseQT
 matplotlib.use('Qt4Agg')
 matplotlib.rcParams['backend.qt4'] = 'PySide'
 
+# from tabulate import tabulate
 
-from tabulate import tabulate
-
-def pretty_print_df(df):
-    print(tabulate(df, headers='keys', tablefmt='psql'))
+# def pretty_print_df(df):
+#     print(tabulate(df, headers='keys', tablefmt='psql'))
 
 __version__ = '0.1.0'
 __author__ = 'Dr. Victor Gabriel Leandro Alves, D.Sc.'
@@ -30,13 +29,13 @@ def _sys_getenc_wrapper():
 
 sys.getfilesystemencoding = _sys_getenc_wrapper
 
-# dicom_folder = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\tests\tests_data\lungSBRT'
-dicom_folder = r'/home/victor/Dropbox/Plan_Competition_Project/tests/tests_data/lungSBRT'
-rs_dvh = os.path.join(dicom_folder, 'RS.dcm')
-criteria_file = os.path.join(dicom_folder, 'Scoring_criteria_2018.xlsx')
+# static variables
+app_folder = os.getcwd()
+rs_dvh = os.path.join(app_folder, 'RS_LUNG_SBRT.dcm')
+criteria_file = os.path.join(app_folder, 'Scoring_criteria.xlsx')
 case_name = 'BiLateralLungSBRTCase'
-# ini_file_path = r'C:\Users\Victor\Dropbox\Plan_Competition_Project\tests\tests_data\PyPlanScoring.ini'
-ini_file_path = r'/home/victor/Dropbox/Plan_Competition_Project/gui/PyPlanScoring.ini'
+ini_file_path = os.path.join(app_folder, 'PyPlanScoring.ini')
+
 
 class MainDialog(QtGui.QMainWindow, PyPlanScoringLungCaseQT.Ui_MainWindow):
     def __init__(self, parent=None):
@@ -77,15 +76,24 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringLungCaseQT.Ui_MainWindow):
         self.textBrowser.insertPlainText('---------- Metrics -------------\n')
 
         # Pretty print
-        pretty_print_df(self.calc_kernel.report)
+        print(self.calc_kernel.report)
         print()
-        self.textBrowser.insertPlainText('---------- Complexity metric -------------\n')
-        # TODO add option to complexity metrics
-        self.textBrowser.insertPlainText("Aperture complexity: %1.3f [mm-1]:\n" % self.calc_kernel.plan_complexity)
-        self.textBrowser.insertPlainText("Reference: ")
-        self.textBrowser.insertHtml("<a href=\"https://github.com/umro/Complexity\" >https://github.com/umro/Complexity</a>")
-        self.textBrowser.insertPlainText('\n')
+        if self.complexity_check_box.isChecked():
+            self.textBrowser.insertPlainText('---------- Complexity metric -------------\n')
+            try:
+                self.calc_kernel.calc_plan_complexity()
+                self.textBrowser.insertPlainText(
+                    "Aperture complexity: %1.3f [mm-1]:\n" % self.calc_kernel.plan_complexity)
 
+                txt = 'It is a Python 3.x port of the Eclipse ESAPI plug-in script.\n' \
+                      'As such, it aims to contain the complete functionality of  the aperture complexity analysis\n'
+                self.textBrowser.insertPlainText(txt)
+                self.textBrowser.insertPlainText("Reference: ")
+                self.textBrowser.insertHtml(
+                    "<a href=\"https://github.com/umro/Complexity\" > https://github.com/umro/Complexity</a>")
+                self.textBrowser.insertPlainText('\n')
+            except:
+                print("Aperture complexity is valid only in linac-based dynamic treatments - (IMRT/VMAT)")
 
     def setup_case(self, file_path, case_name, ini_file_path, rs_dvh=''):
         if not rs_dvh:
@@ -110,7 +118,7 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringLungCaseQT.Ui_MainWindow):
                 self.worker.set_calc_kernel(self.calc_kernel)
 
                 if flag:
-                    self.textBrowser.insertPlainText('Loaded %s - Plan Files: \n' % self.name)
+                    self.textBrowser.insertPlainText('Loaded - DICOM-RT Files: \n' )
                     txt = [os.path.split(v)[1] for k, v in dcm_files.items()]
                     for t in txt:
                         self.textBrowser.insertPlainText(str(t) + '\n')
@@ -121,7 +129,6 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringLungCaseQT.Ui_MainWindow):
         else:
             msg = "Please set participant's name"
             QtGui.QMessageBox.critical(self, "Missing Data", msg, QtGui.QMessageBox.Abort)
-
 
     def on_save(self):
         self.textBrowser.insertPlainText('------------- Calculating DVH and score --------------\n')
@@ -163,7 +170,6 @@ class Worker(QtCore.QThread):
     def run(self):
         self.calc_kernel.calculate_dvh()
         self.calc_kernel.calc_plan_score()
-        self.calc_kernel.calc_plan_complexity()
         self.worker_finished.emit(self.calc_kernel)
 
 
