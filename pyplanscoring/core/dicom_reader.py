@@ -1071,6 +1071,7 @@ class PyDicomParser(DicomParserBase):
             # adding mlc info from BeamLimitingDeviceSequence
             beam_limits = bi.BeamLimitingDeviceSequence if "BeamLimitingDeviceSequence" in bi else ""
             beam['BeamLimitingDeviceSequence'] = beam_limits
+            beam['TreatmentDeliveryType'] = bi.TreatmentDeliveryType if 'TreatmentDeliveryType' in bi else ''
 
             # Check control points if exists
             if "ControlPointSequence" in bi:
