@@ -6,9 +6,8 @@ import os
 folder = os.getcwd()
 
 docfiles = os.path.join(folder, 'licence.txt')
-banner = os.path.join(folder, '2017 Plan Comp Banner.jpg')
-criteria = os.path.join(folder, 'Scoring Criteria.txt')
-rs_file = os.path.join(folder, 'RS.1.2.246.352.71.4.584747638204.253443.20170222200317.dcm')
+criteria = os.path.join(folder, 'Scoring_criteria.xlsx')
+rs_file = os.path.join(folder, 'RS_LUNG_SBRT.dcm')
 
 added_files = [
     (docfiles, '.'),
@@ -18,8 +17,9 @@ added_files = [
 ]
 
 a = Analysis(['app.py'],
-             pathex=[r'C:\Users\Victor\Dropbox\Plan_Competition_Project',
-                     r'C:\Users\Victor\Dropbox\Plan_Competition_Project\pyplanscoring'],
+             pathex=[r'D:\Plan_Competition_Project\gui',
+                       r'D:\Plan_Competition_Project'
+                        r'D:\Plan_Competition_Project\pyplanscoring'],
              binaries=[],
              datas=added_files,
              hiddenimports=[],

@@ -16,11 +16,19 @@ in order to improve the calculation accuracy on DVHs and conformity index radiot
 dicompyler is released under a BSD license.
 
 https://github.com/bastula/dicompyler/blob/master/dicompyler/license.txt
+
+There is a Python 3.x port of the Eclipse ESAPI plug-in script, licenced by GPL3
+As such, it aims to contain the complete functionality of  the aperture complexity analysis.
+
+Reference:
+https://github.com/umro/Complexity
+
+This python module will be published using GPL3 licence as soon as possible.
+
 -----------------------------------------------------------------------------------
 PyPlanScoring uses the following libraries:
 
 PySide and Qt , which is distributed under the GNU(LGPL v2.1)
-
 
 pydicom
 Copyright (c) 2008-2012 Darcy Mason and pydicom contributors
