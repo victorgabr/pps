@@ -143,6 +143,10 @@ def get_participant_folder_data(root_path):
     for f in files:
         obj = PyDicomParser(filename=f)
         rt_type = obj.GetSOPClassUID()
+        # fix halcyon SOP class UI 
+        if rt_type is None:
+            rt_type = obj.ds.Modality.lower()
+
         if rt_type in ['rtdose', 'rtplan', 'rtss']:
             filtered_files[rt_type] = f
             data_truth.append(True)
