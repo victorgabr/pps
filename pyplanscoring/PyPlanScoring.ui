@@ -27,7 +27,8 @@
                     <widget class="QPushButton" name="save_reports_button">
                         <property name="toolTip">
                             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Save
-                                constrains and evaluated scoring reports on *.xls file&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                constrains and evaluated scoring reports on *.xls file&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                            </string>
                         </property>
                         <property name="text">
                             <string>Save Reports</string>
@@ -38,7 +39,8 @@
                     <widget class="QLabel" name="label">
                         <property name="text">
                             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span
-                                style=&quot; font-weight:600;&quot;&gt;Participant's name&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                style=&quot; font-weight:600;&quot;&gt;Participant's name&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                            </string>
                         </property>
                     </widget>
                 </item>
@@ -46,7 +48,8 @@
                     <widget class="QPushButton" name="import_button">
                         <property name="toolTip">
                             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Import
-                                plan data - set the folder containing RP,RS,RD dicom files&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                plan data - set the folder containing RP,RS,RD dicom files&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                            </string>
                         </property>
                         <property name="text">
                             <string>Import Plan Data</string>
@@ -57,7 +60,8 @@
                     <widget class="QListWidget" name="listWidget">
                         <property name="toolTip">
                             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Import
-                                plan data - set the folder containing RP,RS,RD dicom files&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                plan data - set the folder containing RP,RS,RD dicom files&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                            </string>
                         </property>
                     </widget>
                 </item>

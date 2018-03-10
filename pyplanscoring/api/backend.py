@@ -11,7 +11,7 @@ from complexity.PyComplexityMetric import PyComplexityMetric
 from constraints.metrics import PlanEvaluation, RTCase, PyPlanningItem
 from core.calculation import DVHCalculator, get_calculation_options, timeit
 from core.dicom_reader import PyDicomParser
-from core.io import get_participant_folder_data, IOHandler
+from core.io import get_participant_folder_data, IOHandler, save_formatted_report
 from core.types import Dose3D, DoseUnit
 
 
@@ -46,13 +46,52 @@ class BackEnd(abc.ABC):
         return NotImplementedError
 
 
+class Observer(abc.ABC):
+
+    def update(self, obj, *args, **kwargs):
+        raise NotImplementedError
+
+
+class Observable:
+    def __init__(self):
+        self._observers = []
+
+    def add_observer(self, observer):
+        self._observers.append(observer)
+
+    def remove_observer(self, observer):
+        self._observers.remove(observer)
+
+    def notify_observer(self, *args, **kwargs):
+        for observer in self._observers:
+            observer.update(self, *args, **kwargs)
+
+
+class DVHCalculatorObservable(DVHCalculator, Observable):
+    _initialized = False
+
+    def __init__(self, rt_case=None, calculation_options=None):
+        super().__init__(rt_case, calculation_options)
+        Observable.__init__(self)
+
+    def __getattribute__(self, name):
+        return Observable.__getattribute__(self, name)
+
+    def __setattr__(self, name, value):
+        if not self._initialized:
+            Observable.__setattr__(self, name, value)
+        else:
+            setattr(self, name, value)
+            self.notify_observer(key=name, value=value)
+
+
 class PyPlanScoringKernel(BackEnd):
 
     def __init__(self):
         self._dcm_files = None
         self._plan_eval = PlanEvaluation()
         self._case = None
-        self._dvh_calculator = None
+        self._dvh_calculator = DVHCalculator()
         self._planning_item = None
         self._dvh_data = {}
         self._report_data_frame = None
@@ -62,8 +101,16 @@ class PyPlanScoringKernel(BackEnd):
         self._io = IOHandler()
 
     @property
+    def total_score(self):
+        return self._total_score
+
+    @property
     def plan_complexity(self):
         return self._plan_complexity
+
+    @property
+    def report(self):
+        return self._report_data_frame
 
     @property
     def dvh_data(self):
@@ -87,11 +134,8 @@ class PyPlanScoringKernel(BackEnd):
 
     def parse_dicom_folder(self, plan_folder):
         dcm_files, flag = get_participant_folder_data(plan_folder)
-
-        if flag:
-            self._dcm_files = dcm_files
-        else:
-            raise FileNotFoundError("Missing DICOM files: ", dcm_files)
+        self._dcm_files = dcm_files
+        return dcm_files, flag
 
     def setup_case(self, rs_file_path, file_path, sheet_name):
         structures = PyDicomParser(filename=rs_file_path).GetStructures()
@@ -102,7 +146,8 @@ class PyPlanScoringKernel(BackEnd):
     def setup_dvh_calculation(self, ini_file):
         if self.case is not None:
             setup_calculation_options = get_calculation_options(ini_file)
-            self._dvh_calculator = DVHCalculator(self.case, setup_calculation_options)
+            self._dvh_calculator.rt_case = self.case
+            self._dvh_calculator.calculation_options = setup_calculation_options
 
     def setup_planing_item(self):
 
@@ -144,4 +189,4 @@ class PyPlanScoringKernel(BackEnd):
             diretory, filename = os.path.split(self.dcm_files['rtdose'])
             report_data_file = os.path.join(diretory, filename + '.csv')
             self._report_data_frame.to_csv(report_data_file)
-
+            save_formatted_report(self.report,os.path.join(diretory, filename + '.xls'))

@@ -27,7 +27,7 @@ def timeit(method):
             name = kw.get('log_name', method.__name__.upper())
             kw['log_time'][name] = int((te - ts) * 1000)
         else:
-            print('%r  %2.2f ms' % (method.__name__, (te - ts) * 1000))
+            print('Elapsed %r  %2.2f s' % (method.__name__, (te - ts)))
         return result
 
     return timed
@@ -256,8 +256,7 @@ class DVHCalculation:
         :return: dvh dict
         """
         if verbose:
-            print(' ----- DVH Calculation -----')
-            print('Structure: {}  \n volume [cc]: {:0.1f}'.format(self.structure.name, self.structure.volume))
+            print('{} volume [cc]: {:0.1f}'.format(self.structure.name, self.structure.volume))
 
         max_dose = float(self.dose.dose_max_3d)
         hist = np.zeros(self.n_bins)
@@ -525,10 +524,35 @@ class DVHCalculationMP:
 
 class DVHCalculator:
 
-    def __init__(self, rt_case, calculation_options):
-        self.rt_case = rt_case
-        self.calculation_options = calculation_options
+    def __init__(self, rt_case=None, calculation_options=None):
+        self._rt_case = None
+        self._calculation_options = None
         self._dvh_data = {}
+        self.iteration = 0
+
+        # setters
+        if rt_case is not None:
+            self.rt_case = rt_case
+
+        if calculation_options is not None:
+            self.calculation_options = calculation_options
+
+
+    @property
+    def rt_case(self):
+        return self._rt_case
+
+    @rt_case.setter
+    def rt_case(self, value):
+        self._rt_case = value
+
+    @property
+    def calculation_options(self):
+        return self._calculation_options
+
+    @calculation_options.setter
+    def calculation_options(self, value):
+        self._calculation_options = value
 
     @property
     def dvh_data(self):
@@ -583,18 +607,18 @@ class DVHCalculator:
         self._dvh_data = calc_mp.calculate_dvh_mp()
         return dict(self._dvh_data)
 
+    @timeit
     def calculate_serial(self, dose_3d):
         structures_py, grids = self.calculation_setup
 
         cdvh = {}
-        print('Calculating DVH')
         for structure, grid in zip(structures_py, grids):
-            print(structure.name, grid)
             dvh_calc = DVHCalculation(structure, dose_3d, calc_grid=grid)
             res = dvh_calc.calculate(True)
             # map thread/process result to its roi number
             res['roi_number'] = structure.roi_number
             cdvh[structure.roi_number] = res
+            self.iteration += 1
 
         self._dvh_data = cdvh
 

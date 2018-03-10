@@ -71,6 +71,7 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringLungCaseQT.Ui_MainWindow):
         self.calc_kernel = obj
         self.calc_kernel.save_dvh_data()
         self.calc_kernel.save_report_data()
+
         total_score = self.calc_kernel.total_score
         self.textBrowser.insertPlainText('Total score: %1.2f \n' % total_score)
         self.textBrowser.insertPlainText('---------- Metrics -------------\n')
@@ -118,7 +119,7 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringLungCaseQT.Ui_MainWindow):
                 self.worker.set_calc_kernel(self.calc_kernel)
 
                 if flag:
-                    self.textBrowser.insertPlainText('Loaded - DICOM-RT Files: \n' )
+                    self.textBrowser.insertPlainText('Loaded - DICOM-RT Files: \n')
                     txt = [os.path.split(v)[1] for k, v in dcm_files.items()]
                     for t in txt:
                         self.textBrowser.insertPlainText(str(t) + '\n')

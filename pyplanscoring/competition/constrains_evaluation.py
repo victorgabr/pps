@@ -291,18 +291,6 @@ if __name__ == '__main__':
     dest_path = r'/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/competition/figures/DVH_DIFF/eclipse_no_end_capp/mean_diff'
     save_figures(os.path.join(root, 'Pyplanscoring_no_endcap_versus_eclipse.cmp'), " Eclipse™ ", dest_path)
 
-
-
-
-
-
-
-
-
-
-
-
-
     # name = 'Ray_tps_pyplanscoring_dvh_curves.dvh'
     # cmp.get_and_save(name)
     #
@@ -311,7 +299,6 @@ if __name__ == '__main__':
     #
     # test_file = '/media/victor/TOURO Mobile/COMPETITION 2017/final_plans/RayStation/RayStation_IMRT/Björn Andersson - RayStation - IMRT - 27 MARCH FINAL - 83.5/RD1.2.752.243.1.1.20170518132648587.6500.68535_ANDERSSON-BJÖRN.dcm'
     # rd_dcm = ScoringDicomParser(filename=test_file)
-
 
     # plot all curves
     #
@@ -377,7 +364,6 @@ if __name__ == '__main__':
     #     ax.plot(val['data'])
     #     ax.plot(py_keys_dict[k]['dose_axis'], py_keys_dict[k]['data'])
     # plt.show()  # {k: bigdict[k] for k in ('l', 'm', 'n')}
-
 
     # #
     # save(data_curves, os.path.join(root, 'ecplipse_tps_pyplanscoring_dvh_curves.dvh'))

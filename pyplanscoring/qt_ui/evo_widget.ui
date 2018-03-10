@@ -36,7 +36,8 @@
                     <property name="text">
                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot;
                             font-weight:600;&quot;&gt;Population
-                            size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                            size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                        </string>
                     </property>
                 </widget>
             </item>
@@ -54,7 +55,8 @@
                 <widget class="QLabel" name="label_2">
                     <property name="text">
                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot;
-                            font-weight:600;&quot;&gt;Optimization pixel size (mm)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                            font-weight:600;&quot;&gt;Optimization pixel size (mm)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                        </string>
                     </property>
                 </widget>
             </item>
@@ -106,7 +108,8 @@
                     <property name="text">
                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot;
                             font-weight:600;&quot;&gt;Color
-                            Channel:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                            Channel:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                        </string>
                     </property>
                 </widget>
             </item>
@@ -122,7 +125,8 @@
                     <property name="text">
                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot;
                             font-weight:600;&quot;&gt;Select
-                            Equation&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                            Equation&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                        </string>
                     </property>
                 </widget>
             </item>
@@ -150,7 +154,8 @@
                     <property name="text">
                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot;
                             font-weight:600;&quot;&gt;Poly bounds
-                            (+-)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                            (+-)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                        </string>
                     </property>
                 </widget>
             </item>
@@ -166,7 +171,8 @@
                     <property name="text">
                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot;
                             font-weight:600;&quot;&gt;Crop border
-                            (mm)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                            (mm)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                        </string>
                     </property>
                 </widget>
             </item>
@@ -184,7 +190,8 @@
                 <widget class="QLabel" name="label_3">
                     <property name="text">
                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot;
-                            font-weight:600;&quot;&gt;Method&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                            font-weight:600;&quot;&gt;Method&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                        </string>
                     </property>
                 </widget>
             </item>
@@ -199,7 +206,8 @@
                 <widget class="QLabel" name="label_7">
                     <property name="text">
                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot;
-                            font-weight:600;&quot;&gt;Random generator seed:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                            font-weight:600;&quot;&gt;Random generator seed:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                        </string>
                     </property>
                 </widget>
             </item>

@@ -126,7 +126,7 @@ def mean(inputData, Cut=3.0, axis=None, dtype=None):
             sigmaCut = 1.0
         if sigmaCut <= 4.5:
             dataSigma = dataSigma / (
-                -0.15405 + 0.90723 * sigmaCut - 0.23584 * sigmaCut ** 2.0 + 0.020142 * sigmaCut ** 3.0)
+                    -0.15405 + 0.90723 * sigmaCut - 0.23584 * sigmaCut ** 2.0 + 0.020142 * sigmaCut ** 3.0)
 
         cutOff = Cut * dataSigma
         good = numpy.where(numpy.abs(data - data0) <= cutOff)
@@ -141,7 +141,7 @@ def mean(inputData, Cut=3.0, axis=None, dtype=None):
             sigmaCut = 1.0
         if sigmaCut <= 4.5:
             dataSigma = dataSigma / (
-                -0.15405 + 0.90723 * sigmaCut - 0.23584 * sigmaCut ** 2.0 + 0.020142 * sigmaCut ** 3.0)
+                    -0.15405 + 0.90723 * sigmaCut - 0.23584 * sigmaCut ** 2.0 + 0.020142 * sigmaCut ** 3.0)
 
         dataSigma = dataSigma / math.sqrt(len(good) - 1)
 

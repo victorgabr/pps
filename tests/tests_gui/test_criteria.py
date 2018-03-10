@@ -11,6 +11,7 @@ import quantities as pq
 import matplotlib.pyplot as plt
 
 from tests.conftest import DATA_DIR
+from validation.validation import CurveCompare
 
 
 def plot_dvh_comp(dvh_calc, dvh, title, dest_folder):
@@ -27,7 +28,7 @@ def plot_dvh_comp(dvh_calc, dvh, title, dest_folder):
     plt.legend()
     plt.title(title)
     dest_file = os.path.join(dest_folder, title)
-    # plt.savefig(dest_file, format='png', dpi=100)
+    plt.savefig(dest_file + '.png', format='png', dpi=100)
 
 
 def plot_dvh_comp1(dvh_calc, dvh, title, dest_folder):
@@ -36,14 +37,14 @@ def plot_dvh_comp1(dvh_calc, dvh, title, dest_folder):
     plt.figure()
     x_calc = np.arange(len(dvh_calc['data'])) * float(dvh_calc['scaling'])
     x = np.arange(len(dvh['data'])) * float(dvh['scaling'])
-    plt.plot(x_calc, dvh_calc['data'] , label='PyPlanScoring')
+    plt.plot(x_calc, dvh_calc['data'], label='PyPlanScoring')
     plt.plot(x, dvh['data'], label='Eclipse')
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.legend()
     plt.title(title)
-    dest_file = os.path.join(dest_folder, title + '_Ecplipse')
-    plt.savefig(dest_file, format='jpg', dpi=100)
+    dest_file = os.path.join(dest_folder, title + '_Ecplipse.png')
+    plt.savefig(dest_file, format='png', dpi=100)
 
 
 def read_planiq_dvh(f):
@@ -75,9 +76,10 @@ def test_lung_case_dvh(setup_calculation_options):
     plan_dvh = read_planiq_dvh(dvh_ref_path)
 
     # parse DICOM folder
-    rp = os.path.join(folder, 'RP.1.2.246.352.71.5.584747638204.1034529.20180301221910.dcm')
-    rs_dvh = os.path.join(folder, 'RS.1.2.246.352.205.5039724533480738438.3109367781599983491.dcm')
-    rd = os.path.join(folder, 'RD.1.2.246.352.71.7.584747638204.1891868.20180301221910.dcm')
+
+    rp = os.path.join(folder, 'RP.dcm')
+    rs_dvh = os.path.join(folder, 'RS.dcm')
+    rd = os.path.join(folder, 'RD.dcm')
 
     plan_dict = PyDicomParser(filename=rp).GetPlan()
     structures = PyDicomParser(filename=rs_dvh).GetStructures()
@@ -85,47 +87,76 @@ def test_lung_case_dvh(setup_calculation_options):
     grid = PyDicomParser(filename=rd).get_grid_3d()
     dose = Dose3D(dose_values, grid, pq.Gy)
 
-
     # criteria file
     file_path = os.path.join(folder, 'Scoring_criteria_2018.xlsx')
     criteria = pd.read_excel(file_path, sheet_name='BiLateralLungSBRTCase')
 
     # setup RT case
-    rt_case_tmp = RTCase("H&N", 123, structures, criteria)
+    rt_case_tmp = RTCase("SBRT", 123, structures, criteria)
     dvh_calc = DVHCalculator(rt_case_tmp, setup_calculation_options)
 
     # when calculate DVH using pyplanScoring
     planning_obj = PyPlanningItem(plan_dict, rt_case_tmp, dose, dvh_calc)
     planning_obj.calculate_dvh()
 
-    # then Get dvh data and compare with plan_data
+    # compare clinical DVH data
+
+    dvhs = PyDicomParser(filename=rd).GetDVHs()
+    # compare against Eclipse DVH
+    dvh_calculated = planning_obj.dvh_data
+    res = {}
+    res_eclipse = {}
+    for roi_number in dvhs.keys():
+        if roi_number in dvh_calculated:
+            dvh_calc = dvh_calculated[roi_number]
+            planiq_dvh = plan_dvh[structures[roi_number]['name']]
+
+            x_calc = np.arange(len(dvh_calc['data'])) * float(dvh_calc['scaling'])
+            x_planiq = plan_dvh.index
+            cmp = CurveCompare(x_planiq, planiq_dvh, x_calc, dvh_calc['data'])
+            # cmp.plot_results("PlanIQ", "PyPlanScoring", structures[roi_number]['name'])
+            # plt.show()
+            res[structures[roi_number]['name']] = cmp.stats_paper
+
+            # Eclipse
+            eclipse_dvh = dvhs[roi_number]
+            x_eclipse = np.arange(len(eclipse_dvh['data'])) * float(eclipse_dvh['scaling'])
+
+            cmp1 = CurveCompare(x_eclipse, eclipse_dvh['data'], x_calc, dvh_calc['data'])
+            # cmp.plot_results("PlanIQ", "PyPlanScoring", structures[roi_number]['name'])
+            res_eclipse[structures[roi_number]['name']] = cmp1.stats_paper
+
+    res_plan_iq = pd.DataFrame.from_dict(res)
+    res_plan_iq.to_csv(os.path.join(folder, "PyPlanScoringXPlanIQ.csv"))
+
+    res_eclipsedf = pd.DataFrame.from_dict(res_eclipse)
+    res_eclipsedf.to_csv(os.path.join(folder, "PyPlanScoringXEclipse.csv"))
+    pass
+    piq = [res_plan_iq.min.min(), res_plan_iq.max().max(), res_plan_iq.mean().mean()]
+    ecl = [res_eclipsedf.min.min(), res_eclipsedf.max().max(), res_eclipsedf.mean().mean()]
+
+    # # then Get dvh data and compare with plan_data
     # for roi_number, dvh in planning_obj.dvh_data.items():
     #     name = dvh['name']
     #     plot_dvh_comp(dvh, plan_dvh, name, folder)
+    # #
+    # # plt.show()
     #
-    # plt.show()
-
-
-
-    #compare it abainst eclipse data
+    # # compare it abainst eclipse data
     # # compare with TPS DVH
-    # dvhs =  PyDicomParser(filename=rd).GetDVHs()
+    # dvhs = PyDicomParser(filename=rd).GetDVHs()
     # # compare against Eclipse DVH
     # dvh_calculated = planning_obj.dvh_data
     # for roi_number in dvhs.keys():
     #     if roi_number in dvh_calculated:
     #         plot_dvh_comp1(dvh_calculated[roi_number], dvhs[roi_number], structures[roi_number]['name'], folder)
     #
-    # plt.show()
-    # lung SBRT case
-
-
-    # Calculating the score
-    plan_eval = PlanEvaluation()
-    plan_eval.criteria = criteria
-    df = plan_eval.eval_plan(planning_obj)
-
-    assert df['Raw score'].sum() == 90.01
-
-
-
+    # # plt.show()
+    # # lung SBRT case
+    #
+    # # Calculating the score
+    # plan_eval = PlanEvaluation()
+    # plan_eval.criteria = criteria
+    # df = plan_eval.eval_plan(planning_obj)
+    #
+    # assert df['Raw score'].sum() == 90.01

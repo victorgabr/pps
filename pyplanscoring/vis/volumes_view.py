@@ -59,7 +59,5 @@ if __name__ == '__main__':
     # vispy_plot_contours(structure, structure['name'])
     vispy_plot_contours(ov_str, structure['name'] + ' UP-SAMPLED - 1 mm')
 
-
-
     # plot_contours(point_cloud)
     #

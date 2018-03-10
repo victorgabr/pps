@@ -41,7 +41,8 @@
                                 <widget class="QPushButton" name="button_rotatePoints">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot;
-                                            font-weight:600;&quot;&gt;Rotate the image by selecting 2 reference points&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            font-weight:600;&quot;&gt;Rotate the image by selecting 2 reference points&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                     <property name="text">
                                         <string>Rotation points</string>
@@ -109,7 +110,8 @@
                                 <widget class="QPushButton" name="rotate_90ccw">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;rotate image
-                                            counterclockwise&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            counterclockwise&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                     <property name="text">
                                         <string>Rotate CCW</string>
@@ -125,7 +127,8 @@
                                 <widget class="QLabel" name="label_3">
                                     <property name="text">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span
-                                            style=&quot; font-weight:600;&quot;&gt;Colormap&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            style=&quot; font-weight:600;&quot;&gt;Colormap&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                 </widget>
                             </item>
@@ -145,7 +148,8 @@
                                 <widget class="QComboBox" name="colorComboBox">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot;
-                                            font-weight:600;&quot;&gt;Select image colormap&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            font-weight:600;&quot;&gt;Select image colormap&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                 </widget>
                             </item>
@@ -153,7 +157,8 @@
                                 <widget class="QComboBox" name="channel_box">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot;
-                                            font-weight:600;&quot;&gt;Select image channel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            font-weight:600;&quot;&gt;Select image channel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                     <item>
                                         <property name="text">
@@ -176,7 +181,8 @@
                                 <widget class="QPushButton" name="isocenter_button">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set image coordinates
-                                            isocenter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            isocenter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                     <property name="text">
                                         <string>Set Iso</string>
@@ -198,7 +204,8 @@
                                 <widget class="QPushButton" name="save_as">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save image as film2dose
-                                            *.ftd&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            *.ftd&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                     <property name="text">
                                         <string>Save as</string>
@@ -214,7 +221,8 @@
                                 <widget class="QPushButton" name="button_pointDose">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculates the average
-                                            dose and its uncertainty over a 10 mm x 10 mm area. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            dose and its uncertainty over a 10 mm x 10 mm area. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                     <property name="text">
                                         <string>Point dose</string>
@@ -237,7 +245,8 @@
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Multiplies the entire
                                             image matrix by a dimensionless
-                                            factor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            factor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                     <property name="text">
                                         <string>Multiply by / Normalize</string>
@@ -254,7 +263,8 @@
                                 <widget class="QLabel" name="label">
                                     <property name="text">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span
-                                            style=&quot; font-weight:600;&quot;&gt;Window min&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            style=&quot; font-weight:600;&quot;&gt;Window min&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                 </widget>
                             </item>
@@ -262,7 +272,8 @@
                                 <widget class="QLabel" name="label_2">
                                     <property name="text">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span
-                                            style=&quot; font-weight:600;&quot;&gt;Window max&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            style=&quot; font-weight:600;&quot;&gt;Window max&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                 </widget>
                             </item>

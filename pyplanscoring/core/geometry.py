@@ -303,6 +303,7 @@ def centroid_of_polygon(x, y):
     return result_x, result_y
 
 
+#
 @njit(nb.boolean(nb.double[:, :], nb.double[:, :]))
 def check_contour_inside(contour, largest):
     inside = False
@@ -314,6 +315,19 @@ def check_contour_inside(contour, largest):
             # Assume if one point is inside, all will be inside
             break
     return inside
+
+# @njit(nb.boolean(nb.double[:, :], nb.double[:, :]))
+# def check_contour_inside(contour, largest):
+#     inside = np.zeros(len(contour))
+#     for i in range(len(contour)):
+#         point = contour[i]
+#         p = point_in_contour(point, largest)
+#         if p:
+#             inside[i] = 1
+#
+#     # all should be inside
+#
+#     return np.all(inside)
 
 
 def k_nearest_neighbors(k, feature_train, features_query):

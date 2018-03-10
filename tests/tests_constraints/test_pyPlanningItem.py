@@ -17,7 +17,7 @@ def test_calculate_dvh(test_case, py_planning_item):
     assert dvh_dose_rel.dose_unit == DoseUnit.Percent
 
     # def test_get_dose_at_volume(test_case):
-    target_dose = DoseValue(67.813, DoseUnit.Gy)
+    target_dose = DoseValue(67.762, DoseUnit.Gy)
     volume_pp = 95 * VolumePresentation.relative
     dose_0 = py_planning_item.get_dose_at_volume(struc_name, volume_pp,
                                                  VolumePresentation.relative,

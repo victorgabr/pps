@@ -78,13 +78,13 @@ def qt2py(uifile, outfile):
         # ex = 'python ' + path + ' ' + '-o' + ' ' + outfile + ' ' + uifile
         # print(ex)
         # os.system(ex)
-        ex = r'C:\Miniconda3\Scripts\pyside-uic.exe'
+        ex = r"D:\Miniconda3\envs\build\Scripts\pyside-uic.exe"
         cmd = [ex, '-o', outfile, uifile]
         print(cmd)
         subprocess.call(cmd)
 
     else:
-        cmd = ['/home/victor/miniconda3/bin/pyside-uic', '-o', outfile, uifile]
+        cmd = ['/home/victor/miniconda3/envs/pyside/bin/pyside-uic', '-o', outfile, uifile]
         subprocess.call(cmd)
 
 
@@ -110,10 +110,9 @@ def generate_all():
 
 
 if __name__ == "__main__":
-    uifile = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\pyplanscoring\PyPlanScoring.ui'
-    outfile = r'C:\Users\vgalves\Dropbox\Plan_Competition_Project\pyplanscoring\PyPlanScoringQT.py'
+    uifile = r'/home/victor/Dropbox/Plan_Competition_Project/gui/PyPlanScoringLungSBRT.ui'
+    outfile = r'/home/victor/Dropbox/Plan_Competition_Project/gui/PyPlanScoringLungCaseQT.py'
     qt2py(uifile, outfile)
-
 
     # save_average_image()
 
@@ -138,7 +137,6 @@ if __name__ == "__main__":
     # print(out_file)
     # #
     # qt2py(ui_file, out_file)
-
 
 # save average images
 #

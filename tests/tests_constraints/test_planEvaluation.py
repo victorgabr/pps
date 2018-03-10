@@ -20,7 +20,7 @@ def test_eval_plan(test_case):
     # test using eclipse DVH data
     filename = os.path.join(DATA_DIR, 'Scoring_criteria.xlsx')
     plan_eval = PlanEvaluation()
-    crit = plan_eval.read(filename)
+    crit = plan_eval.read(filename, 'Plan1')
 
     df = plan_eval.eval_plan(planning_item)
     test_case.assertAlmostEqual(df['Raw score'].sum(), 76.097797709986182)
@@ -53,7 +53,7 @@ def test_failed_structures(test_case):
     # test again using PyPlanScoring DVH data
     filename = os.path.join(DATA_DIR, 'Scoring_criteria_old.xlsx')
     plan_eval = PlanEvaluation()
-    plan_eval.read(filename)
+    plan_eval.read(filename, 'Plan1')
 
     # using pyplanscoring data
     # Ci calculated from DVH data

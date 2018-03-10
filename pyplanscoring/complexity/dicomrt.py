@@ -125,6 +125,8 @@ class RTPlan:
             ftemp = bi.FinalCumulativeMetersetWeight if "FinalCumulativeMetersetWeight" in bi else ""
             beam['FinalCumulativeMetersetWeight'] = ftemp
             beam['NumberofControlPoints'] = bi.NumberofControlPoints if "NumberofControlPoints" in bi else ""
+            beam['TreatmentDeliveryType'] = bi.TreatmentDeliveryType if 'TreatmentDeliveryType' in bi else ''
+
             # adding mlc info from BeamLimitingDeviceSequence
             beam_limits = bi.BeamLimitingDeviceSequence if "BeamLimitingDeviceSequence" in bi else ""
             beam['BeamLimitingDeviceSequence'] = beam_limits

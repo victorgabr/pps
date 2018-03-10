@@ -379,7 +379,7 @@ class Structure(object):
         :param up_sample: True/False
         :return: dose_range (cGy), cumulative dvh (cc)
         """
-        print(' ----- DVH Calculation -----')
+
         print('Structure Name: %s - volume (cc) %1.3f' % (self.name, self.volume_cc))
 
         # 3D DOSE TRI-LINEAR INTERPOLATION

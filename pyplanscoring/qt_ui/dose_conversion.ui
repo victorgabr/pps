@@ -31,7 +31,8 @@
                     <property name="text">
                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot;
                             font-weight:600;&quot;&gt;Calculation
-                            Mehod&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                            Mehod&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                        </string>
                     </property>
                 </widget>
             </item>

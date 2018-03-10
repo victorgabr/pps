@@ -489,8 +489,6 @@ if __name__ == '__main__':
     ax.set_title('H&N case - VMAT plan - SPINAL CORD - Mean Absolute Error')
     plt.show()
 
-
-
 # sc = '/home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/Scoring Criteria.txt'
 # constrains, scores, criteria_df = read_scoring_criteria(sc)
 #

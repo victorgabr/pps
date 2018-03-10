@@ -20,12 +20,6 @@ from pyplanscoring.core.dvhcalculation import Structure, prepare_dvh_data, calc_
 from pyplanscoring.core.dvhdoses import get_dvh_max
 from pyplanscoring.core.geometry import get_axis_grid, get_interpolated_structure_planes
 from pyplanscoring.core.scoring import DVHMetrics, Scoring, Participant
-from pyplanscoring.lecacy_dicompyler.dvhcalc import calc_dvhs
-from pyplanscoring.lecacy_dicompyler.dvhcalc import load
-
-logger = logging.getLogger('validation')
-
-logging.basicConfig(filename='plan_competition_2016_no_dicom_DVH.log', level=logging.DEBUG)
 
 
 # TODO extract constrains from analytical curves
@@ -44,15 +38,15 @@ class CurveCompare(object):
         self.a_dvh = a_dvh
         self.cal_dose = calc_dose
         self.calc_dvh = calc_dvh
-        self.sampling_size = 10
-        self.dose_samples = np.arange(0, len(calc_dvh), self.sampling_size)  # The DVH curve sampled at every 10 cGy
+        self.sampling_size = 10/100.0
+        self.dose_samples = np.arange(0, len(calc_dvh)/100, self.sampling_size)  # The DVH curve sampled at every 10 cGy
         self.ref_dvh = itp.interp1d(a_dose, a_dvh, fill_value='extrapolate')
         self.calc_dvh = itp.interp1d(calc_dose, calc_dvh, fill_value='extrapolate')
         self.delta_dvh = self.calc_dvh(self.dose_samples) - self.ref_dvh(self.dose_samples)
         self.delta_dvh_pp = (self.delta_dvh / a_dvh[0]) * 100
         # prepare data dict
-        self.calc_dvh_dict = prepare_dvh_data(self.dose_samples, self.calc_dvh(self.dose_samples))
-        self.ref_dvh_dict = prepare_dvh_data(self.dose_samples, self.ref_dvh(self.dose_samples))
+        # self.calc_dvh_dict = prepare_dvh_data(self.dose_samples, self.calc_dvh(self.dose_samples))
+        # self.ref_dvh_dict = prepare_dvh_data(self.dose_samples, self.ref_dvh(self.dose_samples))
         # title data
         self.structure_name = structure_name
         self.dose_grid = dose_grid
@@ -80,11 +74,11 @@ class CurveCompare(object):
         stats['std'] = self.delta_dvh.std(ddof=1).round(1)
         return stats
 
-    def get_constrains(self, constrains_dict):
-        ref_constrains = eval_constrains_dict(self.ref_dvh_dict, constrains_dict)
-        calc_constrains = eval_constrains_dict(self.calc_dvh_dict, constrains_dict)
-
-        return ref_constrains, calc_constrains
+    # def get_constrains(self, constrains_dict):
+    #     ref_constrains = eval_constrains_dict(self.ref_dvh_dict, constrains_dict)
+    #     calc_constrains = eval_constrains_dict(self.calc_dvh_dict, constrains_dict)
+    #
+    #     return ref_constrains, calc_constrains
 
     def eval_range(self, lim=0.2):
         t1 = self.delta_dvh < -lim
@@ -94,16 +88,15 @@ class CurveCompare(object):
         pp = ok / len(self.delta_dvh) * 100
         print('pp %1.2f - %i of %i ' % (pp, ok, self.delta_dvh.size))
 
-    def plot_results(self):
+    def plot_results(self, ref_label, calc_label, title):
         fig, ax = plt.subplots()
         ref = self.ref_dvh(self.dose_samples)
         calc = self.calc_dvh(self.dose_samples)
-        ax.plot(self.dose_samples, ref, label='Analytical')
-        ax.plot(self.dose_samples, calc, label='App')
-        ax.set_ylabel('volume (cc)')
-        ax.set_xlabel('Dose (cGy)')
-        txt = self.structure_name + ' ' + self.doseF_grid + ' mm ' + self.gradient
-        ax.set_title(txt)
+        ax.plot(self.dose_samples, ref, label=ref_label)
+        ax.plot(self.dose_samples, calc, label=calc_label)
+        ax.set_ylabel('volume [cc]')
+        ax.set_xlabel('Dose [Gy]')
+        ax.set_title(title)
         ax.legend(loc='best')
 
 

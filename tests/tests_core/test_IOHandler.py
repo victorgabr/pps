@@ -1,5 +1,6 @@
 import os
 
+from api.backend import PyPlanScoringKernel
 from core.calculation import PyStructure, DVHCalculationMP
 from core.io import IOHandler
 
@@ -33,3 +34,23 @@ def test_dvh_data(lens, body, brain, ptv70, spinal_cord, dose_3d, tmpdir):
     j_dvh_dict = obj.read_json_file(file_path)
 
     assert j_dvh_dict == dvh_data
+
+
+def test_save_formatted_repport(dicom_folder, ini_file_path):
+        # given case files
+        rs_dvh = os.path.join(dicom_folder, 'RS.dcm')
+        file_path = os.path.join(dicom_folder, 'Scoring_criteria_2018.xlsx')
+        case_name = 'BiLateralLungSBRTCase'
+
+        # when instantiate
+        p_kernel = PyPlanScoringKernel()
+        p_kernel.parse_dicom_folder(dicom_folder)
+        p_kernel.setup_case(rs_dvh, file_path, case_name)
+        p_kernel.setup_dvh_calculation(ini_file_path)
+        p_kernel.setup_planing_item()
+        p_kernel.calculate_dvh()
+        p_kernel.calc_plan_score()
+        # save report data
+        p_kernel.save_report_data()
+
+

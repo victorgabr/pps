@@ -22,7 +22,8 @@
                                 <widget class="QComboBox" name="channel_box">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot;
-                                            font-weight:600;&quot;&gt;Select image channel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            font-weight:600;&quot;&gt;Select image channel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                     <item>
                                         <property name="text">
@@ -60,7 +61,8 @@
                                 <widget class="QPushButton" name="save_as">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save image as film2dose
-                                            *.ftd&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            *.ftd&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                     <property name="text">
                                         <string>Save as</string>
@@ -98,7 +100,8 @@
                                 <widget class="QPushButton" name="rotate_90ccw">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;rotate image
-                                            counterclockwise&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            counterclockwise&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                     <property name="text">
                                         <string>Rotate CCW</string>
@@ -114,7 +117,8 @@
                                 <widget class="QPushButton" name="isocenter_button">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set image coordinates
-                                            isocenter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            isocenter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                     <property name="text">
                                         <string>Set Iso</string>
@@ -136,7 +140,8 @@
                                 <widget class="QPushButton" name="button_rotatePoints">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot;
-                                            font-weight:600;&quot;&gt;Rotate the image by selecting 2 reference points&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            font-weight:600;&quot;&gt;Rotate the image by selecting 2 reference points&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                     <property name="text">
                                         <string>Rotation points</string>
@@ -174,7 +179,8 @@
                                 <widget class="QComboBox" name="colorComboBox">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot;
-                                            font-weight:600;&quot;&gt;Select image colormap&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            font-weight:600;&quot;&gt;Select image colormap&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                 </widget>
                             </item>

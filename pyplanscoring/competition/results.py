@@ -149,9 +149,6 @@ if __name__ == '__main__':
     DVH = dvh['DVH']
     plt.style.use('ggplot')
 
-
-
-
     # TODO ADD CALCULATION DETAILS AT PDF REPORT
 
     # # plan_data_report = parse_plan_data(root_folder)

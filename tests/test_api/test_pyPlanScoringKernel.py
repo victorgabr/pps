@@ -4,6 +4,7 @@ import pytest
 
 from api.backend import PyPlanScoringKernel
 
+
 # TODO monkey patching DVH data to cut redundant calculations]
 
 def test_parse_dicom_folder(dicom_folder):
@@ -28,7 +29,7 @@ def test_parse_empty_dicom_folder(tmpdir):
 
 def test_setup_case(dicom_folder):
     # given case files
-    rs_dvh = os.path.join(dicom_folder, 'RS.1.2.246.352.205.5039724533480738438.3109367781599983491.dcm')
+    rs_dvh = os.path.join(dicom_folder, 'RS.dcm')
     file_path = os.path.join(dicom_folder, 'Scoring_criteria_2018.xlsx')
     case_name = 'BiLateralLungSBRTCase'
 
@@ -40,7 +41,7 @@ def test_setup_case(dicom_folder):
 
 def test_setup_dvh_calculation(dicom_folder, ini_file_path):
     # given case files
-    rs_dvh = os.path.join(dicom_folder, 'RS.1.2.246.352.205.5039724533480738438.3109367781599983491.dcm')
+    rs_dvh = os.path.join(dicom_folder, 'RS.dcm')
     file_path = os.path.join(dicom_folder, 'Scoring_criteria_2018.xlsx')
     case_name = 'BiLateralLungSBRTCase'
 
@@ -65,7 +66,7 @@ def test_setup_dvh_calculation(dicom_folder, ini_file_path):
 
 def test_setup_planning_item(dicom_folder, ini_file_path):
     # given case files
-    rs_dvh = os.path.join(dicom_folder, 'RS.1.2.246.352.205.5039724533480738438.3109367781599983491.dcm')
+    rs_dvh = os.path.join(dicom_folder, 'RS.dcm')
     file_path = os.path.join(dicom_folder, 'Scoring_criteria_2018.xlsx')
     case_name = 'BiLateralLungSBRTCase'
 
@@ -92,7 +93,7 @@ def test_setup_planning_item(dicom_folder, ini_file_path):
 
 def test_calculate_dvh(dicom_folder, ini_file_path):
     # given case files
-    rs_dvh = os.path.join(dicom_folder, 'RS.1.2.246.352.205.5039724533480738438.3109367781599983491.dcm')
+    rs_dvh = os.path.join(dicom_folder, 'RS.dcm')
     file_path = os.path.join(dicom_folder, 'Scoring_criteria_2018.xlsx')
     case_name = 'BiLateralLungSBRTCase'
 
@@ -110,7 +111,7 @@ def test_calculate_dvh(dicom_folder, ini_file_path):
 
 def test_calc_plan_score(dicom_folder, ini_file_path):
     # given case files
-    rs_dvh = os.path.join(dicom_folder, 'RS.1.2.246.352.205.5039724533480738438.3109367781599983491.dcm')
+    rs_dvh = os.path.join(dicom_folder, 'RS.dcm')
     file_path = os.path.join(dicom_folder, 'Scoring_criteria_2018.xlsx')
     case_name = 'BiLateralLungSBRTCase'
 
@@ -130,9 +131,10 @@ def test_calc_plan_score(dicom_folder, ini_file_path):
     # save report data
     p_kernel.save_report_data()
 
-def test_calc_plan_complexity(test_case,dicom_folder, ini_file_path):
+
+def test_calc_plan_complexity(test_case, dicom_folder, ini_file_path):
     # given case files
-    rs_dvh = os.path.join(dicom_folder, 'RS.1.2.246.352.205.5039724533480738438.3109367781599983491.dcm')
+    rs_dvh = os.path.join(dicom_folder, 'RS.dcm')
     file_path = os.path.join(dicom_folder, 'Scoring_criteria_2018.xlsx')
     case_name = 'BiLateralLungSBRTCase'
 
@@ -145,12 +147,12 @@ def test_calc_plan_complexity(test_case,dicom_folder, ini_file_path):
 
     # calculate plan complexity
     p_kernel.calc_plan_complexity()
-    test_case.assertAlmostEqual(p_kernel.plan_complexity, 0.166503597706,places=3)
+    test_case.assertAlmostEqual(p_kernel.plan_complexity, 0.166503597706, places=3)
 
 
 def test_save_dvh_data(dicom_folder, ini_file_path):
     # given case files
-    rs_dvh = os.path.join(dicom_folder, 'RS.1.2.246.352.205.5039724533480738438.3109367781599983491.dcm')
+    rs_dvh = os.path.join(dicom_folder, 'RS.dcm')
     file_path = os.path.join(dicom_folder, 'Scoring_criteria_2018.xlsx')
     case_name = 'BiLateralLungSBRTCase'
 
@@ -162,4 +164,3 @@ def test_save_dvh_data(dicom_folder, ini_file_path):
     p_kernel.setup_planing_item()
     p_kernel.calculate_dvh()
     p_kernel.save_dvh_data()
-

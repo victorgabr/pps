@@ -59,13 +59,17 @@ class PyAperturesFromBeamCreator:
     def Create(self, beam):
 
         apertures = []
+
         leafWidths = self.GetLeafWidths(beam)
         jaw = self.CreateJaw(beam)
+
         for controlPoint in beam['ControlPointSequence']:
             gantry_angle = float(controlPoint.GantryAngle) if 'GantryAngle' in controlPoint else beam[
                 'GantryAngle']
             leafPositions = self.GetLeafPositions(controlPoint)
-            apertures.append(PyAperture(leafPositions, leafWidths, jaw, gantry_angle))
+            if leafPositions is not None:
+                apertures.append(PyAperture(leafPositions, leafWidths, jaw, gantry_angle))
+
         return apertures
 
     @staticmethod
@@ -89,6 +93,8 @@ class PyAperturesFromBeamCreator:
         """
             Get MLCX leaf width from  BeamLimitingDeviceSequence
             (300a, 00be) Leaf Position Boundaries Tag
+
+            #TODO HALCYON leaf widths
         :param beam_dict: Dicomparser Beam dict from plan_dict
         :return: MLCX leaf width
         """
@@ -96,7 +102,7 @@ class PyAperturesFromBeamCreator:
         bs = beam_dict['BeamLimitingDeviceSequence']
         # the script only takes MLCX as parameter
         for b in bs:
-            if b.RTBeamLimitingDeviceType == 'MLCX':
+            if b.RTBeamLimitingDeviceType in ['MLCX', 'MLCX1', 'MLCX2']:
                 return np.diff(b.LeafPositionBoundaries)
 
     def GetLeafTops(self, beam_dict):
@@ -116,15 +122,17 @@ class PyAperturesFromBeamCreator:
             Leaf positions are given from bottom to top by ESAPI,
             but the Aperture class expects them from top to bottom
             Leaf Positions are mechanical boundaries projected onto Isocenter plane
+            # TODO add halcyon MLC positions
         :param control_point:
         """
-        pos = control_point.BeamLimitingDevicePositionSequence[-1]
-        mlc_open = pos.LeafJawPositions
-        n_pairs = int(len(mlc_open) / 2)
-        bank_a_pos = mlc_open[:n_pairs]
-        bank_b_pos = mlc_open[n_pairs:]
+        if 'BeamLimitingDevicePositionSequence' in control_point:
+            pos = control_point.BeamLimitingDevicePositionSequence[-1]
+            mlc_open = pos.LeafJawPositions
+            n_pairs = int(len(mlc_open) / 2)
+            bank_a_pos = mlc_open[:n_pairs]
+            bank_b_pos = mlc_open[n_pairs:]
 
-        return np.vstack((bank_a_pos, bank_b_pos))
+            return np.vstack((bank_a_pos, bank_b_pos))
 
 
 class PyMetersetsFromMetersetWeightsCreator:

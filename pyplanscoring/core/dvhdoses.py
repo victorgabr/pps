@@ -1,12 +1,9 @@
-from __future__ import division
-
 """Functions to calculate_integrate minimum, maximum, and mean dose to ROI from a cDVH."""
 # Copyright (c) 2009 Roy Keyes (roy.coding)
 # Copyright (c) 2011 Aditya Panchal
 # This file is part of dicompyler, relased under a BSD license.
 #    See the file license.txt included with this distribution, also
 #    available at http://code.google.com/p/dicompyler/
-#
 # Start - 20 Nov. 2009
 # It is assumed that the bin width of the cDVH is fixed at 1 cGy.
 # speed up numba by victor

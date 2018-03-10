@@ -59,7 +59,8 @@
                                 <widget class="QComboBox" name="colorComboBox">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot;
-                                            font-weight:600;&quot;&gt;Select image colormap&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            font-weight:600;&quot;&gt;Select image colormap&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                 </widget>
                             </item>
@@ -67,7 +68,8 @@
                                 <widget class="QPushButton" name="open_button">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set image coordinates
-                                            isocenter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            isocenter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                     <property name="text">
                                         <string>Open file</string>
@@ -103,7 +105,8 @@
                                 <widget class="QLabel" name="label">
                                     <property name="text">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span
-                                            style=&quot; font-weight:600;&quot;&gt;Colormap&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            style=&quot; font-weight:600;&quot;&gt;Colormap&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                 </widget>
                             </item>
@@ -111,7 +114,8 @@
                                 <widget class="QLabel" name="label_2">
                                     <property name="text">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span
-                                            style=&quot; font-weight:600;&quot;&gt;Window min&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            style=&quot; font-weight:600;&quot;&gt;Window min&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                 </widget>
                             </item>
@@ -119,7 +123,8 @@
                                 <widget class="QLabel" name="label_3">
                                     <property name="text">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span
-                                            style=&quot; font-weight:600;&quot;&gt;Window max&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            style=&quot; font-weight:600;&quot;&gt;Window max&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                 </widget>
                             </item>
@@ -142,7 +147,8 @@
                                 <widget class="QPushButton" name="rotate_90ccw">
                                     <property name="toolTip">
                                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;rotate image
-                                            counterclockwise&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            counterclockwise&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        </string>
                                     </property>
                                     <property name="text">
                                         <string>Rotate CCW</string>
