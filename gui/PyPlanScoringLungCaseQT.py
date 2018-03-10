@@ -89,7 +89,7 @@ class Ui_MainWindow(object):
 "                            ", None, QtGui.QApplication.UnicodeUTF8))
         self.save_reports_button.setText(QtGui.QApplication.translate("MainWindow", "Save Report", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("MainWindow", "<html><head/><body><p align=\"center\"><span\n"
-"                                style=\" font-weight:600;\">Participant\'s name</span></p></body></html>\n"
+"                                style=\" font-weight:600;\">Output File Name</span></p></body></html>\n"
 "                            ", None, QtGui.QApplication.UnicodeUTF8))
         self.complexity_check_box.setText(QtGui.QApplication.translate("MainWindow", "Aperture complexity - linac-based dynamic treatments - (IMRT/VMAT)", None, QtGui.QApplication.UnicodeUTF8))
         self.menuAbout.setTitle(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))

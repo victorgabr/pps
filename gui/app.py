@@ -69,8 +69,8 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringLungCaseQT.Ui_MainWindow):
 
     def worker_done(self, obj):
         self.calc_kernel = obj
-        self.calc_kernel.save_dvh_data()
-        self.calc_kernel.save_report_data()
+        self.calc_kernel.save_dvh_data(self.name)
+        self.calc_kernel.save_report_data(self.name)
 
         total_score = self.calc_kernel.total_score
         self.textBrowser.insertPlainText('Total score: %1.2f \n' % total_score)
@@ -83,6 +83,7 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringLungCaseQT.Ui_MainWindow):
             self.textBrowser.insertPlainText('---------- Complexity metric -------------\n')
             try:
                 self.calc_kernel.calc_plan_complexity()
+                self.calc_kernel.save_complexity_figure_per_beam()
                 self.textBrowser.insertPlainText(
                     "Aperture complexity: %1.3f [mm-1]:\n" % self.calc_kernel.plan_complexity)
 
@@ -114,21 +115,21 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringLungCaseQT.Ui_MainWindow):
 
             if self.folder_root:
                 dcm_files, flag = self.calc_kernel.parse_dicom_folder(self.folder_root)
-                # setup case using global variables
-                self.setup_case(criteria_file, case_name, ini_file_path, rs_dvh)
-                self.worker.set_calc_kernel(self.calc_kernel)
-
                 if flag:
+                    # setup case using global variables
+                    self.setup_case(criteria_file, case_name, ini_file_path, rs_dvh)
+                    self.worker.set_calc_kernel(self.calc_kernel)
+
                     self.textBrowser.insertPlainText('Loaded - DICOM-RT Files: \n')
                     txt = [os.path.split(v)[1] for k, v in dcm_files.items()]
                     for t in txt:
                         self.textBrowser.insertPlainText(str(t) + '\n')
                     self.save_reports_button.setEnabled(True)
                 else:
-                    msg = "<p>missing Dicom Files: " + str(dcm_files.values())
+                    msg = "<p>missing Dicom Files: " + str(dcm_files)
                     QtGui.QMessageBox.critical(self, "Missing Data", msg, QtGui.QMessageBox.Abort)
         else:
-            msg = "Please set participant's name"
+            msg = "Please set the output file name"
             QtGui.QMessageBox.critical(self, "Missing Data", msg, QtGui.QMessageBox.Abort)
 
     def on_save(self):
@@ -140,7 +141,7 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringLungCaseQT.Ui_MainWindow):
               "Be the strongest link in the radiotherapy chain\n" \
               "https://radiationknowledge.org \n" \
               "Author: %s\n" \
-              "Copyright (C) 2017 Victor Gabriel Leandro Alves, All rights reserved\n" \
+              "Copyright (C) 2017 - 2018 Victor Gabriel Leandro Alves, All rights reserved\n" \
               "Platform details: Python %s on %s\n" \
               "This program aims to calculate_integrate an approximate score.\n" \
               "your final score may be different due to structure boundaries and dose interpolation uncertainties\n" \

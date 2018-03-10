@@ -140,7 +140,6 @@ def get_participant_folder_data(root_path):
     files = [os.path.join(root, name) for root, dirs, files in os.walk(root_path) for name in files if
              name.endswith(('.dcm', '.DCM'))]
 
-    data_truth = []
     filtered_files = {'rtdose': False, 'rtplan': False, 'rtss': False}
     for f in files:
         obj = PyDicomParser(filename=f)
@@ -151,11 +150,10 @@ def get_participant_folder_data(root_path):
 
         if rt_type in ['rtdose', 'rtplan', 'rtss']:
             filtered_files[rt_type] = f
-            data_truth.append(True)
 
     missing_files = [key for key, value in filtered_files.items() if value is False]
 
-    if len(data_truth) == 3 and not missing_files:
+    if not missing_files:
         return filtered_files, True
     else:
         return missing_files, False

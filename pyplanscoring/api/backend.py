@@ -14,6 +14,8 @@ from core.dicom_reader import PyDicomParser
 from core.io import get_participant_folder_data, IOHandler, save_formatted_report
 from core.types import Dose3D, DoseUnit
 
+import matplotlib.pyplot as plt
+
 
 class BackEnd(abc.ABC):
     # todo later implement as Abstract base class
@@ -39,10 +41,10 @@ class BackEnd(abc.ABC):
     def calc_plan_complexity(self):
         return NotImplementedError
 
-    def save_dvh_data(self):
+    def save_dvh_data(self, file_name):
         return NotImplementedError
 
-    def save_report_data(self):
+    def save_report_data(self, file_name):
         return NotImplementedError
 
 
@@ -153,6 +155,7 @@ class PyPlanScoringKernel(BackEnd):
 
         if self.dcm_files is not None and self.case is not None:
             if self.dvh_calculator is not None:
+                # TODO refactor this into abstractions
                 plan_dcm = PyDicomParser(filename=self.dcm_files['rtplan'])
                 dose_dcm = PyDicomParser(filename=self.dcm_files['rtdose'])
                 plan_dict = plan_dcm.GetPlan()
@@ -174,19 +177,51 @@ class PyPlanScoringKernel(BackEnd):
 
     def calc_plan_complexity(self):
         if self.planning_item is not None:
-            complexity_metric = self._complexity.CalculateForPlan(None, self.planning_item.plan_dict)
+            plan_dict = self.planning_item.plan_dict
+            complexity_metric = self._complexity.CalculateForPlan(None, plan_dict)
             self._plan_complexity = complexity_metric
 
-    def save_dvh_data(self):
-        if self._dvh_data:
-            diretory, filename = os.path.split(self.dcm_files['rtdose'])
-            dvh_file = os.path.join(diretory, filename + '.dvh')
-            self._io.dvh_data = self._dvh_data
-            self._io.to_json_file(dvh_file)
+    def save_complexity_figure_per_beam(self):
 
-    def save_report_data(self):
+        if self.planning_item is not None:
+            # TODO save complexity per field.
+            plan_dict = self.planning_item.plan_dict
+            for k, beam in self.planning_item.plan_dict['beams'].items():
+                fig, ax = plt.subplots()
+                complexity_per_beam_cp = self._complexity.CalculateForBeamPerAperture(None, plan_dict, beam)
+                ax.plot(complexity_per_beam_cp)
+                ax.set_xlabel('Control Point')
+                ax.set_ylabel('CI [mm-1]')
+                txt = 'Beam name: %s  - aperture complexity per control point' % str(k)
+                ax.set_title(txt)
+                diretory, filename = os.path.split(self.dcm_files['rtplan'])
+                figure_name = 'beam_' + str(k) + '_complexity.png'
+                figure_path = os.path.join(diretory, figure_name)
+                fig.savefig(figure_path, format='png', dpi=100)
+                plt.close('all')
+
+    def save_dvh_data(self, file_name=''):
+        if self._dvh_data:
+
+            diretory, filename = os.path.split(self.dcm_files['rtdose'])
+            if not file_name:
+                dvh_file = os.path.join(diretory, filename + '.dvh')
+                self._io.dvh_data = self._dvh_data
+                self._io.to_json_file(dvh_file)
+            else:
+                dvh_file = os.path.join(diretory, file_name + '.dvh')
+                self._io.dvh_data = self._dvh_data
+                self._io.to_json_file(dvh_file)
+
+    def save_report_data(self, file_name=''):
         if self._report_data_frame is not None:
             diretory, filename = os.path.split(self.dcm_files['rtdose'])
-            report_data_file = os.path.join(diretory, filename + '.csv')
-            self._report_data_frame.to_csv(report_data_file)
-            save_formatted_report(self.report,os.path.join(diretory, filename + '.xls'))
+
+            if not file_name:
+                report_data_file = os.path.join(diretory, filename + '.csv')
+                self._report_data_frame.to_csv(report_data_file)
+                save_formatted_report(self.report, os.path.join(diretory, filename + '.xls'))
+            else:
+                report_data_file = os.path.join(diretory, file_name + '.csv')
+                self._report_data_frame.to_csv(report_data_file)
+                save_formatted_report(self.report, os.path.join(diretory, file_name + '.xls'))
