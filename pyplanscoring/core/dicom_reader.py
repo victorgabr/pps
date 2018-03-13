@@ -13,6 +13,7 @@ from PIL import Image
 from scipy.interpolate import interp1d, RegularGridInterpolator
 
 from core.geometry import centroid_of_polygon
+from core.types import Dose3D, DoseUnit
 
 
 class DicomParserBase(object):
@@ -885,6 +886,17 @@ class PyDicomParser(DicomParserBase):
         dose_matrix = self.ds.pixel_array * float(self.ds.DoseGridScaling)  # 3D dose matrix in Gy
 
         return np.max(dose_matrix)  # 3D dose matrix in Gy
+
+
+    def get_dose_3d(self):
+        """
+            Return an instance of Dose3D class to 3D interpolate the dose matrix
+        :return: Dose3D
+        """
+        dose_values = self.get_dose_matrix()
+        grid = self.get_grid_3d()
+
+        return Dose3D(dose_values, grid, DoseUnit.Gy)
 
     def HasDVHs(self):
         """Returns whether dose-volume histograms (DVHs) exist."""
