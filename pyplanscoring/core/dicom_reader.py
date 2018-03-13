@@ -1107,7 +1107,7 @@ class PyDicomParser(DicomParserBase):
                             if "GantryRotationDirection" in cp0 else ""
 
                         # last control point angle
-                        if final_cp.GantryRotationDirection == 'NONE':
+                        if 'GantryRotationDirection' in final_cp and final_cp.GantryRotationDirection == 'NONE':
                             final_angle = bi.ControlPointSequence[-1].GantryAngle \
                                 if "GantryAngle" in cp0 else ""
                             beam['GantryFinalAngle'] = final_angle
