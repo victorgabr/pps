@@ -35,6 +35,9 @@ def test_dvh_data(lens, body, brain, ptv70, spinal_cord, dose_3d, tmpdir):
 
     assert j_dvh_dict == dvh_data
 
+    # teardown
+    os.remove(os.path.join(tmpdir, "test_dvh.dvh"))
+    os.remove(os.path.join(tmpdir, "test_json_dvh.jdvh"))
 
 def test_get_participant_folder_data(dicom_folder, tmpdir):
     files_dcm, flag = get_participant_folder_data(dicom_folder)
@@ -57,6 +60,9 @@ def test_get_participant_folder_data(dicom_folder, tmpdir):
     filesd, flag = get_participant_folder_data(tmpdir)
     assert flag
 
+    os.remove(files_dcm['rtdose'])
+    os.remove(files_dcm['rtplan'])
+    os.remove(files_dcm['rtss'])
 
 def test_save_formatted_repport(dicom_folder, ini_file_path):
     # given case files

@@ -72,7 +72,7 @@ def test_lung_case_dvh(setup_calculation_options):
     folder = os.path.join(DATA_DIR, 'lungSBRT')
 
     # DVH reference
-    dvh_ref_path = os.path.join(folder, 'DVH TEXT 87.9.txt')
+    dvh_ref_path = os.path.join(folder, 'PlanIQ DVH - Ahmad Plan - March 12.txt')
     plan_dvh = read_planiq_dvh(dvh_ref_path)
 
     # parse DICOM folder
@@ -88,7 +88,7 @@ def test_lung_case_dvh(setup_calculation_options):
     dose = Dose3D(dose_values, grid, pq.Gy)
 
     # criteria file
-    file_path = os.path.join(folder, 'Scoring_criteria_2018.xlsx')
+    file_path = os.path.join(folder, 'Scoring_criteria.xlsx')
     criteria = pd.read_excel(file_path, sheet_name='BiLateralLungSBRTCase')
 
     # setup RT case
@@ -99,64 +99,71 @@ def test_lung_case_dvh(setup_calculation_options):
     planning_obj = PyPlanningItem(plan_dict, rt_case_tmp, dose, dvh_calc)
     planning_obj.calculate_dvh()
 
+    # compare against PLANIQ
+    for roi_number, dvh in planning_obj.dvh_data.items():
+        name = dvh['name']
+        plot_dvh_comp(dvh, plan_dvh, name, folder)
+
+    # plt.show()
+
     # compare clinical DVH data
-
-    dvhs = PyDicomParser(filename=rd).GetDVHs()
-    # compare against Eclipse DVH
-    dvh_calculated = planning_obj.dvh_data
-    res = {}
-    res_eclipse = {}
-    for roi_number in dvhs.keys():
-        if roi_number in dvh_calculated:
-            dvh_calc = dvh_calculated[roi_number]
-            planiq_dvh = plan_dvh[structures[roi_number]['name']]
-
-            x_calc = np.arange(len(dvh_calc['data'])) * float(dvh_calc['scaling'])
-            x_planiq = plan_dvh.index
-            cmp = CurveCompare(x_planiq, planiq_dvh, x_calc, dvh_calc['data'])
-            # cmp.plot_results("PlanIQ", "PyPlanScoring", structures[roi_number]['name'])
-            # plt.show()
-            res[structures[roi_number]['name']] = cmp.stats_paper
-
-            # Eclipse
-            eclipse_dvh = dvhs[roi_number]
-            x_eclipse = np.arange(len(eclipse_dvh['data'])) * float(eclipse_dvh['scaling'])
-
-            cmp1 = CurveCompare(x_eclipse, eclipse_dvh['data'], x_calc, dvh_calc['data'])
-            # cmp.plot_results("PlanIQ", "PyPlanScoring", structures[roi_number]['name'])
-            res_eclipse[structures[roi_number]['name']] = cmp1.stats_paper
-
-    res_plan_iq = pd.DataFrame.from_dict(res)
-    res_plan_iq.to_csv(os.path.join(folder, "PyPlanScoringXPlanIQ.csv"))
-
-    res_eclipsedf = pd.DataFrame.from_dict(res_eclipse)
-    res_eclipsedf.to_csv(os.path.join(folder, "PyPlanScoringXEclipse.csv"))
-    pass
-    piq = [res_plan_iq.min.min(), res_plan_iq.max().max(), res_plan_iq.mean().mean()]
-    ecl = [res_eclipsedf.min.min(), res_eclipsedf.max().max(), res_eclipsedf.mean().mean()]
-
-    # # then Get dvh data and compare with plan_data
-    # for roi_number, dvh in planning_obj.dvh_data.items():
-    #     name = dvh['name']
-    #     plot_dvh_comp(dvh, plan_dvh, name, folder)
-    # #
-    # # plt.show()
     #
-    # # compare it abainst eclipse data
-    # # compare with TPS DVH
     # dvhs = PyDicomParser(filename=rd).GetDVHs()
     # # compare against Eclipse DVH
     # dvh_calculated = planning_obj.dvh_data
+    # res = {}
+    # res_eclipse = {}
     # for roi_number in dvhs.keys():
     #     if roi_number in dvh_calculated:
-    #         plot_dvh_comp1(dvh_calculated[roi_number], dvhs[roi_number], structures[roi_number]['name'], folder)
+    #         dvh_calc = dvh_calculated[roi_number]
+    #         planiq_dvh = plan_dvh[structures[roi_number]['name']]
     #
-    # # plt.show()
+    #         x_calc = np.arange(len(dvh_calc['data'])) * float(dvh_calc['scaling'])
+    #         x_planiq = plan_dvh.index
+    #         cmp = CurveCompare(x_planiq, planiq_dvh, x_calc, dvh_calc['data'])
+    #         # cmp.plot_results("PlanIQ", "PyPlanScoring", structures[roi_number]['name'])
+    #         # plt.show()
+    #         res[structures[roi_number]['name']] = cmp.stats_paper
+    #
+    #         # Eclipse
+    #         eclipse_dvh = dvhs[roi_number]
+    #         x_eclipse = np.arange(len(eclipse_dvh['data'])) * float(eclipse_dvh['scaling'])
+    #
+    #         cmp1 = CurveCompare(x_eclipse, eclipse_dvh['data'], x_calc, dvh_calc['data'])
+    #         # cmp.plot_results("PlanIQ", "PyPlanScoring", structures[roi_number]['name'])
+    #         res_eclipse[structures[roi_number]['name']] = cmp1.stats_paper
+    #
+    # res_plan_iq = pd.DataFrame.from_dict(res)
+    # res_plan_iq.to_csv(os.path.join(folder, "PyPlanScoringXPlanIQ.csv"))
+    #
+    # res_eclipsedf = pd.DataFrame.from_dict(res_eclipse)
+    # res_eclipsedf.to_csv(os.path.join(folder, "PyPlanScoringXEclipse.csv"))
+    # pass
+    # piq = [res_plan_iq.min().min(), res_plan_iq.max().max(), res_plan_iq.mean().mean()]
+    # ecl = [res_eclipsedf.min().min(), res_eclipsedf.max().max(), res_eclipsedf.mean().mean()]
+
+    # # # then Get dvh data and compare with plan_data
+    # for roi_number, dvh in planning_obj.dvh_data.items():
+    #     name = dvh['name']
+    #     plot_dvh_comp(dvh, plan_dvh, name, folder)
+    #
+    # plt.show()
+    #
+    # # compare it abainst eclipse data
+    # # compare with TPS DVH
+    dvhs = PyDicomParser(filename=rd).GetDVHs()
+    # compare against Eclipse DVH
+    dvh_calculated = planning_obj.dvh_data
+    for roi_number in dvhs.keys():
+        if roi_number in dvh_calculated:
+            plot_dvh_comp1(dvh_calculated[roi_number], dvhs[roi_number], structures[roi_number]['name'], folder)
+
+    # plt.show()
     # # lung SBRT case
     #
     # # Calculating the score
-    # plan_eval = PlanEvaluation()
-    # plan_eval.criteria = criteria
-    # df = plan_eval.eval_plan(planning_obj)
-    #
-    # assert df['Raw score'].sum() == 90.01
+    plan_eval = PlanEvaluation()
+    plan_eval.criteria = criteria
+    df = plan_eval.eval_plan(planning_obj)
+
+    # assert df['Raw score'].sum() == 88.612

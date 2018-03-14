@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 
 from constraints.query import QueryExtensions, PyQueryExtensions
-from core.types import DoseValuePresentation, DoseValue, DoseUnit, DVHData, DICOMType, QueryType
+from core.types import DoseValuePresentation, DoseValue, DoseUnit, DVHData, DICOMType
 
 
 # TODO refactor to use PyDicomParser class and PyStructure
@@ -245,6 +245,7 @@ class PlanningItem:
 class MetricType:
     MIN = "min"
     MAX = "max"
+    INSIDE = "inside"
 
 
 class ConstrainMetric:
@@ -274,14 +275,18 @@ class ConstrainMetric:
         self._query = value
 
     def metric_function(self, pi):
+        # TODO add binary metric?
         constraint_value = pi.execute_query(self.query, self.structure_name)
         self._query_result = float(constraint_value)
+        score_points = [self.max_score, 0.0]
+
         if self.metric_type == MetricType.MAX:
             score_points = [self.max_score, 0]
             return np.interp(self.query_result, self.target, score_points)
         if self.metric_type == MetricType.MIN:
             score_points = [0, self.max_score]
-            return np.interp(self.query_result, self.target, score_points)
+
+            return np.interp(self.query_result, self.target[::-1], score_points)
 
     @property
     def metric_type(self):
@@ -500,7 +505,6 @@ class PyPlanningItem:
         if not self._dvh_data:
             self._dvh_data = self.dvh_calculator.calculate_serial(self.dose_3d)
 
-
     def get_dvh_cumulative_data(self, structure, dose_presentation, volume_presentation=None):
         """
             Get CDVH data from DICOM-RTDOSE file
@@ -573,9 +577,29 @@ class PyPlanningItem:
         dvh = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
         return dvh.get_compliment_volume_at_dose(dv, v_pres)
 
+    #
+    # def get_ci(self, ss, dv, v_pres):
+    #     """
+    #         Helper method to calculate conformity index paddick
+    #     :param ss: Structure name
+    #     :param dv: Dose Value
+    #     :param v_pres: Volume presentation
+    #     :return:
+    #     """
+    #     d_pres = dv.get_presentation()
+    #     target_dvh_data = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
+    #     # target
+    #     target_vol = target_dvh_data.volume
+    #     target_volume_at_dose = self.get_volume_at_dose(ss, dv, v_pres)
+    #     prescription_vol_isodose = self.get_volume_at_dose(self.external_name, dv, v_pres)
+    #
+    #     ci = (target_volume_at_dose * target_volume_at_dose) / (target_vol * prescription_vol_isodose)
+    #
+    #     return float(ci)
+
     def get_ci(self, ss, dv, v_pres):
         """
-            Helper method to calculate conformity index
+            Helper method to calculate conformity index  RTOG
         :param ss: Structure name
         :param dv: Dose Value
         :param v_pres: Volume presentation
@@ -585,10 +609,10 @@ class PyPlanningItem:
         target_dvh_data = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
         # target
         target_vol = target_dvh_data.volume
-        target_volume_at_dose = self.get_volume_at_dose(ss, dv, v_pres)
+
         prescription_vol_isodose = self.get_volume_at_dose(self.external_name, dv, v_pres)
 
-        ci = (target_volume_at_dose * target_volume_at_dose) / (target_vol * prescription_vol_isodose)
+        ci = prescription_vol_isodose / target_vol
 
         return float(ci)
 
@@ -614,6 +638,102 @@ class PyPlanningItem:
         return float(gi)
 
     def execute_query(self, mayo_format_query, ss):
+        """
+        :param pi: PlanningItem
+        :param mayo_format_query: String Mayo query
+        :param ss: Structure string
+        :return: Query result
+        """
+        query = PyQueryExtensions()
+        query.read(mayo_format_query)
+        return query.run_query(query, self, ss)
+
+
+class PyDVHItem:
+
+    def __init__(self, dvh_data):
+        """
+            Helper class to encapsulate query on single DVHs
+        :param dvh_data:
+        """
+        self._dvh_data = dvh_data
+
+    @property
+    def dvh_data(self):
+        return self._dvh_data
+
+    @property
+    def volume(self):
+        """
+        :return: Total Volume in cc
+        """
+        return float(DVHData(self.dvh_data).volume)
+
+    def get_dvh_cumulative_data(self, structure='', dose_presentation='', volume_presentation=None):
+        """
+            Get CDVH data from DICOM-RTDOSE file
+        :param structure: Structure
+        :param dose_presentation: DoseValuePresentation
+        :param volume_presentation: VolumePresentation
+        :return: DVHData
+        """
+        if self.dvh_data:
+            return DVHData(self.dvh_data)
+
+    def get_dose_at_volume(self, ss, volume, v_pres, d_pres):
+        """
+             Finds the dose at a certain volume input of a structure
+        :param ss: Structure - the structure to analyze
+        :param volume: the volume (cc or %)
+        :param v_pres: VolumePresentation - the units of the input volume
+        :param d_pres: DoseValuePresentation - the dose value presentation you want returned
+        :return: DoseValue
+        """
+
+        dvh = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        return dvh.get_dose_at_volume(volume)
+
+    def get_dose_compliment_at_volume(self, ss, volume, v_pres, d_pres):
+        """
+            Return the compliment dose (coldspot) for a given volume.
+            This is equivalent to taking the total volume of the
+            object and subtracting the input volume
+
+        :param ss: Structure - the structure to analyze
+        :param volume: the volume to sample
+        :param v_pres: VolumePresentation - the units of the input volume
+        :param d_pres: DoseValuePresentation - the dose value presentation you want returned
+        :return: DoseValue
+        """
+        dvh = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        return dvh.get_dose_compliment(volume)
+
+    def get_volume_at_dose(self, ss, dv, v_pres):
+        """
+             Returns the volume of the input structure at a given input dose
+        :param ss: Structure - the structure to analyze
+        :param dv: DoseValue
+        :param v_pres: VolumePresentation - the units of the input volume
+        :return: the volume at the requested presentation
+        """
+        d_pres = dv.get_presentation()
+        dvh = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        vol_at_dose = dvh.get_volume_at_dose(dv, v_pres)
+        return vol_at_dose
+
+    def get_compliment_volume_at_dose(self, ss, dv, v_pres):
+        """
+             Returns the compliment volume of the input structure at a given input dose
+        :param ss: Structure - the structure to analyze
+        :param dv: DoseValue
+        :param v_pres: VolumePresentation - the units of the input volume
+        :return: the volume at the requested presentation
+        """
+        d_pres = dv.get_presentation()
+        dvh = self.get_dvh_cumulative_data(ss, d_pres, v_pres)
+        return dvh.get_compliment_volume_at_dose(dv, v_pres)
+
+    def execute_query(self, mayo_format_query, ss=''):
         """
         :param pi: PlanningItem
         :param mayo_format_query: String Mayo query

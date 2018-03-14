@@ -11,6 +11,8 @@ from core.dicom_reader import PyDicomParser
 from core.types import Dose3D, DVHData
 
 # TODO review fixtures changing to singleton objects
+# TODO split this file in many conftest.py inside each folder
+# TODO REFACTOR ALL TESTS TO LUNG_SBRT CASE WITH CONTOURS WITH HOLES only
 
 DATA_DIR = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
@@ -27,6 +29,7 @@ calculation_options = get_calculation_options(ini_file)
 def ini_file_path():
     return os.path.join(DATA_DIR, "PyPlanScoring.ini")
 
+
 @pytest.fixture()
 def setup_calculation_options():
     return get_calculation_options(ini_file)
@@ -36,9 +39,10 @@ def setup_calculation_options():
 def data_dir():
     return DATA_DIR
 
+
 @pytest.fixture()
 def dicom_folder():
-    return  os.path.join(DATA_DIR, 'lungSBRT')
+    return os.path.join(DATA_DIR, 'lungSBRT')
 
 
 # criteria 2018

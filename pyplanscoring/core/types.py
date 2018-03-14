@@ -710,8 +710,6 @@ class Dose3D:
     """
         Class to encapsulate Trilinear dose interpolation
 
-    :param master: a master Tkinter widget (opt.)
-
     Example::
 
         app = Dose3D(values, grid, unit)

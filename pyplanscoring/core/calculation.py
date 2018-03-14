@@ -46,6 +46,11 @@ class PyStructure(StructureBase):
         """
         return self.calculate_volume(self.planes, self.contour_spacing)
 
+    @property
+    def z_axis_delta(self):
+        # return len(np.unique(np.diff(np.array(list(s.planes.keys()), dtype=float))))
+        return np.diff(np.array(list(self.planes.keys()), dtype=float))
+
     def calculate_volume(self, structure_planes, grid_delta):
         """
             Calculates the volume for the given structure.
@@ -537,7 +542,6 @@ class DVHCalculator:
         if calculation_options is not None:
             self.calculation_options = calculation_options
 
-
     @property
     def rt_case(self):
         return self._rt_case
@@ -592,7 +596,11 @@ class DVHCalculator:
     def get_grid_array(self, structures_py):
         grids = []
         for s in structures_py:
-            grids.append(self.voxel_size if s.volume < self.max_vol_upsampling else None)
+            # Check if it is contiguous and monotonic z spacing
+            if len(np.unique(s.z_axis_delta)) == 1 and s.volume < self.max_vol_upsampling:
+                grids.append(self.voxel_size)
+            else:
+                grids.append(None)
 
         return grids
 

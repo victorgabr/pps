@@ -18,11 +18,11 @@ added_files = [
 
 a = Analysis(['app.py'],
              pathex=[r'D:\Plan_Competition_Project\gui',
-                       r'D:\Plan_Competition_Project'
+                       r'D:\Plan_Competition_Project',
                         r'D:\Plan_Competition_Project\pyplanscoring'],
              binaries=[],
              datas=added_files,
-             hiddenimports=[],
+             hiddenimports=['pandas._libs.tslibs.timedeltas'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],

@@ -7,6 +7,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+# from PySide import QtCore, QtGui
 from PySide import QtCore, QtGui
 from qt_ui import icons_rc
 
