@@ -278,15 +278,14 @@ class ConstrainMetric:
         # TODO add binary metric?
         constraint_value = pi.execute_query(self.query, self.structure_name)
         self._query_result = float(constraint_value)
-        score_points = [self.max_score, 0.0]
-
         if self.metric_type == MetricType.MAX:
             score_points = [self.max_score, 0]
             return np.interp(self.query_result, self.target, score_points)
         if self.metric_type == MetricType.MIN:
             score_points = [0, self.max_score]
-
-            return np.interp(self.query_result, self.target[::-1], score_points)
+            # interpolation x axis should be increasing
+            target = self.target[::-1]
+            return np.interp(self.query_result, target, score_points)
 
     @property
     def metric_type(self):
