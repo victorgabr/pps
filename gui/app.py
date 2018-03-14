@@ -17,7 +17,7 @@ matplotlib.rcParams['backend.qt4'] = 'PySide'
 # def pretty_print_df(df):
 #     print(tabulate(df, headers='keys', tablefmt='psql'))
 
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 __author__ = 'Dr. Victor Gabriel Leandro Alves, D.Sc.'
 __copyright__ = "Copyright (C) 2018 Victor Gabriel Leandro Alves"
 __license__ = "Licenced for educational purposes."
@@ -137,7 +137,7 @@ class MainDialog(QtGui.QMainWindow, PyPlanScoringLungCaseQT.Ui_MainWindow):
         self.worker.start()
 
     def about(self):
-        txt = "PlanReport - 2018 - RT Plan Competition: %s \n" \
+        txt = "PyPlanScoring - 2018 - RT Plan Competition: %s \n" \
               "Be the strongest link in the radiotherapy chain\n" \
               "https://radiationknowledge.org \n" \
               "Author: %s\n" \
