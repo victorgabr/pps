@@ -55,6 +55,11 @@ class PyStructure(StructureBase):
         """
             Calculates the volume for the given structure.
             it considers end-capping or truncate last slice
+            obs.
+                It results an approximate volume.
+                Structures such as rings may not have correct volume estimated by this method
+
+
         :param structure_planes: Structure planes dict
         :type structure_planes: dict
         :param grid_delta: Voxel size in mm (dx,dy,xz)
@@ -246,7 +251,7 @@ class DVHCalculation:
         else:
             self._calc_grid = value
 
-    # @timeit
+    @timeit
     def calculate(self, verbose=False):
         """
             Calculate a DVH
@@ -596,9 +601,13 @@ class DVHCalculator:
     def get_grid_array(self, structures_py):
         grids = []
         for s in structures_py:
-            # Check if it is contiguous and monotonic z spacing
-            if len(np.unique(s.z_axis_delta)) == 1 and s.volume < self.max_vol_upsampling:
-                grids.append(self.voxel_size)
+            # check if upsampling
+            if self.up_sampling:
+                # Check if it is contiguous and monotonic z spacing
+                if len(np.unique(s.z_axis_delta)) == 1 and s.volume < self.max_vol_upsampling:
+                    grids.append(self.voxel_size)
+                else:
+                    grids.append(None)
             else:
                 grids.append(None)
 
