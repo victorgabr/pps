@@ -12,6 +12,8 @@ import numpy as np
 import pandas as pd
 
 from constraints.query import QueryExtensions, PyQueryExtensions
+from core.calculation import PyStructure
+from core.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean
 from core.types import DoseValuePresentation, DoseValue, DoseUnit, DVHData, DICOMType
 
 
@@ -474,7 +476,14 @@ class RTCase:
                 break
 
         if external is None:
-            raise ValueError('External  not found')
+            # try:
+            # try to get it from the largest volume
+            structures_py = [PyStructure(s) for k, s in self.structures.items()]
+            structures_py.sort(key=lambda x: x.volume)
+            # return the largest structure
+            return structures_py[-1].structure
+            # except:
+            #     raise ValueError('External  not found')
         else:
             return external
 
@@ -649,17 +658,47 @@ class PyPlanningItem:
 
 
 class PyDVHItem:
-
+    # TODO write unit tests
     def __init__(self, dvh_data):
         """
             Helper class to encapsulate query on single DVHs
+
+        :rtype: dict
         :param dvh_data:
         """
-        self._dvh_data = dvh_data
+        self._dvh_data = dict(dvh_data)
+
+    @property
+    def number_of_bins(self):
+        return self.dvh_data['bins']
 
     @property
     def dvh_data(self):
         return self._dvh_data
+
+    @property
+    def scaling(self):
+        return self.dvh_data['scaling']
+
+    @property
+    def roi_number(self):
+        return self.dvh_data['roi_number']
+
+    @roi_number.setter
+    def roi_number(self, value):
+        self._dvh_data['roi_number'] = value
+
+    @property
+    def name(self):
+        return self.dvh_data['name']
+
+    @name.setter
+    def name(self, value):
+        self._dvh_data['name'] = value
+
+    @property
+    def volume_array(self):
+        return np.array(self.dvh_data['data'])
 
     @property
     def volume(self):
@@ -742,3 +781,76 @@ class PyDVHItem:
         query = PyQueryExtensions()
         query.read(mayo_format_query)
         return query.run_query(query, self, ss)
+
+    def merge_dvhs(self, dvhs):
+        """
+            Merges DVHData from multiple structures into one DVH by summing the volumes at each dose value
+        :param dvhs: the multiple dvh curves to merge
+        :return: the combined dvh from multiple structures
+        """
+        return NotImplementedError
+
+    def __add__(self, other):
+        """
+            Operator overloading
+        :param other: PyDVHItem instance
+        :return:
+        """
+        # check which is larger
+        if other.number_of_bins >= self.number_of_bins:
+            current = self.volume_array
+
+            result = other.volume_array
+
+            # sum volumes in cc
+            result[:len(current)] += current
+
+            result_dvh = self._prepare_dvh_data(result, other)
+
+            return PyDVHItem(result_dvh)
+        else:
+            current = other.volume_array
+
+            result = self.volume_array
+
+            # sum volumes in cc
+            result[:len(current)] += current
+
+            result_dvh = self._prepare_dvh_data(result, other)
+
+            return PyDVHItem(result_dvh)
+
+    def __radd__(self, other):
+        """
+            This allows to use built in sum method on a list of this object.
+        :param other:
+        :return:
+        """
+        if other == 0:
+            return self
+        else:
+            return self.__add__(other)
+
+    def _prepare_dvh_data(self, cdvh, other):
+        """
+            Prepare a merged DVH
+        :param cdvh:
+        :param other:
+        :return:
+        """
+        roi_number = self.roi_number + other.roi_number
+        roi_name = self.name + '_' + other.name
+
+        dvh_data = {'data': list(cdvh),  # round 3 decimal
+                    'bins': len(cdvh),
+                    'type': 'CUMULATIVE',
+                    'doseunits': 'GY',
+                    'volumeunits': 'cm3',
+                    'scaling': self.scaling,
+                    'roi_number': roi_number,
+                    'name': roi_name,
+                    'min': get_dvh_min(cdvh) * self.scaling,
+                    'max': get_dvh_max(cdvh, self.scaling) * self.scaling,
+                    'mean': get_dvh_mean(cdvh) * self.scaling}
+
+        return dvh_data
