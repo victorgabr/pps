@@ -187,18 +187,20 @@ class PyPlanScoringKernel(BackEnd):
             # TODO save complexity per field.
             plan_dict = self.planning_item.plan_dict
             for k, beam in self.planning_item.plan_dict['beams'].items():
-                fig, ax = plt.subplots()
-                complexity_per_beam_cp = self._complexity.CalculateForBeamPerAperture(None, plan_dict, beam)
-                ax.plot(complexity_per_beam_cp)
-                ax.set_xlabel('Control Point')
-                ax.set_ylabel('CI [mm-1]')
-                txt = 'Beam name: %s  - aperture complexity per control point' % str(k)
-                ax.set_title(txt)
-                diretory, filename = os.path.split(self.dcm_files['rtplan'])
-                figure_name = 'beam_' + str(k) + '_complexity.png'
-                figure_path = os.path.join(diretory, figure_name)
-                fig.savefig(figure_path, format='png', dpi=100)
-                plt.close('all')
+                # check if treatment beam
+                if beam['TreatmentDeliveryType'] == 'TREATMENT':
+                    fig, ax = plt.subplots()
+                    complexity_per_beam_cp = self._complexity.CalculateForBeamPerAperture(None, plan_dict, beam)
+                    ax.plot(complexity_per_beam_cp)
+                    ax.set_xlabel('Control Point')
+                    ax.set_ylabel('CI [mm-1]')
+                    txt = 'Beam name: %s  - aperture complexity per control point' % str(k)
+                    ax.set_title(txt)
+                    diretory, filename = os.path.split(self.dcm_files['rtplan'])
+                    figure_name = 'beam_' + str(k) + '_complexity.png'
+                    figure_path = os.path.join(diretory, figure_name)
+                    fig.savefig(figure_path, format='png', dpi=100)
+                    plt.close('all')
 
     def save_dvh_data(self, file_name=''):
         if self._dvh_data:
