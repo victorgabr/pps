@@ -1,0 +1,386 @@
+------- Component -------
+NCCN  NSCLC SABR 5 Fraction.CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Algorithms\RTOG PROTOCOLS\LUNG\NCCN  NSCLC SABR\NCCN  NSCLC SABR 5 Fraction.CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>Metric ID</string>
+    <string>Score Function</string>
+    <string>Scalable</string>
+    <string>Pass/Fail</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.45</string>
+    <string>100.91</string>
+    <string>25.40</string>
+    <string>25.56</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>[SPINAL CORD] Max dose (Gy)</string>
+    <string>[ESOPHAGUS] Max dose (Gy)</string>
+    <string>[BRACHIAL PLEXUS] Max dose (Gy)</string>
+    <string>[HEART/PERICARDIUM] Max dose (Gy)</string>
+    <string>[GREAT VESSELS] Max dose (Gy)</string>
+    <string>[TRACHEA AND PROXIMAL BRONCHI] Max dose (Gy)</string>
+    <string>[RIB] Max dose (Gy)</string>
+    <string>[SKIN] Max dose (Gy)</string>
+    <string>[STOMACH] Max dose (Gy)</string>
+    <string>NCCN  NSCLC SABR 5 Fraction\[SPINAL CORD] Max dose (Gy) [Goal 30, Fail 30.001, 1 pts]</string>
+    <string>NCCN  NSCLC SABR 5 Fraction\[ESOPHAGUS] Max dose (Gy) [Goal 32.5, Fail 32.501, 1 pts]</string>
+    <string>NCCN  NSCLC SABR 5 Fraction\[BRACHIAL PLEXUS] Max dose (Gy) [Goal 30, Fail 30.001, 1 pts]</string>
+    <string>NCCN  NSCLC SABR 5 Fraction\PERICARDIUM] Max dose (Gy) [Goal 35, Fail 35.001, 1 pts]</string>
+    <string>NCCN  NSCLC SABR 5 Fraction\[GREAT VESSELS] Max dose (Gy) [Goal 55, Fail 55.001, 1 pts]</string>
+    <string>NCCN  NSCLC SABR 5 Fraction\[TRACHEA AND PROXIMAL BRONCHI] Max dose (Gy) [Goal 32.5, Fail 32.501, 1 pts]</string>
+    <string>NCCN  NSCLC SABR 5 Fraction\[RIB] Max dose (Gy) [Goal 32.5, Fail 32.501, 1 pts]</string>
+    <string>NCCN  NSCLC SABR 5 Fraction\[SKIN] Max dose (Gy) [Goal 40, Fail 40.001, 1 pts]</string>
+    <string>NCCN  NSCLC SABR 5 Fraction\[STOMACH] Max dose (Gy) [Goal 35, Fail 35.001, 1 pts]</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+  </RasterData>
+  <PlotAs>Blank</PlotAs>
+  <DatagridWidth>686</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SPINAL CORD] Max dose (Gy) [Goal 30, Fail 30.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN  NSCLC SABR 5 Fraction\[SPINAL CORD] Max dose (Gy) [Goal 30, Fail 30.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SPINAL CORD] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>30.01</string>
+    <string>30</string>
+    <string>20</string>
+    <string>40.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[ESOPHAGUS] Max dose (Gy) [Goal 32.5, Fail 32.501, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN  NSCLC SABR 5 Fraction\[ESOPHAGUS] Max dose (Gy) [Goal 32.5, Fail 32.501, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[ESOPHAGUS] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>32.51</string>
+    <string>32.5</string>
+    <string>22.5</string>
+    <string>42.501</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRACHIAL PLEXUS] Max dose (Gy) [Goal 30, Fail 30.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN  NSCLC SABR 5 Fraction\[BRACHIAL PLEXUS] Max dose (Gy) [Goal 30, Fail 30.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRACHIAL PLEXUS] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>30.01</string>
+    <string>30</string>
+    <string>20</string>
+    <string>40.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+PERICARDIUM] Max dose (Gy) [Goal 35, Fail 35.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN  NSCLC SABR 5 Fraction\PERICARDIUM] Max dose (Gy) [Goal 35, Fail 35.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART/PERICARDIUM] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>35.01</string>
+    <string>35</string>
+    <string>25</string>
+    <string>45.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[GREAT VESSELS] Max dose (Gy) [Goal 55, Fail 55.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN  NSCLC SABR 5 Fraction\[GREAT VESSELS] Max dose (Gy) [Goal 55, Fail 55.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[GREAT VESSELS] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>55.01</string>
+    <string>55</string>
+    <string>45</string>
+    <string>65.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[TRACHEA AND PROXIMAL BRONCHI] Max dose (Gy) [Goal 32.5, Fail 32.501, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN  NSCLC SABR 5 Fraction\[TRACHEA AND PROXIMAL BRONCHI] Max dose (Gy) [Goal 32.5, Fail 32.501, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[TRACHEA AND PROXIMAL BRONCHI] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>32.51</string>
+    <string>32.5</string>
+    <string>22.5</string>
+    <string>42.501</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RIB] Max dose (Gy) [Goal 32.5, Fail 32.501, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN  NSCLC SABR 5 Fraction\[RIB] Max dose (Gy) [Goal 32.5, Fail 32.501, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RIB] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>32.51</string>
+    <string>32.5</string>
+    <string>22.5</string>
+    <string>42.501</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SKIN] Max dose (Gy) [Goal 40, Fail 40.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN  NSCLC SABR 5 Fraction\[SKIN] Max dose (Gy) [Goal 40, Fail 40.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SKIN] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40.01</string>
+    <string>40</string>
+    <string>30</string>
+    <string>50.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[STOMACH] Max dose (Gy) [Goal 35, Fail 35.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN  NSCLC SABR 5 Fraction\[STOMACH] Max dose (Gy) [Goal 35, Fail 35.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[STOMACH] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>35.01</string>
+    <string>35</string>
+    <string>25</string>
+    <string>45.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>

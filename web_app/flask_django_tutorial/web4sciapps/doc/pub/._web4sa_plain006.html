@@ -1,0 +1,586 @@
+<!--
+Automatically generated HTML file from DocOnce source
+(https://github.com/hplgit/doconce/)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="generator" content="DocOnce: https://github.com/hplgit/doconce/"/>
+    <meta name="description" content="Using Web Frameworks for Scientific Applications">
+    <meta name="keywords"
+          content="web frameworks,MVC pattern,Flask installation,Flask input forms,Flask HTML templates,Flask MVC pattern,Flask troubleshooting,Django installation,Django making a project,Django making an application,Django input forms,Django HTML templates,Flask input forms,Flask error checking,Flask CSS style sheets,Flask LaTeX mathematics,Flask input validation,inline PNG image in HTML,base64 encoding of PNG images,inline SVG figure in HTML,mpld3 plotting,Flask Bokeh plotting,Bokeh plotting,highcharts,Flask login,Flask database,Flask uploading of files,Flask file upload,Django input forms,Django input validation">
+
+    <title>Using Web Frameworks for Scientific Applications</title>
+
+
+    <style type="text/css">
+/* bloodish style */
+
+body {
+  font-family: Helvetica, Verdana, Arial, Sans-serif;
+  color: #404040;
+  background: #ffffff;
+}
+h1 { font-size: 1.8em;  color: #8A0808; }
+h2 { font-size: 1.6em;  color: #8A0808; }
+h3 { font-size: 1.4em;  color: #8A0808; }
+h4 { color: #8A0808; }
+a { color: #8A0808; text-decoration:none; }
+tt { font-family: "Courier New", Courier; }
+/* pre style removed because it will interfer with pygments */
+p { text-indent: 0px; }
+hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+p.caption { width: 80%; font-style: normal; text-align: left; }
+hr.figure { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+.alert-text-small   { font-size: 80%;  }
+.alert-text-large   { font-size: 130%; }
+.alert-text-normal  { font-size: 90%;  }
+.alert {
+  padding:8px 35px 8px 14px; margin-bottom:18px;
+  text-shadow:0 1px 0 rgba(255,255,255,0.5);
+  border:1px solid #bababa;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  color: #555;
+  background-color: #f8f8f8;
+  background-position: 10px 5px;
+  background-repeat: no-repeat;
+  background-size: 38px;
+  padding-left: 55px;
+  width: 75%;
+ }
+.alert-block {padding-top:14px; padding-bottom:14px}
+.alert-block > p, .alert-block > ul {margin-bottom:1em}
+.alert li {margin-top: 1em}
+.alert-block p+p {margin-top:5px}
+.alert-notice { background-image: url(https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_images/small_gray_notice.png); }
+.alert-summary  { background-image:url(https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_images/small_gray_summary.png); }
+.alert-warning { background-image: url(https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_images/small_gray_warning.png); }
+.alert-question {background-image:url(https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_images/small_gray_question.png); }
+
+div { text-align: justify; text-justify: inter-word; }
+
+    </style>
+
+
+</head>
+
+<!-- tocinfo
+{'highest level': 1,
+ 'sections': [('Web frameworks', 1, None, '___sec0'),
+              ('Other frameworks', 3, None, '___sec1'),
+              ('The MVC pattern', 2, None, '___sec2'),
+              ('A very simple application', 2, None, '___sec3'),
+              ('Application of the MVC pattern', 2, 'wf:hw:mvc', 'wf:hw:mvc'),
+              ('Making a Flask application', 1, None, '___sec5'),
+              ('Programming the Flask application', 2, None, '___sec6'),
+              ('The user interaction', 3, None, '___sec7'),
+              ('The Python code', 3, None, '___sec8'),
+              ('Dissection', 3, None, '___sec9'),
+              ('The template files', 3, None, '___sec10'),
+              ('Testing the application', 3, None, '___sec11'),
+              ('Equipping the input page with output results',
+               2,
+               None,
+               '___sec12'),
+              ('Splitting the app into model, view, and controller files',
+               2,
+               'wf:hw3:flask',
+               'wf:hw3:flask'),
+              ('Troubleshooting', 2, None, '___sec14'),
+              ('Address already in use', 3, None, '___sec15'),
+              ('Making a Django application', 1, None, '___sec16'),
+              ('Setting up a Django project', 2, None, '___sec17'),
+              ('Setting up a Django application', 2, None, '___sec18'),
+              ('Programming the Django application', 2, None, '___sec19'),
+              ('The user interaction', 3, None, '___sec20'),
+              ('The model', 3, None, '___sec21'),
+              ('The view', 3, None, '___sec22'),
+              ('Making the input page', 3, None, '___sec23'),
+              ('Making the results page', 3, None, '___sec24'),
+              ('Equipping the input page with output results',
+               2,
+               None,
+               '___sec25'),
+              ('Handling multiple input variables in Flask',
+               1,
+               'wf:vib:flask',
+               'wf:vib:flask'),
+              ('Programming the Flask application',
+               2,
+               'wf:vib1:flask:app',
+               'wf:vib1:flask:app'),
+              ('The compute part', 3, None, '___sec28'),
+              ('The model', 3, None, '___sec29'),
+              ('The view', 3, None, '___sec30'),
+              ('The HTML template', 3, None, '___sec31'),
+              ('Implementing error checking in the template',
+               2,
+               None,
+               '___sec32'),
+              ('Using style sheets', 2, None, '___sec33'),
+              ('Using LaTeX mathematics', 2, None, '___sec34'),
+              ('Rearranging the elements in the HTML template',
+               2,
+               None,
+               '___sec35'),
+              ('Bootstrap HTML style', 2, None, '___sec36'),
+              ('Custom validation',
+               2,
+               'wf:vib1:flask:validation',
+               'wf:vib1:flask:validation'),
+              ('Using Flask validators', 3, None, '___sec38'),
+              ('Tailored validation', 3, None, '___sec39'),
+              ('Tailored validation of intervals', 3, None, '___sec40'),
+              ('Demo', 3, None, '___sec41'),
+              ('Avoiding plot files',
+               2,
+               'wf:vib2:flask:nofiles',
+               'wf:vib2:flask:nofiles'),
+              ('PNG plots', 3, None, '___sec43'),
+              ('SVG plots', 3, None, '___sec44'),
+              ('Using mpld3', 3, None, '___sec45'),
+              ('Plotting with the Bokeh library',
+               2,
+               'wf:bokeh:flask',
+               'wf:bokeh:flask'),
+              ('Pandas highcharts plotting library', 3, None, '___sec47'),
+              ('Autogenerating the code',
+               2,
+               'wf:autogen:flask',
+               'wf:autogen:flask'),
+              ('Inspecting function signatures', 3, None, '___sec49'),
+              ('Generating the model', 3, None, '___sec50'),
+              ('Generating the view', 3, None, '___sec51'),
+              ('Generating the template', 3, None, '___sec52'),
+              ('Application', 3, None, '___sec53'),
+              ('User login and storage of computed results',
+               2,
+               'wf:flask:login',
+               'wf:flask:login'),
+              ('Required additional software', 3, None, '___sec55'),
+              ('The compute part', 3, None, '___sec56'),
+              ('The interfaces of the app', 3, None, '___sec57'),
+              ('The source code', 3, None, '___sec58'),
+              ('Resources', 3, None, '___sec59'),
+              ('Uploading of files', 2, 'wf:flask:upload', 'wf:flask:upload'),
+              ('Overview of the application', 3, None, '___sec61'),
+              ('The model class', 3, None, '___sec62'),
+              ('The controller file', 3, None, '___sec63'),
+              ('The compute function', 3, None, '___sec64'),
+              ('The HTML template', 3, None, '___sec65'),
+              ('Handling multiple input variables in Django',
+               1,
+               'wf:vib:django',
+               'wf:vib:django'),
+              ('Programming the Django application', 2, None, '___sec67'),
+              ('Adding the app to a project', 3, None, '___sec68'),
+              ('The compute part', 3, None, '___sec69'),
+              ('The model', 3, None, '___sec70'),
+              ('The view', 3, None, '___sec71'),
+              ('Custom validation', 2, None, '___sec72'),
+              ('Customizing widgets', 2, None, '___sec73'),
+              ('Resources', 2, None, '___sec74'),
+              ('Exercises', 1, None, '___sec75'),
+              ('Exercise 1: Add two numbers',
+               2,
+               'wf:exer:add2',
+               'wf:exer:add2'),
+              ('Exercise 2: Upload data file and visualize curves',
+               2,
+               'wf:exer:upload',
+               'wf:exer:upload'),
+              ('Exercise 3: Plot a user-specified formula',
+               2,
+               'wf:exer:formula',
+               'wf:exer:formula'),
+              ('Exercise 4: Visualize Taylor polynomial approximations',
+               2,
+               'wf:exer:Taylor',
+               'wf:exer:Taylor'),
+              ('Exercise 5: Extend the `gen` app',
+               2,
+               'wf:exer:gen:demo',
+               'wf:exer:gen:demo'),
+              ('Exercise 6: Make a web app with multiple apps',
+               2,
+               'wf:exer:addmul',
+               'wf:exer:addmul'),
+              ('Exercise 7: Equip the `gen` app with more data types',
+               2,
+               'wf:exer:gen:lists',
+               'wf:exer:gen:lists'),
+              ('Exercise 8: Auto-generate code from function signature',
+               2,
+               None,
+               '___sec83'),
+              ('Project 9: Interactive function exploration',
+               2,
+               'wf:exer:bokeh_UI',
+               'wf:exer:bokeh_UI'),
+              ('Resources', 1, None, '___sec85'),
+              ('Flask resources', 2, None, '___sec86'),
+              ('Django resources', 2, None, '___sec87')]}
+end of tocinfo -->
+
+<body>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+     equationNumbers: {  autoNumber: "none"  },
+     extensions: ["AMSmath.js", "AMSsymbols.js", "autobold.js", "color.js"]
+  }
+});
+
+</script>
+<script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<a name="part0006"></a>
+<p>
+    <!-- begin top navigation -->
+<table style="width: 100%">
+    <tr>
+        <td>
+            <div style="text-align: left;"><a href="._web4sa_plain005.html">&laquo; Previous</a></div>
+        </td>
+        <td>
+            <div style="text-align: right;"><a href="._web4sa_plain007.html">Next &raquo;</a></div>
+        </td>
+    </tr>
+</table>
+<!-- end top navigation -->
+</p>
+
+<p>
+    <!-- !split -->
+
+<h1 id="___sec16">Making a Django application </h1>
+
+<p>
+    We recommend to
+    download and istall the latest official version of Django from
+    <a href="http://www.djangoproject.com/download/" target="_self"><tt>http://www.djangoproject.com/download/</tt></a>.
+    Pack out the tarfile, go
+    to the directory, and run <code>setup.py</code>:
+
+<p>
+
+    <!-- code=text (!bc sys) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">Terminal&gt; tar xvzf Django-1.5-tar.gz
+Terminal&gt; cd Django-1.5
+Terminal&gt; sudo python setup.py install
+</pre>
+</div>
+<p>
+    The version in this example, 1.5, may be different at the time you
+    follow these instructions.
+
+<h2 id="___sec17">Setting up a Django project </h2>
+
+<p>
+    Django applies two concepts: <em>project</em> and <em>application</em> (or <em>app</em>).
+    The app is the program we want to run through a web interface. The
+    project is a Python package containing common settings and
+    configurations for a collection of apps. This means that before we can
+    make a Django app, we must to establish a Django project.
+
+<p>
+    A Django project for managing a set of Django apps is
+    created by the command
+
+<p>
+
+    <!-- code=text (!bc sys) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">Terminal&gt; django-admin.py startproject django_project
+</pre>
+</div>
+<p>
+    The result in this example
+    is a directory <code>django_project</code> whose content can be explored
+    by some <code>ls</code> and <code>cd</code> commands:
+
+<p>
+
+    <!-- code=text (!bc sys) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">Terminal&gt; ls django_project
+manage.py django_project
+Terminal&gt; cd django_project/django_project
+Terminal&gt; ls
+__init__.py settings.py urls.py wsgi.py
+</pre>
+</div>
+<p>
+    The meaning of the generated files is briefly listed below.
+
+<ul>
+    <li> The outer <code>django_project/</code> directory is just a container for your project. Its name does not matter
+        to Django.
+    </li>
+    <li><code>manage.py</code> is a command-line utility that lets you interact with this Django project in various
+        ways. You will typically run <code>manage.py</code> to launch a Django application.
+    </li>
+    <li> The inner <code>django_project/</code> directory is a Python package for the Django project. Its name is used
+        in import statements in Python code (e.g., <code>import django_project.settings</code>).
+    </li>
+    <li><code>django_project/__init__.py</code> is an empty file that just tells Python that this directory should be
+        considered a Python package.
+    </li>
+    <li><code>django_project/settings.py</code> contains the settings and configurations for this Django project.</li>
+    <li><code>django_project/urls.py</code> maps URLs to specific functions and thereby defines that actions that
+        various URLs imply.
+    </li>
+    <li><code>django_project/wsgi.py</code> is not needed in our examples.</li>
+</ul>
+
+Django comes with a web server for developing and debugging applications.
+The server is started by running
+
+<p>
+
+    <!-- code=text (!bc sys) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">Terminal&gt; python manage.py runserver
+Validating models...
+
+0 errors found
+March 34, 201x - 01:09:24
+Django version 1.5, using settings &#39;django_project.settings&#39;
+Development server is running at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+</pre>
+</div>
+<p>
+    The output from starting the server tells that the server runs on the
+    URL <code>http://127.0.0.1:8000/</code>.
+    Load this URL into your browser to see a welcome message from Django,
+    meaning that the server is working.
+
+<p>
+    Despite the fact that our introductory
+    web applications do not need a database, you
+    have to register a database with any Django project. To this end,
+    open the <code>django_project/settings.py</code> file in a text editor,
+    locate the <code>DATABASES</code> dictionary and type in the following
+    code:
+
+<p>
+
+    <!-- code=python (!bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span
+        style="color: #008000; font-weight: bold">import</span> <span
+        style="color: #0000FF; font-weight: bold">os</span>
+
+<span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">relative2absolute_path</span>(relative_path):
+    <span style="color: #BA2121; font-style: italic">&quot;&quot;&quot;Return the absolute path correspodning to relative_path.&quot;&quot;&quot;</span>
+    dir_of_this_file <span style="color: #666666">=</span> os<span style="color: #666666">.</span>path<span
+            style="color: #666666">.</span>dirname(os<span style="color: #666666">.</span>path<span
+            style="color: #666666">.</span>abspath(__file__))
+    <span style="color: #008000; font-weight: bold">return</span> dir_of_this_file <span style="color: #666666">+</span> <span
+            style="color: #BA2121">&#39;/&#39;</span> <span style="color: #666666">+</span> relative_path
+
+DATABASES <span style="color: #666666">=</span> {
+   <span style="color: #BA2121">&#39;default&#39;</span> : {
+      <span style="color: #BA2121">&#39;ENGINE&#39;</span>: <span style="color: #BA2121">&#39;django.db.backends.sqlite3&#39;</span>,
+      <span style="color: #BA2121">&#39;NAME&#39;</span>: relative2absolute_path(<span style="color: #BA2121">&#39;../database.db&#39;</span>)
+   }
+}
+</pre>
+</div>
+<p>
+    The <code>settings.py</code> file needs absolute paths to files, while it is
+    more convenient for us to specify relative paths. Therefore,
+    we made a function that figures out the absolute path to the <code>settings.py</code>
+    file and then combines this absolute path with the relative path.
+    The location and name of the database file can be chosen as desired.
+    Note that one should <em>not</em> use <code>os.path.join</code> to create paths as Django
+    always applies the forward slash between directories, also on Windows.
+
+<h2 id="___sec18">Setting up a Django application </h2>
+
+<p>
+    The next step is to create a Django app for our scientific hello
+    world program. We can place the app in any directory, but here we
+    utilize the following organization.
+    As neighbor to <code>django_project</code> we have
+    a directory <code>apps</code> containing our various scientific applications.
+    Under <code>apps</code> we create a directory <code>django_apps</code> with
+    our different versions of Django applications.
+    The directory <code>py_apps</code> contains the
+    original <code>hw.py</code> program in the subdirectory <code>orig</code>,
+    while split of this
+    program according to the MVC pattern appears in the <code>mvc</code> directory.
+
+<p>
+    The directory <code>django_apps/hw1</code> is our first attempt to write
+    a Django-based web interface for the <code>hw.py</code> program.
+    The directory structure is laid out by
+<p>
+
+    <!-- code=text (!bc sys) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">Terminal&gt; cd ..
+Terminal&gt; mkdir apps
+Terminal&gt; cd apps
+Terminal&gt; mkdir py_apps
+Terminal&gt; cd py
+Terminal&gt; mkdir orig mvc
+Terminal&gt; cd ../..
+Terminal&gt; mkdir django_apps
+Terminal&gt; cd django_apps
+</pre>
+</div>
+<p>
+    The file <code>hw.py</code> is moved to <code>orig</code> while <code>mvc</code> contains
+    the MVC refactored version with the files <code>model.py</code>, <code>view.py</code>, <code>compute.py</code>,
+    and <code>controller.py</code>.
+
+<p>
+    The <code>hw1</code> directory, containing our first Django application, must be
+    made with
+<p>
+
+    <!-- code=text (!bc sys) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">Terminal&gt; python ../../django_project/manage.py startapp hw1
+</pre>
+</div>
+<p>
+    The command creates a directory <code>hw1</code> with four empty files:
+
+<p>
+
+    <!-- code=text (!bc sys) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">Terminal&gt; cd hw1
+Terminal&gt; ls
+__init__.py models.py tests.py views.py
+</pre>
+</div>
+<p>
+    The <code>__init__.py</code> file will remain empty to just indicate that the
+    Django application is a Python package. The other files need to be
+    filled with the right content, which happens in the next section.
+
+<p>
+    At this point,
+    we need to register some information about our application in the
+    <code>django_project/settings.py</code> and <code>django_project/urls.py</code> files.
+
+<p>
+    <b>Step 1: Add the app.</b>
+    Locate the <code>INSTALLED_APPS</code>
+    tuple in <code>settings.py</code> and add your Django application as a Python package:
+
+<p>
+
+    <!-- code=python (!bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">INSTALLED_APPS <span
+        style="color: #666666">=</span> (
+    <span style="color: #BA2121">&#39;django.contrib.auth&#39;</span>,
+    <span style="color: #BA2121">&#39;django.contrib.contenttypes&#39;</span>,
+    <span style="color: #666666">...</span>
+    <span style="color: #BA2121">&#39;hw1&#39;</span>,
+)
+</pre>
+</div>
+<p>
+    Unfortunately, Django will not be able to find the package <code>hw1</code>
+    unless we register the parent directory in <code>sys.path</code>:
+
+<p>
+
+    <!-- code=python (!bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span
+        style="color: #008000; font-weight: bold">import</span> <span
+        style="color: #0000FF; font-weight: bold">sys</span>
+sys<span style="color: #666666">.</span>path<span style="color: #666666">.</span>insert(<span
+            style="color: #666666">0</span>, relative2absolute_path(<span style="color: #BA2121">&#39;../../apps/django_apps&#39;</span>))
+</pre>
+</div>
+<p>
+    Note here that the relative path is given with respect to the
+    location of the <code>settings.py</code> script.
+
+<p>
+    <b>Step 2: Add a template directory.</b>
+    Make a subdirectory <code>templates</code> under <code>hw1</code>,
+
+<p>
+
+    <!-- code=text (!bc sys) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">Terminal&gt; mkdir templates
+</pre>
+</div>
+<p>
+    and add the absolute path of this directory to the <code>TEMPLATE_DIRS</code> tuple:
+
+<p>
+
+    <!-- code=python (!bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">TEMPLATE_DIRS <span
+        style="color: #666666">=</span> (
+    relative2absolute_path(<span style="color: #BA2121">&#39;../../apps/django_apps/hw1/templates&#39;</span>),
+)
+</pre>
+</div>
+<p>
+    The <code>templates</code> directory will hold templates for the HTML code applied
+    in the web interfaces. The trailing comma is important as this is
+    a tuple with only one element.
+
+<p>
+    <b>Step 3: Define the URL.</b>
+    We need to connect the Django app with
+    an URL. Our app will be associated with a Python function <code>index</code>
+    in the <code>views</code> module within the <code>hw1</code> package.
+    Say we want the corresponding URL to
+    be named <code>hw1</code> relative to the server URL.
+    This information is registered in the <code>django_project/urls.py</code> file
+    by the syntax
+
+<p>
+
+    <!-- code=python (!bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">urlpatterns <span
+        style="color: #666666">=</span> patterns(<span style="color: #BA2121">&#39;&#39;</span>,
+    url(<span style="color: #BA2121">r&#39;^hw1/&#39;</span>, <span style="color: #BA2121">&#39;django_apps.hw1.views.index&#39;</span>),
+</pre>
+</div>
+<p>
+    The first argument to the <code>url</code> function is a regular expression for
+    the URL and the second argument is the name of the function to call,
+    using Python's syntax for a function <code>index</code> in a module <code>views</code> in
+    a package <code>hw1</code>.
+    The function name <code>index</code> resembles the <code>index.html</code> main page associated
+    with an URL, but any other name than <code>index</code> can be used.
+
+<p>
+<p>
+    <!-- begin bottom navigation -->
+<table style="width: 100%">
+    <tr>
+        <td>
+            <div style="text-align: left;"><a href="._web4sa_plain005.html">&laquo; Previous</a></div>
+        </td>
+        <td>
+            <div style="text-align: right;"><a href="._web4sa_plain007.html">Next &raquo;</a></div>
+        </td>
+    </tr>
+</table>
+<!-- end bottom navigation -->
+</p>
+
+<!-- ------------------- end of main content --------------- -->
+
+
+<center style="font-size:80%">
+    <!-- copyright only on the titlepage -->
+</center>
+
+
+</body>
+</html>
+    
+

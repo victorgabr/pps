@@ -1,0 +1,167 @@
+------- Component -------
+RTOG 0539 Group II Meningioma 54Gy.CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Algorithms\RTOG PROTOCOLS\BRAIN\RTOG 0539 Meningioma\RTOG 0539 Group II Meningioma 54Gy\RTOG 0539 Group II Meningioma 54Gy.CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>Metric ID</string>
+    <string>Score Function</string>
+    <string>Scalable</string>
+    <string>Pass/Fail</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>100.00</string>
+    <string>25.00</string>
+    <string>25.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>[PTV] V[54.0Gy] (%)</string>
+    <string>[PTV] Min dose (Gy)</string>
+    <string>[PTV] D[0.03cc] (Gy)</string>
+    <string>[RIGHT LENS] D[0.03cc] (Gy)</string>
+    <string>[LEFT LENS] D[0.03cc] (Gy)</string>
+    <string>[RIGHT RETINA] D[0.03cc] (Gy)</string>
+    <string>[LEFT RETINA] D[0.03cc] (Gy)</string>
+    <string>[RIGHT OPTIC NERVE] D[0.03cc] (Gy)</string>
+    <string>[LEFT OPTIC NERVE] D[0.03cc] (Gy)</string>
+    <string>[OPTIC CHIASM] D[0.03cc] (Gy)</string>
+    <string>[BRAINSTEM] D[0.03cc] (Gy)</string>
+    <string>≥95</string>
+    <string>RTOG 0539 Group II Meningioma 54Gy\[PTV] Min dose (Gy) [Goal 51, Fail 48, 1 pts]</string>
+    <string>RTOG 0539 Group II Meningioma 54Gy\[PTV] D[0.03cc] (Gy) [Goal 60, Fail 63, 1 pts]</string>
+    <string>≤5</string>
+    <string>≤5</string>
+    <string>≤45</string>
+    <string>≤45</string>
+    <string>≤50</string>
+    <string>≤50</string>
+    <string>≤54</string>
+    <string>≤55</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+  </RasterData>
+  <PlotAs>Blank</PlotAs>
+  <DatagridWidth>492</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+≥95
+------- Component -------
+[PTV] Min dose (Gy) [Goal 51, Fail 48, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0539 Group II Meningioma 54Gy\[PTV] Min dose (Gy) [Goal 51, Fail 48, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV] Min dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>48</string>
+    <string>51</string>
+    <string>38</string>
+    <string>61</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV] D[0.03cc] (Gy) [Goal 60, Fail 63, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0539 Group II Meningioma 54Gy\[PTV] D[0.03cc] (Gy) [Goal 60, Fail 63, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV] D[0.03cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>63</string>
+    <string>60</string>
+    <string>50</string>
+    <string>73</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+≤5
+------- Component -------
+≤5
+------- Component -------
+≤45
+------- Component -------
+≤45
+------- Component -------
+≤50
+------- Component -------
+≤50
+------- Component -------
+≤54
+------- Component -------
+≤55

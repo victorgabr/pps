@@ -1,0 +1,2332 @@
+------- Component -------
+Quantec Conventional RT Constraints.CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Algorithms\RTOG PROTOCOLS\OTHER SITES\Quantec Conventional RT Constraints.CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>Metric ID</string>
+    <string>Score Function</string>
+    <string>Scalable</string>
+    <string>Pass/Fail</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>49.40</string>
+    <string>98.79</string>
+    <string>25.08</string>
+    <string>25.11</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>[BRAIN (&lt;3% RATE OF SYMPTOMATIC NECROSIS] Max dose (Gy)</string>
+    <string>[BRAIN (5% RATE OF  SYMPTOMATIC NECROSIS)] Max dose (Gy)</string>
+    <string>[BRAIN (10% RATE OF SYMPTOMATIC NECROSIS)] Max dose (Gy)</string>
+    <string>[BRAINSTEM (&lt;5% RATE OF NEUROPATHY OR NECROSIS)] Max dose (Gy)</string>
+    <string>[BRAINSTEM (&lt;5% RATE OF NEUROPATHY OR NECROSIS)] V[59.0Gy] (cc)</string>
+    <string>[BRAINSTEM (&lt;5% RATE OF NEUROPATHY OR NECROSIS)] D[0.999cc] (Gy)</string>
+    <string>[OPTIC NERVE/CHIASM (&lt;3% RATE OF OPTIC NEUROPATHY)] Max dose (Gy)</string>
+    <string>[OPTIC NERVE/CHIASM (3-7% RATE OF OPTIC NEUROPATHY)] Max dose (Gy)</string>
+    <string>[OPTIC NERVE/CHIASM (&lt;7-20% RATE OF OPTIC NEUROPATHY)] Max dose (Gy)</string>
+    <string>[SPINAL CORD (0.2% RATE OF MYELOPATHY)] Max dose (Gy)</string>
+    <string>[SPINAL CORD (6% RATE OF MYELOPATHY)] Max dose (Gy)</string>
+    <string>[SPINAL CORD (50% RATE OF MYELOPATHY)] Max dose (Gy)</string>
+    <string>[COCHLEA (&lt;30% RATE OF SENSORY NEURAL HEARING LOSS] Mean dose (Gy)</string>
+    <string>[BILATERAL PAROTID (20% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy)</string>
+    <string>[BILATERAL PAROTID (50% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy)</string>
+    <string>[UNILATERAL PAROTID (20% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy)</string>
+    <string>[PHARYNGEAL CONSTRICTORS (20% RATE OF SYMPTOMATIC DYSPHAGIA AND ASPIRATION)] Mean dose (Gy)</string>
+    <string>[LARYNX (&lt;20% RATE OF VOCAL DYSFUNCTION)] Max dose (Gy)</string>
+    <string>[LARYNX (30% RATE OF ASPIRATION)] Mean dose (Gy)</string>
+    <string>[LARYNX (&lt;20% RATE OF EDEMA)] Mean dose (Gy)</string>
+    <string>[LARYNX (&lt;20% RATE OF EDEMA)] V[50.0Gy] (%)</string>
+    <string>[LUNG (&lt;20% RATE OF SYMTOMATIC PNEUMONITIS)] V[20.0Gy] (%)</string>
+    <string>[LUNG (5% RATE OF SYMTOMATIC PNEUMONITIS)] Mean dose (Gy)</string>
+    <string>[LUNG (10% RATE OF SYMTOMATIC PNEUMONITIS)] Mean dose (Gy)</string>
+    <string>[LUNG (20% RATE OF SYMTOMATIC PNEUMONITIS)] Mean dose (Gy)</string>
+    <string>[LUNG (30% RATE OF SYMTOMATIC PNEUMONITIS)] Mean dose (Gy)</string>
+    <string>[LUNG (40% RATE OF SYMTOMATIC PNEUMONITIS)] Mean dose (Gy)</string>
+    <string>[ESOPHAGUS (5-20% RATE OF GRADE 3+ ESOPHAGITIS)] Mean dose (Gy)</string>
+    <string>[ESOPHAGUS (30% RATE OF GRADE 2+ ESOPHAGITIS)] V[35.0Gy] (%)</string>
+    <string>[ESOPHAGUS (30% RATE OF GRADE 2+ ESOPHAGITIS)] V[50.0Gy] (%)</string>
+    <string>[ESOPHAGUS (30% RATE OF GRADE 2+ ESOPHAGITIS)] V[70.0Gy] (%)</string>
+    <string>[HEART(PERICARDIUM)(&lt;15% RATE OF PERICARDITIS)] Mean dose (Gy)</string>
+    <string>[HEART(PERICARDIUM)(&lt;15% RATE OF PERICARDITIS)] V[30.0Gy] (%)</string>
+    <string>[HEART (&lt;1% RATE OF LONG TERM CARDIAC MORTALITY)] V[25.0Gy] (%)</string>
+    <string>[LIVER (&lt;5% RATE OF RADIATION INDUCED LIVER DISEASE)] Mean dose (Gy)</string>
+    <string>[LIVER (&lt;50% RATE OF RADIATION INDUCED LIVER DISEASE)] Mean dose (Gy)</string>
+    <string>[LIVER (&lt;5% RATE OF RADIATION INDUCED LIVER DISEASE)] Mean dose (Gy)</string>
+    <string>[LIVER (&lt;50% RATE OF RADIATION INDUCED LIVER DISEASE)] Mean dose (Gy)</string>
+    <string>[BILATERAL KIDNEY (&lt;5% RATE OF CLINICAL DYSFUNCTION )] Mean dose (Gy)</string>
+    <string>[BILATERAL KIDNEY (&lt;50% RATE OF CLINICAL DYSFUNCTION )] Mean dose (Gy)</string>
+    <string>[BILATERAL KIDNEY (&lt;5% RATE OF CLINICAL DYSFUNCTION )] V[12.0Gy] (%)</string>
+    <string>[BILATERAL KIDNEY (&lt;5% RATE OF CLINICAL DYSFUNCTION )] V[20.0Gy] (%)</string>
+    <string>[BILATERAL KIDNEY (&lt;5% RATE OF CLINICAL DYSFUNCTION )] V[23.0Gy] (%)</string>
+    <string>[BILATERAL KIDNEY (&lt;5% RATE OF CLINICAL DYSFUNCTION )] V[28.0Gy] (%)</string>
+    <string>[STOMACH (&lt;7% RATE OF ULCERATION)] D[100.0%] (Gy)</string>
+    <string>[SMALL BOWEL (INDIVIDUAL LOOPS)(&lt;10% RATE OF  GRADE 3+ TOXICITY)] V[15.0Gy] (cc)</string>
+    <string>[SMALL BOWEL (PERITONEAL CAVITY)(&lt;10% RATE OF  GRADE 3+ TOXICITY)] V[45.0Gy] (cc)</string>
+    <string>[RECTUM (&lt;10% RATE OF  GRADE 3+ TOXICITY)] V[50.0Gy] (%)</string>
+    <string>[RECTUM (&lt;10% RATE OF  GRADE 3+ TOXICITY)] V[60.0Gy] (%)</string>
+    <string>[RECTUM (10% RATE OF  GRADE 3+ TOXICITY)] V[65.0Gy] (%)</string>
+    <string>[RECTUM (10% RATE OF  GRADE 3+ TOXICITY)] V[70.0Gy] (%)</string>
+    <string>[RECTUM (&lt;10% RATE OF  GRADE 3+ TOXICITY)] V[75.0Gy] (%)</string>
+    <string>[BLADDER (BLADDER  CANCER)] Max dose (Gy)</string>
+    <string>[BLADDER (PROSTATE  CANCER)] V[65.0Gy] (%)</string>
+    <string>[BLADDER (PROSTATE  CANCER)] V[70.0Gy] (%)</string>
+    <string>[BLADDER (PROSTATE  CANCER)] V[75.0Gy] (%)</string>
+    <string>[BLADDER (PROSTATE  CANCER)] V[80.0Gy] (%)</string>
+    <string>[PENILE BULB (&lt;35% RATE OF SEVERE ERECTILE DYSFUNCTION)] D[90.0%] (Gy)</string>
+    <string>[PENILE BULB (55% RATE OF SEVERE ERECTILE DYSFUNCTION)] V[69.99Gy] (%)</string>
+    <string>Quantec Conventional RT Constraints\[BRAIN] Max dose (Gy) [Goal 59.999, Fail 60, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BRAIN] Max dose (Gy) [Goal 72, Fail 72.001, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BRAIN (10% RATE OF SYMPTOMATIC NECROSIS)] Max dose (Gy) [Goal 90, Fail 90.01, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BRAINSTEM] Max dose (Gy) [Goal 53.99, Fail 54, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BRAINSTEM] D[59.0cc] (Gy) [Goal 1, Fail 10.001, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BRAINSTEM] D[0.999cc] (Gy) [Goal 63.99, Fail 64, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\CHIASM] Max dose (Gy) [Goal 54.999, Fail 55, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\CHIASM] Max dose (Gy) [Goal 55, Fail 60.001, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\CHIASM] Max dose (Gy) [Goal 59.999, Fail 60, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[SPINAL CORD] Max dose (Gy) [Goal 50, Fail 50.001, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[SPINAL CORD] Max dose (Gy) [Goal 60, Fail 60.001, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[SPINAL CORD] Max dose (Gy) [Goal 69, Fail 69.001, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[COCHLEA] Mean dose (Gy) [Goal 45, Fail 45.001, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BILATERAL PAROTID (20% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy) [Goal 24.99, Fail 25, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BILATERAL PAROTID (50% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy) [Goal 38.99, Fail 39, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[UNILATERAL PAROTID (20% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy) [Goal 19.99, Fail 20, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[PHARYNGEAL CONSTRICTORS (20% RATE OF SYMPTOMATIC DYSPHAGIA AND ASPIRATION)] Mean dose (Gy) [Goal 49.99, Fail 50, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[LARYNX] Max dose (Gy) [Goal 65.999, Fail 66, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[LARYNX (30% RATE OF ASPIRATION)] Mean dose (Gy) [Goal 49.99, Fail 50, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[LARYNX] Max dose (Gy) [Goal 43.999, Fail 44, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[LARYNX] D[50.0%] (Gy) [Goal 26.999, Fail 27, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[LUNG] D[20.0%] (Gy) [Goal 30, Fail 30.001, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[LUNG] Mean dose (Gy) [Goal 7, Fail 7.001, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[LUNG] Mean dose (Gy) [Goal 13, Fail 13.001, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[LUNG] Mean dose (Gy) [Goal 20, Fail 20.001, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[LUNG] Mean dose (Gy) [Goal 24, Fail 24.001, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[LUNG] Mean dose (Gy) [Goal 27, Fail 27.001, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[ESOPHAGUS] Mean dose (Gy) [Goal 33.999, Fail 34, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[ESOPHAGUS] V[35.0Gy] (%) [Goal 49.999, Fail 50, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[ESOPHAGUS] V[50.0Gy] (%) [Goal 39.999, Fail 40, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[ESOPHAGUS] V[70.0Gy] (%) [Goal 19.999, Fail 20, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[HEART(PERICARDIUM)] Mean dose (Gy) [Goal 25.999, Fail 26, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[HEART(PERICARDIUM)] V[30.0Gy] (%) [Goal 45.999, Fail 46, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[HEART (1% RATE OF LONG TERM CARDIAC MORTALITY)] V[25.0Gy] (%) [Goal 9.99, Fail 10, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[LIVER] Mean dose (Gy) [Goal 30, Fail 32, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[LIVER] Mean dose (Gy) [Goal 41.999, Fail 42, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[LIVER] Mean dose (Gy) [Goal 27.999, Fail 28, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[LIVER] Mean dose (Gy) [Goal 35.999, Fail 36, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BILATERAL KIDNEY] Mean dose (Gy) [Goal 15, Fail 18, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BILATERAL KIDNEY] Mean dose (Gy) [Goal 27.999, Fail 28, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BILATERAL KIDNEY] V[12.0Gy] (%) [Goal 54.999, Fail 55, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BILATERAL KIDNEY] V[20.0Gy] (%) [Goal 31.999, Fail 32, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BILATERAL KIDNEY] V[23.0Gy] (%) [Goal 29.999, Fail 30, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BILATERAL KIDNEY] V[28.0Gy] (%) [Goal 19.999, Fail 20, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[STOMACH] D[100.0%] (Gy) [Goal 44.999, Fail 45, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[SMALL BOWEL (INDIVIDUAL LOOPS)] V[15.0Gy] (cc) [Goal 119.99, Fail 120, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[SMALL BOWEL (PERITONEAL CAVITY)] V[45.0Gy] (cc) [Goal 194.999, Fail 195, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[RECTUM] V[50.0Gy] (%) [Goal 49.999, Fail 50, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[RECTUM] V[60.0Gy] (%) [Goal 34.999, Fail 35, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[RECTUM (10% RATE OF  GRADE 3+ TOXICITY)] V[65.0Gy] (%) [Goal 24.99, Fail 25, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[RECTUM] V[70.0Gy] (%) [Goal 19.999, Fail 20, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[RECTUM] V[75.0Gy] (%) [Goal 14.999, Fail 15, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BLADDER (BLADDER  CANCER)] Max dose (Gy) [Goal 64.999, Fail 65, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BLADDER (PROSTATE  CANCER)] V[65.0Gy] (%) [Goal 50, Fail 50.01, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BLADDER (PROSTATE  CANCER)] V[70.0Gy] (%) [Goal 35, Fail 35.01, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BLADDER (PROSTATE  CANCER)] V[75.0Gy] (%) [Goal 25, Fail 25.01, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[BLADDER (PROSTATE  CANCER)] V[80.0Gy] (%) [Goal 15, Fail 15.01, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[PENILE BULB] D[90.0%] (Gy) [Goal 49.999, Fail 50, 1 pts]</string>
+    <string>Quantec Conventional RT Constraints\[PENILE BULB (55% RATE OF SEVERE ERECTILE DYSFUNCTION)] V[69.99Gy] (%) [Goal 60, Fail 70.01, 1 pts]</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+  </RasterData>
+  <PlotAs>Blank</PlotAs>
+  <DatagridWidth>686</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRAIN] Max dose (Gy) [Goal 59.999, Fail 60, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BRAIN] Max dose (Gy) [Goal 59.999, Fail 60, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRAIN] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>60</string>
+    <string>59.999</string>
+    <string>49.999</string>
+    <string>70</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRAIN] Max dose (Gy) [Goal 72, Fail 72.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BRAIN] Max dose (Gy) [Goal 72, Fail 72.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRAIN] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>72.001</string>
+    <string>72</string>
+    <string>62</string>
+    <string>82.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRAIN (10% RATE OF SYMPTOMATIC NECROSIS)] Max dose (Gy) [Goal 90, Fail 90.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BRAIN (10% RATE OF SYMPTOMATIC NECROSIS)] Max dose (Gy) [Goal 90, Fail 90.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRAIN (10% RATE OF SYMPTOMATIC NECROSIS)] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>90.01</string>
+    <string>90</string>
+    <string>80</string>
+    <string>100.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRAINSTEM] Max dose (Gy) [Goal 53.99, Fail 54, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BRAINSTEM] Max dose (Gy) [Goal 53.99, Fail 54, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRAINSTEM] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>54</string>
+    <string>53.99</string>
+    <string>43.99</string>
+    <string>64</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRAINSTEM] D[59.0cc] (Gy) [Goal 1, Fail 10.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BRAINSTEM] D[59.0cc] (Gy) [Goal 1, Fail 10.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRAINSTEM] D[59.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>10.001</string>
+    <string>1</string>
+    <string>0</string>
+    <string>20.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRAINSTEM] D[0.999cc] (Gy) [Goal 63.99, Fail 64, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BRAINSTEM] D[0.999cc] (Gy) [Goal 63.99, Fail 64, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRAINSTEM] D[0.999cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>64</string>
+    <string>63.99</string>
+    <string>53.99</string>
+    <string>74</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+CHIASM] Max dose (Gy) [Goal 54.999, Fail 55, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\CHIASM] Max dose (Gy) [Goal 54.999, Fail 55, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[OPTIC NERVE/CHIASM] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>55</string>
+    <string>54.999</string>
+    <string>44.999</string>
+    <string>65</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+CHIASM] Max dose (Gy) [Goal 55, Fail 60.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\CHIASM] Max dose (Gy) [Goal 55, Fail 60.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[OPTIC NERVE/CHIASM] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>60.001</string>
+    <string>55</string>
+    <string>45</string>
+    <string>70.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+CHIASM] Max dose (Gy) [Goal 59.999, Fail 60, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\CHIASM] Max dose (Gy) [Goal 59.999, Fail 60, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[OPTIC NERVE/CHIASM] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>60</string>
+    <string>59.999</string>
+    <string>49.999</string>
+    <string>70</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SPINAL CORD] Max dose (Gy) [Goal 50, Fail 50.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[SPINAL CORD] Max dose (Gy) [Goal 50, Fail 50.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SPINAL CORD] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50.001</string>
+    <string>50</string>
+    <string>40</string>
+    <string>60.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SPINAL CORD] Max dose (Gy) [Goal 60, Fail 60.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[SPINAL CORD] Max dose (Gy) [Goal 60, Fail 60.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SPINAL CORD] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>60.001</string>
+    <string>60</string>
+    <string>50</string>
+    <string>70.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SPINAL CORD] Max dose (Gy) [Goal 69, Fail 69.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[SPINAL CORD] Max dose (Gy) [Goal 69, Fail 69.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SPINAL CORD] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>69.001</string>
+    <string>69</string>
+    <string>59</string>
+    <string>79.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[COCHLEA] Mean dose (Gy) [Goal 45, Fail 45.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[COCHLEA] Mean dose (Gy) [Goal 45, Fail 45.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[COCHLEA] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>45.001</string>
+    <string>45</string>
+    <string>35</string>
+    <string>55.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BILATERAL PAROTID (20% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy) [Goal 24.99, Fail 25, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BILATERAL PAROTID (20% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy) [Goal 24.99, Fail 25, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BILATERAL PAROTID (20% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>25</string>
+    <string>24.99</string>
+    <string>14.99</string>
+    <string>35</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BILATERAL PAROTID (50% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy) [Goal 38.99, Fail 39, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BILATERAL PAROTID (50% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy) [Goal 38.99, Fail 39, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BILATERAL PAROTID (50% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>39</string>
+    <string>38.99</string>
+    <string>28.99</string>
+    <string>49</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[UNILATERAL PAROTID (20% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy) [Goal 19.99, Fail 20, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[UNILATERAL PAROTID (20% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy) [Goal 19.99, Fail 20, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[UNILATERAL PAROTID (20% RATE OF LONG TERM SALIVARY FUNCTION)] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20</string>
+    <string>19.99</string>
+    <string>9.99</string>
+    <string>30</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PHARYNGEAL CONSTRICTORS (20% RATE OF SYMPTOMATIC DYSPHAGIA AND ASPIRATION)] Mean dose (Gy) [Goal 49.99, Fail 50, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[PHARYNGEAL CONSTRICTORS (20% RATE OF SYMPTOMATIC DYSPHAGIA AND ASPIRATION)] Mean dose (Gy) [Goal 49.99, Fail 50, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PHARYNGEAL CONSTRICTORS (20% RATE OF SYMPTOMATIC DYSPHAGIA AND ASPIRATION)] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50</string>
+    <string>49.99</string>
+    <string>39.99</string>
+    <string>60</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LARYNX] Max dose (Gy) [Goal 65.999, Fail 66, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[LARYNX] Max dose (Gy) [Goal 65.999, Fail 66, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LARYNX] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>66</string>
+    <string>65.999</string>
+    <string>55.999</string>
+    <string>76</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LARYNX (30% RATE OF ASPIRATION)] Mean dose (Gy) [Goal 49.99, Fail 50, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[LARYNX (30% RATE OF ASPIRATION)] Mean dose (Gy) [Goal 49.99, Fail 50, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LARYNX (30% RATE OF ASPIRATION)] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50</string>
+    <string>49.99</string>
+    <string>39.99</string>
+    <string>60</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LARYNX] Max dose (Gy) [Goal 43.999, Fail 44, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[LARYNX] Max dose (Gy) [Goal 43.999, Fail 44, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LARYNX] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>44</string>
+    <string>43.999</string>
+    <string>33.999</string>
+    <string>54</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LARYNX] D[50.0%] (Gy) [Goal 26.999, Fail 27, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[LARYNX] D[50.0%] (Gy) [Goal 26.999, Fail 27, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LARYNX] D[50.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>27</string>
+    <string>26.999</string>
+    <string>16.999</string>
+    <string>37</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUNG] D[20.0%] (Gy) [Goal 30, Fail 30.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[LUNG] D[20.0%] (Gy) [Goal 30, Fail 30.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUNG] D[20.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>30.001</string>
+    <string>30</string>
+    <string>20</string>
+    <string>40.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUNG] Mean dose (Gy) [Goal 7, Fail 7.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[LUNG] Mean dose (Gy) [Goal 7, Fail 7.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUNG] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>7.001</string>
+    <string>7</string>
+    <string>0</string>
+    <string>17.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUNG] Mean dose (Gy) [Goal 13, Fail 13.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[LUNG] Mean dose (Gy) [Goal 13, Fail 13.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUNG] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>13.001</string>
+    <string>13</string>
+    <string>3</string>
+    <string>23.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUNG] Mean dose (Gy) [Goal 20, Fail 20.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[LUNG] Mean dose (Gy) [Goal 20, Fail 20.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUNG] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20.001</string>
+    <string>20</string>
+    <string>10</string>
+    <string>30.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUNG] Mean dose (Gy) [Goal 24, Fail 24.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[LUNG] Mean dose (Gy) [Goal 24, Fail 24.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUNG] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>24.001</string>
+    <string>24</string>
+    <string>14</string>
+    <string>34.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUNG] Mean dose (Gy) [Goal 27, Fail 27.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[LUNG] Mean dose (Gy) [Goal 27, Fail 27.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUNG] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>27.001</string>
+    <string>27</string>
+    <string>17</string>
+    <string>37.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[ESOPHAGUS] Mean dose (Gy) [Goal 33.999, Fail 34, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[ESOPHAGUS] Mean dose (Gy) [Goal 33.999, Fail 34, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[ESOPHAGUS] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>34</string>
+    <string>33.999</string>
+    <string>23.999</string>
+    <string>44</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[ESOPHAGUS] V[35.0Gy] (%) [Goal 49.999, Fail 50, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[ESOPHAGUS] V[35.0Gy] (%) [Goal 49.999, Fail 50, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[ESOPHAGUS] V[35.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50</string>
+    <string>49.999</string>
+    <string>39.999</string>
+    <string>60</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[ESOPHAGUS] V[50.0Gy] (%) [Goal 39.999, Fail 40, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[ESOPHAGUS] V[50.0Gy] (%) [Goal 39.999, Fail 40, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[ESOPHAGUS] V[50.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40</string>
+    <string>39.999</string>
+    <string>29.999</string>
+    <string>50</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[ESOPHAGUS] V[70.0Gy] (%) [Goal 19.999, Fail 20, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[ESOPHAGUS] V[70.0Gy] (%) [Goal 19.999, Fail 20, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[ESOPHAGUS] V[70.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20</string>
+    <string>19.999</string>
+    <string>9.999</string>
+    <string>30</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART(PERICARDIUM)] Mean dose (Gy) [Goal 25.999, Fail 26, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[HEART(PERICARDIUM)] Mean dose (Gy) [Goal 25.999, Fail 26, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART(PERICARDIUM)] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>26</string>
+    <string>25.999</string>
+    <string>15.999</string>
+    <string>36</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART(PERICARDIUM)] V[30.0Gy] (%) [Goal 45.999, Fail 46, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[HEART(PERICARDIUM)] V[30.0Gy] (%) [Goal 45.999, Fail 46, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART(PERICARDIUM)] V[30.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>46</string>
+    <string>45.999</string>
+    <string>35.999</string>
+    <string>56</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART (1% RATE OF LONG TERM CARDIAC MORTALITY)] V[25.0Gy] (%) [Goal 9.99, Fail 10, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[HEART (1% RATE OF LONG TERM CARDIAC MORTALITY)] V[25.0Gy] (%) [Goal 9.99, Fail 10, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART (1% RATE OF LONG TERM CARDIAC MORTALITY)] V[25.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>10</string>
+    <string>9.99</string>
+    <string>0</string>
+    <string>20</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LIVER] Mean dose (Gy) [Goal 30, Fail 32, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[LIVER] Mean dose (Gy) [Goal 30, Fail 32, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LIVER] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>32</string>
+    <string>30</string>
+    <string>20</string>
+    <string>42</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LIVER] Mean dose (Gy) [Goal 41.999, Fail 42, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[LIVER] Mean dose (Gy) [Goal 41.999, Fail 42, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LIVER] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>42</string>
+    <string>41.999</string>
+    <string>31.999</string>
+    <string>52</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LIVER] Mean dose (Gy) [Goal 27.999, Fail 28, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[LIVER] Mean dose (Gy) [Goal 27.999, Fail 28, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LIVER] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>28</string>
+    <string>27.999</string>
+    <string>17.999</string>
+    <string>38</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LIVER] Mean dose (Gy) [Goal 35.999, Fail 36, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[LIVER] Mean dose (Gy) [Goal 35.999, Fail 36, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LIVER] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>36</string>
+    <string>35.999</string>
+    <string>25.999</string>
+    <string>46</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BILATERAL KIDNEY] Mean dose (Gy) [Goal 15, Fail 18, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BILATERAL KIDNEY] Mean dose (Gy) [Goal 15, Fail 18, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BILATERAL KIDNEY] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>18</string>
+    <string>15</string>
+    <string>5</string>
+    <string>28</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BILATERAL KIDNEY] Mean dose (Gy) [Goal 27.999, Fail 28, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BILATERAL KIDNEY] Mean dose (Gy) [Goal 27.999, Fail 28, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BILATERAL KIDNEY] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>28</string>
+    <string>27.999</string>
+    <string>17.999</string>
+    <string>38</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BILATERAL KIDNEY] V[12.0Gy] (%) [Goal 54.999, Fail 55, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BILATERAL KIDNEY] V[12.0Gy] (%) [Goal 54.999, Fail 55, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BILATERAL KIDNEY] V[12.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>55</string>
+    <string>54.999</string>
+    <string>44.999</string>
+    <string>65</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BILATERAL KIDNEY] V[20.0Gy] (%) [Goal 31.999, Fail 32, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BILATERAL KIDNEY] V[20.0Gy] (%) [Goal 31.999, Fail 32, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BILATERAL KIDNEY] V[20.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>32</string>
+    <string>31.999</string>
+    <string>21.999</string>
+    <string>42</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BILATERAL KIDNEY] V[23.0Gy] (%) [Goal 29.999, Fail 30, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BILATERAL KIDNEY] V[23.0Gy] (%) [Goal 29.999, Fail 30, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BILATERAL KIDNEY] V[23.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>30</string>
+    <string>29.999</string>
+    <string>19.999</string>
+    <string>40</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BILATERAL KIDNEY] V[28.0Gy] (%) [Goal 19.999, Fail 20, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BILATERAL KIDNEY] V[28.0Gy] (%) [Goal 19.999, Fail 20, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BILATERAL KIDNEY] V[28.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20</string>
+    <string>19.999</string>
+    <string>9.999</string>
+    <string>30</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[STOMACH] D[100.0%] (Gy) [Goal 44.999, Fail 45, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[STOMACH] D[100.0%] (Gy) [Goal 44.999, Fail 45, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[STOMACH] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>45</string>
+    <string>44.999</string>
+    <string>34.999</string>
+    <string>55</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SMALL BOWEL (INDIVIDUAL LOOPS)] V[15.0Gy] (cc) [Goal 119.99, Fail 120, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[SMALL BOWEL (INDIVIDUAL LOOPS)] V[15.0Gy] (cc) [Goal 119.99, Fail 120, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SMALL BOWEL (INDIVIDUAL LOOPS)] V[15.0Gy] (cc)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>120</string>
+    <string>119.99</string>
+    <string>109.99</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SMALL BOWEL (PERITONEAL CAVITY)] V[45.0Gy] (cc) [Goal 194.999, Fail 195, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[SMALL BOWEL (PERITONEAL CAVITY)] V[45.0Gy] (cc) [Goal 194.999, Fail 195, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SMALL BOWEL (PERITONEAL CAVITY)] V[45.0Gy] (cc)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>195</string>
+    <string>194.999</string>
+    <string>184.999</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RECTUM] V[50.0Gy] (%) [Goal 49.999, Fail 50, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[RECTUM] V[50.0Gy] (%) [Goal 49.999, Fail 50, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RECTUM] V[50.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50</string>
+    <string>49.999</string>
+    <string>39.999</string>
+    <string>60</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RECTUM] V[60.0Gy] (%) [Goal 34.999, Fail 35, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[RECTUM] V[60.0Gy] (%) [Goal 34.999, Fail 35, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RECTUM] V[60.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>35</string>
+    <string>34.999</string>
+    <string>24.999</string>
+    <string>45</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RECTUM (10% RATE OF  GRADE 3+ TOXICITY)] V[65.0Gy] (%) [Goal 24.99, Fail 25, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[RECTUM (10% RATE OF  GRADE 3+ TOXICITY)] V[65.0Gy] (%) [Goal 24.99, Fail 25, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RECTUM (10% RATE OF  GRADE 3+ TOXICITY)] V[65.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>25</string>
+    <string>24.99</string>
+    <string>14.99</string>
+    <string>35</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RECTUM] V[70.0Gy] (%) [Goal 19.999, Fail 20, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[RECTUM] V[70.0Gy] (%) [Goal 19.999, Fail 20, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RECTUM] V[70.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20</string>
+    <string>19.999</string>
+    <string>9.999</string>
+    <string>30</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RECTUM] V[75.0Gy] (%) [Goal 14.999, Fail 15, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[RECTUM] V[75.0Gy] (%) [Goal 14.999, Fail 15, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RECTUM] V[75.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>15</string>
+    <string>14.999</string>
+    <string>4.999</string>
+    <string>25</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BLADDER (BLADDER  CANCER)] Max dose (Gy) [Goal 64.999, Fail 65, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BLADDER (BLADDER  CANCER)] Max dose (Gy) [Goal 64.999, Fail 65, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BLADDER (BLADDER  CANCER)] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65</string>
+    <string>64.999</string>
+    <string>54.999</string>
+    <string>75</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BLADDER (PROSTATE  CANCER)] V[65.0Gy] (%) [Goal 50, Fail 50.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BLADDER (PROSTATE  CANCER)] V[65.0Gy] (%) [Goal 50, Fail 50.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BLADDER (PROSTATE  CANCER)] V[65.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50.01</string>
+    <string>50</string>
+    <string>40</string>
+    <string>60.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BLADDER (PROSTATE  CANCER)] V[70.0Gy] (%) [Goal 35, Fail 35.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BLADDER (PROSTATE  CANCER)] V[70.0Gy] (%) [Goal 35, Fail 35.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BLADDER (PROSTATE  CANCER)] V[70.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>35.01</string>
+    <string>35</string>
+    <string>25</string>
+    <string>45.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BLADDER (PROSTATE  CANCER)] V[75.0Gy] (%) [Goal 25, Fail 25.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BLADDER (PROSTATE  CANCER)] V[75.0Gy] (%) [Goal 25, Fail 25.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BLADDER (PROSTATE  CANCER)] V[75.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>25.01</string>
+    <string>25</string>
+    <string>15</string>
+    <string>35.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BLADDER (PROSTATE  CANCER)] V[80.0Gy] (%) [Goal 15, Fail 15.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[BLADDER (PROSTATE  CANCER)] V[80.0Gy] (%) [Goal 15, Fail 15.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BLADDER (PROSTATE  CANCER)] V[80.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>15.01</string>
+    <string>15</string>
+    <string>5</string>
+    <string>25.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PENILE BULB] D[90.0%] (Gy) [Goal 49.999, Fail 50, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[PENILE BULB] D[90.0%] (Gy) [Goal 49.999, Fail 50, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PENILE BULB] D[90.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50</string>
+    <string>49.999</string>
+    <string>39.999</string>
+    <string>60</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PENILE BULB (55% RATE OF SEVERE ERECTILE DYSFUNCTION)] V[69.99Gy] (%) [Goal 60, Fail 70.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\Quantec Conventional RT Constraints\[PENILE BULB (55% RATE OF SEVERE ERECTILE DYSFUNCTION)] V[69.99Gy] (%) [Goal 60, Fail 70.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PENILE BULB (55% RATE OF SEVERE ERECTILE DYSFUNCTION)] V[69.99Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>70.01</string>
+    <string>60</string>
+    <string>50</string>
+    <string>80.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>

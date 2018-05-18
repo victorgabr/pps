@@ -1,0 +1,1252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="484ffb55-fed9-470a-b652-a0b196ac3165" name="Default" comment="New: Test cases on complexity aperture metric module.">
+      <change afterPath="$PROJECT_DIR$/docs/getting_started.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/images/Cone_30_0_AP_3_mm.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/images/Dose_3D_slices_view.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/images/body_contours.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/images/cone_30_0_contours.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/GTV/PyPlanScoringBrainQT.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/GTV/app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/GTV/licence.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/PTV/PyPlanScoring.ui" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/PTV/PyPlanScoringBrainPTV.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/PTV/PyPlanScoringLungSBRT.ui" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/PTV/Scoring_criteria.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/PTV/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/PTV/app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/PTV/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/LeftChestWallCase/PyPlanScoring.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/LeftChestWallCase/PyPlanScoringLCWC.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/LeftChestWallCase/PyPlanScoringLCWC.ui" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/LeftChestWallCase/Scoring_criteria.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/LeftChestWallCase/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/LeftChestWallCase/app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/LeftChestWallCase/licence.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui/cases/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pyplanscoring/requirements_BKP.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/tests_data/ptv_based_SRS/Scoring_criteria.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/tests_validation/test_CyberKnife.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/tests_validation/test_gammaKnife.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/tests_validation/test_gtvBasedSRS.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/tests_validation/test_iPlan.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/tests_validation/test_planSumLeftChestWall.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/tests_validation/test_ptvBasedSRS.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Plan_Competition_Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Plan_Competition_Project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ComplexityScript.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/PyPlanScoring.conf" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/PyPlanScoring.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/PyPlanScoring.ini" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/PyPlanScoring.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/PyPlanScoring.ui" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/PyPlanScoring.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/PyPlanScoringLungCaseQT.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/PyPlanScoringLungCaseQT.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/PyPlanScoringLungSBRT.ui" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/PyPlanScoringLungSBRT.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/PyPlanScoringQT.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/PyPlanScoringQT.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/RS_LUNG_SBRT.dcm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/Scoring Criteria.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/Scoring_criteria.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/Scoring_criteria.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/licence.txt" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/licence.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/options.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/options.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/pyplanscoring.spec" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/pyplanscoring.spec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/rt_cases.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/2017 Plan Comp Banner.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/references/2017 Plan Comp Banner.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/PyPlanScoring.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/PyPlanScoring.ini" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/PTV/PyPlanScoring.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/PyPlanScoring.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/PyPlanScoring.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/PyPlanScoringQT.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/PTV/PyPlanScoringQT.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/api/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/api/backend.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/app.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/app.spec" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/docs/modules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/constrains_evaluation.ini" beforeDir="false" afterPath="$PROJECT_DIR$/competition/constrains_evaluation.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/constrains_evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/constrains_evaluation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/model_based.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/model_based.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/report_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/report_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/results.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/results.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/robust.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/robust.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/statistical_dvh.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/statistical_dvh.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/tests/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_EDAClustering.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/tests/test_EDAClustering.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_data/Scoring_criteria.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/competition/tests/test_data/Scoring_criteria.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_generalizedEvaluationMetric.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/tests/test_generalizedEvaluationMetric.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_generalizedEvaluationMetricWES.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/tests/test_generalizedEvaluationMetricWES.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_historicPlanDVH.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/tests/test_historicPlanDVH.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_historicPlanData.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/tests/test_historicPlanData.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_modelSelection.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/tests/test_modelSelection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_planningItemDVH.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/tests/test_planningItemDVH.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_populationBasedGEM.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/tests/test_populationBasedGEM.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_populationBasedGEM_WES.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/tests/test_populationBasedGEM_WES.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_statisticalDVH.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/tests/test_statisticalDVH.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_weightedExperienceScore.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/tests/test_weightedExperienceScore.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_weightedExperienceScoreBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/tests/test_weightedExperienceScoreBase.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/constraints/metrics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/core/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/calculation.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/core/calculation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/dicom_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/core/dicom_reader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/dicomparser.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/dosimetric.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/dvhcalculation.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/dvhdoses.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/core/dvhdoses.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/geometry.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/core/geometry.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/gpu_code.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/core/gpu_code.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/io.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/core/io.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/scoring.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/types.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/core/types.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/licence.txt" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/PTV/licence.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/pyplanscoring.spec" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/PTV/pyplanscoring.spec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/pyplanscoring_bkp.spec" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/DoseComp.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/DoseCompAbs.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/DoseCompAbsQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/DoseCompMethod.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/DoseCompMethodQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/DoseCompQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/DoseCompQT.py___jb_bak___" beforeDir="false" afterPath="$PROJECT_DIR$/docs/user_manual/dvh_metrics.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/DoseConversionQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/DoseOptimizedQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/EditGridQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/FieldWidgetQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/Film2DoseWidgets.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/Film2doseMainWindow.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/FitCurvesDialogQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/FitCurvesQt.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/FitModeQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/FormImageQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/FormImageUI.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/GetCalPointsQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/ImageDockWidget.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/MainWindow.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/MainWindowQt.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/OptimizationQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/PicketFence.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/PicketFenceQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/StarShotQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/TPSWidgetQT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/dock.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/dockmanager.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/dose_conversion.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/dose_optim.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/edit_grid.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/evo_widget.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/field_widget.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/fit_curves_dialog.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/fit_curves_widget.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/fit_mode_widget.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/get_cal_points.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons.qrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/1407119618_report.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/App_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/Dosimetry.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/FLR.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/FUD.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/FlipUD.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/Greek_Gamma.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/Hmirror.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/Import Picture Document.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/Point_dose.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/ROT_POINTS.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/Restore_image.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/Ruler.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/app.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/arch_linux.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/block_rgb.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/chart_curve.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/compare.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/curvechart-edit.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/export.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/fedora.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/fileclose.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/flip_LR.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/funct.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/grid.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/import1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/matplotlib_PyQt.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/optimization.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/picket_fence.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/rgb.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/rotate_ccw.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/rotate_cw.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/scanner.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/starshot.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/target.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/tiff.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/tiff_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/window_new.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons/windows.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/icons_rc.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/starshot.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/tools_qt.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/tps_widget.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/uifiles.txt" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/GTV/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/radiobiology/tests/.cache/v/cache/lastfailed" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/radiobiology/tests/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/radiobiology/tests/test_NTCP.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/validation/paper_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/validation/validation.ini" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/GTV/PyPlanScoring.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/validation/validation.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/vis/contours3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/vis/contours3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/vis/slice3.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/vis/slice3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/vis/volumes_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyplanscoring/vis/volumes_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/web_api/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/web_api/io.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_api/test_pyPlanScoringKernel.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_api/test_pyPlanScoringKernel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/tests_core/test_DVHCalculationMP.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/tests_core/test_DVHCalculationMP.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/tests_core/test_IOHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/tests_core/test_IOHandler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/tests_core/test_dose3D.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/tests_core/test_dose3D.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/tests_gui/test_criteria.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/tests_gui/test_criteria.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/tests_validation/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/tests_validation/conftest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/tests_validation/test_benchmark_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/tests_validation/test_benchmark_data.py" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="Plan_Competition_Project" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
+      <file leaf-file-name="conf.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/docs/conf.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1302">
+              <caret line="180" column="13" lean-forward="true" selection-start-line="180" selection-start-column="13" selection-end-line="180" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sphinx-err-l_paq1dx.log" pinned="false" current-in-tab="false">
+        <entry file="file:///tmp/sphinx-err-l_paq1dx.log">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="Jupyter Notebook" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>fileh</find>
+      <find>Assume and set ImplicitVRLittleEndian transfer syntax</find>
+      <find>read_p</find>
+      <find>name</find>
+      <find>tmpdir</find>
+      <find>get_dose_3d</find>
+      <find>get_dose_at</find>
+      <find>test1</find>
+      <find>metric</find>
+      <find>an_data</find>
+      <find>Y(SI)</find>
+      <find>Z(AP)</find>
+      <find>exter</find>
+      <find>get_t</find>
+      <find>qt4</find>
+      <find>ax</find>
+      <find>generate</find>
+      <find>pyp</find>
+      <find>theme</find>
+      <find>autosu</find>
+      <find>resut</find>
+      <find>sparse</find>
+      <find>==</find>
+      <find>pd.</find>
+      <find>build</find>
+      <find>ext</find>
+      <find>pdf</find>
+      <find>paper</find>
+      <find>latex</find>
+      <find>auto</find>
+    </findStrings>
+    <replaceStrings>
+      <replace />
+      <replace>RS</replace>
+      <replace>Signal</replace>
+      <replace>insertPlainText</replace>
+      <replace>doses_3d</replace>
+      <replace>sheetname</replace>
+      <replace>SI</replace>
+      <replace>AP</replace>
+      <replace>np.</replace>
+      <replace>np</replace>
+      <replace>plt</replace>
+      <replace>Pyplanscoring</replace>
+      <replace>dose_files</replace>
+      <replace>pyplanscoring</replace>
+      <replace>&gt;=</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/pyplanscoring</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_15.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_11.py" />
+        <option value="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/GTV/app.py" />
+        <option value="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/GTV/PyPlanScoring.ini" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_16.py" />
+        <option value="$PROJECT_DIR$/tests/tests_validation/test_iPlan.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/types.py" />
+        <option value="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/PyPlanScoringLungCaseQT.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/api/backend.py" />
+        <option value="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/app.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_17.py" />
+        <option value="$PROJECT_DIR$/gui/cases/LeftChestWallCase/app.py" />
+        <option value="$PROJECT_DIR$/docs/_templates/autosummary/module.rst" />
+        <option value="$PROJECT_DIR$/docs/_templates/autosummary/class.rst" />
+        <option value="$PROJECT_DIR$/docs/modules" />
+        <option value="$PROJECT_DIR$/docs/generated/pyplanscoring.core.rst" />
+        <option value="$PROJECT_DIR$/docs/api.rst" />
+        <option value="$PROJECT_DIR$/docs1/conf.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/web_api/__init__.py" />
+        <option value="$PROJECT_DIR$/docs1/source/conf.py" />
+        <option value="$PROJECT_DIR$/docs1/build/html/index.html" />
+        <option value="$PROJECT_DIR$/docs1/source/index.rst" />
+        <option value="$PROJECT_DIR$/docs/contributing.rst" />
+        <option value="$PROJECT_DIR$/docs/Makefile" />
+        <option value="$PROJECT_DIR$/tests/tests_validation/conftest.py" />
+        <option value="$PROJECT_DIR$/tests/tests_validation/test_benchmark_data.py" />
+        <option value="$PROJECT_DIR$/docs/index.rst" />
+        <option value="$PROJECT_DIR$/gui/api/backend.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/dvhcalculation.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/__init__.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/dvhdoses.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/gpu_code.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/io.py" />
+        <option value="$PROJECT_DIR$/gui/api/tools.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/requirements.txt" />
+        <option value="$PROJECT_DIR$/docs/user_manual/installing.rst" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/geometry.py" />
+        <option value="$PROJECT_DIR$/tests/tests_core/test_DVHCalculationMP.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/calculation.py" />
+        <option value="$PROJECT_DIR$/gui/cases/LeftChestWallCase/PyPlanScoring.ini" />
+        <option value="$PROJECT_DIR$/pyplanscoring/vis/contours3d.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/vis/volumes_view.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/constraints/metrics.py" />
+        <option value="$PROJECT_DIR$/docs/getting_started.ipynb" />
+        <option value="$PROJECT_DIR$/docs/user_manual.rst" />
+        <option value="$PROJECT_DIR$/pyplanscoring/__init__.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/dicom_reader.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/vis/slice3.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/api.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_18.py" />
+        <option value="$PROJECT_DIR$/docs/conf.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="780" />
+    <option name="width" value="956" />
+    <option name="height" value="1035" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Plan_Competition_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Plan_Competition_Project" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Plan_Competition_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Plan_Competition_Project" type="462c0819:PsiDirectoryNode" />
+              <item name="docs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Plan_Competition_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Plan_Competition_Project" type="462c0819:PsiDirectoryNode" />
+              <item name="docs" type="462c0819:PsiDirectoryNode" />
+              <item name="_build" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Plan_Competition_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Plan_Competition_Project" type="462c0819:PsiDirectoryNode" />
+              <item name="docs" type="462c0819:PsiDirectoryNode" />
+              <item name="_build" type="462c0819:PsiDirectoryNode" />
+              <item name="rinoh" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Plan_Competition_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Plan_Competition_Project" type="462c0819:PsiDirectoryNode" />
+              <item name="docs" type="462c0819:PsiDirectoryNode" />
+              <item name="user_manual" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SearchEverywhereHistoryKey" value="conf&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/docs/conf.py&#10;doseacc&#9;null&#9;null&#10;pystr&#9;null&#9;null&#10;scra&#9;FILE&#9;file:///home/victor/.PyCharmCE2018.1/config/scratches/scratch_18.py&#10;reductions.rs&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/docs/user_manual/operations/reductions.rst&#10;back&#9;FILE&#9;file://C:/Users/Victor/Dropbox/Plan_Competition_Project/pyplanscoring/api/backend.py&#10;PyStr&#9;null&#9;null&#10;dvhcalcu&#9;null&#9;null&#10;DVH&#9;null&#9;null&#10;test_ga&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/tests/tests_validation/test_gammaKnife.py&#10;test_&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/tests/tests_validation/test_CyberKnife.py&#10;test_ck&#9;null&#9;null&#10;app&#9;FILE&#9;file://C:/Users/vgalves/Dropbox/Plan_Competition_Project/gui/cases/LeftChestWallCase/app.py&#10;get_participant_folder_&#9;null&#9;null&#10;get_partic&#9;null&#9;null&#10;eclipse&#9;null&#9;null&#10;calculate_ser&#9;null&#9;null&#10;BACK&#9;FILE&#9;file://C:/Users/Victor/Dropbox/Plan_Competition_Project/pyplanscoring/api/backend.py&#10;match&#9;null&#9;null&#10;TEST_DVH&#9;null&#9;null&#10;TEST_CR&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/tests/tests_gui/test_criteria.py&#10;scrat&#9;FILE&#9;file:///home/victor/.PyCharmCE2017.3/config/scratches/scratch_13.py&#10;test_do&#9;null&#9;null&#10;PyDV&#9;null&#9;null&#10;wrap_xy&#9;null&#9;null&#10;point cloud&#9;null&#9;null&#10;comple&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/ComplexityScript.py&#10;PyDVh&#9;null&#9;null&#10;prepare&#9;null&#9;null&#10;test_DVH&#9;null&#9;null&#10;DVHD&#9;null&#9;null&#10;pyDV&#9;null&#9;null&#10;get_ci&#9;null&#9;null&#10;test_cyb&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/tests/tests_validation/test_CyberKnife.py&#10;test_cri&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/tests/tests_gui/test_criteria.py&#10;test_gk&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/tests/tests_validation/test_gammaKnife.py&#10;DVHItem&#9;null&#9;null&#10;get_external&#9;null&#9;null&#10;calculation&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/core/calculation.py&#10;RTCase&#9;null&#9;null&#10;tools&#9;null&#9;null&#10;ComplexitySc&#9;null&#9;null&#10;Comple&#9;null&#9;null&#10;test_b&#9;FILE&#9;file://C:/Users/Victor/Dropbox/Plan_Competition_Project/tests/tests_validation/test_benchmark_data.py&#10;VALIDATION&#9;FILE&#9;file://C:/Users/Victor/Dropbox/Plan_Competition_Project/pyplanscoring/validation/validation.py&#10;test&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/tests/tests_validation/test_benchmark_data.py&#10;metri&#9;FILE&#9;file://C:/Users/Victor/Dropbox/Plan_Competition_Project/pyplanscoring/constraints/metrics.py&#10;parse_folder&#9;null&#9;null&#10;test_dv&#9;FILE&#9;file://C:/Users/Victor/Dropbox/Plan_Competition_Project/tests/tests_core/test_DVHCalculation.py&#10;test_ben&#9;FILE&#9;file://C:/Users/Victor/Dropbox/Plan_Competition_Project/tests/tests_validation/test_benchmark_data.py" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="Python" />
+    <property name="last_opened_file_path" value="/tmp/sphinx-err-l_paq1dx.log" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="Plan_Competition_Project" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="Plan_Competition_Project" />
+        <option name="myAddSourceRoots" value="true" />
+      </console-settings>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/gui" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/tests/tests_radiobiology" />
+      <recent name="$PROJECT_DIR$/references" />
+      <recent name="$PROJECT_DIR$/docs" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/docs/images" />
+      <recent name="$PROJECT_DIR$/gui/cases/LeftChestWallCase" />
+      <recent name="$PROJECT_DIR$/docs1/source" />
+      <recent name="$PROJECT_DIR$/docs" />
+      <recent name="$PROJECT_DIR$/tests/tests_data" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.scratch_18">
+    <configuration name="api" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Plan_Competition_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/pyplanscoring" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pyplanscoring/api.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="app (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Plan_Competition_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/GTV" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gui/cases/BrainMetSRSCase/GTV/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Plan_Competition_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/gui/cases/LeftChestWallCase" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gui/cases/LeftChestWallCase/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="contours3d" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Plan_Competition_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/pyplanscoring/vis" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pyplanscoring/vis/contours3d.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="scratch_18" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Plan_Competition_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_18.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.app" />
+      <item itemvalue="Python.app (1)" />
+      <item itemvalue="Python.contours3d" />
+      <item itemvalue="Python.api" />
+      <item itemvalue="Python.scratch_18" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.scratch_18" />
+        <item itemvalue="Python.contours3d" />
+        <item itemvalue="Python.app" />
+        <item itemvalue="Python.app (1)" />
+        <item itemvalue="Python.api" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="484ffb55-fed9-470a-b652-a0b196ac3165" name="Default" comment="" />
+      <created>1519602159845</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1519602159845</updated>
+    </task>
+    <task id="LOCAL-00001" summary="new: Paddick gradient index, PyQueryExtensions and refactores.&#10;TDD: Added test cases">
+      <created>1519694200546</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1519694200546</updated>
+    </task>
+    <task id="LOCAL-00002" summary="New: Test cases on complexity aperture metric module.">
+      <created>1519780364043</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1519780364043</updated>
+    </task>
+    <task id="LOCAL-00003" summary="New: API Façade class PyPlanScoringKernel">
+      <created>1520125163388</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1520125163388</updated>
+    </task>
+    <task id="LOCAL-00004" summary="New: Test cases on PyPlanScoring kernel class and Complexity factor calculation">
+      <created>1520125234454</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1520125234454</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fix: DVH calculation of rings, and broken adaptive rasterization of&#10;multiple contours per plane.">
+      <created>1520213119918</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1520213119918</updated>
+    </task>
+    <task id="LOCAL-00006" summary="New: PyPlanscoring 2018 - GUI prototype">
+      <created>1520392096956</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1520392096956</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fix: Fix halcyon SOP class UI - RT plan">
+      <created>1520563942723</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1520563942723</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fix: Halcyon plans - SOP UID, Monaco plans using bastula-pydicom fork,&#10;new formatted xls repport on backend.">
+      <created>1520648814094</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1520648814094</updated>
+    </task>
+    <task id="LOCAL-00009" summary="New: Beta test PyPlanscoring app - Saving xls report, aperture complexity&#10;per beam in figures. Etc. Ready to compile.">
+      <created>1520719225197</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1520719225197</updated>
+    </task>
+    <task id="LOCAL-00010" summary="New: Added get_dose_3d method.">
+      <created>1520956164776</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1520956164776</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Fix: Bug while reading Tomo plans. &quot;no GantryRotationDirection in final_control_point&quot;">
+      <created>1520956820274</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1520956820274</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Fix: Added upsampling option on *.ini file">
+      <created>1521849877017</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1521849877017</updated>
+    </task>
+    <task id="LOCAL-00013" summary="New: PyDVHItem operator overloading __add__ to merge absolute DVHs.">
+      <created>1522019371770</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1522019371770</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Fix: Non treatment field are skipped.&#10;Complexity module is now outside pyplanscoring due to GPL3 incompatibility.">
+      <created>1523044869604</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1523044869604</updated>
+    </task>
+    <task id="LOCAL-00015" summary="New: Dicompyler-core comparison">
+      <created>1525385661411</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1525385661411</updated>
+    </task>
+    <task id="LOCAL-00016" summary="New: First pyplanscoring public API">
+      <created>1525638806001</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1525638806001</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="py_test_for_test_benchmark_data_test_3 - 2018.03.20 at 18h 05m 06s.xml">
+      <configuration name="py.test for test_benchmark_data.test_3" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_test_planSumLeftChestWall_py - 2018.04.12 at 20h 52m 47s.xml">
+      <configuration name="py.test in test_planSumLeftChestWall.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_tests_core - 2018.04.29 at 15h 40m 10s.xml">
+      <configuration name="py.test in tests_core" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_tests_constraints - 2018.04.29 at 15h 42m 41s.xml">
+      <configuration name="py.test in tests_constraints" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_test_benchmark_data_py - 2018.05.03 at 17h 14m 01s.xml">
+      <configuration name="py.test in test_benchmark_data.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_for_test_benchmark_data_test_dicompyler - 2018.05.03 at 17h 57m 36s.xml">
+      <configuration name="py.test for test_benchmark_data.test_dicompyler" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_for_test_benchmark_data_test_dicompyler - 2018.05.03 at 17h 58m 51s.xml">
+      <configuration name="py.test for test_benchmark_data.test_dicompyler" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_for_test_benchmark_data_test_dicompyler - 2018.05.03 at 18h 05m 22s.xml">
+      <configuration name="py.test for test_benchmark_data.test_dicompyler" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_for_test_benchmark_data_test_dicompyler - 2018.05.03 at 18h 10m 01s.xml">
+      <configuration name="py.test for test_benchmark_data.test_dicompyler" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_for_test_benchmark_data_test_dicompyler - 2018.05.03 at 18h 13m 02s.xml">
+      <configuration name="py.test for test_benchmark_data.test_dicompyler" configurationId="tests" />
+    </history-entry>
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="0" width="1920" height="1035" extended-state="6" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49882352" visible="true" weight="0.1938445" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3295583" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5091793" side_tool="true" weight="0.6694118" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49786097" weight="0.32850778" />
+      <window_info anchor="bottom" id="Python Console" order="9" sideWeight="0.49298057" weight="0.36" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4949868" weight="0.1764706" />
+      <window_info id="Structure" order="1" sideWeight="0.5011765" side_tool="true" weight="0.19222462" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49082074" weight="0.6694118" />
+      <window_info id="Favorites" order="2" side_tool="true" weight="0.32998413" />
+      <window_info anchor="right" id="JSON Viewer" order="3" weight="0.32991362" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.48983958" weight="0.39764705" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Messages" order="7" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.61764705" />
+    </layout>
+    <layout-to-restore>
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21871658" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="JSON Viewer" order="3" weight="0.32994652" />
+      <window_info id="Structure" order="1" weight="0.21497326" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3295583" />
+      <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49786097" weight="0.32850778" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4949868" weight="0.3062361" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.24242425" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49814913" weight="0.33853006" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49603385" weight="0.32850778" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50427806" side_tool="true" weight="0.3908686" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" weight="0.32998413" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Messages" order="7" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49572194" weight="0.2423556" />
+    </layout-to-restore>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="new: Paddick gradient index, PyQueryExtensions and refactores.&#10;TDD: Added test cases" />
+    <MESSAGE value="New: Test cases on complexity aperture metric module." />
+    <MESSAGE value="New: API Façade class PyPlanScoringKernel" />
+    <MESSAGE value="New: Test cases on PyPlanScoring kernel class and Complexity factor calculation" />
+    <MESSAGE value="Fix: DVH calculation of rings, and broken adaptive rasterization of&#10;multiple contours per plane." />
+    <MESSAGE value="New: PyPlanscoring 2018 - GUI prototype" />
+    <MESSAGE value="Fix: Fix halcyon SOP class UI - RT plan" />
+    <MESSAGE value="Fix: Halcyon plans - SOP UID, Monaco plans using bastula-pydicom fork,&#10;new formatted xls repport on backend." />
+    <MESSAGE value="New: Beta test PyPlanscoring app - Saving xls report, aperture complexity&#10;per beam in figures. Etc. Ready to compile." />
+    <MESSAGE value="New: Added get_dose_3d method." />
+    <MESSAGE value="Fix: Bug while reading Tomo plans. &quot;no GantryRotationDirection in final_control_point&quot;" />
+    <MESSAGE value="Fix: Added upsampling option on *.ini file" />
+    <MESSAGE value="New: PyDVHItem operator overloading __add__ to merge absolute DVHs." />
+    <MESSAGE value="Fix: Non treatment field are skipped.&#10;Complexity module is now outside pyplanscoring due to GPL3 incompatibility." />
+    <MESSAGE value="New: Dicompyler-core comparison" />
+    <MESSAGE value="New: First pyplanscoring public API" />
+    <option name="LAST_COMMIT_MESSAGE" value="New: First pyplanscoring public API" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/miniconda3/envs/pyside/lib/python3.6/site-packages/pydicom/filereader.py</url>
+          <line>608</line>
+          <option name="timeStamp" value="85" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_9.py</url>
+          <line>41</line>
+          <option name="timeStamp" value="101" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_10.py</url>
+          <line>93</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_26.py</url>
+          <line>14</line>
+          <option name="timeStamp" value="161" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tests/tests_validation/test_ptvBasedSRS.py</url>
+          <line>170</line>
+          <option name="timeStamp" value="243" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_12.py</url>
+          <line>170</line>
+          <option name="timeStamp" value="245" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pyplanscoring/complexity/PyApertureMetric.py</url>
+          <line>103</line>
+          <option name="timeStamp" value="256" />
+        </line-breakpoint>
+      </breakpoints>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <default-breakpoints>
+        <breakpoint enabled="true" suspend="NONE" type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+      <option name="time" value="291" />
+    </breakpoint-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>plt.show()</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string># Calculate a DVH from DICOM RT data
+struc_file = structure_files_dict[struc_name]
+dose_file = doses_files_dict[grad_name][dose_grid_name]
+calcdvh = dvhcalc.get_dvh(struc_file, dose_file, 2)
+dp_dose = calcdvh.cumulative.bincenters
+dp_vol = calcdvh.cumulative.counts
+plt.plot(dp_dose, dp_vol, label='dicompyler-core')
+# curve compare
+# grab analytical data
+sname = struc_adapter(struc_name)
+query = grad_adapter[grad_name] + ' ' + dose_grid_name + ' mm'
+an_dvh_df = analytical_curves[sname][query]
+an_dose_axis = analytical_curves[sname]['Dose (cGy)'] / 100.0
+# get curve compare data
+cmp = CurveCompare(an_dose_axis, an_dvh_df, calc_data.dose_axis, calc_data.volume_cc)
+cmp.plot_results('Analytical', 'PyPlanScoring', struc_name[:-4] + ' - ' + query, results_folder)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>struc_file = structure_files_dict[struc_name]
+dose_file = doses_files_dict[grad_name][dose_grid_name]
+calcdvh = dvhcalc.get_dvh(struc_file, dose_file, 2)
+dp_dose = calcdvh.cumulative.bincenters
+dp_vol = calcdvh.cumulative.counts
+
+plt.plot(dp_dose, dp_vol, label='dicompyler-core')</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>struc_file = structure_files_dict[struc_name]
+dose_file = doses_files_dict[grad_name][dose_grid_name]
+calcdvh = dvhcalc.get_dvh(struc_file, dose_file, 2)
+dp_dose = calcdvh.cumulative.bincenters
+dp_vol = calcdvh.cumulative.counts
+plt.plot(dp_dose, dp_vol, label='dicompyler-core')</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>dp_dose = calcdvh.cumulative.bincenters
+dp_vol = calcdvh.cumulative.counts
+plt.plot(dp_dose, dp_vol, label='dicompyler-core')</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>struc_file = structure_files_dict[struc_name]
+dose_file = doses_files_dict[grad_name][dose_grid_name]
+calcdvh = dvhcalc.get_dvh(struc_file, dose_file, 2)
+dp_dose = calcdvh.cumulative.bincenters
+dp_vol = calcdvh.cumulative.counts</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>struc_file = structure_files_dict[struc_name]
+dose_file = doses_files_dict[grad_name][dose_grid_name]
+calcdvh = dvhcalc.get_dvh(struc_file, dose_file, 2)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>struc_file = structure_files_dict[struc_name]
+dose_file = doses_files_dict[grad_name][dose_grid_name]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>struc_file = structure_files_dict[struc_name]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+    </expressions>
+    <expressions id="watch">
+      <expression>
+        <expression-string>an_dvh_df = analytical_curves[sname][query]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>np.diff(np.array(list(self.planes.keys()), dtype=float))</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.case_name</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.plan_type_combo.item</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.plan_type_combo.itemData()</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.plan_type_combo.itemText(1)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.plan_type_combo.itemText(0)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.plan_type_combo.itemText()</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.plan_type_combo</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>re.findall(r&quot;[-+]?\d*\.*\d+&quot;, l)</expression-string>
+        <language-id>TEXT</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/docs/conf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3784">
+          <caret line="172" column="40" selection-start-line="172" selection-start-column="40" selection-end-line="172" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///tmp/sphinx-err-l_paq1dx.log">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="14" column="28" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_18.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="638">
+          <caret line="32" column="40" selection-start-line="32" selection-start-column="40" selection-end-line="32" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs1/source/user_manual/getting_started.rst" />
+    <entry file="file://$PROJECT_DIR$/docs1/source/index.rst" />
+    <entry file="file://$PROJECT_DIR$/docs1/source/conf.py" />
+    <entry file="file://$PROJECT_DIR$/docs/_build/html/autoapi/index.html" />
+    <entry file="file://$PROJECT_DIR$/gui/cases/BrainMetSRSCase/GTV/licence.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="14" selection-start-line="12" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/Makefile" />
+    <entry file="file://$PROJECT_DIR$/docs/contributing.rst" />
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/dicomparser.py" />
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/scoring.py" />
+    <entry file="file://$USER_HOME$/miniconda3/envs/pyside/lib/python3.6/site-packages/pydicom-1.0.0a1-py3.6.egg/pydicom/filereader.py" />
+    <entry file="file://$PROJECT_DIR$/tests/tests_validation/conftest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/dosimetric.py" />
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/dvhcalculation.py" />
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/dvhdoses.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1371">
+          <caret line="171" column="36" selection-start-line="171" selection-start-column="36" selection-end-line="171" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/gpu_code.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret lean-forward="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/radiobiology/ntcp_models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/io.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="711">
+          <caret line="157" lean-forward="true" selection-start-line="157" selection-end-line="157" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/requirements_BKP.txt" />
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/miniconda3/envs/pyside/lib/python3.6/site-packages/matplotlib/pyplot.py" />
+    <entry file="file://$PROJECT_DIR$/tests/tests_core/test_DVHCalculationMP.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="6" column="7" lean-forward="true" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tests_core/test_DVHCalculation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="17" column="20" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tests_core/test_dose3D.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-768" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/modules" />
+    <entry file="file://$PROJECT_DIR$/tests/tests_core/test_IOHandler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui/cases/LeftChestWallCase/PyPlanScoring.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="8" column="19" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/geometry.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="811" column="4" selection-start-line="811" selection-start-column="4" selection-end-line="811" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/calculation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="35" column="26" lean-forward="true" selection-start-line="35" selection-start-column="26" selection-end-line="35" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/vis/contours3d.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/vis/volumes_view.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tests_validation/test_benchmark_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="513">
+          <caret line="148" column="19" selection-start-line="141" selection-start-column="4" selection-end-line="148" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui/api/backend.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="691">
+          <caret line="261" column="42" selection-start-line="261" selection-start-column="42" selection-end-line="261" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/getting_started.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/user_manual.rst">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="15" column="26" lean-forward="true" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/user_manual/getting_started.rst">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27">
+          <caret line="1" lean-forward="true" selection-end-line="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_18.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="54" column="26" selection-start-line="54" selection-start-column="16" selection-end-line="54" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/constraints/metrics.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="662" selection-start-line="662" selection-end-line="662" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/vis/slice3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="173" selection-start-line="173" selection-end-line="173" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/types.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="967" column="22" selection-start-line="967" selection-start-column="6" selection-end-line="967" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/dicom_reader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="15" selection-start-line="15" selection-end-line="15" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="128" column="4" selection-start-line="128" selection-start-column="4" selection-end-line="128" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="14" column="8" selection-start-line="14" selection-start-column="8" selection-end-line="14" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tests_data/left_chest_wall/photon/test_lcw.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret column="500" lean-forward="true" selection-start-column="500" selection-end-column="500" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/miniconda3/envs/pyside/lib/python3.6/site-packages/sphinx/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="315" column="32" selection-start-line="315" selection-start-column="32" selection-end-line="315" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///tmp/sphinx-err-l_paq1dx.log">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/conf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1302">
+          <caret line="180" column="13" lean-forward="true" selection-start-line="180" selection-start-column="13" selection-end-line="180" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

@@ -1,0 +1,2219 @@
+------- Component -------
+Emami TD 50-5.CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Algorithms\RTOG PROTOCOLS\OTHER SITES\Emami TD 50-5.CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>Metric ID</string>
+    <string>Score Function</string>
+    <string>Scalable</string>
+    <string>Pass/Fail</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>49.70</string>
+    <string>99.40</string>
+    <string>25.18</string>
+    <string>25.26</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>[BLADDER (SYMPTOMATIC BLADDER CONTRACTURE)] D[100.0%] (Gy)</string>
+    <string>[BLADDER (SYMPTOMATIC BLADDER CONTRACTURE)] D[66.666%] (Gy)</string>
+    <string>[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[100.0%] (Gy)</string>
+    <string>[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[66.666%] (Gy)</string>
+    <string>[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[33.333%] (Gy)</string>
+    <string>[BRAIN (NECROSIS)] D[100.0%] (Gy)</string>
+    <string>[BRAIN (NECROSIS)] D[66.666%] (Gy)</string>
+    <string>[BRAIN (NECROSIS)] D[33.333%] (Gy)</string>
+    <string>[BRAINSTEM (NECROSIS)] D[100.0%] (Gy)</string>
+    <string>[CAUDA EQUINA (CLINICALLY APPARENT NERVE DAMAGE)] D[100.0%] (Gy)</string>
+    <string>[COLON (OBSTRUCTION, PERFORATION, ULCERATION)] D[100.0%] (Gy)</string>
+    <string>[COLON (OBSTRUCTION, PERFORATION, ULCERATION)] D[33.33%] (Gy)</string>
+    <string>[EAR (ACUTE SEROUS OTITIS)] D[100.0%] (Gy)</string>
+    <string>[EAR (ACUTE SEROUS OTITIS)] D[66.666%] (Gy)</string>
+    <string>[EAR (ACUTE SEROUS OTITIS)] D[33.333%] (Gy)</string>
+    <string>[EAR (CHRONIC SEROUS OTITIS)] D[100.0%] (Gy)</string>
+    <string>[EAR (CHRONIC SEROUS OTITIS)] D[66.666%] (Gy)</string>
+    <string>[EAR (CHRONIC SEROUS OTITIS)] D[33.333%] (Gy)</string>
+    <string>[ESOPHAGUS (STRICTURE, PERFORATION)] D[100.0%] (Gy)</string>
+    <string>[ESOPHAGUS (STRICTURE, PERFORATION)] D[66.666%] (Gy)</string>
+    <string>[ESOPHAGUS (STRICTURE, PERFORATION)] D[33.333%] (Gy)</string>
+    <string>[FEMORAL HEAD (NECROSIS)] D[100.0%] (Gy)</string>
+    <string>[HEART (PERICARDITIS)] D[100.0%] (Gy)</string>
+    <string>[HEART (PERICARDITIS)] D[66.666%] (Gy)</string>
+    <string>[HEART (PERICARDITIS)] D[33.333%] (Gy)</string>
+    <string>[KIDNEY (CLINICAL NEPHRITIS)] D[100.0%] (Gy)</string>
+    <string>[KIDNEY (CLINICAL NEPHRITIS)] D[66.666%] (Gy)</string>
+    <string>[LARYNX (NECROSIS)] D[100.0%] (Gy)</string>
+    <string>[LARYNX (NECROSIS)] D[66.666%] (Gy)</string>
+    <string>[LARYNX (NECROSIS)] D[33.333%] (Gy)</string>
+    <string>[LARYNX (EDEMA)] D[100.0%] (Gy)</string>
+    <string>[LENS (CATARACTS)] D[100.0%] (Gy)</string>
+    <string>[LIVER (LIVER FAILURE)] D[100.0%] (Gy)</string>
+    <string>[LIVER (LIVER FAILURE)] D[66.666%] (Gy)</string>
+    <string>[LIVER (LIVER FAILURE)] D[33.333%] (Gy)</string>
+    <string>[LUNG (PNEUMONITIS)] D[100.0%] (Gy)</string>
+    <string>[LUNG (PNEUMONITIS)] D[66.666%] (Gy)</string>
+    <string>[LUNG (PNEUMONITIS)] D[33.333%] (Gy)</string>
+    <string>[OPTIC CHIASM (BLINDNESS)] D[100.0%] (Gy)</string>
+    <string>[OPTIC NERVE (BLINDNESS)] D[100.0%] (Gy)</string>
+    <string>[PAROTID GLAND (XEROSTOMIA)] D[100.0%] (Gy)</string>
+    <string>[PAROTID GLAND (XEROSTOMIA)] D[66.666%] (Gy)</string>
+    <string>[RECTUM (SEVERE PROCTITIS, NECROSIS, FISTULA, STENOSIS)] D[100.0%] (Gy)</string>
+    <string>[RETINA (BLINDNESS)] D[100.0%] (Gy)</string>
+    <string>[RIBCAGE (PATHOLOGIC FRACTURE)] D[33.333%] (Gy)</string>
+    <string>[SKIN (NECROSIS, ULCERATION)] D[100.0cc] (Gy)</string>
+    <string>[SPINAL CORD (MYELITIS, NECROSIS)] D[10.0cc] (Gy)</string>
+    <string>[SPINAL CORD (MYELITIS, NECROSIS)] D[5.0cc] (Gy)</string>
+    <string>[SMALL INTESTINE (OBSTRUCTION, PERFORATION)] D[100.0%] (Gy)</string>
+    <string>[SMALL INTESTINE (OBSTRUCTION, PERFORATION)] D[33.333%] (Gy)</string>
+    <string>[STOMACH (ULCERATION, PERFORATION)] D[100.0%] (Gy)</string>
+    <string>[STOMACH (ULCERATION, PERFORATION)] D[66.666cc] (Gy)</string>
+    <string>[STOMACH (ULCERATION, PERFORATION)] D[33.333%] (Gy)</string>
+    <string>[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[100.0%] (Gy)</string>
+    <string>[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[66.666%] (Gy)</string>
+    <string>[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[33.333%] (Gy)</string>
+    <string>Emami TD 50-5\[BLADDER (SYMPTOMATIC BLADDER CONTRACTURE)] D[100.0%] (Gy) [Goal 80, Fail 80.001, 1 pts]</string>
+    <string>Emami TD 50-5\[BLADDER (SYMPTOMATIC BLADDER CONTRACTURE)] D[66.666%] (Gy) [Goal 85, Fail 85.001, 1 pts]</string>
+    <string>Emami TD 50-5\[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[100.0%] (Gy) [Goal 75, Fail 75.001, 1 pts]</string>
+    <string>Emami TD 50-5\[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[66.666%] (Gy) [Goal 76, Fail 76.001, 1 pts]</string>
+    <string>Emami TD 50-5\[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[33.333%] (Gy) [Goal 77, Fail 77.001, 1 pts]</string>
+    <string>Emami TD 50-5\[BRAIN (NECROSIS)] D[100.0%] (Gy) [Goal 60, Fail 60.001, 1 pts]</string>
+    <string>Emami TD 50-5\[BRAIN (NECROSIS)] D[66.666%] (Gy) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>Emami TD 50-5\[BRAIN (NECROSIS)] D[33.333%] (Gy) [Goal 75, Fail 75.001, 1 pts]</string>
+    <string>Emami TD 50-5\[BRAINSTEM (NECROSIS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>Emami TD 50-5\[CAUDA EQUINA (CLINICALLY APPARENT NERVE DAMAGE)] D[100.0%] (Gy) [Goal 75, Fail 75.001, 1 pts]</string>
+    <string>Emami TD 50-5\[COLON (OBSTRUCTION, PERFORATION, ULCERATION)] D[100.0%] (Gy) [Goal 55, Fail 55.001, 1 pts]</string>
+    <string>Emami TD 50-5\[COLON (OBSTRUCTION, PERFORATION, ULCERATION)] D[33.33%] (Gy) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>Emami TD 50-5\[EAR (ACUTE SEROUS OTITIS)] D[100.0%] (Gy) [Goal 40, Fail 40.001, 1 pts]</string>
+    <string>Emami TD 50-5\[EAR (ACUTE SEROUS OTITIS)] D[66.666%] (Gy) [Goal 40, Fail 40.001, 1 pts]</string>
+    <string>Emami TD 50-5\[EAR (ACUTE SEROUS OTITIS)] D[33.333%] (Gy) [Goal 40, Fail 40.001, 1 pts]</string>
+    <string>Emami TD 50-5\[EAR (CHRONIC SEROUS OTITIS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>Emami TD 50-5\[EAR (CHRONIC SEROUS OTITIS)] D[66.666%] (Gy) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>Emami TD 50-5\[EAR (CHRONIC SEROUS OTITIS)] D[33.333%] (Gy) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>Emami TD 50-5\[ESOPHAGUS (STRICTURE, PERFORATION)] D[100.0%] (Gy) [Goal 68, Fail 68.001, 1 pts]</string>
+    <string>Emami TD 50-5\[ESOPHAGUS (STRICTURE, PERFORATION)] D[66.666%] (Gy) [Goal 70, Fail 70.001, 1 pts]</string>
+    <string>Emami TD 50-5\[ESOPHAGUS (STRICTURE, PERFORATION)] D[33.333%] (Gy) [Goal 72, Fail 72.001, 1 pts]</string>
+    <string>Emami TD 50-5\[FEMORAL HEAD (NECROSIS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>Emami TD 50-5\[HEART (PERICARDITIS)] D[100.0%] (Gy) [Goal 50, Fail 50.001, 1 pts]</string>
+    <string>Emami TD 50-5\[HEART (PERICARDITIS)] D[66.666%] (Gy) [Goal 55, Fail 55.001, 1 pts]</string>
+    <string>Emami TD 50-5\[HEART (PERICARDITIS)] D[33.333%] (Gy) [Goal 70, Fail 70.001, 1 pts]</string>
+    <string>Emami TD 50-5\[KIDNEY (CLINICAL NEPHRITIS)] D[100.0%] (Gy) [Goal 28, Fail 28.001, 1 pts]</string>
+    <string>Emami TD 50-5\[KIDNEY (CLINICAL NEPHRITIS)] D[66.666%] (Gy) [Goal 40, Fail 40.001, 1 pts]</string>
+    <string>Emami TD 50-5\[LARYNX (NECROSIS)] D[100.0%] (Gy) [Goal 80, Fail 80.001, 1 pts]</string>
+    <string>Emami TD 50-5\[LARYNX (NECROSIS)] D[66.666%] (Gy) [Goal 80, Fail 80.001, 1 pts]</string>
+    <string>Emami TD 50-5\[LARYNX (NECROSIS)] D[33.333%] (Gy) [Goal 90, Fail 90.001, 1 pts]</string>
+    <string>Emami TD 50-5\[LARYNX (EDEMA)] D[100.0%] (Gy) [Goal 80, Fail 80.001, 1 pts]</string>
+    <string>Emami TD 50-5\[LENS (CATARACTS)] D[100.0%] (Gy) [Goal 18, Fail 18.001, 1 pts]</string>
+    <string>Emami TD 50-5\[LIVER (LIVER FAILURE)] D[100.0%] (Gy) [Goal 40, Fail 40.001, 1 pts]</string>
+    <string>Emami TD 50-5\[LIVER (LIVER FAILURE)] D[66.666%] (Gy) [Goal 45, Fail 45.001, 1 pts]</string>
+    <string>Emami TD 50-5\[LIVER (LIVER FAILURE)] D[33.333%] (Gy) [Goal 55, Fail 55.001, 1 pts]</string>
+    <string>Emami TD 50-5\[LUNG (PNEUMONITIS)] D[100.0%] (Gy) [Goal 24.5, Fail 24.501, 1 pts]</string>
+    <string>Emami TD 50-5\[LUNG (PNEUMONITIS)] D[66.666%] (Gy) [Goal 40, Fail 40.001, 1 pts]</string>
+    <string>Emami TD 50-5\[LUNG (PNEUMONITIS)] D[33.333%] (Gy) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>Emami TD 50-5\[OPTIC CHIASM (BLINDNESS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>Emami TD 50-5\[OPTIC NERVE (BLINDNESS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>Emami TD 50-5\[PAROTID GLAND (XEROSTOMIA)] D[100.0%] (Gy) [Goal 46, Fail 46.001, 1 pts]</string>
+    <string>Emami TD 50-5\[PAROTID GLAND (XEROSTOMIA)] D[66.666%] (Gy) [Goal 46, Fail 46.001, 1 pts]</string>
+    <string>Emami TD 50-5\[RECTUM (SEVERE PROCTITIS, NECROSIS, FISTULA, STENOSIS)] D[100.0%] (Gy) [Goal 80, Fail 80.001, 1 pts]</string>
+    <string>Emami TD 50-5\[RETINA (BLINDNESS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>Emami TD 50-5\[RIBCAGE (PATHOLOGIC FRACTURE)] D[33.333%] (Gy) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>Emami TD 50-5\[SKIN (NECROSIS, ULCERATION)] D[100.0cc] (Gy) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>Emami TD 50-5\[SPINAL CORD (MYELITIS, NECROSIS)] D[10.0cc] (Gy) [Goal 70, Fail 70.001, 1 pts]</string>
+    <string>Emami TD 50-5\[SPINAL CORD (MYELITIS, NECROSIS)] D[5.0cc] (Gy) [Goal 70, Fail 70.001, 1 pts]</string>
+    <string>Emami TD 50-5\[SMALL INTESTINE (OBSTRUCTION, PERFORATION)] D[100.0%] (Gy) [Goal 55, Fail 55.001, 1 pts]</string>
+    <string>Emami TD 50-5\[SMALL INTESTINE (OBSTRUCTION, PERFORATION)] D[33.333%] (Gy) [Goal 60, Fail 60.001, 1 pts]</string>
+    <string>Emami TD 50-5\[STOMACH (ULCERATION, PERFORATION)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>Emami TD 50-5\[STOMACH (ULCERATION, PERFORATION)] D[66.666cc] (Gy) [Goal 67, Fail 67.001, 1 pts]</string>
+    <string>Emami TD 50-5\[STOMACH (ULCERATION, PERFORATION)] D[33.333%] (Gy) [Goal 70, Fail 70.001, 1 pts]</string>
+    <string>Emami TD 50-5\[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[100.0%] (Gy) [Goal 72, Fail 72.001, 1 pts]</string>
+    <string>Emami TD 50-5\[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[66.666%] (Gy) [Goal 72, Fail 72.001, 1 pts]</string>
+    <string>Emami TD 50-5\[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[33.333%] (Gy) [Goal 77, Fail 77.001, 1 pts]</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+  </RasterData>
+  <PlotAs>Blank</PlotAs>
+  <DatagridWidth>686</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BLADDER (SYMPTOMATIC BLADDER CONTRACTURE)] D[100.0%] (Gy) [Goal 80, Fail 80.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5 - Copy\[BLADDER (SYMPTOMATIC BLADDER CONTRACTURE)] D[100.0%] (Gy) [Goal 80, Fail 80.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BLADDER (SYMPTOMATIC BLADDER CONTRACTURE)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>80.001</string>
+    <string>80</string>
+    <string>70</string>
+    <string>90.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BLADDER (SYMPTOMATIC BLADDER CONTRACTURE)] D[66.666%] (Gy) [Goal 85, Fail 85.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5 - Copy\[BLADDER (SYMPTOMATIC BLADDER CONTRACTURE)] D[66.666%] (Gy) [Goal 85, Fail 85.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BLADDER (SYMPTOMATIC BLADDER CONTRACTURE)] D[66.666%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>85.001</string>
+    <string>85</string>
+    <string>75</string>
+    <string>95.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[100.0%] (Gy) [Goal 75, Fail 75.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5 - Copy\[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[100.0%] (Gy) [Goal 75, Fail 75.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>75.001</string>
+    <string>75</string>
+    <string>65</string>
+    <string>85.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[66.666%] (Gy) [Goal 76, Fail 76.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5 - Copy\[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[66.666%] (Gy) [Goal 76, Fail 76.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[66.666%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>76.001</string>
+    <string>76</string>
+    <string>66</string>
+    <string>86.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[33.333%] (Gy) [Goal 77, Fail 77.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5 - Copy\[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[33.333%] (Gy) [Goal 77, Fail 77.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRACHIAL PLEXUS (CLINICALLY APPARENT NERVE DAMAGE)] D[33.333%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>77.001</string>
+    <string>77</string>
+    <string>67</string>
+    <string>87.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRAIN (NECROSIS)] D[100.0%] (Gy) [Goal 60, Fail 60.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5 - Copy\[BRAIN (NECROSIS)] D[100.0%] (Gy) [Goal 60, Fail 60.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRAIN (NECROSIS)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>60.001</string>
+    <string>60</string>
+    <string>50</string>
+    <string>70.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRAIN (NECROSIS)] D[66.666%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5 - Copy\[BRAIN (NECROSIS)] D[66.666%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRAIN (NECROSIS)] D[66.666%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.001</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRAIN (NECROSIS)] D[33.333%] (Gy) [Goal 75, Fail 75.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5 - Copy\[BRAIN (NECROSIS)] D[33.333%] (Gy) [Goal 75, Fail 75.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRAIN (NECROSIS)] D[33.333%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>75.001</string>
+    <string>75</string>
+    <string>65</string>
+    <string>85.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRAINSTEM (NECROSIS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5 - Copy\[BRAINSTEM (NECROSIS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRAINSTEM (NECROSIS)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.001</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[CAUDA EQUINA (CLINICALLY APPARENT NERVE DAMAGE)] D[100.0%] (Gy) [Goal 75, Fail 75.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5 - Copy\[CAUDA EQUINA (CLINICALLY APPARENT NERVE DAMAGE)] D[100.0%] (Gy) [Goal 75, Fail 75.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[CAUDA EQUINA (CLINICALLY APPARENT NERVE DAMAGE)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>75.001</string>
+    <string>75</string>
+    <string>65</string>
+    <string>85.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[COLON (OBSTRUCTION, PERFORATION, ULCERATION)] D[100.0%] (Gy) [Goal 55, Fail 55.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[COLON (OBSTRUCTION, PERFORATION, ULCERATION)] D[100.0%] (Gy) [Goal 55, Fail 55.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[COLON (OBSTRUCTION, PERFORATION, ULCERATION)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>55.001</string>
+    <string>55</string>
+    <string>45</string>
+    <string>65.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[COLON (OBSTRUCTION, PERFORATION, ULCERATION)] D[33.33%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[COLON (OBSTRUCTION, PERFORATION, ULCERATION)] D[33.33%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[COLON (OBSTRUCTION, PERFORATION, ULCERATION)] D[33.33%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.001</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[EAR (ACUTE SEROUS OTITIS)] D[100.0%] (Gy) [Goal 40, Fail 40.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[EAR (ACUTE SEROUS OTITIS)] D[100.0%] (Gy) [Goal 40, Fail 40.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[EAR (ACUTE SEROUS OTITIS)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40.001</string>
+    <string>40</string>
+    <string>30</string>
+    <string>50.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[EAR (ACUTE SEROUS OTITIS)] D[66.666%] (Gy) [Goal 40, Fail 40.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[EAR (ACUTE SEROUS OTITIS)] D[66.666%] (Gy) [Goal 40, Fail 40.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[EAR (ACUTE SEROUS OTITIS)] D[66.666%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40.001</string>
+    <string>40</string>
+    <string>30</string>
+    <string>50.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[EAR (ACUTE SEROUS OTITIS)] D[33.333%] (Gy) [Goal 40, Fail 40.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[EAR (ACUTE SEROUS OTITIS)] D[33.333%] (Gy) [Goal 40, Fail 40.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[EAR (ACUTE SEROUS OTITIS)] D[33.333%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40.001</string>
+    <string>40</string>
+    <string>30</string>
+    <string>50.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[EAR (CHRONIC SEROUS OTITIS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[EAR (CHRONIC SEROUS OTITIS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[EAR (CHRONIC SEROUS OTITIS)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.001</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[EAR (CHRONIC SEROUS OTITIS)] D[66.666%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[EAR (CHRONIC SEROUS OTITIS)] D[66.666%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[EAR (CHRONIC SEROUS OTITIS)] D[66.666%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.001</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[EAR (CHRONIC SEROUS OTITIS)] D[33.333%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[EAR (CHRONIC SEROUS OTITIS)] D[33.333%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[EAR (CHRONIC SEROUS OTITIS)] D[33.333%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.001</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[ESOPHAGUS (STRICTURE, PERFORATION)] D[100.0%] (Gy) [Goal 68, Fail 68.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[ESOPHAGUS (STRICTURE, PERFORATION)] D[100.0%] (Gy) [Goal 68, Fail 68.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[ESOPHAGUS (STRICTURE, PERFORATION)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>68.001</string>
+    <string>68</string>
+    <string>58</string>
+    <string>78.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[ESOPHAGUS (STRICTURE, PERFORATION)] D[66.666%] (Gy) [Goal 70, Fail 70.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[ESOPHAGUS (STRICTURE, PERFORATION)] D[66.666%] (Gy) [Goal 70, Fail 70.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[ESOPHAGUS (STRICTURE, PERFORATION)] D[66.666%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>70.001</string>
+    <string>70</string>
+    <string>60</string>
+    <string>80.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[ESOPHAGUS (STRICTURE, PERFORATION)] D[33.333%] (Gy) [Goal 72, Fail 72.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[ESOPHAGUS (STRICTURE, PERFORATION)] D[33.333%] (Gy) [Goal 72, Fail 72.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[ESOPHAGUS (STRICTURE, PERFORATION)] D[33.333%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>72.001</string>
+    <string>72</string>
+    <string>62</string>
+    <string>82.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[FEMORAL HEAD (NECROSIS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[FEMORAL HEAD (NECROSIS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[FEMORAL HEAD (NECROSIS)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.001</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART (PERICARDITIS)] D[100.0%] (Gy) [Goal 50, Fail 50.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[HEART (PERICARDITIS)] D[100.0%] (Gy) [Goal 50, Fail 50.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART (PERICARDITIS)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50.001</string>
+    <string>50</string>
+    <string>40</string>
+    <string>60.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART (PERICARDITIS)] D[66.666%] (Gy) [Goal 55, Fail 55.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[HEART (PERICARDITIS)] D[66.666%] (Gy) [Goal 55, Fail 55.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART (PERICARDITIS)] D[66.666%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>55.001</string>
+    <string>55</string>
+    <string>45</string>
+    <string>65.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART (PERICARDITIS)] D[33.333%] (Gy) [Goal 70, Fail 70.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[HEART (PERICARDITIS)] D[33.333%] (Gy) [Goal 70, Fail 70.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART (PERICARDITIS)] D[33.333%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>70.001</string>
+    <string>70</string>
+    <string>60</string>
+    <string>80.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[KIDNEY (CLINICAL NEPHRITIS)] D[100.0%] (Gy) [Goal 28, Fail 28.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[KIDNEY (CLINICAL NEPHRITIS)] D[100.0%] (Gy) [Goal 28, Fail 28.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[KIDNEY (CLINICAL NEPHRITIS)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>28.001</string>
+    <string>28</string>
+    <string>18</string>
+    <string>38.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[KIDNEY (CLINICAL NEPHRITIS)] D[66.666%] (Gy) [Goal 40, Fail 40.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[KIDNEY (CLINICAL NEPHRITIS)] D[66.666%] (Gy) [Goal 40, Fail 40.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[KIDNEY (CLINICAL NEPHRITIS)] D[66.666%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40.001</string>
+    <string>40</string>
+    <string>30</string>
+    <string>50.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LARYNX (NECROSIS)] D[100.0%] (Gy) [Goal 80, Fail 80.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[LARYNX (NECROSIS)] D[100.0%] (Gy) [Goal 80, Fail 80.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LARYNX (NECROSIS)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>80.001</string>
+    <string>80</string>
+    <string>70</string>
+    <string>90.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LARYNX (NECROSIS)] D[66.666%] (Gy) [Goal 80, Fail 80.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[LARYNX (NECROSIS)] D[66.666%] (Gy) [Goal 80, Fail 80.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LARYNX (NECROSIS)] D[66.666%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>80.001</string>
+    <string>80</string>
+    <string>70</string>
+    <string>90.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LARYNX (NECROSIS)] D[33.333%] (Gy) [Goal 90, Fail 90.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[LARYNX (NECROSIS)] D[33.333%] (Gy) [Goal 90, Fail 90.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LARYNX (NECROSIS)] D[33.333%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>90.001</string>
+    <string>90</string>
+    <string>80</string>
+    <string>100.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LARYNX (EDEMA)] D[100.0%] (Gy) [Goal 80, Fail 80.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[LARYNX (EDEMA)] D[100.0%] (Gy) [Goal 80, Fail 80.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LARYNX (EDEMA)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>80.001</string>
+    <string>80</string>
+    <string>70</string>
+    <string>90.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LENS (CATARACTS)] D[100.0%] (Gy) [Goal 18, Fail 18.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[LENS (CATARACTS)] D[100.0%] (Gy) [Goal 18, Fail 18.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LENS (CATARACTS)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>18.001</string>
+    <string>18</string>
+    <string>8</string>
+    <string>28.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LIVER (LIVER FAILURE)] D[100.0%] (Gy) [Goal 40, Fail 40.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[LIVER (LIVER FAILURE)] D[100.0%] (Gy) [Goal 40, Fail 40.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LIVER (LIVER FAILURE)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40.001</string>
+    <string>40</string>
+    <string>30</string>
+    <string>50.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LIVER (LIVER FAILURE)] D[66.666%] (Gy) [Goal 45, Fail 45.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[LIVER (LIVER FAILURE)] D[66.666%] (Gy) [Goal 45, Fail 45.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LIVER (LIVER FAILURE)] D[66.666%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>45.001</string>
+    <string>45</string>
+    <string>35</string>
+    <string>55.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LIVER (LIVER FAILURE)] D[33.333%] (Gy) [Goal 55, Fail 55.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[LIVER (LIVER FAILURE)] D[33.333%] (Gy) [Goal 55, Fail 55.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LIVER (LIVER FAILURE)] D[33.333%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>55.001</string>
+    <string>55</string>
+    <string>40</string>
+    <string>60.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUNG (PNEUMONITIS)] D[100.0%] (Gy) [Goal 24.5, Fail 24.501, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[LUNG (PNEUMONITIS)] D[100.0%] (Gy) [Goal 24.5, Fail 24.501, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUNG (PNEUMONITIS)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>24.501</string>
+    <string>24.5</string>
+    <string>14.5</string>
+    <string>34.501</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUNG (PNEUMONITIS)] D[66.666%] (Gy) [Goal 40, Fail 40.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[LUNG (PNEUMONITIS)] D[66.666%] (Gy) [Goal 40, Fail 40.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUNG (PNEUMONITIS)] D[66.666%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40.001</string>
+    <string>40</string>
+    <string>30</string>
+    <string>50.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUNG (PNEUMONITIS)] D[33.333%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[LUNG (PNEUMONITIS)] D[33.333%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUNG (PNEUMONITIS)] D[33.333%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.001</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[OPTIC CHIASM (BLINDNESS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[OPTIC CHIASM (BLINDNESS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[OPTIC CHIASM (BLINDNESS)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.001</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[OPTIC NERVE (BLINDNESS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[OPTIC NERVE (BLINDNESS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[OPTIC NERVE (BLINDNESS)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.001</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PAROTID GLAND (XEROSTOMIA)] D[100.0%] (Gy) [Goal 46, Fail 46.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[PAROTID GLAND (XEROSTOMIA)] D[100.0%] (Gy) [Goal 46, Fail 46.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PAROTID GLAND (XEROSTOMIA)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>46.001</string>
+    <string>46</string>
+    <string>36</string>
+    <string>56.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PAROTID GLAND (XEROSTOMIA)] D[66.666%] (Gy) [Goal 46, Fail 46.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[PAROTID GLAND (XEROSTOMIA)] D[66.666%] (Gy) [Goal 46, Fail 46.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PAROTID GLAND (XEROSTOMIA)] D[66.666%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>46.001</string>
+    <string>46</string>
+    <string>36</string>
+    <string>56.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RECTUM (SEVERE PROCTITIS, NECROSIS, FISTULA, STENOSIS)] D[100.0%] (Gy) [Goal 80, Fail 80.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[RECTUM (SEVERE PROCTITIS, NECROSIS, FISTULA, STENOSIS)] D[100.0%] (Gy) [Goal 80, Fail 80.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RECTUM (SEVERE PROCTITIS, NECROSIS, FISTULA, STENOSIS)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>80.001</string>
+    <string>80</string>
+    <string>70</string>
+    <string>90.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RETINA (BLINDNESS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[RETINA (BLINDNESS)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RETINA (BLINDNESS)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.001</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RIBCAGE (PATHOLOGIC FRACTURE)] D[33.333%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[RIBCAGE (PATHOLOGIC FRACTURE)] D[33.333%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RIBCAGE (PATHOLOGIC FRACTURE)] D[33.333%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.001</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SKIN (NECROSIS, ULCERATION)] D[100.0cc] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[SKIN (NECROSIS, ULCERATION)] D[100.0cc] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SKIN (NECROSIS, ULCERATION)] D[100.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.001</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SPINAL CORD (MYELITIS, NECROSIS)] D[10.0cc] (Gy) [Goal 70, Fail 70.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[SPINAL CORD (MYELITIS, NECROSIS)] D[10.0cc] (Gy) [Goal 70, Fail 70.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SPINAL CORD (MYELITIS, NECROSIS)] D[10.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>70.001</string>
+    <string>70</string>
+    <string>60</string>
+    <string>80.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SPINAL CORD (MYELITIS, NECROSIS)] D[5.0cc] (Gy) [Goal 70, Fail 70.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[SPINAL CORD (MYELITIS, NECROSIS)] D[5.0cc] (Gy) [Goal 70, Fail 70.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SPINAL CORD (MYELITIS, NECROSIS)] D[5.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>70.001</string>
+    <string>70</string>
+    <string>60</string>
+    <string>80.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SMALL INTESTINE (OBSTRUCTION, PERFORATION)] D[100.0%] (Gy) [Goal 55, Fail 55.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[SMALL INTESTINE (OBSTRUCTION, PERFORATION)] D[100.0%] (Gy) [Goal 55, Fail 55.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SMALL INTESTINE (OBSTRUCTION, PERFORATION)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>55.001</string>
+    <string>55</string>
+    <string>45</string>
+    <string>65.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SMALL INTESTINE (OBSTRUCTION, PERFORATION)] D[33.333%] (Gy) [Goal 60, Fail 60.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[SMALL INTESTINE (OBSTRUCTION, PERFORATION)] D[33.333%] (Gy) [Goal 60, Fail 60.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SMALL INTESTINE (OBSTRUCTION, PERFORATION)] D[33.333%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>60.001</string>
+    <string>60</string>
+    <string>50</string>
+    <string>70.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[STOMACH (ULCERATION, PERFORATION)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[STOMACH (ULCERATION, PERFORATION)] D[100.0%] (Gy) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[STOMACH (ULCERATION, PERFORATION)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.001</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[STOMACH (ULCERATION, PERFORATION)] D[66.666cc] (Gy) [Goal 67, Fail 67.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[STOMACH (ULCERATION, PERFORATION)] D[66.666cc] (Gy) [Goal 67, Fail 67.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[STOMACH (ULCERATION, PERFORATION)] D[66.666cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>67.001</string>
+    <string>67</string>
+    <string>57</string>
+    <string>77.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[STOMACH (ULCERATION, PERFORATION)] D[33.333%] (Gy) [Goal 70, Fail 70.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[STOMACH (ULCERATION, PERFORATION)] D[33.333%] (Gy) [Goal 70, Fail 70.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[STOMACH (ULCERATION, PERFORATION)] D[33.333%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>70.001</string>
+    <string>70</string>
+    <string>60</string>
+    <string>80.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[100.0%] (Gy) [Goal 72, Fail 72.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[100.0%] (Gy) [Goal 72, Fail 72.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[100.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>72.001</string>
+    <string>72</string>
+    <string>62</string>
+    <string>82.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[66.666%] (Gy) [Goal 72, Fail 72.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[66.666%] (Gy) [Goal 72, Fail 72.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[66.666%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>72.001</string>
+    <string>72</string>
+    <string>62</string>
+    <string>82.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[33.333%] (Gy) [Goal 77, Fail 77.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\Emami TD 50-5\[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[33.333%] (Gy) [Goal 77, Fail 77.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[TMJ MANDIBLE (LIMITED JOINT FUNCTION)] D[33.333%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>77.001</string>
+    <string>77</string>
+    <string>67</string>
+    <string>87.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>

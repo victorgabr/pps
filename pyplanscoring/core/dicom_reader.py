@@ -1,5 +1,5 @@
 """Class that parses and returns formatted DICOM RT data."""
-# Copyright (c) 2017      Victor Gabriel Leandro Alves
+# Copyright (c) 2017-2018      Victor Gabriel Leandro Alves
 # Copyright (c) 2009-2016 Aditya Panchal
 # Copyright (c) 2009-2010 Roy Keyes
 # This file based on part of dicompyler-core, released under a BSD license.
@@ -15,6 +15,12 @@ from scipy.interpolate import interp1d, RegularGridInterpolator
 from core.geometry import centroid_of_polygon
 from core.types import Dose3D, DoseUnit
 
+'''
+
+http://dicom.nema.org/medical/Dicom/2016b/output/chtml/part03/sect_C.8.8.html
+http://dicom.nema.org/medical/Dicom/2016b/output/chtml/part03/sect_C.7.6.2.html#sect_C.7.6.2.1.1
+
+'''
 
 class DicomParserBase(object):
     """Class that parses and returns formatted DICOM RT data."""
@@ -879,14 +885,6 @@ class PyDicomParser(DicomParserBase):
         dose_interp = RegularGridInterpolator((z_coord, y_coord, x_coord), values, bounds_error=False, fill_value=None)
 
         return dose_interp, (x, y, z), (fx, fy, fz)
-
-    @property
-    def global_max(self):
-
-        dose_matrix = self.ds.pixel_array * float(self.ds.DoseGridScaling)  # 3D dose matrix in Gy
-
-        return np.max(dose_matrix)  # 3D dose matrix in Gy
-
 
     def get_dose_3d(self):
         """

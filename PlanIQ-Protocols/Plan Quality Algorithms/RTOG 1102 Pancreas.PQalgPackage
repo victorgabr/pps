@@ -1,0 +1,227 @@
+------- Component -------
+RTOG 1102 Pancreas.CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\amoore\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Algorithms\RTOG PROTOCOLS\GASTROINTESTINAL\Pancreas\RTOG 1102 Pancreas\RTOG 1102 Pancreas.CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>Metric ID</string>
+    <string>Score Function</string>
+    <string>Scalable</string>
+    <string>Pass/Fail</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>49.82</string>
+    <string>99.64</string>
+    <string>25.23</string>
+    <string>25.32</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>[PTV] V[50.4Gy] (%)</string>
+    <string>[PTV] Min dose (Gy)</string>
+    <string>[PTV] Max dose (Gy)</string>
+    <string>[TOTAL KIDNEY] V[18.0Gy] (%)</string>
+    <string>[FUNCTIONAL KIDNEY] V[18.0Gy] (%)</string>
+    <string>[STOMACH] Max dose (Gy)</string>
+    <string>[DUODENUM] Max dose (Gy)</string>
+    <string>[JEJUNUM] Max dose (Gy)</string>
+    <string>[LIVER] Mean dose (Gy)</string>
+    <string>[SPINAL CORD] D[0.03cc] (Gy)</string>
+    <string>≤95</string>
+    <string>RTOG 1102 Pancreas\[PTV] Min dose (Gy) [Goal 48.888, Fail 46.872, 1 pts]</string>
+    <string>RTOG 1102 Pancreas\[PTV] Max dose (Gy) [Goal 55.44, Fail 57.96, 1 pts]</string>
+    <string>RTOG 1102 Pancreas\[TOTAL KIDNEY] V[18.0Gy] (%) [Goal 30, Fail 40, 1 pts]</string>
+    <string>RTOG 1102 Pancreas\[FUNCTIONAL KIDNEY] V[18.0Gy] (%) [Goal 10, Fail 20, 1 pts]</string>
+    <string>≤55</string>
+    <string>≤55</string>
+    <string>≤55</string>
+    <string>≤30</string>
+    <string>≤45</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+  </RasterData>
+  <PlotAs>Blank</PlotAs>
+  <DatagridWidth>686</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+≤95
+------- Component -------
+[PTV] Min dose (Gy) [Goal 48.888, Fail 46.872, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1102 Pancreas\[PTV] Min dose (Gy) [Goal 48.888, Fail 46.872, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV] Min dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>46.872</string>
+    <string>48.888</string>
+    <string>36.872</string>
+    <string>58.888</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV] Max dose (Gy) [Goal 55.44, Fail 57.96, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1102 Pancreas\[PTV] Max dose (Gy) [Goal 55.44, Fail 57.96, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>57.96</string>
+    <string>55.44</string>
+    <string>45.44</string>
+    <string>67.96</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[TOTAL KIDNEY] V[18.0Gy] (%) [Goal 30, Fail 40, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\amoore\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1102 Pancreas\[TOTAL KIDNEY] V[18.0Gy] (%) [Goal 30, Fail 40, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[TOTAL KIDNEY] V[18.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40</string>
+    <string>30</string>
+    <string>20</string>
+    <string>50</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[FUNCTIONAL KIDNEY] V[18.0Gy] (%) [Goal 10, Fail 20, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\amoore\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1102 Pancreas\[FUNCTIONAL KIDNEY] V[18.0Gy] (%) [Goal 10, Fail 20, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[FUNCTIONAL KIDNEY] V[18.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20</string>
+    <string>10</string>
+    <string>0</string>
+    <string>30</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+≤55
+------- Component -------
+≤55
+------- Component -------
+≤55
+------- Component -------
+≤30
+------- Component -------
+≤45

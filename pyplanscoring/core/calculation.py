@@ -48,8 +48,10 @@ class PyStructure(StructureBase):
 
     @property
     def z_axis_delta(self):
-        # return len(np.unique(np.diff(np.array(list(s.planes.keys()), dtype=float))))
-        return np.diff(np.array(list(self.planes.keys()), dtype=float))
+        ordered_keys = list(self.planes.keys())
+        ordered_keys.sort(key=float)
+        z_delta = np.diff(np.array(list(self.planes.keys()), dtype=float))
+        return z_delta
 
     def calculate_volume(self, structure_planes, grid_delta):
         """
@@ -79,6 +81,7 @@ class PyStructure(StructureBase):
             contours, largestIndex = self.calculate_contour_areas(sPlane)
             # See if the rest of the contours are within the largest contour
             area = contours[largestIndex]['area']
+            # TODO fix it to calculate volumes of rings
             for i, contour in enumerate(contours):
                 # Skip if this is the largest contour
                 if not (i == largestIndex):
@@ -251,7 +254,7 @@ class DVHCalculation:
         else:
             self._calc_grid = value
 
-    @timeit
+    # @timeit
     def calculate(self, verbose=False):
         """
             Calculate a DVH
@@ -604,6 +607,7 @@ class DVHCalculator:
             # check if upsampling
             if self.up_sampling:
                 # Check if it is contiguous and monotonic z spacing
+                # TODO fix bug when end capping
                 if len(np.unique(s.z_axis_delta)) == 1 and s.volume < self.max_vol_upsampling:
                     grids.append(self.voxel_size)
                 else:
@@ -625,7 +629,7 @@ class DVHCalculator:
         return dict(self._dvh_data)
 
     @timeit
-    def calculate_serial(self, dose_3d):
+    def calculate_all(self, dose_3d):
         structures_py, grids = self.calculation_setup
 
         cdvh = {}

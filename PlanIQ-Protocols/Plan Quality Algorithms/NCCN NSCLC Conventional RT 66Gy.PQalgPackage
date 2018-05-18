@@ -1,0 +1,464 @@
+------- Component -------
+NCCN NSCLC Conventional RT 66Gy.CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Algorithms\RTOG PROTOCOLS\LUNG\NCCN NSCLC Conventional RT\NCCN NSCLC Conventional RT 66Gy.CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>Metric ID</string>
+    <string>Score Function</string>
+    <string>Scalable</string>
+    <string>Pass/Fail</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>49.73</string>
+    <string>99.46</string>
+    <string>25.15</string>
+    <string>25.21</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>[SPINAL CORD] Max dose (Gy)</string>
+    <string>[LUNG] V[20.0Gy] (%)</string>
+    <string>[LUNG] V[5.0Gy] (%)</string>
+    <string>[LUNG] Mean dose (Gy)</string>
+    <string>[HEART] V[40.0Gy] (%)</string>
+    <string>[HEART] V[45.0Gy] (%)</string>
+    <string>[HEART] V[60.0Gy] (%)</string>
+    <string>[HEART] Mean dose (Gy)</string>
+    <string>[ESOPHAGUS] Mean dose (Gy)</string>
+    <string>[ESOPHAGUS] Max dose (Gy)</string>
+    <string>[BRACHIAL PLEXUS] Max dose (Gy)</string>
+    <string>NCCN NSCLC Conventional RT 66Gy\[SPINAL CORD] Max dose (Gy) [Goal 50, Fail 50.001, 1 pts]</string>
+    <string>NCCN NSCLC Conventional RT 66Gy\[LUNG] V[20.0Gy] (%) [Goal 35, Fail 35.001, 1 pts]</string>
+    <string>NCCN NSCLC Conventional RT 66Gy\[LUNG] V[5.0Gy] (%) [Goal 65, Fail 65.001, 1 pts]</string>
+    <string>NCCN NSCLC Conventional RT 66Gy\[LUNG] Mean dose (Gy) [Goal 20, Fail 20.001, 1 pts]</string>
+    <string>NCCN NSCLC Conventional RT 66Gy\[HEART] V[40.0Gy] (%) [Goal 80, Fail 80.001, 1 pts]</string>
+    <string>NCCN NSCLC Conventional RT 66Gy\[HEART] V[45.0Gy] (%) [Goal 60, Fail 60.001, 1 pts]</string>
+    <string>NCCN NSCLC Conventional RT 66Gy\[HEART] V[60.0Gy] (%) [Goal 30, Fail 30.001, 1 pts]</string>
+    <string>NCCN NSCLC Conventional RT 66Gy\[HEART] Mean dose (Gy) [Goal 35, Fail 35.001, 1 pts]</string>
+    <string>NCCN NSCLC Conventional RT 66Gy\[ESOPHAGUS] Mean dose (Gy) [Goal 34, Fail 34.001, 1 pts]</string>
+    <string>NCCN NSCLC Conventional RT 66Gy\[ESOPHAGUS] Max dose (Gy) [Goal 69.3, Fail 69.301, 1 pts]</string>
+    <string>NCCN NSCLC Conventional RT 66Gy\[BRACHIAL PLEXUS] Max dose (Gy) [Goal 66, Fail 66.001, 1 pts]</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+  </RasterData>
+  <PlotAs>Blank</PlotAs>
+  <DatagridWidth>686</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SPINAL CORD] Max dose (Gy) [Goal 50, Fail 50.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN NSCLC Conventional RT 66Gy\[SPINAL CORD] Max dose (Gy) [Goal 50, Fail 50.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SPINAL CORD] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50.01</string>
+    <string>50</string>
+    <string>40</string>
+    <string>60.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUNG] V[20.0Gy] (%) [Goal 35, Fail 35.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN NSCLC Conventional RT 66Gy\[LUNG] V[20.0Gy] (%) [Goal 35, Fail 35.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUNG] V[20.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>35.01</string>
+    <string>35</string>
+    <string>25</string>
+    <string>45.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUNG] V[5.0Gy] (%) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN NSCLC Conventional RT 66Gy\[LUNG] V[5.0Gy] (%) [Goal 65, Fail 65.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUNG] V[5.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>65.01</string>
+    <string>65</string>
+    <string>55</string>
+    <string>75.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUNG] Mean dose (Gy) [Goal 20, Fail 20.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN NSCLC Conventional RT 66Gy\[LUNG] Mean dose (Gy) [Goal 20, Fail 20.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUNG] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20.01</string>
+    <string>20</string>
+    <string>10</string>
+    <string>30.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART] V[40.0Gy] (%) [Goal 80, Fail 80.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN NSCLC Conventional RT 66Gy\[HEART] V[40.0Gy] (%) [Goal 80, Fail 80.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART] V[40.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>80.01</string>
+    <string>80</string>
+    <string>70</string>
+    <string>90.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART] V[45.0Gy] (%) [Goal 60, Fail 60.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN NSCLC Conventional RT 66Gy\[HEART] V[45.0Gy] (%) [Goal 60, Fail 60.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART] V[45.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>60.01</string>
+    <string>60</string>
+    <string>50</string>
+    <string>70.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART] V[60.0Gy] (%) [Goal 30, Fail 30.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN NSCLC Conventional RT 66Gy\[HEART] V[60.0Gy] (%) [Goal 30, Fail 30.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART] V[60.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>30.01</string>
+    <string>30</string>
+    <string>20</string>
+    <string>40.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART] Mean dose (Gy) [Goal 35, Fail 35.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN NSCLC Conventional RT 66Gy\[HEART] Mean dose (Gy) [Goal 35, Fail 35.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>35.01</string>
+    <string>35</string>
+    <string>25</string>
+    <string>45.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[ESOPHAGUS] Mean dose (Gy) [Goal 34, Fail 34.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN NSCLC Conventional RT 66Gy\[ESOPHAGUS] Mean dose (Gy) [Goal 34, Fail 34.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[ESOPHAGUS] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>34.01</string>
+    <string>34</string>
+    <string>24</string>
+    <string>44.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[ESOPHAGUS] Max dose (Gy) [Goal 69.3, Fail 69.301, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN NSCLC Conventional RT 66Gy\[ESOPHAGUS] Max dose (Gy) [Goal 69.3, Fail 69.301, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[ESOPHAGUS] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>69.31</string>
+    <string>69.3</string>
+    <string>59.3</string>
+    <string>79.301</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRACHIAL PLEXUS] Max dose (Gy) [Goal 66, Fail 66.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\NCCN NSCLC Conventional RT 66Gy\[BRACHIAL PLEXUS] Max dose (Gy) [Goal 66, Fail 66.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRACHIAL PLEXUS] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>66.01</string>
+    <string>66</string>
+    <string>56</string>
+    <string>76.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>

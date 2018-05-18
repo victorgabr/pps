@@ -1,0 +1,940 @@
+------- Component -------
+RTOG 1005 ARM 1 64 GY Standard Fractionation.CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Algorithms\RTOG PROTOCOLS\BREAST\RTOG 1005\RTOG 1005 ARM 1 64 GY Standard Fractionation.CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>Metric ID</string>
+    <string>Score Function</string>
+    <string>Scalable</string>
+    <string>Pass/Fail</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>49.40</string>
+    <string>98.81</string>
+    <string>25.03</string>
+    <string>25.05</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>[BREAST PTV EVAL] V[47.5Gy] (%)</string>
+    <string>[BREAST PTV EVAL] V[45.0Gy] (%)</string>
+    <string>[BREAST PTV EVAL] V[64.0Gy] (%)</string>
+    <string>[BREAST PTV EVAL] D[50.0%] (Gy)</string>
+    <string>[BREAST PTV EVAL] Max dose (Gy)</string>
+    <string>[BREAST PTV EVAL] Conformality Index  [47.5Gy]</string>
+    <string>[LUMPECTOMY PTV EVAL] V[60.8Gy] (%)</string>
+    <string>[LUMPECTOMY PTV EVAL] V[57.6Gy] (%)</string>
+    <string>[LUMPECTOMY PTV EVAL] V[70.4Gy] (%)</string>
+    <string>[LUMPECTOMY PTV EVAL] Max dose (Gy)</string>
+    <string>[LUMPECTOMY PTV EVAL] Conformality Index  [58.9Gy]</string>
+    <string>[CONTRALATERAL BREAST] Max dose (Gy)</string>
+    <string>[CONTRALATERAL BREAST] D[5.0%] (Gy)</string>
+    <string>[IPSILATERAL LUNG] V[20.0Gy] (%)</string>
+    <string>[IPSILATERAL LUNG] V[10.0Gy] (%)</string>
+    <string>[IPSILATERAL LUNG] V[5.0Gy] (%)</string>
+    <string>[CONTRALATERAL LUNG] V[5.0Gy] (%)</string>
+    <string>[HEART (LT BREAST)] D[5.0%] (Gy)</string>
+    <string>[HEART (LT BREAST)] V[10.0Gy] (%)</string>
+    <string>[HEART (RT BREAST)] D[0.0%] (Gy)</string>
+    <string>[HEART (RT BREAST)] V[10.0Gy] (%)</string>
+    <string>[HEART] Mean dose (Gy)</string>
+    <string>[THYROID] Max dose (Gy)</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[BREAST PTV EVAL] V[47.5Gy] (%) [Goal 95, Fail 94.999, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[BREAST PTV EVAL] V[45.0Gy] (%) [Goal 90, Fail 89.999, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[BREAST PTV EVAL] V[62.0Gy] (%) [Goal 30, Fail 35.001, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[BREAST PTV EVAL] V[54.0Gy] (%) [Goal 54, Fail 56.001, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[WHOLE BREAST] Max dose (Gy) [Goal 57.5, Fail 60.01, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\Quality Score vs. [BREAST PTV EVAL] Conformality Index  [47.5Gy]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[LUMPECTOMY PTV EVAL] V[58.9Gy] (%) [Goal 95, Fail 94.999, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[LUMPECTOMY PTV EVAL] V[55.8Gy] (%) [Goal 90, Fail 89.999, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[LUMPECTOMY PTV EVAL] V[68.2Gy] (%) [Goal 5, Fail 10.001, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[LUMPECTOMY PTV EVAL] Max dose (Gy) [Goal 73.6, Fail 76.801, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\Quality Score vs. [LUMPECTOMY PTV EVAL] Conformality Index  [58.9Gy]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[CONTRALATERAL BREAST] Max dose (Gy) [Goal 3.10, Fail 4.961, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[CONTRALATERAL BREAST] D[5.0%] (Gy) [Goal 1.86, Fail 3.101, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[IPSILATERAL LUNG] V[20.0Gy] (%) [Goal 15, Fail 20.01, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[IPSILATERAL LUNG] V[10.0Gy] (%) [Goal 35, Fail 40.01, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[IPSILATERAL LUNG] V[5.0Gy] (%) [Goal 50, Fail 55.01, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[CONTRALATERAL LUNG] V[5.0Gy] (%) [Goal 10, Fail 15.01, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[HEART (LT BREAST)] D[5.0%] (Gy) [Goal 20, Fail 25.01, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[HEART (LT BREAST)] V[10.0Gy] (%) [Goal 30, Fail 35.01, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[HEART (RT BREAST)] D[0.0%] (Gy) [Goal 20, Fail 25.001, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[HEART (RT BREAST)] V[10.0Gy] (%) [Goal 10, Fail 15.01, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[HEART] Mean dose (Gy) [Goal 4, Fail 5.01, 1 pts]</string>
+    <string>RTOG 1005 ARM 1 64 GY Standard Fractionation\[THYROID] Max dose (Gy) [Goal 1.28, Fail 1.92, 1 pts]</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+  </RasterData>
+  <PlotAs>Blank</PlotAs>
+  <DatagridWidth>686</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BREAST PTV EVAL] V[47.5Gy] (%) [Goal 95, Fail 94.999, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 50GY\[BREAST PTV EVAL] V[47.5Gy] (%) [Goal 95, Fail 94.999, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BREAST PTV EVAL] V[47.5Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>94.999</string>
+    <string>95</string>
+    <string>84.999</string>
+    <string>100</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BREAST PTV EVAL] V[45.0Gy] (%) [Goal 90, Fail 89.999, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 50GY\[BREAST PTV EVAL] V[45.0Gy] (%) [Goal 90, Fail 89.999, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BREAST PTV EVAL] V[45.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>89.999</string>
+    <string>90</string>
+    <string>79.999</string>
+    <string>100</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BREAST PTV EVAL] V[62.0Gy] (%) [Goal 30, Fail 35.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 62GY Standard Fractionation\[BREAST PTV EVAL] V[62.0Gy] (%) [Goal 30, Fail 35.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BREAST PTV EVAL] V[62.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>35.001</string>
+    <string>30</string>
+    <string>20</string>
+    <string>45.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BREAST PTV EVAL] V[54.0Gy] (%) [Goal 54, Fail 56.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 62GY Standard Fractionation\[BREAST PTV EVAL] V[54.0Gy] (%) [Goal 54, Fail 56.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BREAST PTV EVAL] V[54.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>56.001</string>
+    <string>54</string>
+    <string>44</string>
+    <string>66.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[WHOLE BREAST] Max dose (Gy) [Goal 57.5, Fail 60.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\steve\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 50GY\[WHOLE BREAST] Max dose (Gy) [Goal 57.5, Fail 60.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[WHOLE BREAST] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>60.01</string>
+    <string>57.5</string>
+    <string>47.5</string>
+    <string>70.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+Quality Score vs. [BREAST PTV EVAL] Conformality Index  [47.5Gy].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\steve\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005\Quality Score vs. [BREAST PTV EVAL] Conformality Index  [47.5Gy].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BREAST PTV EVAL] Conformality Index  [47.5Gy]</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>100.00</string>
+    <string>100.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>2.75</string>
+    <string>2.501</string>
+    <string>2</string>
+    <string>0.95</string>
+    <string>0.8499</string>
+    <string>0.5</string>
+    <string>0</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>298</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUMPECTOMY PTV EVAL] V[58.9Gy] (%) [Goal 95, Fail 94.999, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 62GY Standard Fractionation\[LUMPECTOMY PTV EVAL] V[58.9Gy] (%) [Goal 95, Fail 94.999, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUMPECTOMY PTV EVAL] V[58.9Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>94.999</string>
+    <string>95</string>
+    <string>84.999</string>
+    <string>100</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUMPECTOMY PTV EVAL] V[55.8Gy] (%) [Goal 90, Fail 89.999, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 62GY Standard Fractionation\[LUMPECTOMY PTV EVAL] V[55.8Gy] (%) [Goal 90, Fail 89.999, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUMPECTOMY PTV EVAL] V[55.8Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>89.999</string>
+    <string>90</string>
+    <string>79.999</string>
+    <string>100</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUMPECTOMY PTV EVAL] V[68.2Gy] (%) [Goal 5, Fail 10.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 62GY Standard Fractionation\[LUMPECTOMY PTV EVAL] V[68.2Gy] (%) [Goal 5, Fail 10.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUMPECTOMY PTV EVAL] V[68.2Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>10.001</string>
+    <string>5</string>
+    <string>0</string>
+    <string>20.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LUMPECTOMY PTV EVAL] Max dose (Gy) [Goal 73.6, Fail 76.801, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 64GY Standard Fractionation\[LUMPECTOMY PTV EVAL] Max dose (Gy) [Goal 73.6, Fail 76.801, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUMPECTOMY PTV EVAL] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>76.801</string>
+    <string>73.6</string>
+    <string>63.6</string>
+    <string>86.801</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+Quality Score vs. [LUMPECTOMY PTV EVAL] Conformality Index  [58.9Gy].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 62GY Standard Fractionation\Quality Score vs. [LUMPECTOMY PTV EVAL] Conformality Index  [58.9Gy].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LUMPECTOMY PTV EVAL] Conformality Index  [58.9Gy]</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>100.00</string>
+    <string>100.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>0.95</string>
+    <string>2.5</string>
+    <string>0.899</string>
+    <string>3.001</string>
+    <string>0.7</string>
+    <string>3.2</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+    <string>0</string>
+    <string>0</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>298</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[CONTRALATERAL BREAST] Max dose (Gy) [Goal 3.10, Fail 4.961, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\steve\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 50GY\[CONTRALATERAL BREAST] Max dose (Gy) [Goal 3.10, Fail 4.961, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[CONTRALATERAL BREAST] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>4.961</string>
+    <string>3.1</string>
+    <string>0</string>
+    <string>14.961</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[CONTRALATERAL BREAST] D[5.0%] (Gy) [Goal 1.86, Fail 3.101, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\steve\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 50GY\[CONTRALATERAL BREAST] D[5.0%] (Gy) [Goal 1.86, Fail 3.101, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[CONTRALATERAL BREAST] D[5.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>3.101</string>
+    <string>1.86</string>
+    <string>0</string>
+    <string>13.101</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[IPSILATERAL LUNG] V[20.0Gy] (%) [Goal 15, Fail 20.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\steve\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005\[IPSILATERAL LUNG] V[20.0Gy] (%) [Goal 15, Fail 20.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[IPSILATERAL LUNG] V[20.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20.01</string>
+    <string>15</string>
+    <string>5</string>
+    <string>30.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[IPSILATERAL LUNG] V[10.0Gy] (%) [Goal 35, Fail 40.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\steve\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005\[IPSILATERAL LUNG] V[10.0Gy] (%) [Goal 35, Fail 40.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[IPSILATERAL LUNG] V[10.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40.01</string>
+    <string>35</string>
+    <string>25</string>
+    <string>50.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[IPSILATERAL LUNG] V[5.0Gy] (%) [Goal 50, Fail 55.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\steve\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005\[IPSILATERAL LUNG] V[5.0Gy] (%) [Goal 50, Fail 55.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[IPSILATERAL LUNG] V[5.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>55.01</string>
+    <string>50</string>
+    <string>40</string>
+    <string>65.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[CONTRALATERAL LUNG] V[5.0Gy] (%) [Goal 10, Fail 15.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\steve\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005\[CONTRALATERAL LUNG] V[5.0Gy] (%) [Goal 10, Fail 15.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[CONTRALATERAL LUNG] V[5.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>15.01</string>
+    <string>10</string>
+    <string>0</string>
+    <string>25.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART (LT BREAST)] D[5.0%] (Gy) [Goal 20, Fail 25.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\steve\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005\[HEART (LT BREAST)] D[5.0%] (Gy) [Goal 20, Fail 25.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART (LT BREAST)] D[5.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>25.01</string>
+    <string>20</string>
+    <string>10</string>
+    <string>35.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART (LT BREAST)] V[10.0Gy] (%) [Goal 30, Fail 35.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\steve\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005\[HEART (LT BREAST)] V[10.0Gy] (%) [Goal 30, Fail 35.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART (LT BREAST)] V[10.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>35.01</string>
+    <string>30</string>
+    <string>20</string>
+    <string>45.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART (RT BREAST)] D[0.0%] (Gy) [Goal 20, Fail 25.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 62GY Standard Fractionation\[HEART (RT BREAST)] D[0.0%] (Gy) [Goal 20, Fail 25.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART (RT BREAST)] D[0.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>25.001</string>
+    <string>20</string>
+    <string>10</string>
+    <string>35.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART (RT BREAST)] V[10.0Gy] (%) [Goal 10, Fail 15.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\steve\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005\[HEART (RT BREAST)] V[10.0Gy] (%) [Goal 10, Fail 15.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART (RT BREAST)] V[10.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>15.01</string>
+    <string>10</string>
+    <string>0</string>
+    <string>25.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[HEART] Mean dose (Gy) [Goal 4, Fail 5.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\steve\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 50GY\[HEART] Mean dose (Gy) [Goal 4, Fail 5.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>5.01</string>
+    <string>4</string>
+    <string>0</string>
+    <string>15.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[THYROID] Max dose (Gy) [Goal 1.28, Fail 1.92, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 1005 ARM 1 64GY Standard Fractionation\[THYROID] Max dose (Gy) [Goal 1.28, Fail 1.92, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[THYROID] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>1.92</string>
+    <string>1.28</string>
+    <string>0</string>
+    <string>11.92</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>

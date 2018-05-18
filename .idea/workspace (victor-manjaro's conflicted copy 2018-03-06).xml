@@ -1,0 +1,1055 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="484ffb55-fed9-470a-b652-a0b196ac3165" name="Default" comment="New: Test cases on complexity aperture metric module.">
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/gui/PyPlanScoring.conf" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/gui/PyPlanScoring.ini" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/gui/PyPlanScoring.ui" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/gui/PyPlanScoringQT.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/gui/Scoring_criteria.xlsx" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/gui/licence.txt" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/gui/pyplanscoring.spec" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/gui/requirements.txt" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/gui/rt_cases.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/gui/tests/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/gui/tests/test_data/PyPlanScoring.ini" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/gui/tests/test_data/Scoring_criteria.xlsx" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/web_api/calculation.py" />
+      <change beforePath="$PROJECT_DIR$/.idea/Plan_Competition_Project.iml" afterPath="$PROJECT_DIR$/.idea/Plan_Competition_Project.iml" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Físico_Médico.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace (Victor-VAIO's conflicted copy 2016-11-21).xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/ComplexityScript.py" afterPath="$PROJECT_DIR$/ComplexityScript.py" />
+      <change beforePath="$PROJECT_DIR$/__init__.py" afterPath="$PROJECT_DIR$/gui/__init__.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/PyPlanScoring.ui" afterPath="$PROJECT_DIR$/pyplanscoring/PyPlanScoring.ui" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/Scoring Criteria.txt" afterPath="$PROJECT_DIR$/gui/Scoring Criteria.txt" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/api/backend.py" afterPath="$PROJECT_DIR$/pyplanscoring/api/backend.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/constrains_evaluation.py" afterPath="$PROJECT_DIR$/pyplanscoring/competition/constrains_evaluation.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/results.py" afterPath="$PROJECT_DIR$/pyplanscoring/competition/results.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/robust.py" afterPath="$PROJECT_DIR$/pyplanscoring/competition/robust.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_data/Scoring_criteria.xlsx" afterPath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_data/Scoring_criteria.xlsx" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_weightedExperienceScore.py" afterPath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_weightedExperienceScore.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_weightedExperienceScoreBase.py" afterPath="$PROJECT_DIR$/pyplanscoring/competition/tests/test_weightedExperienceScoreBase.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/complexity/PyApertureMetric.py" afterPath="$PROJECT_DIR$/pyplanscoring/complexity/PyApertureMetric.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/complexity/PyComplexityMetric.py" afterPath="$PROJECT_DIR$/pyplanscoring/complexity/PyComplexityMetric.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/complexity/dicomrt.py" afterPath="$PROJECT_DIR$/pyplanscoring/complexity/dicomrt.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/.cache/v/cache/lastfailed" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/.coverage" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/.cache/v/cache/lastfailed" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/__init__.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/conftest.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_DVHCalculator.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_DVHData.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_RTCase.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_complimentDoseAtVolumeConstraint.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_complimentVolumeAtDoseConstraint.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_conformationIndexConstraint.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_constrainMetric.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_data/PyPlanScoring_dvh.dvh" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_data/Scoring_criteria.xlsx" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_data/Scoring_criteria_old.xlsx" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_data/plan_report.xlsx" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_doseAtVolumeConstraint.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_doseStructureConstraint.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_doseValue.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_homogeneityIndexConstraint.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_maxDoseConstraint.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_maxMeanDoseConstraint.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_mayoConstraint.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_mayoConstraintConverter.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_mayoQuery.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_mayoQueryReader.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_mayoQueryWriter.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_minDoseConstraint.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_minMeanDoseConstraint.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_planEvaluation.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_planningItem.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_quantityRegex.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_queryExtensions.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/constraints/tests/test_volumeAtDoseConstraint.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/calculation.py" afterPath="$PROJECT_DIR$/pyplanscoring/core/calculation.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/dvhdoses.py" afterPath="$PROJECT_DIR$/pyplanscoring/core/dvhdoses.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/geometry.py" afterPath="$PROJECT_DIR$/pyplanscoring/core/geometry.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/tests/__init__.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/tests/test_DVHCalculation.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/tests/test_DVHCalculationMP.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/tests/test_IOHandler.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/tests/test_PyStructure.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/tests/test_dose3D.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/core/tests/test_pyDicomParser.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/lecacy_dicompyler/__init__.py" afterPath="$PROJECT_DIR$/gui/app.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/FormImageUI.ui" afterPath="$PROJECT_DIR$/pyplanscoring/qt_ui/FormImageUI.ui" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/dose_conversion.ui" afterPath="$PROJECT_DIR$/pyplanscoring/qt_ui/dose_conversion.ui" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/dose_optim.ui" afterPath="$PROJECT_DIR$/pyplanscoring/qt_ui/dose_optim.ui" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/evo_widget.ui" afterPath="$PROJECT_DIR$/pyplanscoring/qt_ui/evo_widget.ui" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/tools_qt.py" afterPath="$PROJECT_DIR$/pyplanscoring/qt_ui/tools_qt.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/qt_ui/tps_widget.ui" afterPath="$PROJECT_DIR$/pyplanscoring/qt_ui/tps_widget.ui" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/validation/paper_data.py" afterPath="$PROJECT_DIR$/pyplanscoring/validation/paper_data.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/vis/volumes_view.py" afterPath="$PROJECT_DIR$/pyplanscoring/vis/volumes_view.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/web_api/__init__.py" afterPath="$PROJECT_DIR$/web_api/__init__.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/web_api/calculation.py" afterPath="$PROJECT_DIR$/gui/options.py" />
+      <change beforePath="$PROJECT_DIR$/pyplanscoring/web_api/io.py" afterPath="$PROJECT_DIR$/web_api/io.py" />
+      <change beforePath="$PROJECT_DIR$/tests/test_api/test_pyPlanScoringKernel.py" afterPath="$PROJECT_DIR$/tests/test_api/test_pyPlanScoringKernel.py" />
+      <change beforePath="$PROJECT_DIR$/tests/tests_constraints/test_planEvaluation.py" afterPath="$PROJECT_DIR$/tests/tests_constraints/test_planEvaluation.py" />
+      <change beforePath="$PROJECT_DIR$/tests/tests_constraints/test_pyPlanningItem.py" afterPath="$PROJECT_DIR$/tests/tests_constraints/test_pyPlanningItem.py" />
+      <change beforePath="$PROJECT_DIR$/tests/tests_core/test_DVHCalculation.py" afterPath="$PROJECT_DIR$/tests/tests_core/test_DVHCalculation.py" />
+      <change beforePath="$PROJECT_DIR$/tests/tests_core/test_DVHCalculationMP.py" afterPath="$PROJECT_DIR$/tests/tests_core/test_DVHCalculationMP.py" />
+      <change beforePath="$PROJECT_DIR$/tests/tests_data/lungSBRT/Scoring_criteria_2018.xlsx" afterPath="$PROJECT_DIR$/tests/tests_data/lungSBRT/Scoring_criteria_2018.xlsx" />
+      <change beforePath="$PROJECT_DIR$/tests/tests_gui/test_criteria.py" afterPath="$PROJECT_DIR$/tests/tests_gui/test_criteria.py" />
+      <change beforePath="$PROJECT_DIR$/web_app/plan_report/templates/basic-plus.html" afterPath="$PROJECT_DIR$/web_app/plan_report/templates/basic-plus.html" />
+      <change beforePath="$PROJECT_DIR$/web_app/plan_report/viewer.py" afterPath="$PROJECT_DIR$/web_app/plan_report/viewer.py" />
+      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/templates/basic-plus.html" afterPath="$PROJECT_DIR$/web_app/plan_report_cp/templates/basic-plus.html" />
+      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/viewer.py" afterPath="$PROJECT_DIR$/web_app/plan_report_cp/viewer.py" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="Plan_Competition_Project" />
+  </component>
+  <component name="FileEditorManager">
+    <splitter split-orientation="horizontal" split-proportion="0.65294117">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="calculation.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/pyplanscoring/core/calculation.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="108">
+                  <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="backend.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/pyplanscoring/api/backend.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="378">
+                  <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+                  <folding>
+                    <element signature="e#94#104#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="options.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/gui/options.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="0">
+                  <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="app.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/gui/app.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="412">
+                  <caret line="20" column="81" lean-forward="false" selection-start-line="20" selection-start-column="81" selection-end-line="20" selection-end-column="81" />
+                  <folding>
+                    <element signature="e#0#15#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="scratch_2.py" pinned="false" current-in-tab="true">
+            <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="224">
+                  <caret line="98" column="19" lean-forward="true" selection-start-line="98" selection-start-column="19" selection-end-line="98" selection-end-column="19" />
+                  <folding>
+                    <element signature="e#24#40#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="test_pyPlanScoringKernel.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/tests/test_api/test_pyPlanScoringKernel.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="202">
+                  <caret line="125" column="4" lean-forward="false" selection-start-line="125" selection-start-column="4" selection-end-line="125" selection-end-column="30" />
+                  <folding>
+                    <element signature="e#0#9#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>dvh</find>
+      <find>rt_case</find>
+      <find>logger</find>
+      <find>dose</find>
+      <find>np</find>
+      <find>planiq</find>
+      <find>pyplanscoring.</find>
+      <find>isinstance</find>
+      <find>dicom</find>
+      <find>get_participant_folder_data</find>
+      <find>test_case</find>
+      <find>RS.1.2.246.352.205.5039724533480738438.3109367781599983491.dcm</find>
+      <find>RS_LungSBRT_FINAL</find>
+      <find>TreatmentDeliveryType</find>
+      <find>mlc</find>
+    </findStrings>
+    <replaceStrings>
+      <replace />
+      <replace>RS</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/pyplanscoring</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/tests/tests_constraints/test_planningItem.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/types.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/constraints/query.py" />
+        <option value="$PROJECT_DIR$/tests/tests_constraints/test_RTCase.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/complexity/ComplexityScript.spec" />
+        <option value="$PROJECT_DIR$/pyplanscoring/complexity/ComplexityScript.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/complexity/script.py" />
+        <option value="$PROJECT_DIR$/tests/tests_complexity/test_pyAperture.py" />
+        <option value="$PROJECT_DIR$/tests/tests_complexity/conftest.py" />
+        <option value="$PROJECT_DIR$/tests/tests_complexity/test_pyAperturesFromBeamCreator.py" />
+        <option value="$PROJECT_DIR$/tests/tests_complexity/test_pyComplexityMetric.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/competition/report_generator.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/competition/constrains_evaluation.py" />
+        <option value="$PROJECT_DIR$/gui/licence.txt" />
+        <option value="$PROJECT_DIR$/pyplanscoring/complexity/EsapiApertureMetric.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/complexity/misc.py" />
+        <option value="$PROJECT_DIR$/gui/PyPlanScoring.ini" />
+        <option value="$PROJECT_DIR$/tests/tests_gui/test_get_calculation_options.py" />
+        <option value="$PROJECT_DIR$/tests/tests_data/PyPlanScoring.ini" />
+        <option value="$PROJECT_DIR$/tests/tests_core/test_IOHandler.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/dicom_reader.py" />
+        <option value="$PROJECT_DIR$/tests/conftest.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/constraints/metrics.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/io.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/geometry.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
+        <option value="$PROJECT_DIR$/tests/tests_core/test_DVHCalculation.py" />
+        <option value="$PROJECT_DIR$/tests/tests_core/test_DVHCalculationMP.py" />
+        <option value="$PROJECT_DIR$/tests/tests_constraints/test_planEvaluation.py" />
+        <option value="$PROJECT_DIR$/tests/tests_gui/test_criteria.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_21.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/complexity/dicomrt.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/complexity/PyComplexityMetric.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/complexity/PyApertureMetric.py" />
+        <option value="$PROJECT_DIR$/ComplexityScript.py" />
+        <option value="$PROJECT_DIR$/tests/tests_constraints/test_pyPlanningItem.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/calculation.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/core/dvhdoses.py" />
+        <option value="$PROJECT_DIR$/pyplanscoring/api/backend.py" />
+        <option value="$PROJECT_DIR$/tests/test_api/test_pyPlanScoringKernel.py" />
+        <option value="$PROJECT_DIR$/gui/app.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="964" />
+    <option name="width" value="956" />
+    <option name="height" value="1035" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Python</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>PyCompatibilityInspection</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Plan_Competition_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Plan_Competition_Project" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Plan_Competition_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Plan_Competition_Project" type="462c0819:PsiDirectoryNode" />
+              <item name="gui" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/tests/test_api" />
+    <property name="SearchEverywhereHistoryKey" value="ba&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/api/backend.py&#10;test_cri&#9;FILE&#9;file://C:/Users/Victor/Dropbox/Plan_Competition_Project/tests/tests_gui/test_criteria.py&#10;comple&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/ComplexityScript.py&#10;test&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/tests/tests_gui/test_criteria.py&#10;extract&#9;ACTION&#9;IntroduceActionsGroup&#10;test_DVH&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/tests/tests_core/test_DVHCalculation.py&#10;io&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/core/tests/test_IOHandler.py&#10;plug&#9;ACTION&#9;WelcomeScreen.Plugins&#10;scorin&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/core/scoring.py&#10;compl&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/ComplexityScript.py&#10;app&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/gui/app.py&#10;IoHa&#9;null&#9;null&#10;keymap&#9;ACTION&#9;ChangeKeymap&#10;get_dicom_data&#9;null&#9;null&#10;get_participant_folder_data&#9;null&#9;null&#10;test_io&#9;null&#9;null&#10;dicom&#9;null&#9;null&#10;metric&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/pyplanscoring/constraints/metrics.py&#10;test_plannin&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/tests/tests_constraints/test_planningItem.py&#10;test_PyPla&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/tests/tests_constraints/test_pyPlanningItem.py&#10;savefig&#9;null&#9;null&#10;test_dvh&#9;null&#9;null&#10;test_dv&#9;null&#9;null&#10;con&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/tests/conftest.py&#10;test_&#9;FILE&#9;file:///home/victor/Dropbox/Plan_Competition_Project/tests/tests_constraints/test_pyPlanningItem.py&#10;calculation&#9;null&#9;null&#10;conf&#9;FILE&#9;file://C:/Users/Victor/Dropbox/Plan_Competition_Project/tests/conftest.py&#10;report&#9;null&#9;null&#10;Comple&#9;FILE&#9;file://C:/Users/Victor/Dropbox/Plan_Competition_Project/ComplexityScript.py&#10;pyap&#9;FILE&#9;file://C:/Users/Victor/Dropbox/Plan_Competition_Project/pyplanscoring/complexity/PyApertureMetric.py&#10;logger&#9;null&#9;null&#10;testPlannin&#9;null&#9;null&#10;RTC&#9;null&#9;null&#10;sco&#9;null&#9;null&#10;dvhcalculator&#9;null&#9;null&#10;rtC&#9;null&#9;null&#10;test_planEv&#9;null&#9;null&#10;tes_pla&#9;null&#9;null&#10;metrics&#9;null&#9;null" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="Python" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tests/tests_data/lungSBRT" />
+      <recent name="C:\Users\Victor\Dropbox\Plan_Competition_Project\tests\tests_gui" />
+      <recent name="C:\Users\Victor\Dropbox\Plan_Competition_Project\tests\tests_complexity" />
+      <recent name="C:\Users\Victor\Dropbox\Plan_Competition_Project" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tests/tests_data/lungSBRT" />
+      <recent name="C:\Users\Victor\Dropbox\Plan_Competition_Project\tests\tests_data" />
+      <recent name="$PROJECT_DIR$/gui/tests/test_data" />
+      <recent name="$PROJECT_DIR$/tests/tests_data" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.scratch_2">
+    <configuration name="ComplexityScript" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Plan_Competition_Project" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ComplexityScript.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/gui" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Plan_Competition_Project" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gui/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="scratch_2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Plan_Competition_Project" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="scratch_21" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Plan_Competition_Project" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_21.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="py.test in tests_constraints" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/tests_constraints" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Plan_Competition_Project" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/tests_constraints&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+    </configuration>
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="Python.ComplexityScript" />
+      <item index="1" class="java.lang.String" itemvalue="Python.scratch_21" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.py.test in tests_constraints" />
+      <item index="3" class="java.lang.String" itemvalue="Python.app" />
+      <item index="4" class="java.lang.String" itemvalue="Python.scratch_2" />
+    </list>
+    <recent_temporary>
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.scratch_2" />
+        <item index="1" class="java.lang.String" itemvalue="Python.app" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.py.test in tests_constraints" />
+        <item index="3" class="java.lang.String" itemvalue="Python.scratch_21" />
+        <item index="4" class="java.lang.String" itemvalue="Python.ComplexityScript" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="484ffb55-fed9-470a-b652-a0b196ac3165" name="Default" comment="" />
+      <created>1519602159845</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1519602159845</updated>
+    </task>
+    <task id="LOCAL-00001" summary="new: Paddick gradient index, PyQueryExtensions and refactores.&#10;TDD: Added test cases">
+      <created>1519694200546</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1519694200546</updated>
+    </task>
+    <task id="LOCAL-00002" summary="New: Test cases on complexity aperture metric module.">
+      <created>1519780364043</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1519780364043</updated>
+    </task>
+    <task id="LOCAL-00003" summary="New: API Façade class PyPlanScoringKernel">
+      <created>1520125163388</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1520125163388</updated>
+    </task>
+    <task id="LOCAL-00004" summary="New: Test cases on PyPlanScoring kernel class and Complexity factor calculation">
+      <created>1520125234454</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1520125234454</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fix: DVH calculation of rings, and broken adaptive rasterization of&#10;multiple contours per plane.">
+      <created>1520213119918</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1520213119918</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="py_test_for_test_pyPlanScoringKernel_test_calculate_dvh - 2018.03.05 at 10h 47m 49s.xml">
+      <configuration name="py.test for test_pyPlanScoringKernel.test_calculate_dvh" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_for_test_pyPlanScoringKernel_test_calculate_dvh - 2018.03.05 at 10h 51m 21s.xml">
+      <configuration name="py.test for test_pyPlanScoringKernel.test_calculate_dvh" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_for_test_pyPlanScoringKernel_test_calculate_dvh - 2018.03.05 at 10h 51m 57s.xml">
+      <configuration name="py.test for test_pyPlanScoringKernel.test_calculate_dvh" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_for_test_pyPlanScoringKernel_test_save_dvh_data - 2018.03.05 at 10h 54m 28s.xml">
+      <configuration name="py.test for test_pyPlanScoringKernel.test_save_dvh_data" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_PyApertureMetric_py - 2018.03.05 at 16h 16m 45s.xml">
+      <configuration name="py.test in PyApertureMetric.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_test_criteria_py - 2018.03.05 at 10h 58m 38s.xml">
+      <configuration name="py.test in test_criteria.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_test_criteria_py - 2018.03.05 at 11h 00m 43s.xml">
+      <configuration name="py.test in test_criteria.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_test_criteria_py - 2018.03.05 at 11h 02m 26s.xml">
+      <configuration name="py.test in test_criteria.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_tests_constraints - 2018.03.05 at 17h 04m 18s.xml">
+      <configuration name="py.test in tests_constraints" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_tests_constraints - 2018.03.05 at 17h 05m 05s.xml">
+      <configuration name="py.test in tests_constraints" configurationId="tests" />
+    </history-entry>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="964" y="0" width="1920" height="1035" extended-state="6" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15454546" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2494432" sideWeight="0.50501317" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962137" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36466593" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3062361" sideWeight="0.4949868" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.103120044" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33069083" sideWeight="0.49603385" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998413" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="JSON Viewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42582107" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2434881" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2494432" sideWeight="0.50501317" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15924276" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41759464" sideWeight="0.4949868" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33069083" sideWeight="0.49603385" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18364117" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.08918206" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5256125" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="new: Paddick gradient index, PyQueryExtensions and refactores.&#10;TDD: Added test cases" />
+    <MESSAGE value="New: Test cases on complexity aperture metric module." />
+    <MESSAGE value="New: API Façade class PyPlanScoringKernel" />
+    <MESSAGE value="New: Test cases on PyPlanScoring kernel class and Complexity factor calculation" />
+    <MESSAGE value="Fix: DVH calculation of rings, and broken adaptive rasterization of&#10;multiple contours per plane." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: DVH calculation of rings, and broken adaptive rasterization of&#10;multiple contours per plane." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pyplanscoring/complexity/PyApertureMetric.py</url>
+          <line>73</line>
+          <option name="timeStamp" value="63" />
+        </line-breakpoint>
+      </breakpoints>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <default-breakpoints>
+        <breakpoint enabled="true" suspend="NONE" type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+      <option name="time" value="65" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>bank_a_pos1 = control_point.BeamLimitingDevicePositionSequence[-2]
+bank_a_pos2 = control_point.BeamLimitingDevicePositionSequence[-1]
+bank_a_eff = [ ]
+for i in range(len(bank_a_pos1) + len(bank_a_pos2))</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>bank_a_eff= np.arange(len(bank_a_pos1) + len(bank_a_pos2))  
+bank_a_eff[:-2:2] = bank_a_pos1
+bank_a_eff[1::2] = bank_a_pos2</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>bank_a_eff= np.arange(len(bank_a_pos1) + len(bank_a_pos2))  
+bank_a_eff[:-2:2] = bank_a_pos1
+bank_a_eff[1:-1:2] = bank_a_pos2</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>bank_a_eff= np.arange(len(bank_a_pos1) + len(bank_a_pos2))  
+bank_a_eff[:-2:2] = bank_a_pos1</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>bank_a_eff[:-1:2] = bank_a_pos1</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>bank_a_eff[:-1:2] = bank_a_pos1
+bank_a_eff[1::2] = bank_a_pos2</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>bank_a_eff[:-1:2] = bank_a_pos1
+bank_a_eff[1:-1:2] = bank_a_pos2</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>bank_a_eff[0::2] = bank_a_pos1
+bank_a_eff[1::2] = bank_a_pos2</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>mlc_open1 = mlc1.LeafJawPositions
+n_pairs = int(len(mlc_open1) / 2)
+bank_a_pos1 = mlc_open1[:n_pairs]
+bank_b_pos1 = mlc_open1[n_pairs:]
+
+mlc_open2 = mlc2.LeafJawPositions
+n_pairs = int(len(mlc_open2) / 2)
+bank_a_pos2 = mlc_open2[:n_pairs]
+bank_b_pos2 = mlc_open2[n_pairs:]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>cp0 = 100 * 4 / (100 ** 2)
+cp1 = 50 * 4 / (50 ** 2)
+cm = (100 * cp0 + 100*cp1)/200/2</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+    </expressions>
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>bank_a_eff[:-1:2]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>bank_a_eff[::2]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>bank_a_eff</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>bank_a_eff = np.arange(len(bank_a_pos1)+len(bank_a_pos2))</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>bank_a_eff = np.arange(len(bank_a_pos1)+len(bank_b_pos1))</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>len(bank_a_pos2)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>len(bank_a_pos1)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>bank_a_eff[1::2]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>bank_a_eff[::2]
+len(bank_a_pos1)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/gui/PyPlanScoring.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="10" column="23" lean-forward="true" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/tests/test_DVHCalculationMP.py" />
+    <entry file="file://$USER_HOME$/miniconda3/envs/pyside/lib/python3.6/site-packages/matplotlib/pyplot.py" />
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/validation/validation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30294">
+          <caret line="1145" column="0" lean-forward="false" selection-start-line="1145" selection-start-column="0" selection-end-line="1165" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_planningItem.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="661">
+          <caret line="257" column="0" lean-forward="true" selection-start-line="257" selection-start-column="0" selection-end-line="257" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/competition/constrains_evaluation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="369">
+          <caret line="244" column="33" lean-forward="false" selection-start-line="244" selection-start-column="33" selection-end-line="244" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tests_data/lungSBRT/Score Sheet TEXT 87.9.txt" />
+    <entry file="file://$PROJECT_DIR$/tests/tests_data/PyPlanScoring.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="10" column="19" lean-forward="false" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/constraints/tests/test_planEvaluation.py" />
+    <entry file="file://$PROJECT_DIR$/tests/tests_gui/test_get_calculation_options.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tests_core/test_IOHandler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="81">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/competition/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="388" column="26" lean-forward="false" selection-start-line="388" selection-start-column="26" selection-end-line="388" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/miniconda3/envs/pyside/lib/python3.6/site-packages/pandas/core/frame.py" />
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/dicom_reader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="972" column="0" lean-forward="false" selection-start-line="972" selection-start-column="0" selection-end-line="972" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/miniconda3/envs/pyside/lib/python3.6/site-packages/pluggy/callers.py" />
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/scoring.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="655" column="0" lean-forward="false" selection-start-line="655" selection-start-column="0" selection-end-line="656" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/tests/test_IOHandler.py" />
+    <entry file="file://$PROJECT_DIR$/tests/tests_data/lungSBRT/RD.1.2.246.352.71.7.584747638204.1891868.20180301221910.dcm.dvh" />
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/io.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1620">
+          <caret line="60" column="25" lean-forward="false" selection-start-line="60" selection-start-column="25" selection-end-line="60" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/types.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tests_data/lungSBRT/RD.1.2.246.352.71.7.584747638204.1891868.20180301221910.dcm.csv" />
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/PyPlanScoring_diagram.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/miniconda3/envs/pyside/lib/python3.6/site-packages/numpy/lib/function_base.py" />
+    <entry file="file://$PROJECT_DIR$/tests/tests_data/lungSBRT/SlicerRT_DVH_SBRT_D2CM_Primary_D2CM_LN" />
+    <entry file="file://$PROJECT_DIR$/tests/tests_data/lungSBRT/DVH TEXT 87.9.txt" />
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/geometry.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5120">
+          <caret line="265" column="55" lean-forward="false" selection-start-line="265" selection-start-column="24" selection-end-line="265" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/miniconda3/envs/pyside/lib/python3.6/site-packages/dicompyler_core-0.5.3-py3.6.egg/dicompylercore/dicomparser.py" />
+    <entry file="file://$USER_HOME$/miniconda3/envs/pyside/lib/python3.6/site-packages/dicompyler_core-0.5.3-py3.6.egg/dicompylercore/dvhcalc.py" />
+    <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_planEvaluation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="542">
+          <caret line="55" column="35" lean-forward="false" selection-start-line="55" selection-start-column="35" selection-end-line="55" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/conftest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="40" column="32" lean-forward="false" selection-start-line="40" selection-start-column="32" selection-end-line="40" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/constraints/metrics.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="316" column="0" lean-forward="false" selection-start-line="316" selection-start-column="0" selection-end-line="316" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tests_core/test_DVHCalculation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tests_core/test_DVHCalculationMP.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="780">
+          <caret line="41" column="29" lean-forward="false" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/complexity/misc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1560">
+          <caret line="86" column="20" lean-forward="false" selection-start-line="86" selection-start-column="20" selection-end-line="86" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_21.py" />
+    <entry file="file://$PROJECT_DIR$/ComplexityScript.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="10" column="92" lean-forward="false" selection-start-line="10" selection-start-column="92" selection-end-line="10" selection-end-column="92" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/complexity/EsapiApertureMetric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tests_gui/test_criteria.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="45" column="38" lean-forward="false" selection-start-line="45" selection-start-column="38" selection-end-line="45" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/complexity/dicomrt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="135" column="0" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_pyPlanningItem.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="19" column="34" lean-forward="false" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/complexity/PyComplexityMetric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27">
+          <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/complexity/PyApertureMetric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="139" column="27" lean-forward="false" selection-start-line="139" selection-start-column="27" selection-end-line="139" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/complexity/ApertureMetric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4">
+          <caret line="250" column="0" lean-forward="false" selection-start-line="250" selection-start-column="0" selection-end-line="250" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/dvhdoses.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#474#495#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui/options.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_api/test_pyPlanScoringKernel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="125" column="4" lean-forward="false" selection-start-line="125" selection-start-column="4" selection-end-line="125" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/calculation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/api/backend.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding>
+            <element signature="e#94#104#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="412">
+          <caret line="20" column="81" lean-forward="false" selection-start-line="20" selection-start-column="81" selection-end-line="20" selection-end-column="81" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="98" column="19" lean-forward="true" selection-start-line="98" selection-start-column="19" selection-end-line="98" selection-end-column="19" />
+          <folding>
+            <element signature="e#24#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

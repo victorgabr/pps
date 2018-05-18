@@ -28,9 +28,6 @@ def cn_PnPoly(P, V):
     return cn % 2  # 0 if even (out), and 1 if odd (in)
 
 
-# ===================================================================
-
-
 def wn_PnPoly1(P, V):
     """
         # point_in_contour(): winding number test for a point in a polygon
@@ -315,19 +312,6 @@ def check_contour_inside(contour, largest):
             # Assume if one point is inside, all will be inside
             break
     return inside
-
-# @njit(nb.boolean(nb.double[:, :], nb.double[:, :]))
-# def check_contour_inside(contour, largest):
-#     inside = np.zeros(len(contour))
-#     for i in range(len(contour)):
-#         point = contour[i]
-#         p = point_in_contour(point, largest)
-#         if p:
-#             inside[i] = 1
-#
-#     # all should be inside
-#
-#     return np.all(inside)
 
 
 def k_nearest_neighbors(k, feature_train, features_query):
@@ -1103,8 +1087,6 @@ def contour_rasterization(dose_lut, dosegrid_points, contour, fx, fy, y_cord):
 
     return out
 
-
-# @nb.njit(nb.boolean[:, :](nb.boolean[:, :], nb.double[:], nb.double[:], nb.int64[:]))
 
 @njit
 def raster(out, polyX, polyY, y_cord):

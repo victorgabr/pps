@@ -1,0 +1,503 @@
+------- Component -------
+RTOG 0815 Intermediate Risk Prostate 75_6Gy.CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Algorithms\RTOG PROTOCOLS\GENITOURINARY\RTOG 0815 Intermediate Risk Prostate 75_6Gy.CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>Metric ID</string>
+    <string>Score Function</string>
+    <string>Scalable</string>
+    <string>Pass/Fail</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>49.51</string>
+    <string>99.03</string>
+    <string>25.12</string>
+    <string>25.17</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>[PTV] V[75.6Gy] (%)</string>
+    <string>[PTV] D[0.03cc] (Gy)</string>
+    <string>[PTV] Min dose (Gy)</string>
+    <string>[BLADDER] V[80.0Gy] (%)</string>
+    <string>[BLADDER] V[75.0Gy] (%)</string>
+    <string>[BLADDER] V[70.0Gy] (%)</string>
+    <string>[BLADDER] V[65.0Gy] (%)</string>
+    <string>[RECTUM] V[75.0Gy] (%)</string>
+    <string>[RECTUM] V[70.0Gy] (%)</string>
+    <string>[RECTUM] V[65.0Gy] (%)</string>
+    <string>[RECTUM] V[60.0Gy] (%)</string>
+    <string>[PENILE BULB] Mean dose (Gy)</string>
+    <string>RTOG 0815 Intermediate Risk Prostate 75_6Gy\[PTV] V[75.6Gy] (%) [Goal 98, Fail 97.99999, 1 pts]</string>
+    <string>RTOG 0815 Intermediate Risk Prostate 75_6Gy\[PTV] D[0.03cc] (Gy) [Goal 80.892, Fail 83.16, 1 pts]</string>
+    <string>RTOG 0815 Intermediate Risk Prostate 75_6Gy\[PTV] Min dose (Gy) [Goal 71.82, Fail 70.308, 1 pts]</string>
+    <string>RTOG 0815 Intermediate Risk Prostate 75_6Gy\[BLADDER] V[80.0Gy] (%) [Goal 15, Fail 20.0001, 1 pts]</string>
+    <string>RTOG 0815 Intermediate Risk Prostate 75_6Gy\[BLADDER] V[75.0Gy] (%) [Goal 25, Fail 30.0001, 1 pts]</string>
+    <string>RTOG 0815 Intermediate Risk Prostate 75_6Gy\[BLADDER] V[70.0Gy] (%) [Goal 35, Fail 40.00001, 1 pts]</string>
+    <string>RTOG 0815 Intermediate Risk Prostate 75_6Gy\[BLADDER] V[65.0Gy] (%) [Goal 50, Fail 55.00001, 1 pts]</string>
+    <string>RTOG 0815 Intermediate Risk Prostate 75_6Gy\[RECTUM] V[75.0Gy] (%) [Goal 15, Fail 20.0001, 1 pts]</string>
+    <string>RTOG 0815 Intermediate Risk Prostate 75_6Gy\[RECTUM] V[70.0Gy] (%) [Goal 25, Fail 30.0001, 1 pts]</string>
+    <string>RTOG 0815 Intermediate Risk Prostate 75_6Gy\[RECTUM] V[65.0Gy] (%) [Goal 35, Fail 40.0001, 1 pts]</string>
+    <string>RTOG 0815 Intermediate Risk Prostate 75_6Gy\[RECTUM] V[60.0Gy] (%) [Goal 50, Fail 55.0001, 1 pts]</string>
+    <string>RTOG 0815 Intermediate Risk Prostate 75_6Gy\[PENILE BULB] Mean dose (Gy) [Goal 52.5, Fail 52.50001, 1 pts]</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+  </RasterData>
+  <PlotAs>Blank</PlotAs>
+  <DatagridWidth>686</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV] V[75.6Gy] (%) [Goal 98, Fail 97.99999, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0815 Intermediate Risk Prostate 75_6Gy\[PTV] V[75.6Gy] (%) [Goal 98, Fail 97.99999, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV] V[75.6Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>97.99999</string>
+    <string>98</string>
+    <string>87.99999</string>
+    <string>100</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV] D[0.03cc] (Gy) [Goal 80.892, Fail 83.16, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0815 Intermediate Risk Prostate 75_6Gy\[PTV] D[0.03cc] (Gy) [Goal 80.892, Fail 83.16, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV] D[0.03cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>83.16</string>
+    <string>80.892</string>
+    <string>70.892</string>
+    <string>93.16</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV] Min dose (Gy) [Goal 71.82, Fail 70.308, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0815 Intermediate Risk Prostate 75_6Gy\[PTV] Min dose (Gy) [Goal 71.82, Fail 70.308, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV] Min dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>70.308</string>
+    <string>71.82</string>
+    <string>60.308</string>
+    <string>81.82</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BLADDER] V[80.0Gy] (%) [Goal 15, Fail 20.0001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0815 Intermediate Risk Prostate 75_6Gy\[BLADDER] V[80.0Gy] (%) [Goal 15, Fail 20.0001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BLADDER] V[80.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20.0001</string>
+    <string>15</string>
+    <string>5</string>
+    <string>30.0001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BLADDER] V[75.0Gy] (%) [Goal 25, Fail 30.0001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0815 Intermediate Risk Prostate 75_6Gy\[BLADDER] V[75.0Gy] (%) [Goal 25, Fail 30.0001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BLADDER] V[75.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>30.0001</string>
+    <string>25</string>
+    <string>15</string>
+    <string>40.0001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BLADDER] V[70.0Gy] (%) [Goal 35, Fail 40.00001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0815 Intermediate Risk Prostate 75_6Gy\[BLADDER] V[70.0Gy] (%) [Goal 35, Fail 40.00001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BLADDER] V[70.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40.00001</string>
+    <string>35</string>
+    <string>25</string>
+    <string>50.00001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BLADDER] V[65.0Gy] (%) [Goal 50, Fail 55.00001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0815 Intermediate Risk Prostate 75_6Gy\[BLADDER] V[65.0Gy] (%) [Goal 50, Fail 55.00001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BLADDER] V[65.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>55.00001</string>
+    <string>50</string>
+    <string>40</string>
+    <string>65.00001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RECTUM] V[75.0Gy] (%) [Goal 15, Fail 20.0001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0815 Intermediate Risk Prostate 75_6Gy\[RECTUM] V[75.0Gy] (%) [Goal 15, Fail 20.0001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RECTUM] V[75.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20.0001</string>
+    <string>15</string>
+    <string>5</string>
+    <string>30.0001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RECTUM] V[70.0Gy] (%) [Goal 25, Fail 30.0001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0815 Intermediate Risk Prostate 75_6Gy\[RECTUM] V[70.0Gy] (%) [Goal 25, Fail 30.0001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RECTUM] V[70.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>30.0001</string>
+    <string>25</string>
+    <string>15</string>
+    <string>40.0001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RECTUM] V[65.0Gy] (%) [Goal 35, Fail 40.0001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0815 Intermediate Risk Prostate 75_6Gy\[RECTUM] V[65.0Gy] (%) [Goal 35, Fail 40.0001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RECTUM] V[65.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40.00001</string>
+    <string>35</string>
+    <string>25</string>
+    <string>50.0001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RECTUM] V[60.0Gy] (%) [Goal 50, Fail 55.0001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0815 Intermediate Risk Prostate 75_6Gy\[RECTUM] V[60.0Gy] (%) [Goal 50, Fail 55.0001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RECTUM] V[60.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>55.00001</string>
+    <string>50</string>
+    <string>40</string>
+    <string>65.0001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PENILE BULB] Mean dose (Gy) [Goal 52.5, Fail 52.50001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0815 Intermediate Risk Prostate 75_6Gy\[PENILE BULB] Mean dose (Gy) [Goal 52.5, Fail 52.50001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PENILE BULB] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>52.50001</string>
+    <string>52.5</string>
+    <string>42.5</string>
+    <string>62.50001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>

@@ -1,0 +1,2063 @@
+------- Component -------
+RTOG 0615 Nasopharynx.CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Algorithms\RTOG PROTOCOLS\HEAD &amp; NECK\RTOG 0615\RTOG 0615 Nasopharynx.CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>Metric ID</string>
+    <string>Score Function</string>
+    <string>Scalable</string>
+    <string>Pass/Fail</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>49.71</string>
+    <string>99.42</string>
+    <string>25.14</string>
+    <string>25.19</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>[PTV70] V[70.0Gy] (%)</string>
+    <string>[PTV70] V[65.1Gy] (%)</string>
+    <string>[PTV70] V[77.0Gy] (%)</string>
+    <string>[PTV70] V[80.0Gy] (%)</string>
+    <string>[PTV70] Mean dose (Gy)</string>
+    <string>[PTV63] D[95.0%] (Gy)</string>
+    <string>[PTV63] V[58.6Gy] (%)</string>
+    <string>[PTV63] V[77.0Gy] (%)</string>
+    <string>[PTV63] V[80.0Gy] (%)</string>
+    <string>[PTV59.4] D[95.0%] (Gy)</string>
+    <string>[PTV59.4] V[55.2Gy] (%)</string>
+    <string>[PTV59.4] V[77.0Gy] (%)</string>
+    <string>[PTV59.4] V[80.0Gy] (%)</string>
+    <string>[PTV54] D[95.0%] (Gy)</string>
+    <string>[PTV54] V[50.2Gy] (%)</string>
+    <string>[PTV54] V[65.3Gy] (%)</string>
+    <string>[PTV54] V[68.3Gy] (%)</string>
+    <string>[BRAINSTEM] Max dose (Gy)</string>
+    <string>[PRV BRAINSTEM] V[60.0Gy] (%)</string>
+    <string>[SPINAL CORD] Max dose (Gy)</string>
+    <string>[PRV SPINAL CORD] V[50.0Gy] (%)</string>
+    <string>[RIGHT OPTIC NERVE] Max dose (Gy)</string>
+    <string>[PRV RIGHT OPTIC NERVE] Max dose (Gy)</string>
+    <string>[LEFT OPTIC NERVE] Max dose (Gy)</string>
+    <string>[PRV LEFT OPTIC NERVE] Max dose (Gy)</string>
+    <string>[OPTIC CHIASM] Max dose (Gy)</string>
+    <string>[PRV OPTIC CHIASM] Max dose (Gy)</string>
+    <string>[MANDIBLE] Max dose (Gy)</string>
+    <string>[MANDIBLE] D[1.0cc] (Gy)</string>
+    <string>[LT TM JOINT] Max dose (Gy)</string>
+    <string>[LT TM JOINT] D[1.0cc] (Gy)</string>
+    <string>[RT TM JOINT] Max dose (Gy)</string>
+    <string>[RT TM JOINT] D[1.0cc] (Gy)</string>
+    <string>[BRACHIAL PLEXUS] Max dose (Gy)</string>
+    <string>[BODY-TOTALPTV] V[70.0Gy] (%)</string>
+    <string>[BODY-TOTALPTV] V[77.0Gy] (%)</string>
+    <string>[BODY-TOTALPTV] V[77.0Gy] (cc)</string>
+    <string>[RIGHT PAROTID] Mean dose (Gy)</string>
+    <string>[RIGHT PAROTID] V[30.0Gy] (%)</string>
+    <string>[LEFT PAROTID] Mean dose (Gy)</string>
+    <string>[LEFT PAROTID] V[30.0Gy] (%)</string>
+    <string>[TOTAL PAROTID] D[20.0cc] (Gy)</string>
+    <string>[ORAL CAVITY-TOTALPTV] Mean dose (Gy)</string>
+    <string>[RIGHT COCHLEA] V[55.0Gy] (%)</string>
+    <string>[LEFT COCHLEA] V[55.0Gy] (%)</string>
+    <string>[RIGHT EYE] Max dose (Gy)</string>
+    <string>[LEFT EYE] Max dose (Gy)</string>
+    <string>[RIGHT LENS] Max dose (Gy)</string>
+    <string>[LEFT LENS] Max dose (Gy)</string>
+    <string>[GLOTTIC LARYNX] Mean dose (Gy)</string>
+    <string>[ESOPHAGUS] Mean dose (Gy)</string>
+    <string>[POSTCRICOID PHARYNX] Mean dose (Gy)</string>
+    <string>RTOG 0615 Nasopharynx\[PTV70] V[70.0Gy] (%) [Goal 95, Fail 94.99, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV70] V[65.1Gy] (%) [Goal 99, Fail 96.99, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV70] V[77.0Gy] (%) [Goal 20, Fail 40.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV70] V[80.0Gy] (%) [Goal 5, Fail 20.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV70] Mean dose (Gy) [Goal 74, Fail 76.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV63] D[95.0%] (Gy) [Goal 63, Fail 58.59, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV63] V[58.6Gy] (%) [Goal 99, Fail 98.99, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV63] V[77.0Gy] (%) [Goal 20, Fail 40.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV63] V[80.0Gy] (%) [Goal 5, Fail 20.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV59.4] D[95.0%] (Gy) [Goal 59.4, Fail 55.19, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV59.4] V[55.2Gy] (%) [Goal 99, Fail 98.99, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV59.4] V[77.0Gy] (%) [Goal 20, Fail 40.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV59.4] V[80.0Gy] (%) [Goal 5, Fail 20.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV54] D[95.0%] (Gy) [Goal 54, Fail 50.19, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV54] V[50.2Gy] (%) [Goal 99, Fail 98.99, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV54] V[65.3Gy] (%) [Goal 20, Fail 40.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PTV54] V[68.3Gy] (%) [Goal 5, Fail 20.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[BRAINSTEM] Max dose (Gy) [Goal 54, Fail 54.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PRV BRAINSTEM] V[60.0Gy] (%) [Goal 1, Fail 1.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[SPINAL CORD] Max dose (Gy) [Goal 45, Fail 45.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PRV SPINAL CORD] V[50.0Gy] (%) [Goal 1, Fail 1.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[RIGHT OPTIC NERVE] Max dose (Gy) [Goal 50, Fail 50.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PRV RIGHT OPTIC NERVE] Max dose (Gy) [Goal 54, Fail 54.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[LEFT OPTIC NERVE] Max dose (Gy) [Goal 50, Fail 50.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PRV LEFT OPTIC NERVE] Max dose (Gy) [Goal 54, Fail 54.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[OPTIC CHIASM] Max dose (Gy) [Goal 50, Fail 50.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[PRV OPTIC CHIASM] Max dose (Gy) [Goal 54, Fail 54.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[MANDIBLE] Max dose (Gy) [Goal 70, Fail 70.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[MANDIBLE] D[1.0cc] (Gy) [Goal 75, Fail 75.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[LT TM JOINT] Max dose (Gy) [Goal 70, Fail 70.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[LT TM JOINT] D[1.0cc] (Gy) [Goal 75, Fail 75.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[RT TM JOINT] Max dose (Gy) [Goal 70, Fail 70.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[RT TM JOINT] D[1.0cc] (Gy) [Goal 75, Fail 75.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[BRACHIAL PLEXUS] Max dose (Gy) [Goal 66, Fail 66.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[BODY-TOTALPTV] V[70.0Gy] (%) [Goal 5, Fail 5.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[BODY-TOTALPTV] V[77.0Gy] (%) [Goal 1, Fail 1.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[BODY-TOTALPTV] V[77.0Gy] (cc) [Goal 1, Fail 1.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[RIGHT PAROTID] Mean dose (Gy) [Goal 26, Fail 26.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[RIGHT PAROTID] V[30.0Gy] (%) [Goal 50, Fail 50.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[LEFT PAROTID] Mean dose (Gy) [Goal 26, Fail 26.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[LEFT PAROTID] V[30.0Gy] (%) [Goal 50, Fail 50.01, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[TOTAL PAROTID] D[20.0cc] (Gy) [Goal 19.99, Fail 20, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[ORAL CAVITY-TOTALPTV] Mean dose (Gy) [Goal 39.99, Fail 40, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[RIGHT COCHLEA] V[55.0Gy] (%) [Goal 5, Fail 5.01, .5 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[LEFT COCHLEA] V[55.0Gy] (%) [Goal 5, Fail 5.01, .5 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[RIGHT EYE] Max dose (Gy) [Goal 49.99, Fail 50, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[LEFT EYE] Max dose (Gy) [Goal 49.99, Fail 50, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[RIGHT LENS] Max dose (Gy) [Goal 24.99, Fail 25, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[LEFT LENS] Max dose (Gy) [Goal 24.99, Fail 25, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[GLOTTIC LARYNX] Mean dose (Gy) [Goal 44.99, Fail 45, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[ESOPHAGUS] Mean dose (Gy) [Goal 44.99, Fail 45, 1 pts]</string>
+    <string>RTOG 0615 Nasopharynx\[POSTCRICOID PHARYNX] Mean dose (Gy) [Goal 44.99, Fail 45, 1 pts]</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+  </RasterData>
+  <PlotAs>Blank</PlotAs>
+  <DatagridWidth>686</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV70] V[70.0Gy] (%) [Goal 95, Fail 94.99, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV70] V[70.0Gy] (%) [Goal 95, Fail 94.99, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV70] V[70.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>94.99</string>
+    <string>95</string>
+    <string>84.99</string>
+    <string>100</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV70] V[65.1Gy] (%) [Goal 99, Fail 96.99, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV70] V[65.1Gy] (%) [Goal 99, Fail 96.99, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV70] V[65.1Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>96.99</string>
+    <string>99</string>
+    <string>86.99</string>
+    <string>100</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV70] V[77.0Gy] (%) [Goal 20, Fail 40.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV70] V[77.0Gy] (%) [Goal 20, Fail 40.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV70] V[77.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40.01</string>
+    <string>20</string>
+    <string>10</string>
+    <string>50.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV70] V[80.0Gy] (%) [Goal 5, Fail 20.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV70] V[80.0Gy] (%) [Goal 5, Fail 20.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV70] V[80.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20.01</string>
+    <string>5</string>
+    <string>0</string>
+    <string>30.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV70] Mean dose (Gy) [Goal 74, Fail 76.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV70] Mean dose (Gy) [Goal 74, Fail 76.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV70] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>76.01</string>
+    <string>74</string>
+    <string>64</string>
+    <string>86.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV63] D[95.0%] (Gy) [Goal 63, Fail 58.59, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV63] D[95.0%] (Gy) [Goal 63, Fail 58.59, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV63] D[95.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>58.59</string>
+    <string>63</string>
+    <string>48.59</string>
+    <string>73</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV63] V[58.6Gy] (%) [Goal 99, Fail 98.99, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV63] V[58.6Gy] (%) [Goal 99, Fail 98.99, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV63] V[58.6Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>98.99</string>
+    <string>99</string>
+    <string>88.99</string>
+    <string>100</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV63] V[77.0Gy] (%) [Goal 20, Fail 40.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV63] V[77.0Gy] (%) [Goal 20, Fail 40.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV63] V[77.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40.01</string>
+    <string>20</string>
+    <string>10</string>
+    <string>50.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV63] V[80.0Gy] (%) [Goal 5, Fail 20.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV63] V[80.0Gy] (%) [Goal 5, Fail 20.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV63] V[80.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20.01</string>
+    <string>5</string>
+    <string>0</string>
+    <string>30.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV59.4] D[95.0%] (Gy) [Goal 59.4, Fail 55.19, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV59.4] D[95.0%] (Gy) [Goal 59.4, Fail 55.19, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV59.4] D[95.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>55.19</string>
+    <string>59.4</string>
+    <string>45.19</string>
+    <string>69.4</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV59.4] V[55.2Gy] (%) [Goal 99, Fail 98.99, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV59.4] V[55.2Gy] (%) [Goal 99, Fail 98.99, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV59.4] V[55.2Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>98.99</string>
+    <string>99</string>
+    <string>88.99</string>
+    <string>100</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV59.4] V[77.0Gy] (%) [Goal 20, Fail 40.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV59.4] V[77.0Gy] (%) [Goal 20, Fail 40.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV59.4] V[77.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40.01</string>
+    <string>20</string>
+    <string>10</string>
+    <string>50.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV59.4] V[80.0Gy] (%) [Goal 5, Fail 20.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV59.4] V[80.0Gy] (%) [Goal 5, Fail 20.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV59.4] V[80.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20.01</string>
+    <string>5</string>
+    <string>0</string>
+    <string>30.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV54] D[95.0%] (Gy) [Goal 54, Fail 50.19, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV54] D[95.0%] (Gy) [Goal 54, Fail 50.19, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV54] D[95.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50.19</string>
+    <string>54</string>
+    <string>40.19</string>
+    <string>64</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV54] V[50.2Gy] (%) [Goal 99, Fail 98.99, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV54] V[50.2Gy] (%) [Goal 99, Fail 98.99, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV54] V[50.2Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>98.99</string>
+    <string>99</string>
+    <string>88.99</string>
+    <string>100</string>
+    <string>0</string>
+    <string>1</string>
+    <string>0</string>
+    <string>1</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV54] V[65.3Gy] (%) [Goal 20, Fail 40.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV54] V[65.3Gy] (%) [Goal 20, Fail 40.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV54] V[65.3Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40.01</string>
+    <string>20</string>
+    <string>10</string>
+    <string>50.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PTV54] V[68.3Gy] (%) [Goal 5, Fail 20.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PTV54] V[68.3Gy] (%) [Goal 5, Fail 20.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PTV54] V[68.3Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20.01</string>
+    <string>5</string>
+    <string>0</string>
+    <string>30.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRAINSTEM] Max dose (Gy) [Goal 54, Fail 54.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[BRAINSTEM] Max dose (Gy) [Goal 54, Fail 54.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRAINSTEM] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>54.01</string>
+    <string>54</string>
+    <string>44</string>
+    <string>64.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PRV BRAINSTEM] V[60.0Gy] (%) [Goal 1, Fail 1.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PRV BRAINSTEM] V[60.0Gy] (%) [Goal 1, Fail 1.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PRV BRAINSTEM] V[60.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>1.01</string>
+    <string>1</string>
+    <string>0</string>
+    <string>11.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SPINAL CORD] Max dose (Gy) [Goal 45, Fail 45.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[SPINAL CORD] Max dose (Gy) [Goal 45, Fail 45.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SPINAL CORD] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>45.01</string>
+    <string>45</string>
+    <string>35</string>
+    <string>55.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PRV SPINAL CORD] V[50.0Gy] (%) [Goal 1, Fail 1.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PRV SPINAL CORD] V[50.0Gy] (%) [Goal 1, Fail 1.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PRV SPINAL CORD] V[50.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>1.01</string>
+    <string>1</string>
+    <string>0</string>
+    <string>11.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RIGHT OPTIC NERVE] Max dose (Gy) [Goal 50, Fail 50.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[RIGHT OPTIC NERVE] Max dose (Gy) [Goal 50, Fail 50.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RIGHT OPTIC NERVE] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50.01</string>
+    <string>50</string>
+    <string>40</string>
+    <string>60.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PRV RIGHT OPTIC NERVE] Max dose (Gy) [Goal 54, Fail 54.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PRV RIGHT OPTIC NERVE] Max dose (Gy) [Goal 54, Fail 54.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PRV RIGHT OPTIC NERVE] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>54.01</string>
+    <string>54</string>
+    <string>44</string>
+    <string>64.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LEFT OPTIC NERVE] Max dose (Gy) [Goal 50, Fail 50.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[LEFT OPTIC NERVE] Max dose (Gy) [Goal 50, Fail 50.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LEFT OPTIC NERVE] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50.01</string>
+    <string>50</string>
+    <string>40</string>
+    <string>60.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PRV LEFT OPTIC NERVE] Max dose (Gy) [Goal 54, Fail 54.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PRV LEFT OPTIC NERVE] Max dose (Gy) [Goal 54, Fail 54.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PRV LEFT OPTIC NERVE] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>54.01</string>
+    <string>54</string>
+    <string>44</string>
+    <string>64.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[OPTIC CHIASM] Max dose (Gy) [Goal 50, Fail 50.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[OPTIC CHIASM] Max dose (Gy) [Goal 50, Fail 50.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[OPTIC CHIASM] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50.01</string>
+    <string>50</string>
+    <string>40</string>
+    <string>60.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PRV OPTIC CHIASM] Max dose (Gy) [Goal 54, Fail 54.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[PRV OPTIC CHIASM] Max dose (Gy) [Goal 54, Fail 54.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PRV OPTIC CHIASM] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>54.01</string>
+    <string>54</string>
+    <string>44</string>
+    <string>64.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[MANDIBLE] Max dose (Gy) [Goal 70, Fail 70.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[MANDIBLE] Max dose (Gy) [Goal 70, Fail 70.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[MANDIBLE] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>70.01</string>
+    <string>70</string>
+    <string>60</string>
+    <string>80.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[MANDIBLE] D[1.0cc] (Gy) [Goal 75, Fail 75.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[MANDIBLE] D[1.0cc] (Gy) [Goal 75, Fail 75.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[MANDIBLE] D[1.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>75.01</string>
+    <string>75</string>
+    <string>65</string>
+    <string>85.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LT TM JOINT] Max dose (Gy) [Goal 70, Fail 70.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[LT TM JOINT] Max dose (Gy) [Goal 70, Fail 70.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LT TM JOINT] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>70.01</string>
+    <string>70</string>
+    <string>60</string>
+    <string>80.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LT TM JOINT] D[1.0cc] (Gy) [Goal 75, Fail 75.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[LT TM JOINT] D[1.0cc] (Gy) [Goal 75, Fail 75.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LT TM JOINT] D[1.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>75.01</string>
+    <string>75</string>
+    <string>65</string>
+    <string>85.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RT TM JOINT] Max dose (Gy) [Goal 70, Fail 70.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[RT TM JOINT] Max dose (Gy) [Goal 70, Fail 70.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RT TM JOINT] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>70.01</string>
+    <string>70</string>
+    <string>60</string>
+    <string>80.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RT TM JOINT] D[1.0cc] (Gy) [Goal 75, Fail 75.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[RT TM JOINT] D[1.0cc] (Gy) [Goal 75, Fail 75.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RT TM JOINT] D[1.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>75.01</string>
+    <string>75</string>
+    <string>65</string>
+    <string>85.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRACHIAL PLEXUS] Max dose (Gy) [Goal 66, Fail 66.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[BRACHIAL PLEXUS] Max dose (Gy) [Goal 66, Fail 66.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRACHIAL PLEXUS] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>66.01</string>
+    <string>66</string>
+    <string>56</string>
+    <string>76.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BODY-TOTALPTV] V[70.0Gy] (%) [Goal 5, Fail 5.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[BODY-TOTALPTV] V[70.0Gy] (%) [Goal 5, Fail 5.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BODY-TOTALPTV] V[70.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>5.01</string>
+    <string>5</string>
+    <string>0</string>
+    <string>15.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BODY-TOTALPTV] V[77.0Gy] (%) [Goal 1, Fail 1.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[BODY-TOTALPTV] V[77.0Gy] (%) [Goal 1, Fail 1.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BODY-TOTALPTV] V[77.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>1.01</string>
+    <string>1</string>
+    <string>0</string>
+    <string>11.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BODY-TOTALPTV] V[77.0Gy] (cc) [Goal 1, Fail 1.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[BODY-TOTALPTV] V[77.0Gy] (cc) [Goal 1, Fail 1.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BODY-TOTALPTV] V[77.0Gy] (cc)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>1.01</string>
+    <string>1</string>
+    <string>0</string>
+    <string>11.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RIGHT PAROTID] Mean dose (Gy) [Goal 26, Fail 26.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[RIGHT PAROTID] Mean dose (Gy) [Goal 26, Fail 26.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RIGHT PAROTID] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>26.01</string>
+    <string>26</string>
+    <string>16</string>
+    <string>36.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RIGHT PAROTID] V[30.0Gy] (%) [Goal 50, Fail 50.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[RIGHT PAROTID] V[30.0Gy] (%) [Goal 50, Fail 50.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RIGHT PAROTID] V[30.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50.01</string>
+    <string>50</string>
+    <string>40</string>
+    <string>60.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LEFT PAROTID] Mean dose (Gy) [Goal 26, Fail 26.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[LEFT PAROTID] Mean dose (Gy) [Goal 26, Fail 26.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LEFT PAROTID] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>26.01</string>
+    <string>26</string>
+    <string>16</string>
+    <string>36.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LEFT PAROTID] V[30.0Gy] (%) [Goal 50, Fail 50.01, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[LEFT PAROTID] V[30.0Gy] (%) [Goal 50, Fail 50.01, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LEFT PAROTID] V[30.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50.01</string>
+    <string>50</string>
+    <string>40</string>
+    <string>60.01</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[TOTAL PAROTID] D[20.0cc] (Gy) [Goal 19.99, Fail 20, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[TOTAL PAROTID] D[20.0cc] (Gy) [Goal 19.99, Fail 20, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[TOTAL PAROTID] D[20.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20</string>
+    <string>19.99</string>
+    <string>9.99</string>
+    <string>30</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[ORAL CAVITY-TOTALPTV] Mean dose (Gy) [Goal 39.99, Fail 40, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[ORAL CAVITY-TOTALPTV] Mean dose (Gy) [Goal 39.99, Fail 40, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[ORAL CAVITY-TOTALPTV] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>40</string>
+    <string>39.99</string>
+    <string>29.99</string>
+    <string>50</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RIGHT COCHLEA] V[55.0Gy] (%) [Goal 5, Fail 5.01, .5 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[RIGHT COCHLEA] V[55.0Gy] (%) [Goal 5, Fail 5.01, .5 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RIGHT COCHLEA] V[55.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>5.01</string>
+    <string>5</string>
+    <string>0</string>
+    <string>15.01</string>
+    <string>0.5</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0.5</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LEFT COCHLEA] V[55.0Gy] (%) [Goal 5, Fail 5.01, .5 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>E:\SHARE\Dropbox\1 ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[LEFT COCHLEA] V[55.0Gy] (%) [Goal 5, Fail 5.01, .5 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LEFT COCHLEA] V[55.0Gy] (%)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>5.01</string>
+    <string>5</string>
+    <string>0</string>
+    <string>15.01</string>
+    <string>0.5</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0.5</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>248</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RIGHT EYE] Max dose (Gy) [Goal 49.99, Fail 50, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[RIGHT EYE] Max dose (Gy) [Goal 49.99, Fail 50, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RIGHT EYE] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50</string>
+    <string>49.99</string>
+    <string>39.99</string>
+    <string>60</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LEFT EYE] Max dose (Gy) [Goal 49.99, Fail 50, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[LEFT EYE] Max dose (Gy) [Goal 49.99, Fail 50, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LEFT EYE] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>50</string>
+    <string>49.99</string>
+    <string>39.99</string>
+    <string>60</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RIGHT LENS] Max dose (Gy) [Goal 24.99, Fail 25, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[RIGHT LENS] Max dose (Gy) [Goal 24.99, Fail 25, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RIGHT LENS] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>25</string>
+    <string>24.99</string>
+    <string>14.99</string>
+    <string>35</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LEFT LENS] Max dose (Gy) [Goal 24.99, Fail 25, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[LEFT LENS] Max dose (Gy) [Goal 24.99, Fail 25, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LEFT LENS] Max dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>25</string>
+    <string>24.99</string>
+    <string>14.99</string>
+    <string>35</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[GLOTTIC LARYNX] Mean dose (Gy) [Goal 44.99, Fail 45, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[GLOTTIC LARYNX] Mean dose (Gy) [Goal 44.99, Fail 45, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[GLOTTIC LARYNX] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>45</string>
+    <string>44.99</string>
+    <string>34.99</string>
+    <string>55</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[ESOPHAGUS] Mean dose (Gy) [Goal 44.99, Fail 45, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[ESOPHAGUS] Mean dose (Gy) [Goal 44.99, Fail 45, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[ESOPHAGUS] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>45</string>
+    <string>44.99</string>
+    <string>34.99</string>
+    <string>55</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[POSTCRICOID PHARYNX] Mean dose (Gy) [Goal 44.99, Fail 45, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Kyle\Dropbox\1 ROQS (1)\ROQS PLAN\SOFTWARE\PQM Score Functions\RTOG 0615 Nasopharynx\[POSTCRICOID PHARYNX] Mean dose (Gy) [Goal 44.99, Fail 45, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[POSTCRICOID PHARYNX] Mean dose (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>45</string>
+    <string>44.99</string>
+    <string>34.99</string>
+    <string>55</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>

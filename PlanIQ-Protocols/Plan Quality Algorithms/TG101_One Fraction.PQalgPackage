@@ -1,0 +1,2024 @@
+------- Component -------
+TG101_One Fraction.CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Algorithms\TG-101\ONE FRACTION\TG101_One Fraction.CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>Metric ID</string>
+    <string>Score Function</string>
+    <string>Scalable</string>
+    <string>Pass/Fail</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>49.82</string>
+    <string>99.64</string>
+    <string>25.23</string>
+    <string>25.32</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Button</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+    <DataEntryType>Checkbox</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>[OPTIC PATHWAY] D[0.2cc] (Gy)</string>
+    <string>[OPTIC PATHWAY] D[0.035cc] (Gy)</string>
+    <string>[COCHLEA] D[0.035cc] (Gy)</string>
+    <string>[BRAINSTEM (NOT MEDULLA)] D[0.5cc] (Gy)</string>
+    <string>[BRAINSTEM (NOT MEDULLA)] D[0.035cc] (Gy)</string>
+    <string>[SPINAL CORD (INCLUDING MEDULLA)] D[0.35cc] (Gy)</string>
+    <string>[SPINAL CORD (INCLUDING MEDULLA)] D[1.2cc] (Gy)</string>
+    <string>[SPINAL CORD (INCLUDING MEDULLA)] D[0.035cc] (Gy)</string>
+    <string>[SPINAL CORD SUBVOLUME (5-6MM ABOVE AND BELOW PTV)] D[10.0%] (Gy)</string>
+    <string>[SPINAL CORD SUBVOLUME (5-6MM ABOVE AND BELOW PTV)] D[0.035cc] (Gy)</string>
+    <string>[CAUDA EQUINA] D[5.0cc] (Gy)</string>
+    <string>[CAUDA EQUINA] D[0.035cc] (Gy)</string>
+    <string>[SACRAL PLEXUS] D[5.0cc] (Gy)</string>
+    <string>[SACRAL PLEXUS] D[0.035cc] (Gy)</string>
+    <string>[ESOPHAGUS] D[5.0cc] (Gy)</string>
+    <string>[ESOPHAGUS] D[0.035cc] (Gy)</string>
+    <string>[BRACHIAL PLEXUS] D[3.0cc] (Gy)</string>
+    <string>[BRACHIAL PLEXUS] D[0.035cc] (Gy)</string>
+    <string>[HEART/PERICARDIUM] D[15.0cc] (Gy)</string>
+    <string>[HEART/ PERICARDIUM] D[0.035cc] (Gy)</string>
+    <string>[GREAT VESSELS] D[10.0cc] (Gy)</string>
+    <string>[GREAT VESSELS] D[0.035cc] (Gy)</string>
+    <string>[TRACHEA AND LARGE BRONCHUS] D[4.0cc] (Gy)</string>
+    <string>[TRACHEA AND LARGE BRONCHUS] D[0.035cc] (Gy)</string>
+    <string>[BRONCHUS-SMALLER AIRWAYS] D[0.5cc] (Gy)</string>
+    <string>[BRONCHUS-SMALLER AIRWAYS] D[0.035cc] (Gy)</string>
+    <string>[RIB] D[1.0cc] (Gy)</string>
+    <string>[RIB] D[0.035cc] (Gy)</string>
+    <string>[SKIN] D[10.0cc] (Gy)</string>
+    <string>[SKIN] D[0.035cc] (Gy)</string>
+    <string>[STOMACH] D[10.0cc] (Gy)</string>
+    <string>[STOMACH] D[0.035cc] (Gy)</string>
+    <string>[DUODENUM] D[5.0cc] (Gy)</string>
+    <string>[DUODENUM] D[0.035cc] (Gy)</string>
+    <string>[DUODENUM] D[10.0cc] (Gy)</string>
+    <string>[JEJUNUM/ILEUM] D[5.0cc] (Gy)</string>
+    <string>[JEJUNUM/ILEUM] D[0.035cc] (Gy)</string>
+    <string>[COLON] D[20.0cc] (Gy)</string>
+    <string>[COLON] D[0.035cc] (Gy)</string>
+    <string>[RECTUM] D[20.0cc] (Gy)</string>
+    <string>[RECTUM] D[0.035cc] (Gy)</string>
+    <string>[BLADDER WALL] D[15.0cc] (Gy)</string>
+    <string>[BLADDER WALL] D[0.035cc] (Gy)</string>
+    <string>[PENILE BULB] D[3.0cc] (Gy)</string>
+    <string>[PENILE BULB] D[0.035cc] (Gy)</string>
+    <string>[FEMORAL HEADS (RIGHT AND LEFT)] D[10.0cc] (Gy)</string>
+    <string>[RENAL HILUM/ VASCULAR TRUNK] D[66.0%] (Gy)</string>
+    <string>[TOTAL LUNG] D[1500.0cc] (Gy)</string>
+    <string>[TOTAL LUNG] D[1000.0cc] (Gy)</string>
+    <string>[LIVER] D[700.0cc] (Gy)</string>
+    <string>[RENAL CORTEX (RIGHT AND LEFT)] D[200.0cc] (Gy)</string>
+    <string>TG101_One Fraction\[OPTIC PATHWAY] D[0.2cc] (Gy) [Goal 8, Fail 8.0001, 1 pts]</string>
+    <string>TG101_One Fraction\[OPTIC PATHWAY] D[0.035cc] (Gy) [Goal 10, Fail 10.001, 1 pts]</string>
+    <string>TG101_One Fraction\[COCHLEA] D[0.035cc] (Gy) [Goal 9, Fail 9.001, 1 pts]</string>
+    <string>TG101_One Fraction\[BRAINSTEM (NOT MEDULLA)] D[0.5cc] (Gy) [Goal 10, Fail 10.001, 1 pts]</string>
+    <string>TG101_One Fraction\[BRAINSTEM (NOT MEDULLA)] D[0.035cc] (Gy) [Goal 15, Fail 15.001, 1 pts]</string>
+    <string>TG101_One Fraction\[SPINAL CORD (INCLUDING MEDULLA)] D[0.35cc] (Gy) [Goal 10, Fail 10.001, 1 pts]</string>
+    <string>TG101_One Fraction\[SPINAL CORD (INCLUDING MEDULLA)] D[1.2cc] (Gy) [Goal 7, Fail 7.001, 1 pts]</string>
+    <string>TG101_One Fraction\[SPINAL CORD (INCLUDING MEDULLA)] D[0.035cc] (Gy) [Goal 14, Fail 14.001, 1 pts]</string>
+    <string>TG101_One Fraction\[SPINAL CORD SUBVOLUME (5-6MM ABOVE AND BELOW PTV)] D[10.0%] (Gy) [Goal 10, Fail 10.001, 1 pts]</string>
+    <string>TG101_One Fraction\[SPINAL CORD SUBVOLUME (5-6MM ABOVE AND BELOW PTV)] D[0.035cc] (Gy) [Goal 14, Fail 14.001, 1 pts]</string>
+    <string>TG101_One Fraction\[CAUDA EQUINA] D[5.0cc] (Gy) [Goal 14, Fail 14.001, 1 pts]</string>
+    <string>TG101_One Fraction\[CAUDA EQUINA] D[0.035cc] (Gy) [Goal 16, Fail 16.001, 1 pts]</string>
+    <string>TG101_One Fraction\[SACRAL PLEXUS] D[5.0cc] (Gy) [Goal 14.4, Fail 14.4001, 1 pts]</string>
+    <string>TG101_One Fraction\[SACRAL PLEXUS] D[0.035cc] (Gy) [Goal 16, Fail 16.001, 1 pts]</string>
+    <string>TG101_One Fraction\[ESOPHAGUS] D[5.0cc] (Gy) [Goal 11.9, Fail 11.9001, 1 pts]</string>
+    <string>TG101_One Fraction\[ESOPHAGUS] D[0.035cc] (Gy) [Goal 15.4, Fail 15.4001, 1 pts]</string>
+    <string>TG101_One Fraction\[BRACHIAL PLEXUS] D[3.0cc] (Gy) [Goal 14, Fail 14.001, 1 pts]</string>
+    <string>TG101_One Fraction\[BRACHIAL PLEXUS] D[0.035cc] (Gy) [Goal 17.5, Fail 17.5001, 1 pts]</string>
+    <string>TG101_One Fraction\PERICARDIUM] D[15.0cc] (Gy) [Goal 16, Fail 16.001, 1 pts]</string>
+    <string>TG101_One Fraction\PERICARDIUM] D[0.035cc] (Gy) [Goal 22, Fail 22.001, 1 pts]</string>
+    <string>TG101_One Fraction\[GREAT VESSELS] D[10.0cc] (Gy) [Goal 31, Fail 31.001, 1 pts]</string>
+    <string>TG101_One Fraction\[GREAT VESSELS] D[0.035cc] (Gy) [Goal 37, Fail 37.001, 1 pts]</string>
+    <string>TG101_One Fraction\[TRACHEA AND LARGE BRONCHUS] D[4.0cc] (Gy) [Goal 10.5, Fail 10.5001, 1 pts]</string>
+    <string>TG101_One Fraction\[TRACHEA AND LARGE BRONCHUS] D[0.035cc] (Gy) [Goal 20.2, Fail 20.2001, 1 pts]</string>
+    <string>TG101_One Fraction\[BRONCHUS-SMALLER AIRWAYS] D[0.5cc] (Gy) [Goal 12.4, Fail 12.4001, 1 pts]</string>
+    <string>TG101_One Fraction\[BRONCHUS-SMALLER AIRWAYS] D[0.035cc] (Gy) [Goal 13.3, Fail 13.3001, 1 pts]</string>
+    <string>TG101_One Fraction\[RIB] D[1.0cc] (Gy) [Goal 22, Fail 22.001, 1 pts]</string>
+    <string>TG101_One Fraction\[RIB] D[0.035cc] (Gy) [Goal 30, Fail 30.001, 1 pts]</string>
+    <string>TG101_One Fraction\[SKIN] D[10.0cc] (Gy) [Goal 23, Fail 23.001, 1 pts]</string>
+    <string>TG101_One Fraction\[SKIN] D[0.035cc] (Gy) [Goal 26, Fail 26.001, 1 pts]</string>
+    <string>TG101_One Fraction\[STOMACH] D[10.0cc] (Gy) [Goal 11.2, Fail 11.2001, 1 pts]</string>
+    <string>TG101_One Fraction\[STOMACH] D[0.035cc] (Gy) [Goal 12.4, Fail 12.4001, 1 pts]</string>
+    <string>TG101_One Fraction\[DUODENUM] D[5.0cc] (Gy) [Goal 11.2, Fail 11.2001, 1 pts]</string>
+    <string>TG101_One Fraction\[DUODENUM] D[0.035cc] (Gy) [Goal 12.4, Fail 12.4001, 1 pts]</string>
+    <string>TG101_One Fraction\[DUODENUM] D[10.0cc] (Gy) [Goal 9, Fail 9.001, 1 pts]</string>
+    <string>TG101_One Fraction\ILEUM] D[5.0cc] (Gy) [Goal 11.9, Fail 11.9001, 1 pts]</string>
+    <string>TG101_One Fraction\ILEUM] D[0.035cc] (Gy) [Goal 15.4, Fail 15.4001, 1 pts]</string>
+    <string>TG101_One Fraction\[COLON] D[20.0cc] (Gy) [Goal 14.3, Fail 14.3001, 1 pts]</string>
+    <string>TG101_One Fraction\[COLON] D[0.035cc] (Gy) [Goal 18.4, Fail 18.4001, 1 pts]</string>
+    <string>TG101_One Fraction\[RECTUM] D[20.0cc] (Gy) [Goal 14.3, Fail 14.3001, 1 pts]</string>
+    <string>TG101_One Fraction\[RECTUM] D[0.035cc] (Gy) [Goal 18.4, Fail 18.4001, 1 pts]</string>
+    <string>TG101_One Fraction\[BLADDER WALL] D[15.0cc] (Gy) [Goal 11.4, Fail 11.4001, 1 pts]</string>
+    <string>TG101_One Fraction\[BLADDER WALL] D[0.035cc] (Gy) [Goal 18.4, Fail 18.4001, 1 pts]</string>
+    <string>TG101_One Fraction\[PENILE BULB] D[3.0cc] (Gy) [Goal 14, Fail 14.001, 1 pts]</string>
+    <string>TG101_One Fraction\[PENILE BULB] D[0.035cc] (Gy) [Goal 34, Fail 34.001, 1 pts]</string>
+    <string>TG101_One Fraction\[FEMORAL HEADS (RIGHT AND LEFT)] D[10.0cc] (Gy) [Goal 14, Fail 14.001, 1 pts]</string>
+    <string>TG101_One Fraction\VASCULAR TRUNK] D[66.0%] (Gy) [Goal 10.6, Fail 10.6001, 1 pts]</string>
+    <string>TG101_One Fraction\[TOTAL LUNG] D[1500.0cc] (Gy) [Goal 7, Fail 7.001, 1 pts]</string>
+    <string>TG101_One Fraction\[TOTAL LUNG] D[1000.0cc] (Gy) [Goal 7.4, Fail 7.4001, 1 pts]</string>
+    <string>TG101_One Fraction\[LIVER] D[700.0cc] (Gy) [Goal 9.1, Fail 9.1001, 1 pts]</string>
+    <string>TG101_One Fraction\[RENAL CORTEX (RIGHT AND LEFT)] D[200.0cc] (Gy) [Goal 8.4, Fail 8.4001, 1 pts]</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+    <string>False</string>
+  </RasterData>
+  <PlotAs>Blank</PlotAs>
+  <DatagridWidth>686</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[OPTIC PATHWAY] D[0.2cc] (Gy) [Goal 8, Fail 8.0001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[OPTIC PATHWAY] D[0.2cc] (Gy) [Goal 8, Fail 8.0001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[OPTIC PATHWAY] D[0.2cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>8.001</string>
+    <string>8</string>
+    <string>0</string>
+    <string>18.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[OPTIC PATHWAY] D[0.035cc] (Gy) [Goal 10, Fail 10.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[OPTIC PATHWAY] D[0.035cc] (Gy) [Goal 10, Fail 10.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[OPTIC PATHWAY] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>10.001</string>
+    <string>10</string>
+    <string>0</string>
+    <string>20.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[COCHLEA] D[0.035cc] (Gy) [Goal 9, Fail 9.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[COCHLEA] D[0.035cc] (Gy) [Goal 9, Fail 9.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[COCHLEA] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>9.001</string>
+    <string>9</string>
+    <string>0</string>
+    <string>19.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRAINSTEM (NOT MEDULLA)] D[0.5cc] (Gy) [Goal 10, Fail 10.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[BRAINSTEM (NOT MEDULLA)] D[0.5cc] (Gy) [Goal 10, Fail 10.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRAINSTEM (NOT MEDULLA)] D[0.5cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>10.001</string>
+    <string>10</string>
+    <string>0</string>
+    <string>20.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRAINSTEM (NOT MEDULLA)] D[0.035cc] (Gy) [Goal 15, Fail 15.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[BRAINSTEM (NOT MEDULLA)] D[0.035cc] (Gy) [Goal 15, Fail 15.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRAINSTEM (NOT MEDULLA)] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>15.001</string>
+    <string>15</string>
+    <string>5</string>
+    <string>25.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SPINAL CORD (INCLUDING MEDULLA)] D[0.35cc] (Gy) [Goal 10, Fail 10.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[SPINAL CORD (INCLUDING MEDULLA)] D[0.35cc] (Gy) [Goal 10, Fail 10.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SPINAL CORD (INCLUDING MEDULLA)] D[0.35cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>10.001</string>
+    <string>10</string>
+    <string>0</string>
+    <string>20.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SPINAL CORD (INCLUDING MEDULLA)] D[1.2cc] (Gy) [Goal 7, Fail 7.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[SPINAL CORD (INCLUDING MEDULLA)] D[1.2cc] (Gy) [Goal 7, Fail 7.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SPINAL CORD (INCLUDING MEDULLA)] D[1.2cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>7.001</string>
+    <string>7</string>
+    <string>0</string>
+    <string>17.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SPINAL CORD (INCLUDING MEDULLA)] D[0.035cc] (Gy) [Goal 14, Fail 14.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[SPINAL CORD (INCLUDING MEDULLA)] D[0.035cc] (Gy) [Goal 14, Fail 14.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SPINAL CORD (INCLUDING MEDULLA)] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>14.001</string>
+    <string>14</string>
+    <string>4</string>
+    <string>24.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SPINAL CORD SUBVOLUME (5-6MM ABOVE AND BELOW PTV)] D[10.0%] (Gy) [Goal 10, Fail 10.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[SPINAL CORD SUBVOLUME (5-6MM ABOVE AND BELOW PTV)] D[10.0%] (Gy) [Goal 10, Fail 10.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SPINAL CORD SUBVOLUME (5-6MM ABOVE AND BELOW PTV)] D[10.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>10.001</string>
+    <string>10</string>
+    <string>0</string>
+    <string>20.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SPINAL CORD SUBVOLUME (5-6MM ABOVE AND BELOW PTV)] D[0.035cc] (Gy) [Goal 14, Fail 14.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[SPINAL CORD SUBVOLUME (5-6MM ABOVE AND BELOW PTV)] D[0.035cc] (Gy) [Goal 14, Fail 14.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SPINAL CORD SUBVOLUME (5-6MM ABOVE AND BELOW PTV)] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>14.001</string>
+    <string>14</string>
+    <string>4</string>
+    <string>24.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[CAUDA EQUINA] D[5.0cc] (Gy) [Goal 14, Fail 14.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[CAUDA EQUINA] D[5.0cc] (Gy) [Goal 14, Fail 14.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[CAUDA EQUINA] D[5.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>14.001</string>
+    <string>14</string>
+    <string>4</string>
+    <string>24.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[CAUDA EQUINA] D[0.035cc] (Gy) [Goal 16, Fail 16.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[CAUDA EQUINA] D[0.035cc] (Gy) [Goal 16, Fail 16.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[CAUDA EQUINA] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>16.001</string>
+    <string>16</string>
+    <string>6</string>
+    <string>26.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SACRAL PLEXUS] D[5.0cc] (Gy) [Goal 14.4, Fail 14.4001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[SACRAL PLEXUS] D[5.0cc] (Gy) [Goal 14.4, Fail 14.4001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SACRAL PLEXUS] D[5.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>14.4001</string>
+    <string>14.4</string>
+    <string>4.4</string>
+    <string>24.4001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SACRAL PLEXUS] D[0.035cc] (Gy) [Goal 16, Fail 16.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[SACRAL PLEXUS] D[0.035cc] (Gy) [Goal 16, Fail 16.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SACRAL PLEXUS] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>16.001</string>
+    <string>16</string>
+    <string>6</string>
+    <string>26.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[ESOPHAGUS] D[5.0cc] (Gy) [Goal 11.9, Fail 11.9001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[ESOPHAGUS] D[5.0cc] (Gy) [Goal 11.9, Fail 11.9001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[ESOPHAGUS] D[5.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>11.9001</string>
+    <string>11.9</string>
+    <string>1.9</string>
+    <string>21.9001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[ESOPHAGUS] D[0.035cc] (Gy) [Goal 15.4, Fail 15.4001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[ESOPHAGUS] D[0.035cc] (Gy) [Goal 15.4, Fail 15.4001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[ESOPHAGUS] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>15.4001</string>
+    <string>15.4</string>
+    <string>5.4</string>
+    <string>25.4001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRACHIAL PLEXUS] D[3.0cc] (Gy) [Goal 14, Fail 14.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[BRACHIAL PLEXUS] D[3.0cc] (Gy) [Goal 14, Fail 14.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRACHIAL PLEXUS] D[3.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>14.001</string>
+    <string>14</string>
+    <string>4</string>
+    <string>24.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRACHIAL PLEXUS] D[0.035cc] (Gy) [Goal 17.5, Fail 17.5001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[BRACHIAL PLEXUS] D[0.035cc] (Gy) [Goal 17.5, Fail 17.5001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRACHIAL PLEXUS] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>17.5001</string>
+    <string>17.5</string>
+    <string>7.5</string>
+    <string>27.5001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+PERICARDIUM] D[15.0cc] (Gy) [Goal 16, Fail 16.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\PERICARDIUM] D[15.0cc] (Gy) [Goal 16, Fail 16.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART/PERICARDIUM] D[15.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>16.001</string>
+    <string>16</string>
+    <string>6</string>
+    <string>26.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+PERICARDIUM] D[0.035cc] (Gy) [Goal 22, Fail 22.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\PERICARDIUM] D[0.035cc] (Gy) [Goal 22, Fail 22.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[HEART/ PERICARDIUM] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>22.001</string>
+    <string>22</string>
+    <string>12</string>
+    <string>32.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[GREAT VESSELS] D[10.0cc] (Gy) [Goal 31, Fail 31.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[GREAT VESSELS] D[10.0cc] (Gy) [Goal 31, Fail 31.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[GREAT VESSELS] D[10.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>31.001</string>
+    <string>31</string>
+    <string>21</string>
+    <string>41.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[GREAT VESSELS] D[0.035cc] (Gy) [Goal 37, Fail 37.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[GREAT VESSELS] D[0.035cc] (Gy) [Goal 37, Fail 37.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[GREAT VESSELS] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>37.001</string>
+    <string>37</string>
+    <string>27</string>
+    <string>47.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[TRACHEA AND LARGE BRONCHUS] D[4.0cc] (Gy) [Goal 10.5, Fail 10.5001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[TRACHEA AND LARGE BRONCHUS] D[4.0cc] (Gy) [Goal 10.5, Fail 10.5001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[TRACHEA AND LARGE BRONCHUS] D[4.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>10.5001</string>
+    <string>10.5</string>
+    <string>0.5</string>
+    <string>20.5001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[TRACHEA AND LARGE BRONCHUS] D[0.035cc] (Gy) [Goal 20.2, Fail 20.2001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[TRACHEA AND LARGE BRONCHUS] D[0.035cc] (Gy) [Goal 20.2, Fail 20.2001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[TRACHEA AND LARGE BRONCHUS] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>20.2001</string>
+    <string>20.2</string>
+    <string>10.2</string>
+    <string>30.2001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRONCHUS-SMALLER AIRWAYS] D[0.5cc] (Gy) [Goal 12.4, Fail 12.4001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[BRONCHUS-SMALLER AIRWAYS] D[0.5cc] (Gy) [Goal 12.4, Fail 12.4001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRONCHUS-SMALLER AIRWAYS] D[0.5cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>12.4001</string>
+    <string>12.4</string>
+    <string>2.4</string>
+    <string>22.4001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BRONCHUS-SMALLER AIRWAYS] D[0.035cc] (Gy) [Goal 13.3, Fail 13.3001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[BRONCHUS-SMALLER AIRWAYS] D[0.035cc] (Gy) [Goal 13.3, Fail 13.3001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BRONCHUS-SMALLER AIRWAYS] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>13.3001</string>
+    <string>13.3</string>
+    <string>3.3</string>
+    <string>23.3001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RIB] D[1.0cc] (Gy) [Goal 22, Fail 22.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[RIB] D[1.0cc] (Gy) [Goal 22, Fail 22.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RIB] D[1.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>22.001</string>
+    <string>22</string>
+    <string>12</string>
+    <string>32.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RIB] D[0.035cc] (Gy) [Goal 30, Fail 30.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[RIB] D[0.035cc] (Gy) [Goal 30, Fail 30.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RIB] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>30.001</string>
+    <string>30</string>
+    <string>20</string>
+    <string>40.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SKIN] D[10.0cc] (Gy) [Goal 23, Fail 23.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[SKIN] D[10.0cc] (Gy) [Goal 23, Fail 23.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SKIN] D[10.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>23.001</string>
+    <string>23</string>
+    <string>13</string>
+    <string>33.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[SKIN] D[0.035cc] (Gy) [Goal 26, Fail 26.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[SKIN] D[0.035cc] (Gy) [Goal 26, Fail 26.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[SKIN] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>26.001</string>
+    <string>26</string>
+    <string>16</string>
+    <string>36.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[STOMACH] D[10.0cc] (Gy) [Goal 11.2, Fail 11.2001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[STOMACH] D[10.0cc] (Gy) [Goal 11.2, Fail 11.2001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[STOMACH] D[10.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>11.2001</string>
+    <string>11.2</string>
+    <string>1.2</string>
+    <string>21.2001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[STOMACH] D[0.035cc] (Gy) [Goal 12.4, Fail 12.4001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[STOMACH] D[0.035cc] (Gy) [Goal 12.4, Fail 12.4001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[STOMACH] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>12.4001</string>
+    <string>12.4</string>
+    <string>2.4</string>
+    <string>22.4001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[DUODENUM] D[5.0cc] (Gy) [Goal 11.2, Fail 11.2001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[DUODENUM] D[5.0cc] (Gy) [Goal 11.2, Fail 11.2001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[DUODENUM] D[5.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>11.2001</string>
+    <string>11.2</string>
+    <string>1.2</string>
+    <string>21.2001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[DUODENUM] D[0.035cc] (Gy) [Goal 12.4, Fail 12.4001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[DUODENUM] D[0.035cc] (Gy) [Goal 12.4, Fail 12.4001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[DUODENUM] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>12.4001</string>
+    <string>12.4</string>
+    <string>2.4</string>
+    <string>22.4001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[DUODENUM] D[10.0cc] (Gy) [Goal 9, Fail 9.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[DUODENUM] D[10.0cc] (Gy) [Goal 9, Fail 9.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[DUODENUM] D[10.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>9.001</string>
+    <string>9</string>
+    <string>0</string>
+    <string>19.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+ILEUM] D[5.0cc] (Gy) [Goal 11.9, Fail 11.9001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\ILEUM] D[5.0cc] (Gy) [Goal 11.9, Fail 11.9001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[JEJUNUM/ILEUM] D[5.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>11.9001</string>
+    <string>11.9</string>
+    <string>1.9</string>
+    <string>21.9001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+ILEUM] D[0.035cc] (Gy) [Goal 15.4, Fail 15.4001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\ILEUM] D[0.035cc] (Gy) [Goal 15.4, Fail 15.4001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[JEJUNUM/ILEUM] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>15.4001</string>
+    <string>15.4</string>
+    <string>5.4</string>
+    <string>25.4001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[COLON] D[20.0cc] (Gy) [Goal 14.3, Fail 14.3001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[COLON] D[20.0cc] (Gy) [Goal 14.3, Fail 14.3001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[COLON] D[20.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>14.3001</string>
+    <string>14.3</string>
+    <string>4.3</string>
+    <string>24.3001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[COLON] D[0.035cc] (Gy) [Goal 18.4, Fail 18.4001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[COLON] D[0.035cc] (Gy) [Goal 18.4, Fail 18.4001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[COLON] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>18.4001</string>
+    <string>18.4</string>
+    <string>8.4</string>
+    <string>28.4001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RECTUM] D[20.0cc] (Gy) [Goal 14.3, Fail 14.3001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[RECTUM] D[20.0cc] (Gy) [Goal 14.3, Fail 14.3001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RECTUM] D[20.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>14.3001</string>
+    <string>14.3</string>
+    <string>4.3</string>
+    <string>24.3001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RECTUM] D[0.035cc] (Gy) [Goal 18.4, Fail 18.4001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[RECTUM] D[0.035cc] (Gy) [Goal 18.4, Fail 18.4001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RECTUM] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>18.4001</string>
+    <string>18.4</string>
+    <string>8.4</string>
+    <string>28.4001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BLADDER WALL] D[15.0cc] (Gy) [Goal 11.4, Fail 11.4001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[BLADDER WALL] D[15.0cc] (Gy) [Goal 11.4, Fail 11.4001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BLADDER WALL] D[15.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>11.4001</string>
+    <string>11.4</string>
+    <string>1.4</string>
+    <string>21.4001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[BLADDER WALL] D[0.035cc] (Gy) [Goal 18.4, Fail 18.4001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[BLADDER WALL] D[0.035cc] (Gy) [Goal 18.4, Fail 18.4001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[BLADDER WALL] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>18.4001</string>
+    <string>18.4</string>
+    <string>8.4</string>
+    <string>28.4001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PENILE BULB] D[3.0cc] (Gy) [Goal 14, Fail 14.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[PENILE BULB] D[3.0cc] (Gy) [Goal 14, Fail 14.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PENILE BULB] D[3.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>14.001</string>
+    <string>14</string>
+    <string>4</string>
+    <string>24.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[PENILE BULB] D[0.035cc] (Gy) [Goal 34, Fail 34.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[PENILE BULB] D[0.035cc] (Gy) [Goal 34, Fail 34.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[PENILE BULB] D[0.035cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>34.001</string>
+    <string>34</string>
+    <string>24</string>
+    <string>44.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[FEMORAL HEADS (RIGHT AND LEFT)] D[10.0cc] (Gy) [Goal 14, Fail 14.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[FEMORAL HEADS (RIGHT AND LEFT)] D[10.0cc] (Gy) [Goal 14, Fail 14.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[FEMORAL HEADS (RIGHT AND LEFT)] D[10.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>14.001</string>
+    <string>14</string>
+    <string>4</string>
+    <string>24.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+VASCULAR TRUNK] D[66.0%] (Gy) [Goal 10.6, Fail 10.6001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\VASCULAR TRUNK] D[66.0%] (Gy) [Goal 10.6, Fail 10.6001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RENAL HILUM/ VASCULAR TRUNK] D[66.0%] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>10.6001</string>
+    <string>10.6</string>
+    <string>0.6</string>
+    <string>20.6001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[TOTAL LUNG] D[1500.0cc] (Gy) [Goal 7, Fail 7.001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[TOTAL LUNG] D[1500.0cc] (Gy) [Goal 7, Fail 7.001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[TOTAL LUNG] D[1500.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>7.001</string>
+    <string>7</string>
+    <string>0</string>
+    <string>17.001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[TOTAL LUNG] D[1000.0cc] (Gy) [Goal 7.4, Fail 7.4001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[TOTAL LUNG] D[1000.0cc] (Gy) [Goal 7.4, Fail 7.4001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[TOTAL LUNG] D[1000.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>7.4001</string>
+    <string>7.4</string>
+    <string>0</string>
+    <string>17.4001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[LIVER] D[700.0cc] (Gy) [Goal 9.1, Fail 9.1001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[LIVER] D[700.0cc] (Gy) [Goal 9.1, Fail 9.1001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[LIVER] D[700.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>9.1001</string>
+    <string>9.1</string>
+    <string>0</string>
+    <string>19.1001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>
+------- Component -------
+[RENAL CORTEX (RIGHT AND LEFT)] D[200.0cc] (Gy) [Goal 8.4, Fail 8.4001, 1 pts].CLspreadsheet
+<?xml version="1.0" encoding="utf-8"?>
+<Class_SpreadsheetData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:\Users\Greg_R\Dropbox\ROR\ROQS\ROQS PLAN\SOFTWARE\PQM Score Functions\TG101_One Fraction\[RENAL CORTEX (RIGHT AND LEFT)] D[200.0cc] (Gy) [Goal 8.4, Fail 8.4001, 1 pts].CLspreadsheet</SourceFile>
+  <ColumnHeadings>
+    <string>[RENAL CORTEX (RIGHT AND LEFT)] D[200.0cc] (Gy)</string>
+    <string>Quality Score</string>
+  </ColumnHeadings>
+  <ColumnFillWeights>
+    <string>50.00</string>
+    <string>50.00</string>
+  </ColumnFillWeights>
+  <ColumnTypes>
+    <DataEntryType>Number</DataEntryType>
+    <DataEntryType>Number</DataEntryType>
+  </ColumnTypes>
+  <ColumnDropDownListItems>
+    <ArrayOfString xsi:nil="true" />
+    <ArrayOfString xsi:nil="true" />
+  </ColumnDropDownListItems>
+  <RasterData>
+    <string>8.4001</string>
+    <string>8.4</string>
+    <string>0</string>
+    <string>18.4001</string>
+    <string>0</string>
+    <string>1</string>
+    <string>1</string>
+    <string>0</string>
+  </RasterData>
+  <PlotAs>ScatterPlot</PlotAs>
+  <DatagridWidth>250</DatagridWidth>
+  <valid>true</valid>
+</Class_SpreadsheetData>

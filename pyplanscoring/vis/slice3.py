@@ -5,6 +5,10 @@
     Copyright (c) 2013 Greg von Winckel 
     All rights reserved.
 
+    added dicom coordinate system.
+    Copyright (c) 2017 Victor Gabriel Leandro Alves, D.Sc.
+
+
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
     "Software"), to deal in the Software without restriction, including
@@ -24,14 +28,11 @@
     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-    Created on Wed Dec 4 11:24:14 MST 2013
 """
 
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.widgets import Slider
-
-from core.dicom_reader import ScoringDicomParser
 
 
 def meshgrid3(x, y, z):
@@ -181,13 +182,14 @@ class DoseSlice3D(object):
 
     """
 
-    def __init__(self, xx, yy, zz, u):
+    def __init__(self, dose_3d):
+        xx, yy, zz = dose_3d.grid
+        u = dose_3d.values
         self.x = xx[::-1]
         self.y = -yy  # inverted y axis to pixel Position
         self.z = zz
 
         self.data = u
-
         self.fig = plt.figure(1, (20, 7))
         self.fig.suptitle(' ---- 3D slices viewer ----')
         self.ax1 = self.fig.add_subplot(131, aspect='equal')
@@ -287,33 +289,3 @@ class DoseSlice3D(object):
         # figManager.window.showMaximized()
         plt.show()
 
-
-if __name__ == '__main__':
-    # Number of x-grid points
-    arq = r'D:\Dropbox\Plan_Competition_Project\Competition_2016\Eclipse Plans\Saad RapidArc Eclipse\Saad RapidArc Eclipse\RD.Saad-Eclipse-RapidArc.dcm'
-    dose_obj = ScoringDicomParser(filename=arq)
-    x, y, z = dose_obj.get_grid_3d()
-    dose_3D = dose_obj.ds.pixel_array * float(dose_obj.ds.DoseGridScaling) * 100
-
-    dose_view = DoseSlice3D(x, y, z, dose_3D)
-    dose_view.show()
-    #
-    # # Number of
-    # ny = 100
-    # nz = 200
-    #
-    # x = np.linspace(-4, 4, nx)
-    # y = np.linspace(-4, 4, ny)
-    # z = np.linspace(0, 8, nz)
-    #
-    # xx, yy, zz = meshgrid3(x, y, z)
-    #
-    # # Display three cross sections of a Gaussian Beam/Paraxial wave
-    # u = np.real(np.exp(-(2 * xx ** 2 + yy ** 2) / (.2 + 2j * zz)) / np.sqrt(.2 + 2j * zz))
-    #
-    # s3 = slice3(xx, yy, zz, u)
-    # s3.xlabel('x', fontsize=18)
-    # s3.ylabel('y', fontsize=18)
-    # s3.zlabel('z', fontsize=18)
-    #
-    # s3.show()

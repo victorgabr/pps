@@ -11,25 +11,6 @@ from core import njit
 import numpy as np
 
 
-def get_dvh_min_slow(dvh):
-    '''Return minimum dose to ROI derived from cDVH.'''
-
-    # ROI volume (always receives at least 0% dose)
-    v1 = dvh[0]
-
-    j = 1
-    jmax = len(dvh) - 1
-    mindose = 0
-    while j < jmax:
-        if dvh[j] < v1:
-            mindose = (2 * j - 1) / 2.0
-            break
-        else:
-            j += 1
-
-    return mindose
-
-
 @njit
 def get_dvh_min(dvh):
     '''Return minimum dose to ROI derived from cDVH.'''
@@ -48,24 +29,6 @@ def get_dvh_min(dvh):
             j += 1
 
     return mindose
-
-
-def get_dvh_max_slow(dvh):
-    '''Return maximum dose to ROI derived from cDVH.'''
-
-    # Calulate dDVH
-    ddvh = get_ddvh(dvh)
-
-    maxdose = 0
-    j = len(ddvh) - 1
-    while j >= 0:
-        if ddvh[j] > 0.0:
-            maxdose = j + 1
-            break
-        else:
-            j -= 1
-
-    return maxdose
 
 
 @njit
@@ -87,24 +50,6 @@ def get_dvh_max(dvh, dd):
     return maxdose
 
 
-def get_dvh_median_slow(dvh):
-    '''Return median dose to ROI derived from cDVH.'''
-
-    # Half of ROI volume
-    v1 = dvh[0] / 2.
-    mediandose = 0
-    j = 1
-    jmax = len(dvh) - 1
-    while j < jmax:
-        if dvh[j] < v1:
-            mediandose = (2 * j - 1) / 2.0
-            break
-        else:
-            j += 1
-
-    return mediandose
-
-
 @njit
 def get_dvh_median(dvh):
     '''Return median dose to ROI derived from cDVH.'''
@@ -123,29 +68,6 @@ def get_dvh_median(dvh):
             j += 1
 
     return mediandose
-
-
-def get_dvh_mean_slow(dvh):
-    '''Return mean dose to ROI derived from cDVH.'''
-
-    # Mean dose = total dose / ROI volume
-
-    # volume of ROI
-    v1 = dvh[0]
-
-    # Calculate dDVH
-    ddvh = get_ddvh(dvh)
-
-    # Calculate total dose
-    j = 1
-    dose = 0
-    for d in ddvh[1:]:
-        dose += d * j
-        j += 1
-
-    meandose = dose / v1
-
-    return meandose
 
 
 @njit
@@ -170,22 +92,6 @@ def get_dvh_mean(dvh):
     meandose = dose / v1
 
     return meandose
-
-
-def get_ddvh_slow(cdvh):
-    '''Return dDVH from cDVH array.'''
-
-    # dDVH is the negative "slope" of the cDVH
-
-    j = 0
-    jmax = len(cdvh) - 1
-    ddvh = np.zeros(jmax + 1)
-    while j < jmax:
-        ddvh[j] = cdvh[j] - cdvh[j + 1]
-        j += 1
-    ddvh[j] = cdvh[j]
-
-    return ddvh
 
 
 @njit
@@ -222,51 +128,51 @@ def get_cdvh_numba(ddvh):
 
     return cdvh
 
-
-def test_all():
-    doses = np.arange(150, 100004)
-    a = get_ddvh_slow(doses)
-    b = get_ddvh(doses)
-    np.testing.assert_array_almost_equal(b, a)
-
-    a = get_dvh_min_slow(doses)
-    b = get_dvh_min(doses)
-    np.testing.assert_array_almost_equal(b, a)
-
-    a = get_dvh_max_slow(doses)
-    b = get_dvh_max(doses)
-    np.testing.assert_array_almost_equal(b, a)
-
-    a = get_dvh_median_slow(doses)
-    b = get_dvh_median(doses)
-    np.testing.assert_array_almost_equal(b, a)
-
-    a = get_dvh_mean_slow(doses)
-    b = get_dvh_mean(doses)
-    np.testing.assert_array_almost_equal(b, a)
-
-
-if __name__ == '__main__':
-    doses = np.arange(150, 100000000)
-
-    # timings
-
-    a = get_ddvh_slow(doses)
-    b = get_ddvh(doses)
-    np.testing.assert_array_almost_equal(b, a)
-
-    a = get_dvh_min_slow(doses)
-    b = get_dvh_min(doses)
-    np.testing.assert_array_almost_equal(b, a)
-
-    a = get_dvh_max_slow(doses)
-    b = get_dvh_max(doses)
-    np.testing.assert_array_almost_equal(b, a)
-
-    a = get_dvh_median_slow(doses)
-    b = get_dvh_median(doses)
-    np.testing.assert_array_almost_equal(b, a)
-
-    a = get_dvh_mean_slow(doses)
-    b = get_dvh_mean(doses)
-    np.testing.assert_array_almost_equal(b, a)
+#
+# def test_all():
+#     doses = np.arange(150, 100004)
+#     a = get_ddvh_slow(doses)
+#     b = get_ddvh(doses)
+#     np.testing.assert_array_almost_equal(b, a)
+#
+#     a = get_dvh_min_slow(doses)
+#     b = get_dvh_min(doses)
+#     np.testing.assert_array_almost_equal(b, a)
+#
+#     a = get_dvh_max_slow(doses)
+#     b = get_dvh_max(doses)
+#     np.testing.assert_array_almost_equal(b, a)
+#
+#     a = get_dvh_median_slow(doses)
+#     b = get_dvh_median(doses)
+#     np.testing.assert_array_almost_equal(b, a)
+#
+#     a = get_dvh_mean_slow(doses)
+#     b = get_dvh_mean(doses)
+#     np.testing.assert_array_almost_equal(b, a)
+#
+#
+# if __name__ == '__main__':
+#     doses = np.arange(150, 100000000)
+#
+#     # timings
+#
+#     a = get_ddvh_slow(doses)
+#     b = get_ddvh(doses)
+#     np.testing.assert_array_almost_equal(b, a)
+#
+#     a = get_dvh_min_slow(doses)
+#     b = get_dvh_min(doses)
+#     np.testing.assert_array_almost_equal(b, a)
+#
+#     a = get_dvh_max_slow(doses)
+#     b = get_dvh_max(doses)
+#     np.testing.assert_array_almost_equal(b, a)
+#
+#     a = get_dvh_median_slow(doses)
+#     b = get_dvh_median(doses)
+#     np.testing.assert_array_almost_equal(b, a)
+#
+#     a = get_dvh_mean_slow(doses)
+#     b = get_dvh_mean(doses)
+#     np.testing.assert_array_almost_equal(b, a)

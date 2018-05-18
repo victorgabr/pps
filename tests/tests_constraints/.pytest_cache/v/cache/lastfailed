@@ -1,0 +1,5 @@
+{
+  "test_planEvaluation.py::test_eval_plan": true,
+  "test_planEvaluation.py::test_failed_structures": true,
+  "test_pyPlanningItem.py::test_calculate_dvh": true
+}

@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from api.backend import PyPlanScoringKernel
+from gui.api.backend import PyPlanScoringKernel
 
 
 # TODO monkey patching DVH data to cut redundant calculations]

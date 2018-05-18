@@ -1,0 +1,4 @@
+{
+  "tests_constraints/test_DVHCalculator.py::test_get_grid_array": true,
+  "tests_constraints/test_queryExtensions.py::test_query_compliment_volume": true
+}

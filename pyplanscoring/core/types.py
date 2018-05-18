@@ -1,6 +1,6 @@
 """
 Classes to enumerate DVH types
-Copyright (c) 2017      Victor Gabriel Leandro Alves
+Copyright (c) 2017  Victor Gabriel Leandro Alves
 based on:
 https://rexcardan.github.io/ESAPIX/
 """
@@ -10,6 +10,7 @@ import numpy as np
 import quantities as pq
 from scipy import interpolate as itp
 from enum import IntEnum, unique
+from typing import Tuple, List
 
 
 class DoseUnit:
@@ -415,14 +416,6 @@ class DVHData:
         """
         return NotImplementedError
 
-    def merge_dvhs(self, dvhs):
-        """
-            Merges DVHData from multiple structures into one DVH by summing the volumes at each dose value
-        :param dvhs: the multiple dvh curves to merge
-        :return: the combined dvh from multiple structures
-        """
-        return NotImplementedError
-
 
 class DoseValue:
     def __init__(self, dose_value, unit):
@@ -715,7 +708,8 @@ class Dose3D:
         app = Dose3D(values, grid, unit)
     """
 
-    def __init__(self, values, grid, unit):
+    def __init__(self, values: np.ndarray, grid: Tuple[np.ndarray, np.ndarray, np.ndarray],
+                 unit: DoseUnit) -> None:
         """
         :param values: 3D dose matrix
         :type values: numpy.ndarray
@@ -749,12 +743,12 @@ class Dose3D:
 
         # DICOM pixel array definition
         mapped_coords = (z_coord, y_coord, x_coord)
-        self._dose_interp = itp.RegularGridInterpolator(mapped_coords, self.values, bounds_error=False, fill_value=None)
+        self._dose_interp = itp.RegularGridInterpolator(mapped_coords, self.values, bounds_error=False, fill_value=0.)
 
         # set up private variables
         self._x_coord = x_coord
         self._y_coord = y_coord
-        self._x_coord = z_coord
+        self._z_coord = z_coord
 
     # properties
 
@@ -771,29 +765,29 @@ class Dose3D:
         return self._fz
 
     @property
-    def values(self):
+    def values(self) -> np.ndarray:
         return self._values
 
     @values.setter
-    def values(self, values):
-        if not isinstance(values, np.ndarray):
-            raise TypeError("Values should be type ndarray")
+    def values(self, values: np.ndarray) -> None:
         if len(values.shape) != 3:
             txt = 'Values should be 3D - values shape is {}'.format(values.shape)
-            raise TypeError(txt)
+            raise ValueError(txt)
         self._values = values
 
     @property
-    def grid(self):
+    def grid(self) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """
+            Returns x,y,z axis grids
+        :return:
+        """
         return self._grid
 
     @grid.setter
-    def grid(self, values):
-        if not isinstance(values, tuple):
-            raise TypeError("Values should be type ndarray")
+    def grid(self, values: Tuple[np.ndarray, np.ndarray, np.ndarray]) -> None:
         if len(values) != 3:
             txt = 'Grid must be a tuple containing (x_grid, y_grid, z_grid)'
-            raise TypeError(txt)
+            raise ValueError(txt)
         self._grid = values
 
     @property
@@ -831,30 +825,50 @@ class Dose3D:
         return np.array((x_mm, y_mm, z_mm), dtype=float)
 
     @property
-    def x_res(self):
+    def x_res(self) -> float:
         return abs(self.grid[0][0] - self.grid[0][1])
 
     @property
-    def x_size(self):
+    def x_size(self) -> int:
         return len(self.grid[0])
 
     @property
-    def y_res(self):
+    def x_size_mm(self) -> float:
+        return self.x_size * self.x_res
+
+    @property
+    def y_res(self) -> float:
         return abs(self.grid[1][0] - self.grid[1][1])
 
     @property
-    def y_size(self):
+    def y_size(self) -> int:
         return len(self.grid[1])
 
     @property
-    def z_res(self):
+    def y_size_mm(self) -> float:
+        return self.y_size * self.y_res
+
+    @property
+    def z_res(self) -> float:
         return abs(self.grid[2][0] - self.grid[2][1])
 
     @property
-    def z_size(self):
+    def z_size(self) -> int:
         return len(self.grid[2])
 
-    def get_z_dose_plane(self, z_pos, xy_lut=None):
+    @property
+    def z_size_mm(self) -> float:
+        return self.z_size * self.z_res
+
+    @property
+    def xyz_size(self) -> Tuple[float, float, float]:
+        return (self.x_size_mm, self.y_size_mm, self.z_size_mm)
+
+    @property
+    def voi_magnitude(self) -> float:
+        return np.sqrt(self.x_size ** 2 + self.y_size ** 2 + self.z_size ** 2)
+
+    def get_z_dose_plane(self, z_pos: float, xy_lut: List[np.ndarray] = None) -> np.ndarray:
         """
             Gets dose slice at position z
 
@@ -880,6 +894,7 @@ class Dose3D:
     def wrap_xy_coordinates(self, xy_lut):
         """
             Wrap 3D structure and dose grid coordinates to regular ascending grid (x,y,z)
+            Return coordinate matrices from coordinate vectors.
         :rtype: array,array,array,  string array
         :param structure_planes: Structure planes dict
         :param xy_lut: look up table (XY plane)
@@ -892,26 +907,56 @@ class Dose3D:
 
         return x_c, y_c
 
-    def get_dose_to_point(self, at):
+    def get_interpolated_3d_matrix(self, grid: Tuple[np.ndarray, np.ndarray, np.ndarray]) -> np.ndarray:
+        """
+            Helper method to interpolate on 3D axis using an arbitrary x,y,z grid in mm.
+        :param grid: x,y,z axis grid in mm
+        :return: 3D dose matrix
+        """
+        # convert mm to index coordinate
+        xi = self.fx(grid[0])
+        yi = self.fy(grid[1])
+        zi = self.fz(grid[2])
+        # wrap coordinates
+        zc, yc, xc = np.meshgrid(zi, yi, xi, indexing='ij', sparse=True)
+
+        res = self._dose_interp((zc, yc, xc))
+
+        return res
+
+    def get_dose_to_point(self, at: np.ndarray) -> DoseValue:
         """
 
         :param at: [x,y,z] position
         :return: DoseValue class
         """
         if not len(at) == 3:
-            raise TypeError('Should be an array of size 3. (x,y,z) positions')
-
+            raise ValueError('Should be an array of size 3. (x,y,z) positions')
+        # convert mm to index coordinate
         xi = self.fx(at[0])
         yi = self.fy(at[1])
         zi = self.fz(at[2])
         dv = float(self._dose_interp((zi, yi, xi)))
 
         return DoseValue(dv, self.unit)
-        #
+
+    def get_value_to_point(self, at: np.ndarray) -> float:
+        """
+
+        :param at: [x,y,z] position
+        :return: Dose Value at point
+        """
+        if not len(at) == 3:
+            raise ValueError('Should be an array of size 3. (x,y,z) positions')
+
+        xi = self.fx(at[0])
+        yi = self.fy(at[1])
+        zi = self.fz(at[2])
+        return float(self._dose_interp((zi, yi, xi)))
 
     def get_dose_profile(self, start, stop):
         """
-
+            Returns dose profile between 2 given points in 3D
         :param start:Vector (x,y,z)
         :param stop: Vector (x,y,z)
         :return: DoseProfile class
@@ -919,19 +964,55 @@ class Dose3D:
         # TODO ???
         return NotImplementedError
 
-        # def get_voxels(self, plane_index):
-        #     """
-        #     :param plane_index:
-        #     :return:
-        #     """
-        #     return NotImplementedError
-        #
-        # def set_voxels(self, plane_index):
-        #     """
-        #     :param plane_index:
-        #     :return:
-        #     """
-        #     return NotImplementedError
-        #
-        # def voxel_to_dose_value(self, voxel_value):
-        #     return
+
+class DoseAccumulation:
+    """
+        Factory class to sum Dose 3D matrix
+    """
+
+    def __init__(self, doses_3d: List[Dose3D]) -> None:
+        self._doses_3d = None
+
+        # setters
+        self.doses_3d = doses_3d
+
+    @property
+    def doses_3d(self) -> List[Dose3D]:
+        return self._doses_3d
+
+    @doses_3d.setter
+    def doses_3d(self, value: List[Dose3D]) -> None:
+        # TODO check if all doses are same unit, otherwise raise value error
+        self._doses_3d = value
+
+    @property
+    def grid_sum(self) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """
+            Property that returns the largest x,y,z grid.
+            It is meant to interpolate all Dose3D instances on this grid.
+        :return:
+        """
+        dose_matrix_shapes_mm = np.array([d.xyz_size for d in self.doses_3d])
+
+        max_grid_idx = dose_matrix_shapes_mm.argmax(axis=0)
+
+        # getting sum grid
+        x_sum = self.doses_3d[max_grid_idx[0]].grid[0]
+        y_sum = self.doses_3d[max_grid_idx[1]].grid[1]
+        z_sum = self.doses_3d[max_grid_idx[2]].grid[2]
+
+        return (x_sum, y_sum, z_sum)
+
+    @property
+    def unit(self):
+        return self.doses_3d[0].unit
+
+    def get_plan_sum(self) -> Dose3D:
+        """
+            Sum all 3D matrix. It assumes all are same unit, i.e, Gy.
+        :return: Dose3D
+        """
+        tmp_dose3d = [d.get_interpolated_3d_matrix(self.grid_sum) for d in self.doses_3d]
+        plan_sum_arr = sum(tmp_dose3d)
+        plan_sum = Dose3D(plan_sum_arr, self.grid_sum, self.unit)
+        return plan_sum

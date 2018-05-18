@@ -1,6 +1,6 @@
 import os
 
-from api.backend import PyPlanScoringKernel
+from gui.api.backend import PyPlanScoringKernel
 from core.calculation import PyStructure, DVHCalculationMP
 from core.io import IOHandler, get_participant_folder_data
 
