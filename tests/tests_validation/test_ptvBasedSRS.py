@@ -1,13 +1,14 @@
+import os
 import re
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import os
-from constraints.metrics import RTCase, PyPlanningItem, PlanEvaluation
-from core.calculation import DVHCalculator, PyStructure, DVHCalculation
-from core.calculation import get_calculation_options
-from core.dicom_reader import PyDicomParser
+
+from pyplanscoring.constraints.metrics import RTCase, PyPlanningItem, PlanEvaluation
+from pyplanscoring.core.calculation import DVHCalculator
+from pyplanscoring.core.calculation import get_calculation_options
+from pyplanscoring.core.dicom_reader import PyDicomParser
 
 
 def read_planiq_dvh(f):

@@ -1,4 +1,4 @@
-from core.calculation import PyStructure, DVHCalculationMP
+from pyplanscoring.core.calculation import PyStructure, DVHCalculationMP
 
 
 def test_calc_data(lens, body, brain, ptv70, spinal_cord, dose_3d):

@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from core.calculation import PyStructure, DVHCalculation
-from core.dicom_reader import PyDicomParser
-from core.io import get_participant_folder_data
+from pyplanscoring.core.calculation import PyStructure, DVHCalculation
+from pyplanscoring.core.dicom_reader import PyDicomParser
+from pyplanscoring.core.io import get_participant_folder_data
 
 
 def plot_dvh(dvh_calc, title):

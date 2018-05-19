@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from constraints.query import MayoQueryWriter, MayoQueryReader
+from  pyplanscoring.constraints.query import MayoQueryWriter, MayoQueryReader
 
 rd = MayoQueryReader()
 wt = MayoQueryWriter()

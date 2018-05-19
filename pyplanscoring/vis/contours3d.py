@@ -35,7 +35,7 @@ def plot_structure_contours(point_cloud, title=''):
     view.camera = 'arcball'  # or try 'arcball'
     # view.camera = 'turntable'
     # add a colored 3D axis for orientation
-    axis = visuals.XYZAxis(parent=view.scene)
+    visuals.XYZAxis(parent=view.scene)
     vispy.app.run()
 
 

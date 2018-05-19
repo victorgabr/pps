@@ -23,7 +23,7 @@ from sklearn.model_selection import cross_val_score, GridSearchCV
 from constraints.constraints import MayoConstraintConverter, ConstraintType
 from constraints.metrics import PlanningItem
 from constraints.query import QueryExtensions
-from core.types import QuantityRegex, DoseUnit, DoseValuePresentation, DoseValue, VolumePresentation, DVHData, QueryType
+from pyplanscoring.core.types import QuantityRegex, DoseUnit, DoseValuePresentation, DoseValue, VolumePresentation, DVHData, QueryType
 from pyplanscoring.core.dvhcalculation import load
 
 

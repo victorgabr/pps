@@ -1,24 +1,20 @@
 """
 Classes to enumerate DVH types
 Copyright (c) 2017  Victor Gabriel Leandro Alves
-based on:
-https://rexcardan.github.io/ESAPIX/
+based on: https://rexcardan.github.io/ESAPIX/
 """
 from copy import deepcopy
+from enum import IntEnum, unique
+from typing import List, Tuple
 
 import numpy as np
 import quantities as pq
 from scipy import interpolate as itp
-from enum import IntEnum, unique
-from typing import Tuple, List
 
 
 class DoseUnit:
     Gy = pq.Gy
-    cGy = pq.UnitQuantity('cGy',
-                          pq.centi * Gy,
-                          symbol='cGy',
-                          aliases=['cGy'])
+    cGy = pq.UnitQuantity('cGy', pq.centi * Gy, symbol='cGy', aliases=['cGy'])
     Percent = pq.percent
     Unknown = pq.dimensionless
 
@@ -26,13 +22,15 @@ class DoseUnit:
 class QuantityRegex:
     @staticmethod
     def string_to_quantity(arg):
-        switch = {'CC': VolumePresentation.absolute_cm3,
-                  'CM3': VolumePresentation.absolute_cm3,
-                  'CGY': DoseUnit.cGy,
-                  'GY': DoseUnit.Gy,
-                  '%': DoseUnit.Percent,
-                  'NA': DoseUnit.Unknown,
-                  '': DoseUnit.Unknown}
+        switch = {
+            'CC': VolumePresentation.absolute_cm3,
+            'CM3': VolumePresentation.absolute_cm3,
+            'CGY': DoseUnit.cGy,
+            'GY': DoseUnit.Gy,
+            '%': DoseUnit.Percent,
+            'NA': DoseUnit.Unknown,
+            '': DoseUnit.Unknown
+        }
         return switch.get(arg.upper(), DoseUnit.Unknown)
 
 
@@ -75,6 +73,7 @@ class Discriminator(IntEnum):
 # class VolumePresentation:
 #     relative = 0
 #     absolute_cm3 = 1
+
 
 class VolumePresentation:
     relative = pq.percent
@@ -159,10 +158,12 @@ class DVHData:
         self.dvh = dvh
         self._volume = dvh['data'][0]
         self._dose_units = QuantityRegex.string_to_quantity(dvh['doseunits'])
-        self._volume_units = QuantityRegex.string_to_quantity(dvh['volumeunits'])
+        self._volume_units = QuantityRegex.string_to_quantity(
+            dvh['volumeunits'])
         # set data according to the given units
         self._dose_axis_bkp = np.arange(len(dvh['data']) + 1) * dvh['scaling']
-        self._dose_axis = np.arange(len(dvh['data']) + 1) * dvh['scaling'] * self._dose_units
+        self._dose_axis = np.arange(len(dvh['data']) + 1) * dvh[
+            'scaling'] * self._dose_units
         self._volume_axis = np.append(dvh['data'], 0) * self._volume_units
         self._curve_data = dvh['data']
         self._min_dose = dvh['min']
@@ -174,10 +175,14 @@ class DVHData:
 
     def set_interpolation_data(self):
         # setting constrain interpolation functions
-        self.fv = itp.interp1d(self.dose_axis, self.volume_pp, fill_value='extrapolate')  # pp
-        self.fv_cc = itp.interp1d(self.dose_axis, self.volume_cc, fill_value='extrapolate')  # cc
-        self.fd = itp.interp1d(self.volume_pp, self.dose_axis, fill_value='extrapolate')  # pp
-        self.fd_cc = itp.interp1d(self.volume_cc, self.dose_axis, fill_value='extrapolate')  # cc
+        self.fv = itp.interp1d(
+            self.dose_axis, self.volume_pp, fill_value='extrapolate')  # pp
+        self.fv_cc = itp.interp1d(
+            self.dose_axis, self.volume_cc, fill_value='extrapolate')  # cc
+        self.fd = itp.interp1d(
+            self.volume_pp, self.dose_axis, fill_value='extrapolate')  # pp
+        self.fd_cc = itp.interp1d(
+            self.volume_cc, self.dose_axis, fill_value='extrapolate')  # cc
 
     def set_volume_focused_data(self):
         """
@@ -290,7 +295,8 @@ class DVHData:
                     return 100 * volume_unit
 
         if volume_unit == VolumePresentation.absolute_cm3:
-            return float(self.fv_cc(dv.value)) * VolumePresentation.absolute_cm3
+            return float(self.fv_cc(
+                dv.value)) * VolumePresentation.absolute_cm3
         elif volume_unit == VolumePresentation.relative:
             return float(self.fv(dv.value)) * VolumePresentation.relative
 
@@ -503,7 +509,8 @@ class DoseValue:
                 res = a / b
             else:
                 raise ValueError('Division by zero dose')
-            return DoseValue(float(res.rescale(pq.dimensionless)), pq.dimensionless)
+            return DoseValue(
+                float(res.rescale(pq.dimensionless)), pq.dimensionless)
 
     def __lt__(self, other):
         return self.dose < other.dose
@@ -551,7 +558,8 @@ class StructureBase:
     def structure(self, value):
         if isinstance(value, dict):
             if self._end_cap:
-                self._structure_dict = self.get_capped_structure(value, self._end_cap)
+                self._structure_dict = self.get_capped_structure(
+                    value, self._end_cap)
             else:
                 self._structure_dict = value
         else:
@@ -708,7 +716,8 @@ class Dose3D:
         app = Dose3D(values, grid, unit)
     """
 
-    def __init__(self, values: np.ndarray, grid: Tuple[np.ndarray, np.ndarray, np.ndarray],
+    def __init__(self, values: np.ndarray,
+                 grid: Tuple[np.ndarray, np.ndarray, np.ndarray],
                  unit: DoseUnit) -> None:
         """
         :param values: 3D dose matrix
@@ -733,17 +742,24 @@ class Dose3D:
         z_coord = np.arange(len(self.grid[2]))
 
         # mapped coordinates
-        self._fx = itp.interp1d(self.grid[0], x_coord, fill_value='extrapolate')
-        self._fy = itp.interp1d(self.grid[1], y_coord, fill_value='extrapolate')
-        self._fz = itp.interp1d(self.grid[2], z_coord, fill_value='extrapolate')
+        self._fx = itp.interp1d(
+            self.grid[0], x_coord, fill_value='extrapolate')
+        self._fy = itp.interp1d(
+            self.grid[1], y_coord, fill_value='extrapolate')
+        self._fz = itp.interp1d(
+            self.grid[2], z_coord, fill_value='extrapolate')
 
-        self._fx_mm = itp.interp1d(x_coord, self.grid[0], fill_value='extrapolate')
-        self._fy_mm = itp.interp1d(y_coord, self.grid[1], fill_value='extrapolate')
-        self._fz_mm = itp.interp1d(z_coord, self.grid[2], fill_value='extrapolate')
+        self._fx_mm = itp.interp1d(
+            x_coord, self.grid[0], fill_value='extrapolate')
+        self._fy_mm = itp.interp1d(
+            y_coord, self.grid[1], fill_value='extrapolate')
+        self._fz_mm = itp.interp1d(
+            z_coord, self.grid[2], fill_value='extrapolate')
 
         # DICOM pixel array definition
         mapped_coords = (z_coord, y_coord, x_coord)
-        self._dose_interp = itp.RegularGridInterpolator(mapped_coords, self.values, bounds_error=False, fill_value=0.)
+        self._dose_interp = itp.RegularGridInterpolator(
+            mapped_coords, self.values, bounds_error=False, fill_value=0.)
 
         # set up private variables
         self._x_coord = x_coord
@@ -771,7 +787,8 @@ class Dose3D:
     @values.setter
     def values(self, values: np.ndarray) -> None:
         if len(values.shape) != 3:
-            txt = 'Values should be 3D - values shape is {}'.format(values.shape)
+            txt = 'Values should be 3D - values shape is {}'.format(
+                values.shape)
             raise ValueError(txt)
         self._values = values
 
@@ -866,9 +883,10 @@ class Dose3D:
 
     @property
     def voi_magnitude(self) -> float:
-        return np.sqrt(self.x_size ** 2 + self.y_size ** 2 + self.z_size ** 2)
+        return np.sqrt(self.x_size**2 + self.y_size**2 + self.z_size**2)
 
-    def get_z_dose_plane(self, z_pos: float, xy_lut: List[np.ndarray] = None) -> np.ndarray:
+    def get_z_dose_plane(self, z_pos: float,
+                         xy_lut: List[np.ndarray] = None) -> np.ndarray:
         """
             Gets dose slice at position z
 
@@ -907,7 +925,9 @@ class Dose3D:
 
         return x_c, y_c
 
-    def get_interpolated_3d_matrix(self, grid: Tuple[np.ndarray, np.ndarray, np.ndarray]) -> np.ndarray:
+    def get_interpolated_3d_matrix(
+            self,
+            grid: Tuple[np.ndarray, np.ndarray, np.ndarray]) -> np.ndarray:
         """
             Helper method to interpolate on 3D axis using an arbitrary x,y,z grid in mm.
         :param grid: x,y,z axis grid in mm
@@ -1012,7 +1032,9 @@ class DoseAccumulation:
             Sum all 3D matrix. It assumes all are same unit, i.e, Gy.
         :return: Dose3D
         """
-        tmp_dose3d = [d.get_interpolated_3d_matrix(self.grid_sum) for d in self.doses_3d]
+        tmp_dose3d = [
+            d.get_interpolated_3d_matrix(self.grid_sum) for d in self.doses_3d
+        ]
         plan_sum_arr = sum(tmp_dose3d)
         plan_sum = Dose3D(plan_sum_arr, self.grid_sum, self.unit)
         return plan_sum

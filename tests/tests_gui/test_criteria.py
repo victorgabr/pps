@@ -3,11 +3,11 @@ import pandas as pd
 import os
 import numpy as np
 
-from constraints.metrics import RTCase, PyPlanningItem, PlanEvaluation
-from core.calculation import DVHCalculator, PyStructure, DVHCalculation
-from core.dicom_reader import PyDicomParser
-from core.io import get_participant_folder_data
-from core.types import Dose3D
+from  pyplanscoring.constraints.metrics import RTCase, PyPlanningItem, PlanEvaluation
+from pyplanscoring.core.calculation import DVHCalculator, PyStructure, DVHCalculation
+from pyplanscoring.core.dicom_reader import PyDicomParser
+from pyplanscoring.core.io import get_participant_folder_data
+from pyplanscoring.core.types import Dose3D
 import quantities as pq
 import matplotlib.pyplot as plt
 

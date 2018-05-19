@@ -4,7 +4,7 @@ from competition.tests import high_score
 # oseValuePresentation
 # from constraints import QueryExtensions
 from constraints.query import QueryExtensions
-from core.types import DoseValuePresentation
+from pyplanscoring.core.types import DoseValuePresentation
 from pyplanscoring.competition.statistical_dvh import PlanningItemDVH
 
 plan_dvh = PlanningItemDVH(plan_dvh=high_score)

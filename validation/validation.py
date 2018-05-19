@@ -14,7 +14,7 @@ from joblib import Parallel
 from joblib import delayed
 from matplotlib import pyplot as plt
 
-from core.dicomparser import ScoringDicomParser
+from pyplanscoring.core.dicomparser import ScoringDicomParser
 from pyplanscoring.core.dosimetric import read_scoring_criteria, constrains, Competition2016
 from pyplanscoring.core.dvhcalculation import Structure, prepare_dvh_data, calc_dvhs_upsampled, save_dicom_dvhs, load
 from pyplanscoring.core.dvhdoses import get_dvh_max

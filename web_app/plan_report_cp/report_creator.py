@@ -3,7 +3,7 @@ import sys
 import pandas as pd
 from xlsxwriter.utility import xl_rowcol_to_cell
 
-from core.dicom_reader import ScoringDicomParser
+from pyplanscoring.core.dicom_reader import ScoringDicomParser
 from pyplanscoring.core.dosimetric import read_scoring_criteria
 from pyplanscoring.core.scoring import Participant
 

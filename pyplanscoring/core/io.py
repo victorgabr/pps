@@ -5,7 +5,7 @@ import pickle
 
 from pydicom.valuerep import IS
 
-from core.dicom_reader import PyDicomParser
+from .dicom_reader import PyDicomParser
 
 
 def load(filename):

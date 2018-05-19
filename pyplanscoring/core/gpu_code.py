@@ -1,17 +1,15 @@
 import numpy as np
 from numba import cuda, njit
 
-from core.calculation import DVHCalculation
-from core.geometry import check_contour_inside
+from .calculation import DVHCalculation
+from .geometry import check_contour_inside
 
 
 class DVHCalculationGPU(DVHCalculation):
-
     def __init__(self, structure, dose, calc_grid=None):
         super().__init__(structure, dose, calc_grid)
 
     def calculate_gpu(self, verbose=True):
-
         """
             Calculate a DVH
         :param structure: Structure obj
@@ -26,23 +24,28 @@ class DVHCalculationGPU(DVHCalculation):
         """
         if verbose:
             print(' ----- DVH Calculation -----')
-            print('Structure: {}  \n volume [cc]: {:0.1f}'.format(self.structure.name, self.structure.volume))
+            print('Structure: {}  \n volume [cc]: {:0.1f}'.format(
+                self.structure.name, self.structure.volume))
         max_dose = float(self.dose.dose_max_3d)
         hist = np.zeros(self.n_bins)
         volume = 0
         for z in self.structure.planes.keys():
             # Get the contours with calculated areas and the largest contour index
-            contours, largest_index = self.structure.get_plane_contours_areas(z)
+            contours, largest_index = self.structure.get_plane_contours_areas(
+                z)
             # Calculate the histogram for each contour
             for j, contour in enumerate(contours):
                 # Get the dose plane for the current structure contour at plane
-                contour_dose_grid, ctr_dose_lut = self.get_contour_roi_grid(contour['data'], self.calc_grid)
+                contour_dose_grid, ctr_dose_lut = self.get_contour_roi_grid(
+                    contour['data'], self.calc_grid)
 
                 # get contour roi doseplane
                 dose_plane = self.dose.get_z_dose_plane(float(z), ctr_dose_lut)
                 # calculate on GPU
-                m = get_contour_mask_gpu(ctr_dose_lut, contour_dose_grid, contour['data'])
-                h, vol = self.calculate_contour_dvh(m, dose_plane, self.n_bins, max_dose, self.calc_grid)
+                m = get_contour_mask_gpu(ctr_dose_lut, contour_dose_grid,
+                                         contour['data'])
+                h, vol = self.calculate_contour_dvh(m, dose_plane, self.n_bins,
+                                                    max_dose, self.calc_grid)
 
                 # If this is the largest contour, just add to the total histogram
                 if j == largest_index:
@@ -51,7 +54,8 @@ class DVHCalculationGPU(DVHCalculation):
                 # Otherwise, determine whether to add or subtract histogram
                 # depending if the contour is within the largest contour or not
                 else:
-                    inside = check_contour_inside(contour['data'], contours[largest_index]['data'])
+                    inside = check_contour_inside(
+                        contour['data'], contours[largest_index]['data'])
                     # If the contour is inside, subtract it from the total histogram
                     if inside:
                         hist -= h
@@ -132,7 +136,8 @@ def contour_loop(point, poly, N):
                 p0 = poly[k]
                 p1 = poly[k + 1]
                 p2 = point
-                is_left_value = (p1[0] - p0[0]) * (p2[1] - p0[1]) - (p2[0] - p0[0]) * (p1[1] - p0[1])
+                is_left_value = (p1[0] - p0[0]) * (p2[1] - p0[1]) - (
+                    p2[0] - p0[0]) * (p1[1] - p0[1])
                 if is_left_value >= 0:  # P left of  edge
                     wn += 1  # // have  a valid up intersect
 
@@ -141,7 +146,8 @@ def contour_loop(point, poly, N):
                 p0 = poly[k]
                 p1 = poly[k + 1]
                 p2 = point
-                is_left_value = (p1[0] - p0[0]) * (p2[1] - p0[1]) - (p2[0] - p0[0]) * (p1[1] - p0[1])
+                is_left_value = (p1[0] - p0[0]) * (p2[1] - p0[1]) - (
+                    p2[0] - p0[0]) * (p1[1] - p0[1])
                 if is_left_value <= 0:  # P right of  edge
                     wn -= 1  # have  a valid down intersect
 
@@ -212,7 +218,8 @@ def get_contour_mask_gpu(doselut, dosegrid_points, poly):
     # blockspergrid = 8
     d_image = cuda.to_device(grid)
     # wn_contains_points_kernel[griddim, blockdim](d_image, poly_wn, dosegrid_points)
-    wn_contains_points_kernel[blockspergrid, threadsperblock](d_image, poly_wn, dosegrid_points)
+    wn_contains_points_kernel[blockspergrid, threadsperblock](d_image, poly_wn,
+                                                              dosegrid_points)
     d_image.to_host()
 
     grid = grid.reshape((len(doselut[1]), len(doselut[0])))
@@ -308,37 +315,39 @@ def mandel_kernel(min_x, max_x, min_y, max_y, image, iters):
             image[y, x] = mandel_gpu(real, imag, iters)
 
 
-if __name__ == '__main__':
-    from timeit import default_timer as timer
+# if __name__ == '__main__':
+#     from timeit import default_timer as timer
 
-    from core.calculation import DVHCalculation, PyStructure
-    import matplotlib.pyplot as plt
-    from core.tests import dose_3d, lens
-    import numpy.testing as npt
-    from timeit import default_timer as timer
+#     from core.calculation import DVHCalculation, PyStructure
+#     import matplotlib.pyplot as plt
+#     from core.tests import dose_3d, lens
+#     import numpy.testing as npt
+#     from timeit import default_timer as timer
 
-    # Small volume no end cap and upsampling
-    braini = PyStructure(lens)
-    dvh_calc_cpu = DVHCalculation(braini, dose_3d, calc_grid=(0.05, 0.05, 0.05))
+#     # Small volume no end cap and upsampling
+#     braini = PyStructure(lens)
+#     dvh_calc_cpu = DVHCalculation(
+#         braini, dose_3d, calc_grid=(0.05, 0.05, 0.05))
 
-    # Small volume no end cap and upsampling and GPU
-    braini = PyStructure(lens)
-    dvh_calc_gpu = DVHCalculation(braini, dose_3d, calc_grid=(0.05, 0.05, 0.05))
-    dvh_gpu = dvh_calc_gpu.calculate_gpu()
+#     # Small volume no end cap and upsampling and GPU
+#     braini = PyStructure(lens)
+#     dvh_calc_gpu = DVHCalculation(
+#         braini, dose_3d, calc_grid=(0.05, 0.05, 0.05))
+#     dvh_gpu = dvh_calc_gpu.calculate_gpu()
 
-    start = timer()
-    dvh_cpu = dvh_calc_cpu.calculate()
-    dt1 = timer() - start
-    print("DVH on CPU %f s" % dt1)
+#     start = timer()
+#     dvh_cpu = dvh_calc_cpu.calculate()
+#     dt1 = timer() - start
+#     print("DVH on CPU %f s" % dt1)
 
-    # dvh_calc_gpu.calculate_gpu()
-    start = timer()
-    dvh_gpu = dvh_calc_gpu.calculate_gpu()
-    dt2 = timer() - start
-    print("DVH on GPU %f s" % dt2)
+#     # dvh_calc_gpu.calculate_gpu()
+#     start = timer()
+#     dvh_gpu = dvh_calc_gpu.calculate_gpu()
+#     dt2 = timer() - start
+#     print("DVH on GPU %f s" % dt2)
 
-    plt.plot(dvh_cpu['data'])
-    plt.figure()
-    plt.plot(dvh_gpu['data'])
-    plt.show()
-    npt.assert_array_almost_equal(dvh_cpu['data'], dvh_gpu['data'])
+#     plt.plot(dvh_cpu['data'])
+#     plt.figure()
+#     plt.plot(dvh_gpu['data'])
+#     plt.show()
+#     npt.assert_array_almost_equal(dvh_cpu['data'], dvh_gpu['data'])

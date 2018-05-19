@@ -1,7 +1,8 @@
 from unittest import TestCase
 
-from constraints.constraints import MayoConstraintConverter, MayoConstraint
-from core.types import PriorityType
+# from pyplanscoring.constraints import MayoConstraintConverter, MayoConstraint
+from pyplanscoring.constraints.constraints import MayoConstraintConverter, MayoConstraint
+from pyplanscoring.core.types import PriorityType
 
 converter = MayoConstraintConverter()
 

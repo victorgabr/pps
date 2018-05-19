@@ -1,12 +1,16 @@
 import os
-from typing import Dict, List
 import re
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from xlsxwriter.utility import xl_rowcol_to_cell
+from typing import Dict, List
 
-from core.dicom_reader import PyDicomParser
+import matplotlib.pyplot as plt
+
+import numpy as np
+
+import pandas as pd
+
+from pyplanscoring.core.dicom_reader import PyDicomParser
+
+from xlsxwriter.utility import xl_rowcol_to_cell
 
 
 def read_eclipse_dvh(file_path: str) -> Dict[str, np.ndarray]:
@@ -57,7 +61,9 @@ def read_slicer_dvh(file_path):
     values_axis = df_slicer.iloc[:, 1::2]
     dose_axis = df_slicer.iloc[:, 0]
     columns = values_axis.columns
-    volumes = np.array([re.findall('(\d+(?:\.\d+))', name)[0] for name in columns], dtype=float)
+    volumes = np.array(
+        [re.findall('(\d+(?:\.\d+))', name)[0] for name in columns],
+        dtype=float)
     values_axis = values_axis * volumes / 100
     values_axis['dose_axis'] = dose_axis
     slicer_dvh = values_axis.set_index('dose_axis')
@@ -85,8 +91,10 @@ def get_dicom_data(root_path: str) -> Dict[str, List[str]]:
     :param root_path: participant folder
     :return: Pandas DataFrame containing path to files
     """
-    files = [os.path.join(root, name) for root, dirs, files in os.walk(root_path) for name in files if
-             name.endswith(('.dcm', '.DCM'))]
+    files = [
+        os.path.join(root, name) for root, dirs, files in os.walk(root_path)
+        for name in files if name.endswith(('.dcm', '.DCM'))
+    ]
 
     filtered_files = []
     for f in files:
@@ -109,7 +117,11 @@ def get_dicom_data(root_path: str) -> Dict[str, List[str]]:
     return dcm_files
 
 
-def save_formatted_report(df, out_file, start_row=0, banner_path=None, report_header=''):
+def save_formatted_report(df,
+                          out_file,
+                          start_row=0,
+                          banner_path=None,
+                          report_header=''):
     """
         Save an formated report using pandas and xlsxwriter
     :param df: Results dataframe
@@ -135,20 +147,35 @@ def save_formatted_report(df, out_file, start_row=0, banner_path=None, report_he
     constrain_fmt = workbook.add_format({'align': 'center'})
 
     # # Total formatting
-    number_format = workbook.add_format({'align': 'right', 'num_format': '0.00'})
+    number_format = workbook.add_format({
+        'align': 'right',
+        'num_format': '0.00'
+    })
     # # Total percent format
-    total_percent_fmt = workbook.add_format({'align': 'right', 'num_format': '0.00%', 'bold': True})
+    total_percent_fmt = workbook.add_format({
+        'align': 'right',
+        'num_format': '0.00%',
+        'bold': True
+    })
 
     # # Total percent format
-    percent_fmt = workbook.add_format({'align': 'right', 'num_format': '0.00%', 'bold': True})
+    # percent_fmt = workbook.add_format({
+    #     'align': 'right',
+    #     'num_format': '0.00%',
+    #     'bold': True
+    # })
 
     # Add a format. Light red fill with dark red text.
-    format1 = workbook.add_format({'bg_color': '#FFC7CE',
-                                   'font_color': '#9C0006'})
+    format1 = workbook.add_format({
+        'bg_color': '#FFC7CE',
+        'font_color': '#9C0006'
+    })
 
     # Add a format. Green fill with dark green text.
-    format2 = workbook.add_format({'bg_color': '#C6EFCE',
-                                   'font_color': '#006100'})
+    format2 = workbook.add_format({
+        'bg_color': '#C6EFCE',
+        'font_color': '#006100'
+    })
 
     # Format the columns by width and include number formats
 
@@ -168,16 +195,22 @@ def save_formatted_report(df, out_file, start_row=0, banner_path=None, report_he
     constrain_type = "D2:D{}".format(nr + 1)
     worksheet.set_column(constrain_type, 20, constrain_fmt)
 
-    worksheet.conditional_format(constrain_type, {'type': 'text',
-                                                  'criteria': 'containing',
-                                                  'value': 'max',
-                                                  'format': format1})
+    worksheet.conditional_format(
+        constrain_type, {
+            'type': 'text',
+            'criteria': 'containing',
+            'value': 'max',
+            'format': format1
+        })
 
     # Highlight the bottom 5 values in Red
-    worksheet.conditional_format(constrain_type, {'type': 'text',
-                                                  'criteria': 'containing',
-                                                  'value': 'min',
-                                                  'format': format2})
+    worksheet.conditional_format(
+        constrain_type, {
+            'type': 'text',
+            'criteria': 'containing',
+            'value': 'min',
+            'format': format2
+        })
 
     # value low and high
     worksheet.set_column('E:I', 20, number_format)
@@ -190,11 +223,20 @@ def save_formatted_report(df, out_file, start_row=0, banner_path=None, report_he
     worksheet.conditional_format(color_range, {'type': 'data_bar'})
 
     # write total score rows
-    total_fmt = workbook.add_format({'align': 'right', 'num_format': '0.00',
-                                     'bold': True, 'bottom': 6})
+    total_fmt = workbook.add_format({
+        'align': 'right',
+        'num_format': '0.00',
+        'bold': True,
+        'bottom': 6
+    })
 
-    total_fmt_header = workbook.add_format({'align': 'right', 'num_format': '0.00',
-                                            'bold': True, 'bottom': 6, 'bg_color': '#C6EFCE'})
+    total_fmt_header = workbook.add_format({
+        'align': 'right',
+        'num_format': '0.00',
+        'bold': True,
+        'bottom': 6,
+        'bg_color': '#C6EFCE'
+    })
 
     total_score = df['Raw score'].sum()
     max_score = df['Score'].sum()
@@ -204,8 +246,13 @@ def save_formatted_report(df, out_file, start_row=0, banner_path=None, report_he
     worksheet.write_string(nr + 1, 7, "Total Score:", total_fmt_header)
 
     # performance format
-    performance_format = workbook.add_format(
-        {'align': 'right', 'num_format': '0.0%', 'bold': True, 'bottom': 6, 'bg_color': '#C6EFCE'})
+    performance_format = workbook.add_format({
+        'align': 'right',
+        'num_format': '0.0%',
+        'bold': True,
+        'bottom': 6,
+        'bg_color': '#C6EFCE'
+    })
 
     cell_location = xl_rowcol_to_cell(nr + 1, 9)
     worksheet.write_number(cell_location, performance, performance_format)
@@ -223,13 +270,13 @@ def save_formatted_report(df, out_file, start_row=0, banner_path=None, report_he
 
     # adding participant header
     # Create a format to use in the merged range.
-    merge_format = workbook.add_format({
-        'bold': 1,
-        'border': 1,
-        'align': 'center',
-        'valign': 'vcenter',
-        'font_size': 15,
-    })
+    # merge_format = workbook.add_format({
+    #     'bold': 1,
+    #     'border': 1,
+    #     'align': 'center',
+    #     'valign': 'vcenter',
+    #     'font_size': 15,
+    # })
 
     # Merge 3 cells.
     # worksheet.merge_range('A31:J31', report_header, merge_format)
@@ -237,6 +284,6 @@ def save_formatted_report(df, out_file, start_row=0, banner_path=None, report_he
     # hide column A
     worksheet.set_column('A:A', None, None, {'hidden': True})
 
-    perf = "D2:D{}".format(nr + 1)
+    # perf = "D2:D{}".format(nr + 1)
 
     writer.save()

@@ -6,16 +6,17 @@ Copyright (c) 2017      Victor Gabriel Leandro Alves
             http://dicom.nema.org/medical/Dicom/2016b/output/chtml/part03/sect_C.7.6.2.html#sect_C.7.6.2.1.1
 
 """
-
-import time
 import configparser
-import numpy as np
+import time
+
 from joblib import Parallel, delayed
+
+import numpy as np
 from numpy import ma
 
-from core.dvhdoses import get_cdvh_numba, get_dvh_min, get_dvh_max, get_dvh_mean
-from core.geometry import get_oversampled_structure, check_contour_inside, calc_area, get_contour_mask_wn
-from core.types import Dose3D, StructureBase, DoseValue
+from .dvhdoses import get_cdvh_numba, get_dvh_max, get_dvh_mean, get_dvh_min
+from .geometry import calc_area, check_contour_inside, get_contour_mask_wn, get_oversampled_structure
+from .types import DoseValue, StructureBase
 
 
 def timeit(method):
@@ -85,7 +86,8 @@ class PyStructure(StructureBase):
             for i, contour in enumerate(contours):
                 # Skip if this is the largest contour
                 if not (i == largestIndex):
-                    inside = check_contour_inside(contour['data'], contours[largestIndex]['data'])
+                    inside = check_contour_inside(
+                        contour['data'], contours[largestIndex]['data'])
                     # If the contour is inside, subtract it from the total area
                     if inside:
                         area = area - contour['area']
@@ -97,7 +99,8 @@ class PyStructure(StructureBase):
             # only add half of the volume, otherwise add the full slice thickness (end cap)
             if (n == 0) or (n == len(structure_planes) - 1):
                 if self._end_cap:
-                    s_volume = float(s_volume) + float(area) * float(grid_delta) * self._end_cap
+                    s_volume = float(s_volume) + float(area) * float(
+                        grid_delta) * self._end_cap
                 else:
                     s_volume = float(s_volume) + float(area) * float(grid_delta)
             else:
@@ -119,7 +122,8 @@ class PyStructure(StructureBase):
         """
         if not self.is_high_resolution:
             if not np.isclose(z_grid_resolution, self.contour_spacing):
-                structure = get_oversampled_structure(self.structure, z_grid_resolution)
+                structure = get_oversampled_structure(self.structure,
+                                                      z_grid_resolution)
                 self._structure_dict = structure
                 self._planes = structure['planes']
                 self._contour_spacing = z_grid_resolution
@@ -157,7 +161,8 @@ class PyStructure(StructureBase):
             c_area = calc_area(x, y)
 
             # Remove the z coordinate from the xyz point tuple
-            data = np.asarray(list(map(lambda x: x[0:2], contour['contourData'])))
+            data = np.asarray(
+                list(map(lambda x: x[0:2], contour['contourData'])))
 
             # Add the contour area and points to the list of contours
             contours.append({'area': c_area, 'data': data})
@@ -248,9 +253,11 @@ class DVHCalculation:
     def calc_grid(self, value):
 
         if value is None:
-            self._calc_grid = (self.dose.x_res, self.dose.y_res, self.structure.contour_spacing)
+            self._calc_grid = (self.dose.x_res, self.dose.y_res,
+                               self.structure.contour_spacing)
         elif len(value) != 3:
-            raise ValueError('Calculation grid should be size 3, (dx, dy, dz) mm')
+            raise ValueError(
+                'Calculation grid should be size 3, (dx, dy, dz) mm')
         else:
             self._calc_grid = value
 
@@ -269,7 +276,8 @@ class DVHCalculation:
         :return: dvh dict
         """
         if verbose:
-            print('{} volume [cc]: {:0.1f}'.format(self.structure.name, self.structure.volume))
+            print('{} volume [cc]: {:0.1f}'.format(self.structure.name,
+                                                   self.structure.volume))
 
         max_dose = float(self.dose.dose_max_3d)
         hist = np.zeros(self.n_bins)
@@ -277,10 +285,12 @@ class DVHCalculation:
         # integrate DVH over all planes (z axis)
         for z in self.structure.planes.keys():
             # Get the contours with calculated areas and the largest contour index
-            contours, largest_index = self.structure.get_plane_contours_areas(z)
+            contours, largest_index = self.structure.get_plane_contours_areas(
+                z)
 
             # Calculate the histogram for each contour
-            hist_plane, volume_plane = self.calculate_plane_dvh(contours, max_dose, z)
+            hist_plane, volume_plane = self.calculate_plane_dvh(
+                contours, max_dose, z)
 
             hist += hist_plane
             volume += volume_plane
@@ -292,20 +302,24 @@ class DVHCalculation:
 
         # Get Grid and Dose plane for the largest contour
         plane_contour_points = np.vstack([c['data'] for c in contours])
-        contour_dose_grid, ctr_dose_lut = self.get_contour_roi_grid(plane_contour_points, self.calc_grid)
+        contour_dose_grid, ctr_dose_lut = self.get_contour_roi_grid(
+            plane_contour_points, self.calc_grid)
 
         dose_plane = self.get_dose_plane(z, ctr_dose_lut)
 
         # pre allocate dose grid matrix
-        grid = np.zeros((len(ctr_dose_lut[1]), len(ctr_dose_lut[0])), dtype=np.uint8)
-        for j, contour in enumerate(contours):
+        grid = np.zeros(
+            (len(ctr_dose_lut[1]), len(ctr_dose_lut[0])), dtype=np.uint8)
+        for _, contour in enumerate(contours):
             # rasterized dose plane inside contour
-            m = get_contour_mask_wn(ctr_dose_lut, contour_dose_grid, contour['data'])
+            m = get_contour_mask_wn(ctr_dose_lut, contour_dose_grid,
+                                    contour['data'])
 
             # using exclusive or operator to remove holes from each rasterized contour
             grid = np.logical_xor(m.astype(np.uint8), grid).astype(np.bool)
 
-        hist_plane, volume_plane = self.calculate_contour_dvh(grid, dose_plane, self.n_bins, max_dose, self.calc_grid)
+        hist_plane, volume_plane = self.calculate_contour_dvh(
+            grid, dose_plane, self.n_bins, max_dose, self.calc_grid)
 
         return hist_plane, volume_plane
 
@@ -370,10 +384,12 @@ class DVHCalculation:
         :param grid_axis: x,y,x axis from LUT
         :return: up sampled axis and delta grid
         """
-        fc = (delta_mm + abs(grid_axis[-1] - grid_axis[0])) / (delta_mm * len(grid_axis))
+        fc = (delta_mm + abs(grid_axis[-1] - grid_axis[0])) / (
+            delta_mm * len(grid_axis))
         n_grid = int(round(len(grid_axis) * fc))
 
-        up_sampled_axis, dt = np.linspace(grid_axis[0], grid_axis[-1], n_grid, retstep=True)
+        up_sampled_axis, dt = np.linspace(
+            grid_axis[0], grid_axis[-1], n_grid, retstep=True)
 
         # avoid inverted axis swap.  Always absolute step
         dt = abs(dt)
@@ -388,9 +404,8 @@ class DVHCalculation:
         mask1 = ma.array(doseplane, mask=~mask)
 
         # Calculate the differential dvh
-        hist, edges = np.histogram(mask1.compressed(),
-                                   bins=bins,
-                                   range=(0, maxdose))
+        hist, edges = np.histogram(
+            mask1.compressed(), bins=bins, range=(0, maxdose))
 
         # Calculate the volume for the contour for the given dose plane
         vol = np.sum(hist) * grid_delta[0] * grid_delta[1] * grid_delta[2]
@@ -417,17 +432,19 @@ class DVHCalculation:
         units = str(self.dose.unit.symbol).upper()
         # TODO inspect nbins change
         # TODO round data to 3 decimal places ?
-        dvh_data = {'data': list(cdvh),  # round 3 decimal
-                    'bins': len(cdvh),
-                    'type': 'CUMULATIVE',
-                    'doseunits': units,
-                    'volumeunits': 'cm3',
-                    'scaling': scaling,
-                    'roi_number': self.structure.roi_number,
-                    'name': self.structure.name,
-                    'min': get_dvh_min(cdvh) * scaling,
-                    'max': get_dvh_max(cdvh, scaling) * scaling,
-                    'mean': get_dvh_mean(cdvh) * scaling}
+        dvh_data = {
+            'data': list(cdvh),  # round 3 decimal
+            'bins': len(cdvh),
+            'type': 'CUMULATIVE',
+            'doseunits': units,
+            'volumeunits': 'cm3',
+            'scaling': scaling,
+            'roi_number': self.structure.roi_number,
+            'name': self.structure.name,
+            'min': get_dvh_min(cdvh) * scaling,
+            'max': get_dvh_max(cdvh, scaling) * scaling,
+            'mean': get_dvh_mean(cdvh) * scaling
+        }
 
         return dvh_data
 
@@ -445,7 +462,8 @@ class DVHCalculationMP:
         self.grids = grids
         # sanity check
         if not len(self.structures) == len(self.grids):
-            raise ValueError("PyStructure and grid lists should be equal sized")
+            raise ValueError(
+                "PyStructure and grid lists should be equal sized")
 
     @property
     def dose(self):
@@ -484,7 +502,8 @@ class DVHCalculationMP:
             for g in value:
                 if g is not None:
                     if len(g) != 3:
-                        raise ValueError('Calculation grid should be size 3, (dx,dy,dz)')
+                        raise ValueError(
+                            'Calculation grid should be size 3, (dx,dy,dz)')
 
             self._grids = value
         else:
@@ -523,7 +542,8 @@ class DVHCalculationMP:
         if self.verbose:
             print(" ---- Starting multiprocessing -----")
 
-        res = Parallel()(delayed(self.calculate)(s, g, self.dose, self.verbose) for s, g in self.calc_data.items())
+        res = Parallel()(delayed(self.calculate)(s, g, self.dose, self.verbose)
+                         for s, g in self.calc_data.items())
         # map name, grid and roi_number
         cdvh = {}
         for struc_dvh in res:
@@ -536,7 +556,6 @@ class DVHCalculationMP:
 
 
 class DVHCalculator:
-
     def __init__(self, rt_case=None, calculation_options=None):
         self._rt_case = None
         self._calculation_options = None
@@ -577,7 +596,9 @@ class DVHCalculator:
         :return: structures_py, grids
         """
         # setup PysStructures and calculation grid
-        structures_py = [PyStructure(s, self.end_cap) for s in self.rt_case.calc_structures]
+        structures_py = [
+            PyStructure(s, self.end_cap) for s in self.rt_case.calc_structures
+        ]
         grids = self.get_grid_array(structures_py)
         return structures_py, grids
 
@@ -608,7 +629,8 @@ class DVHCalculator:
             if self.up_sampling:
                 # Check if it is contiguous and monotonic z spacing
                 # TODO fix bug when end capping
-                if len(np.unique(s.z_axis_delta)) == 1 and s.volume < self.max_vol_upsampling:
+                if len(np.unique(s.z_axis_delta)
+                       ) == 1 and s.volume < self.max_vol_upsampling:
                     grids.append(self.voxel_size)
                 else:
                     grids.append(None)
@@ -658,14 +680,21 @@ def get_calculation_options(ini_file_path):
     config.read(ini_file_path)
     calculation_options = dict()
     calculation_options['end_cap'] = config.getfloat('DEFAULT', 'end_cap')
-    calculation_options['use_tps_dvh'] = config.getboolean('DEFAULT', 'use_tps_dvh')
-    calculation_options['use_tps_structures'] = config.getboolean('DEFAULT', 'use_tps_structures')
-    calculation_options['up_sampling'] = config.getboolean('DEFAULT', 'up_sampling')
-    calculation_options['maximum_upsampled_volume_cc'] = config.getfloat('DEFAULT', 'maximum_upsampled_volume_cc')
-    calculation_options['voxel_size'] = config.getfloat('DEFAULT', 'voxel_size')
+    calculation_options['use_tps_dvh'] = config.getboolean(
+        'DEFAULT', 'use_tps_dvh')
+    calculation_options['use_tps_structures'] = config.getboolean(
+        'DEFAULT', 'use_tps_structures')
+    calculation_options['up_sampling'] = config.getboolean(
+        'DEFAULT', 'up_sampling')
+    calculation_options['maximum_upsampled_volume_cc'] = config.getfloat(
+        'DEFAULT', 'maximum_upsampled_volume_cc')
+    calculation_options['voxel_size'] = config.getfloat(
+        'DEFAULT', 'voxel_size')
     calculation_options['num_cores'] = config.getint('DEFAULT', 'num_cores')
-    calculation_options['save_dvh_figure'] = config.getboolean('DEFAULT', 'save_dvh_figure')
-    calculation_options['save_dvh_data'] = config.getboolean('DEFAULT', 'save_dvh_data')
+    calculation_options['save_dvh_figure'] = config.getboolean(
+        'DEFAULT', 'save_dvh_figure')
+    calculation_options['save_dvh_data'] = config.getboolean(
+        'DEFAULT', 'save_dvh_data')
     calculation_options['mp_backend'] = config['DEFAULT']['mp_backend']
 
     return calculation_options

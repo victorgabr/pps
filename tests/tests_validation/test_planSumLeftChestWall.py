@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
 import os
 
-from gui.api import read_eclipse_dvh, plot_dvh
-from core.calculation import PyStructure, DVHCalculation
-from core.dicom_reader import PyDicomParser
-from core.types import DoseAccumulation
+from gui.api.tools import read_eclipse_dvh, plot_dvh
+from pyplanscoring.core.calculation import PyStructure, DVHCalculation
+from pyplanscoring.core.dicom_reader import PyDicomParser
+from pyplanscoring.core.types import DoseAccumulation
 
 
 def get_dicom_data(root_path):

@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 # from core.dicom_reader import ScoringDicomParser
-from core.dicom_reader import PyDicomParser
+from pyplanscoring.core.dicom_reader import PyDicomParser
 from pyplanscoring.competition.utils import get_dicom_data
 from pyplanscoring.core.dosimetric import read_scoring_criteria
 from pyplanscoring.core.dvhcalculation import load, calc_dvhs_pp  # , save

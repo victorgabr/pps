@@ -30,7 +30,7 @@ def _sys_getenc_wrapper():
 sys.getfilesystemencoding = _sys_getenc_wrapper
 
 # static variables
-app_folder = os.getcwd()
+app_folder = os.path.dirname(os.path.realpath(__file__))
 rs_dvh = os.path.join(app_folder, 'RS_LUNG_SBRT.dcm')
 criteria_file = os.path.join(app_folder, 'Scoring_criteria.xlsx')
 case_name = 'BiLateralLungSBRTCase'

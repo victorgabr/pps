@@ -5,7 +5,7 @@ import pytest
 from gui.api.backend import PyPlanScoringKernel
 
 
-# TODO monkey patching DVH data to cut redundant calculations]
+# TODO monkey patching DVH data to cut redundant calculations
 
 def test_parse_dicom_folder(dicom_folder):
     # given

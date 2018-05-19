@@ -25,10 +25,6 @@ def test_DoseRegularGridInterpolator(rd_dcm):
     dose_interp, (x, y, z), (fx, fy, fz) = rd_dcm.DoseRegularGridInterpolator()
 
 
-def test_global_max(rd_dcm):
-    assert rd_dcm.global_max
-
-
 def test_GetDVHs(rd_dcm):
     assert rd_dcm.GetDVHs()
 

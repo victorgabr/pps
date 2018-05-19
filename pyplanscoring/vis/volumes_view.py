@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import vispy
 from vispy.scene import visuals
-from pyplanscoring.core.geometry import planes2array, get_oversampled_structure
+
+# from pyplanscoring.core.geometry import planes2array, get_oversampled_structure
 
 
 def plot_contours_mpl(pos, title=''):

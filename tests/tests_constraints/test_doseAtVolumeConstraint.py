@@ -1,4 +1,4 @@
-from core.types import PriorityType, ResultType, VolumePresentation
+from pyplanscoring.core.types import PriorityType, ResultType, VolumePresentation
 from tests.conftest import planning_item
 
 

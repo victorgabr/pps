@@ -3,7 +3,7 @@ from unittest import TestCase
 import matplotlib.pyplot as plt
 
 from competition.tests import root_folder, database_file
-from core.dvhcalculation import load
+from pyplanscoring.core.dvhcalculation import load
 from pyplanscoring.competition.statistical_dvh import HistoricPlanDVH, StatisticalDVH, PlanningItemDVH
 
 str_names = ['LENS LT',

@@ -1,6 +1,6 @@
 import os
 
-from core.dvhcalculation import load
+from pyplanscoring.core.dvhcalculation import load
 
 DATA_DIR = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),

@@ -3,12 +3,12 @@
 Classes to encapsulate NTCP calculation
 
 """
-
 import numpy as np
+
 from scipy import integrate
 
-from core.dvhdoses import get_ddvh
-from radiobiology import njit
+from . import njit
+from ..core.dvhdoses import get_ddvh
 
 
 class NTCPLKBModel:
@@ -17,7 +17,6 @@ class NTCPLKBModel:
         (Lyman 1985, Kutcher and Burman 1989)
 
     """
-
     def __init__(self, cdvh, parameter_vector):
         self._cdvh = {}
         self._dose_array = None
@@ -53,7 +52,8 @@ class NTCPLKBModel:
             raise TypeError("DVH value should be dict")
 
         if "type" not in value:
-            raise ValueError("DVH type should have type key - (CUMULATIVE or DIFFERENTIAL)")
+            raise ValueError(
+                "DVH type should have type key - (CUMULATIVE or DIFFERENTIAL)")
 
         if value["type"] == "CUMULATIVE":
             # convert it to differential
@@ -80,7 +80,8 @@ class NTCPLKBModel:
     @parameter_vector.setter
     def parameter_vector(self, value):
         if len(value) != 3:
-            raise ValueError("parameter_vector invalid: size must be 3! [TD50, m, n]")
+            raise ValueError(
+                "parameter_vector invalid: size must be 3! [TD50, m, n]")
         self._parameter_vector = value
 
     @property
@@ -145,7 +146,8 @@ class NTCPLKBModel:
     @parameter_map.setter
     def parameter_map(self, value):
         if not isinstance(value, dict):
-            raise TypeError("Parameter map should be dictionary type wih keys: TD50, m, n")
+            raise TypeError(
+                "Parameter map should be dictionary type wih keys: TD50, m, n")
 
         if isinstance(value, dict):
             for k in ["TD50", "m", "n"]:
@@ -155,9 +157,7 @@ class NTCPLKBModel:
             self._parameter_map = value
 
     def get_parameter_map(self):
-        pMap = {"TD50": self.td50,
-                "m": self.m,
-                "n": self.n}
+        pMap = {"TD50": self.td50, "m": self.m, "n": self.n}
         return pMap
 
     def calc_model(self):
@@ -181,14 +181,15 @@ class NTCPLKBModel:
     @staticmethod
     def integrate_lkb(t):
         norm_factor = np.sqrt(2 * np.pi)
-        f = lambda x: np.exp(-x ** 2 / 2)
-
-        res = integrate.quad(f, -np.inf, t)
+        # f = lambda x: np.exp(-x ** 2 / 2)
+        # res = integrate.quad(f, -np.inf, t)
+        res = integrate.quad(lambda t: np.exp(-t**2 / 2), -np.inf, t)
 
         return res[0] / norm_factor
 
     def __str__(self):
-        return "LKB model - TD50: {:.2f} m: {:.2f} n: {:.2f}".format(self.td50, self.m, self.n)
+        return "LKB model - TD50: {:.2f} m: {:.2f} n: {:.2f}".format(
+            self.td50, self.m, self.n)
 
     def __repr__(self):
         return self.__str__()
@@ -204,7 +205,7 @@ def calc_eud(dose, volume, n):
     :return: gEUD
     """
     eud = 0.
-    n_voxels = len(dose)
+    # n_voxels = len(dose)
     a = 1. / n
     delta_dose = dose[1] - dose[0]
     for i in range(len(dose)):

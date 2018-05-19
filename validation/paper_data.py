@@ -10,7 +10,7 @@ from joblib import delayed
 from shapely.geometry import Polygon
 
 # from pyplanscoring.competition.constrains_evaluation import CompareDVH, save1, load1
-from core.dicom_reader import ScoringDicomParser
+from pyplanscoring.core.dicom_reader import ScoringDicomParser
 from pyplanscoring.core.dosimetric import read_scoring_criteria
 from pyplanscoring.core.dvhcalculation import get_boundary_stats, get_capped_structure
 from pyplanscoring.core.geometry import wrap_z_coordinates, calc_area, get_contour_roi_grid, wrap_xy_coordinates, \

@@ -3,8 +3,8 @@ import os
 import pandas as pd
 import pytest
 
-from core.calculation import PyStructure
-from core.dicom_reader import PyDicomParser
+from pyplanscoring.core.calculation import PyStructure
+from pyplanscoring.core.dicom_reader import PyDicomParser
 
 benchmark_data_dir = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),

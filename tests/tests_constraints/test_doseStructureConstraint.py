@@ -1,4 +1,4 @@
-from core.types import PriorityType
+from pyplanscoring.core.types import PriorityType
 from tests.conftest import planning_item
 
 

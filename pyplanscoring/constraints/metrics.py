@@ -9,12 +9,16 @@ import difflib
 import string
 
 import numpy as np
+
 import pandas as pd
 
-from constraints.query import QueryExtensions, PyQueryExtensions
-from core.calculation import PyStructure
-from core.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean
-from core.types import DoseValuePresentation, DoseValue, DoseUnit, DVHData, DICOMType
+from ..core.calculation import PyStructure
+from ..core.dvhdoses import get_dvh_max, get_dvh_mean, get_dvh_min
+
+from ..core.types import (DICOMType, DoseUnit, DoseValue,
+                          DoseValuePresentation, DVHData)
+
+from .query import PyQueryExtensions, QueryExtensions
 
 
 # TODO refactor to use PyDicomParser class and PyStructure

@@ -10,15 +10,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PySide import QtCore
 from PySide import QtGui
-from film2dose.core.calibration import save, load, save_ftd, Film2DoseCalibration, Model
-from film2dose.core.image import read_tiff, display_fig, read_dicom, get_crop, Fim2DoseImage, ImageRegistration, \
+from film2dose.pyplanscoring.core.calibration import save, load, save_ftd, Film2DoseCalibration, Model
+from film2dose.pyplanscoring.core.image import read_tiff, display_fig, read_dicom, get_crop, Fim2DoseImage, ImageRegistration, \
     rotate_image, read_brainlab, save_dicom_dose, image_crop, read_monaco, read_cal_doses, read_OmniPro, \
     Film2DoseBlockingMouseInput, pixel2od, plot_cal_data, dowsampling_image, od2pixel, dose_difference, \
     SymmetryFlatness, FusedImages, ProfileComparison, OctaviusFiles, image_trim_xy, auto_threshold
-from film2dose.core.libmath import gamma_index, get_covarmatrix, analyse_roi, meanval_uncertainty
-from film2dose.core.picketfence import VarianMLC, ElektaMLCi2, ElektaBeamModulatorMLC, PicketFenceSettings, \
+from film2dose.pyplanscoring.core.libmath import gamma_index, get_covarmatrix, analyse_roi, meanval_uncertainty
+from film2dose.pyplanscoring.core.picketfence import VarianMLC, ElektaMLCi2, ElektaBeamModulatorMLC, PicketFenceSettings, \
     PicketFenceTest
-from film2dose.core.starshot import StarShot
+from film2dose.pyplanscoring.core.starshot import StarShot
 from film2dose.qt_ui import PicketFenceQT, DoseConversionQT, DoseCompQT, FormImageQT, FitCurvesQt, StarShotQT, \
     DoseOptimizedQT, TPSWidgetQT, FitModeQT, GetCalPointsQT, EditGridQT, OptimizationQT, DoseCompAbsQT, FieldWidgetQT
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas

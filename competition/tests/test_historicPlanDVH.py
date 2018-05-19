@@ -4,7 +4,7 @@ from unittest import TestCase
 import pandas as pd
 
 from competition.tests import root_folder, dest_folder
-from core.types import DVHData
+from pyplanscoring.core.types import DVHData
 from pyplanscoring.competition.statistical_dvh import HistoricPlanDVH
 
 database = 'photons_versus_protons.hdf5'

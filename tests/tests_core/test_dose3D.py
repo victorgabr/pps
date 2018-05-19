@@ -1,4 +1,4 @@
-from core.geometry import get_dose_grid_3d, get_contour_roi_grid, calculate_contour_areas
+from pyplanscoring.core.geometry import get_dose_grid_3d, get_contour_roi_grid, calculate_contour_areas
 
 
 def test_dose_max_3d_location(dose_3d, rd_dcm):

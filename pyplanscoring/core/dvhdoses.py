@@ -7,8 +7,10 @@
 # Start - 20 Nov. 2009
 # It is assumed that the bin width of the cDVH is fixed at 1 cGy.
 # speed up numba by victor
-from core import njit
+
 import numpy as np
+
+from . import njit
 
 
 @njit
@@ -127,6 +129,7 @@ def get_cdvh_numba(ddvh):
         cdvh[j] = np.sum(ddvh[j:])
 
     return cdvh
+
 
 #
 # def test_all():

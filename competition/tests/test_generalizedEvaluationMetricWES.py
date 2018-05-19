@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from competition.tests import data_path, database_file, sheet, root_folder
-from core.dvhcalculation import load
+from pyplanscoring.core.dvhcalculation import load
 from pyplanscoring.competition.statistical_dvh import StatisticalDVH, PlanningItemDVH, \
     HistoricPlanDVH, GeneralizedEvaluationMetricWES
 

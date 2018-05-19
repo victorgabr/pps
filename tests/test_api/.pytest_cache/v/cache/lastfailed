@@ -1,3 +1,10 @@
 {
-  "test_pyPlanScoringKernel.py::test_parse_empty_dicom_folder": true
+  "test_pyPlanScoringKernel.py::test_calc_plan_complexity": true,
+  "test_pyPlanScoringKernel.py::test_calc_plan_score": true,
+  "test_pyPlanScoringKernel.py::test_calculate_dvh": true,
+  "test_pyPlanScoringKernel.py::test_parse_empty_dicom_folder": true,
+  "test_pyPlanScoringKernel.py::test_save_dvh_data": true,
+  "test_pyPlanScoringKernel.py::test_setup_case": true,
+  "test_pyPlanScoringKernel.py::test_setup_dvh_calculation": true,
+  "test_pyPlanScoringKernel.py::test_setup_planning_item": true
 }

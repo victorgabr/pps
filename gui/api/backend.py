@@ -2,28 +2,28 @@
 Module to implement Façade design pattern to control pyplanscoring's functionality.
 
 """
-
 import abc
-
 import os
 
 from complexity.PyComplexityMetric import PyComplexityMetric
 
-# from gui.api import get_dicom_data
-from constraints.metrics import PlanEvaluation, RTCase, PyPlanningItem
-from core.calculation import DVHCalculator, get_calculation_options
-from core.dicom_reader import PyDicomParser
-from core.io import get_participant_folder_data, IOHandler
-from core.types import DoseAccumulation
+from gui.api.tools import get_dicom_data, save_formatted_report
+
+import matplotlib.pyplot as plt
+
+from pyplanscoring.constraints.metrics import (PlanEvaluation, PyPlanningItem,
+                                               RTCase)
+
+from pyplanscoring.core.calculation import (DVHCalculator,
+                                            get_calculation_options)
+
+from pyplanscoring.core.dicom_reader import PyDicomParser
+from pyplanscoring.core.io import IOHandler, get_participant_folder_data
+from pyplanscoring.core.types import DoseAccumulation
 
 # matplotlib.use('Qt4Agg')
 # matplotlib.use('TkAgg')
 # matplotlib.rcParams['backend.qt4'] = 'PySide'
-
-import matplotlib.pyplot as plt
-
-from gui.api.tools import get_dicom_data, save_formatted_report
-
 
 class BackEnd(abc.ABC):
     # todo later implement as Abstract base class
@@ -57,7 +57,6 @@ class BackEnd(abc.ABC):
 
 
 class Observer(abc.ABC):
-
     def update(self, obj, *args, **kwargs):
         raise NotImplementedError
 
@@ -96,7 +95,6 @@ class DVHCalculatorObservable(DVHCalculator, Observable):
 
 
 class PyPlanScoringKernel(BackEnd):
-
     def __init__(self):
         self._dcm_files = None
         self._plan_eval = PlanEvaluation()
@@ -151,7 +149,8 @@ class PyPlanScoringKernel(BackEnd):
         structures = PyDicomParser(filename=rs_file_path).GetStructures()
         self._plan_eval.read(file_path, sheet_name=sheet_name)
         # todo implement setup case by id
-        self._case = RTCase(sheet_name, 1, structures, self._plan_eval.criteria)
+        self._case = RTCase(sheet_name, 1, structures,
+                            self._plan_eval.criteria)
 
     def setup_dvh_calculation(self, ini_file):
         if self.case is not None:
@@ -168,7 +167,8 @@ class PyPlanScoringKernel(BackEnd):
                 dose_dcm = PyDicomParser(filename=self.dcm_files['rtdose'])
                 plan_dict = plan_dcm.GetPlan()
                 dose_3d = dose_dcm.get_dose_3d()
-                self._planning_item = PyPlanningItem(plan_dict, self.case, dose_3d, self.dvh_calculator)
+                self._planning_item = PyPlanningItem(
+                    plan_dict, self.case, dose_3d, self.dvh_calculator)
 
     def calculate_dvh(self):
         if self.planning_item is not None:
@@ -184,7 +184,8 @@ class PyPlanScoringKernel(BackEnd):
     def calc_plan_complexity(self):
         if self.planning_item is not None:
             plan_dict = self.planning_item.plan_dict
-            complexity_metric = self._complexity.CalculateForPlan(None, plan_dict)
+            complexity_metric = self._complexity.CalculateForPlan(
+                None, plan_dict)
             self._plan_complexity = complexity_metric
 
     def save_complexity_figure_per_beam(self):
@@ -196,14 +197,17 @@ class PyPlanScoringKernel(BackEnd):
                 # check if treatment beam
                 if beam['TreatmentDeliveryType'] == 'TREATMENT':
                     # fig, ax = plt.subplots()
-                    complexity_per_beam_cp = self._complexity.CalculateForBeamPerAperture(None, plan_dict, beam)
+                    complexity_per_beam_cp = self._complexity.CalculateForBeamPerAperture(
+                        None, plan_dict, beam)
                     plt.figure()
                     plt.plot(complexity_per_beam_cp)
                     plt.xlabel('Control Point')
                     plt.ylabel('CI [mm-1]')
-                    txt = 'Beam name: %s  - aperture complexity per control point' % str(k)
+                    txt = 'Beam name: %s  - aperture complexity per control point' % str(
+                        k)
                     plt.title(txt)
-                    diretory, filename = os.path.split(self.dcm_files['rtplan'])
+                    diretory, filename = os.path.split(
+                        self.dcm_files['rtplan'])
                     figure_name = 'beam_' + str(k) + '_complexity.png'
                     figure_path = os.path.join(diretory, figure_name)
                     plt.savefig(figure_path, format='png', dpi=100)
@@ -229,11 +233,15 @@ class PyPlanScoringKernel(BackEnd):
             if not file_name:
                 report_data_file = os.path.join(diretory, filename + '.csv')
                 self._report_data_frame.to_csv(report_data_file)
-                save_formatted_report(self.report, os.path.join(diretory, filename + '.xls'))
+                save_formatted_report(self.report,
+                                      os.path.join(diretory,
+                                                   filename + '.xls'))
             else:
                 report_data_file = os.path.join(diretory, file_name + '.csv')
                 self._report_data_frame.to_csv(report_data_file)
-                save_formatted_report(self.report, os.path.join(diretory, file_name + '.xls'))
+                save_formatted_report(self.report,
+                                      os.path.join(diretory,
+                                                   file_name + '.xls'))
 
 
 class DoseAccumulationBackEnd(PyPlanScoringKernel):
@@ -252,7 +260,10 @@ class DoseAccumulationBackEnd(PyPlanScoringKernel):
                 # TODO refactor this into abstractions
                 plan_dict = {}
                 if self.dcm_files['rtdose']:
-                    dcm_objs = [PyDicomParser(filename=f) for f in self.dcm_files['rtdose']]
+                    dcm_objs = [
+                        PyDicomParser(filename=f)
+                        for f in self.dcm_files['rtdose']
+                    ]
                     if len(dcm_objs) == 1:
                         dose_3d = dcm_objs[0].get_dose_3d()
                     else:
@@ -262,7 +273,8 @@ class DoseAccumulationBackEnd(PyPlanScoringKernel):
                         acc = DoseAccumulation(doses_3d)
                         dose_3d = acc.get_plan_sum()
 
-                    self._planning_item = PyPlanningItem(plan_dict, self.case, dose_3d, self.dvh_calculator)
+                    self._planning_item = PyPlanningItem(
+                        plan_dict, self.case, dose_3d, self.dvh_calculator)
 
     def save_dvh_data(self, file_name=''):
         if self._dvh_data:
@@ -285,8 +297,12 @@ class DoseAccumulationBackEnd(PyPlanScoringKernel):
             if not file_name:
                 report_data_file = os.path.join(diretory, filename + '.csv')
                 self._report_data_frame.to_csv(report_data_file)
-                save_formatted_report(self.report, os.path.join(diretory, filename + '.xls'))
+                save_formatted_report(self.report,
+                                      os.path.join(diretory,
+                                                   filename + '.xls'))
             else:
                 report_data_file = os.path.join(diretory, file_name + '.csv')
                 self._report_data_frame.to_csv(report_data_file)
-                save_formatted_report(self.report, os.path.join(diretory, file_name + '.xls'))
+                save_formatted_report(self.report,
+                                      os.path.join(diretory,
+                                                   file_name + '.xls'))

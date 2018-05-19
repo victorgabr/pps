@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from core.types import QuantityRegex, VolumePresentation, DoseUnit
+from pyplanscoring.core.types import QuantityRegex, VolumePresentation, DoseUnit
 
 strings = ["cc",
            "CC",

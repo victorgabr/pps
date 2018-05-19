@@ -6,9 +6,9 @@ import scipy.interpolate as itp
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from constraints.metrics import DVHMetrics
-from core.calculation import DVHCalculation
-from core.types import DVHData
+from  pyplanscoring.constraints.metrics import DVHMetrics
+from pyplanscoring.core.calculation import DVHCalculation
+from pyplanscoring.core.types import DVHData
 
 plt.style.use('ggplot')
 
