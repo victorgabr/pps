@@ -3,32 +3,32 @@ from __future__ import division
 from copy import deepcopy
 from math import factorial
 
-import numba as nb
-import numpy as np
 from scipy.interpolate import interp1d
 
-from core import njit
+import numba as nb
+import numpy as np
+
+from . import njit
 
 
 def cn_PnPoly(P, V):
     cn = 0  # the crossing number counter
 
     # repeat the first vertex at end
-    V = tuple(V[:]) + (V[0],)
+    V = tuple(V[:]) + (V[0], )
 
     # loop through all edges of the polygon
     for i in range(len(V) - 1):  # edge from V[i] to V[i+1]
         if ((V[i][1] <= P[1] and V[i + 1][1] > P[1])  # an upward crossing
-                or (V[i][1] > P[1] and V[i + 1][1] <= P[1])):  # a downward crossing
+                or
+            (V[i][1] > P[1] and V[i + 1][1] <= P[1])):  # a downward crossing
             # compute the actual edge-ray intersect x-coordinate
             vt = (P[1] - V[i][1]) / float(V[i + 1][1] - V[i][1])
-            if P[0] < V[i][0] + vt * (V[i + 1][0] - V[i][0]):  # P[0] < intersect
+            if P[0] < V[i][0] + vt * (
+                    V[i + 1][0] - V[i][0]):  # P[0] < intersect
                 cn += 1  # a valid crossing of y=P[1] right of P[0]
 
     return cn % 2  # 0 if even (out), and 1 if odd (in)
-
-
-# ===================================================================
 
 
 def wn_PnPoly1(P, V):
@@ -45,7 +45,7 @@ def wn_PnPoly1(P, V):
     wn = 0  # the winding number counter
 
     # repeat the first vertex at end
-    V = tuple(V[:]) + (V[0],)
+    V = tuple(V[:]) + (V[0], )
 
     # loop through all edges of the polygon
     for i in range(len(V) - 1):  # edge from V[i] to V[i+1]
@@ -128,14 +128,14 @@ def wn_contains_points(out, poly, points):
         point = points[i]
         wn = 0  # the  winding number counter
         N = len(poly)
-        # // loop through all edges of the polygon
+        # loop through all edges of the polygon
         for k in range(N - 1):  # edge from V[i] to  V[i+1]
 
             if poly[k][1] <= point[1]:  # start y <= P[1]
                 if poly[k + 1][1] > point[1]:  # an upward crossing
                     is_left_value = is_left(poly[k], poly[k + 1], point)
                     if is_left_value >= 0:  # P left of  edge
-                        wn += 1  # // have  a valid up intersect
+                        wn += 1  # have  a valid up intersect
 
             else:  # start y > P[1] (no test needed)
                 if poly[k + 1][1] <= point[1]:  # a downward crossing
@@ -194,54 +194,6 @@ def contains_points(out, poly, points):
         point = points[i]
         tmp = point_inside_polygon(point[0], point[1], poly)
         out[i] = tmp
-    return out
-
-
-@njit(nb.boolean[:](nb.boolean[:], nb.double[:, :], nb.double[:, :]))
-def numba_contains_points(out, poly, points):
-    n = len(points)
-    p1x = 0.0
-    p1y = 0.0
-    p2x = 0.0
-    p2y = 0.0
-    xinters = 0.0
-    plx = 0.0
-    ply = 0.0
-    idx = 0
-    inside = False
-    x = 0
-    y = 0
-    N = len(poly)
-
-    for i in range(n):
-        point = points[i]
-        x = point[0]
-        y = point[1]
-        # tmp = point_inside_polygon(point[0], point[1], poly)
-        inside = False
-
-        # determine if a point is inside a given polygon or not
-        # Polygon is a list of (x,y) pairs.
-        p1x = poly[0][0]
-        p1y = poly[0][1]
-        for j in range(N + 1):
-            idx = j % N
-            p2x = poly[idx][0]
-            p2y = poly[idx][1]
-            # p2x, p2y = poly[idx]
-            if y > min(p1y, p2y):
-                if y <= max(p1y, p2y):
-                    if x <= max(p1x, p2x):
-                        if p1y != p2y:
-                            xinters = (y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
-                        if p1x == p2x or x <= xinters:
-                            inside = not inside
-
-            p1x = p2x
-            p1y = p2y
-
-        out[i] = inside
-
     return out
 
 
@@ -315,19 +267,6 @@ def check_contour_inside(contour, largest):
             # Assume if one point is inside, all will be inside
             break
     return inside
-
-# @njit(nb.boolean(nb.double[:, :], nb.double[:, :]))
-# def check_contour_inside(contour, largest):
-#     inside = np.zeros(len(contour))
-#     for i in range(len(contour)):
-#         point = contour[i]
-#         p = point_in_contour(point, largest)
-#         if p:
-#             inside[i] = 1
-#
-#     # all should be inside
-#
-#     return np.all(inside)
 
 
 def k_nearest_neighbors(k, feature_train, features_query):
@@ -408,7 +347,8 @@ def interpolate_plane(ub, lb, location, ubpoints, lbpoints):
         dist = 100000  # Arbitrary large number
         # Determine the distance from each point in the upper bound to each point in the lower bound
         for l, lp in enumerate(lbpoints):
-            newDist = np.sqrt((up[0] - lp[0]) ** 2 + (up[1] - lp[1]) ** 2 + (ub - lb) ** 2)
+            newDist = np.sqrt((up[0] - lp[0])**2 + (up[1] - lp[1])**2 +
+                              (ub - lb)**2)
             # If the distance is smaller, then linearly interpolate the point
             if newDist < dist:
                 dist = newDist
@@ -437,7 +377,8 @@ def interpolate_plane_numba(ub, lb, location, ubpoints, lbpoints):
         # Determine the distance from each point in the upper bound to each point in the lower bound
         for l in range(len(lbpoints)):
             lp = lbpoints[l]
-            newDist = np.sqrt((up[0] - lp[0]) ** 2 + (up[1] - lp[1]) ** 2 + (ub - lb) ** 2)
+            newDist = np.sqrt((up[0] - lp[0])**2 + (up[1] - lp[1])**2 +
+                              (ub - lb)**2)
             # If the distance is smaller, then linearly interpolate the point
             if newDist < dist:
                 dist = newDist
@@ -546,10 +487,12 @@ def get_axis_grid(delta_mm, grid_axis):
     :param grid_axis: x,y,x axis from LUT
     :return: up sampled axis and delta grid
     """
-    fc = (delta_mm + abs(grid_axis[-1] - grid_axis[0])) / (delta_mm * len(grid_axis))
+    fc = (delta_mm + abs(grid_axis[-1] - grid_axis[0])) / (
+        delta_mm * len(grid_axis))
     n_grid = int(round(len(grid_axis) * fc))
 
-    up_sampled_axis, dt = np.linspace(grid_axis[0], grid_axis[-1], n_grid, retstep=True)
+    up_sampled_axis, dt = np.linspace(
+        grid_axis[0], grid_axis[-1], n_grid, retstep=True)
 
     # avoid inverted axis swap.  Always absolute step
     dt = abs(dt)
@@ -694,8 +637,9 @@ def savitzky_golay(y, window_size=501, order=3, deriv=0, rate=1):
     order_range = range(order + 1)
     half_window = (window_size - 1) // 2
     # precompute coefficients
-    b = np.mat([[k ** i for i in order_range] for k in range(-half_window, half_window + 1)])
-    m = np.linalg.pinv(b).A[deriv] * rate ** deriv * factorial(deriv)
+    b = np.mat([[k**i for i in order_range]
+                for k in range(-half_window, half_window + 1)])
+    m = np.linalg.pinv(b).A[deriv] * rate**deriv * factorial(deriv)
     # pad the signal at the extremes with
     # values taken from the signal itself
     firstvals = y[0] - np.abs(y[1:half_window + 1][::-1] - y[0])
@@ -715,7 +659,8 @@ def interp_contour(z_plane, ub_z, lb_z, ubound_contour, lb_contour):
         lb_contour = ubound_contour
         ubound_contour = lb_contour_copy
 
-    return interpolate_plane_numba(ub_z, lb_z, z_plane, ubound_contour, lb_contour)
+    return interpolate_plane_numba(ub_z, lb_z, z_plane, ubound_contour,
+                                   lb_contour)
 
 
 def get_interpolated_structure_planes(dicom_planes, z_interp_positions):
@@ -747,7 +692,8 @@ def get_interpolated_structure_planes(dicom_planes, z_interp_positions):
 
                 lc_contour = lb_points[0]['contourData']
                 up_contour = ub_points[0]['contourData']
-                interpolated_contour = interp_contour(zi, ub, lb, up_contour, lc_contour)
+                interpolated_contour = interp_contour(zi, ub, lb, up_contour,
+                                                      lc_contour)
                 result += [{'contourData': interpolated_contour}]
                 interpolated_planes[str(zi)] = result
 
@@ -759,12 +705,15 @@ def get_interpolated_structure_planes(dicom_planes, z_interp_positions):
                 # lb_centroids = [c['centroid'] for c in lb_points]
                 # ub_centroids = [c['centroid'] for c in ub_points]
 
-                u_idx = [nearest_neighbor(ub_centroids, lbc) for lbc in lb_centroids]
+                u_idx = [
+                    nearest_neighbor(ub_centroids, lbc) for lbc in lb_centroids
+                ]
 
                 for j in range(len(lb_points)):
                     lc_contour = lb_points[j]['contourData']
                     up_contour = ub_points[u_idx[j]]['contourData']
-                    interpolated_contour = interp_contour(zi, ub, lb, up_contour, lc_contour)
+                    interpolated_contour = interp_contour(
+                        zi, ub, lb, up_contour, lc_contour)
                     result += [{'contourData': interpolated_contour}]
 
                 interpolated_planes[str(zi)] = result
@@ -859,7 +808,7 @@ def nearest_neighbor(features_train, feature_query):
     :param features_query: query grid
     :return: lower and upper neighbors
     """
-    ec_dist = np.sqrt((np.sum(features_train - feature_query, axis=1) ** 2.0))
+    ec_dist = np.sqrt((np.sum(features_train - feature_query, axis=1)**2.0))
 
     return ec_dist.argmin()
 
@@ -915,9 +864,11 @@ def calculate_structure_volume(structure):
         # If the plane is the first or last slice
         # only add half of the volume, otherwise add the full slice thickness
         if (n == 0) or (n == len(sPlanes) - 1):
-            sVolume = float(sVolume) + float(area) * float(structure['thickness']) * 0.5
+            sVolume = float(sVolume) + float(area) * float(
+                structure['thickness']) * 0.5
         else:
-            sVolume = float(sVolume) + float(area) * float(structure['thickness'])
+            sVolume = float(sVolume) + float(area) * float(
+                structure['thickness'])
         # Increment the current plane number
         n += 1
 
@@ -958,7 +909,8 @@ def get_z_planes(struc_planes, ordered_z, z_interp_positions):
                 ub_points = struc_planes[l_idx]
                 lb_points = struc_planes[u_idx]
 
-            interp_plane = interpolate_plane_numba(ub, lb, zi, ub_points, lb_points)
+            interp_plane = interpolate_plane_numba(ub, lb, zi, ub_points,
+                                                   lb_points)
             result += [interp_plane]
 
         else:
@@ -998,7 +950,8 @@ def get_z_planes_dict(struc_planes, ordered_z, z_interp_positions):
                 ub = lbCopy
                 ub_points = struc_planes[l_idx]
                 lb_points = struc_planes[u_idx]
-            interp_plane = interpolate_plane_numba(ub, lb, zi, ub_points, lb_points)
+            interp_plane = interpolate_plane_numba(ub, lb, zi, ub_points,
+                                                   lb_points)
 
             result += [interp_plane]
 
@@ -1104,8 +1057,6 @@ def contour_rasterization(dose_lut, dosegrid_points, contour, fx, fy, y_cord):
     return out
 
 
-# @nb.njit(nb.boolean[:, :](nb.boolean[:, :], nb.double[:], nb.double[:], nb.int64[:]))
-
 @njit
 def raster(out, polyX, polyY, y_cord):
     # /  public-domain code by Darel Rex Finley, 2007
@@ -1129,7 +1080,8 @@ def raster(out, polyX, polyY, y_cord):
                 f1 = pixelY - polyY[i]
                 f2 = polyY[j] - polyY[i]
                 f3 = polyX[j] - polyX[i]
-                nodeX[nodes] = int(polyX[i] + (f1 / f2) * f3 + 0.5)  # TODO add 0.5 ?
+                nodeX[nodes] = int(polyX[i] +
+                                   (f1 / f2) * f3 + 0.5)  # TODO add 0.5 ?
                 nodes += 1
 
             j = i
@@ -1275,8 +1227,8 @@ def wrap_z_coordinates(structure_planes, mapped_coord):
 def ordered_planes(planes):
     """
         Return a 1D array from structure z planes coordinates
-    :param planes: Plannes Dictionary 
-    :return: 
+    :param planes: Plannes Dictionary
+    :return:
     """
     ordered_keys = [z for z in planes.keys()]
     ordered_keys.sort(key=float)

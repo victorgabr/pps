@@ -4,13 +4,12 @@ Classes to implement Mayo constraints
 based on:
 
 https://rexcardan.github.io/ESAPIX/api/ESAPIX.Constraints
-
 Extended to use pydicom packages
 
 """
-from constraints.query import MayoQueryWriter, QueryExtensions
-from core.types import ResultType, QueryType, Units, VolumePresentation, DoseUnit, DoseValue, Discriminator, \
-    PriorityType
+from ..core.types import (Discriminator, DoseUnit, DoseValue, PriorityType,
+                          QueryType, ResultType, Units, VolumePresentation)
+from .query import MayoQueryWriter, QueryExtensions
 
 
 class ConstraintType:
@@ -155,7 +154,8 @@ class DoseStructureConstraint:
         :return: ConstraintResult
         """
         if not pi.plan:
-            return ConstraintResult(self, ResultType.NOT_APPLICABLE, "Plan is None")
+            return ConstraintResult(self, ResultType.NOT_APPLICABLE,
+                                    "Plan is None")
 
         # Check structure exists
         structures = self.structure_name.split('&')
@@ -163,18 +163,22 @@ class DoseStructureConstraint:
             valid = pi.contains_structure(s)
             if not valid:
                 message = '%s is not contoured in plan'
-                return ConstraintResult(self, ResultType.NOT_APPLICABLE_MISSING_STRUCTURE, message)
+                return ConstraintResult(
+                    self, ResultType.NOT_APPLICABLE_MISSING_STRUCTURE, message)
 
         # Check dose is calculated
         if not pi.dose_data:
             message = 'There is no dose calculated - DICOM-RD'
-            return ConstraintResult(self, ResultType.NOT_APPLICABLE_MISSING_DOSE, message)
+            return ConstraintResult(
+                self, ResultType.NOT_APPLICABLE_MISSING_DOSE, message)
 
         return ConstraintResult(self, ResultType.PASSED, '')
 
     def get_failed_result_type(self):
-        switch = {PriorityType.MAJOR_DEVIATION: ResultType.ACTION_LEVEL_3,
-                  PriorityType.PRIORITY_1: ResultType.ACTION_LEVEL_3}
+        switch = {
+            PriorityType.MAJOR_DEVIATION: ResultType.ACTION_LEVEL_3,
+            PriorityType.PRIORITY_1: ResultType.ACTION_LEVEL_3
+        }
 
         return switch.get(self.priority, ResultType.ACTION_LEVEL_1)
 
@@ -199,8 +203,8 @@ class ConstraintResult:
         self._is_success = result_type == ResultType.PASSED
         self._result_type = result_type
         self._is_applicable = result_type != ResultType.NOT_APPLICABLE \
-                              and result_type != ResultType.NOT_APPLICABLE_MISSING_STRUCTURE \
-                              and result_type != ResultType.NOT_APPLICABLE_MISSING_DOSE
+            and result_type != ResultType.NOT_APPLICABLE_MISSING_STRUCTURE \
+            and result_type != ResultType.NOT_APPLICABLE_MISSING_DOSE
         self._message = message
         self._value = value
 
@@ -322,10 +326,8 @@ class DoseAtVolumeConstraint(DoseStructureConstraint):
         """
         d_pres = self.constraint_dose.get_presentation()
         v_pres = self.volume_type
-        dose_at_vol = pi.get_dose_at_volume(self.structure_name,
-                                            self.volume,
-                                            v_pres,
-                                            d_pres)
+        dose_at_vol = pi.get_dose_at_volume(self.structure_name, self.volume,
+                                            v_pres, d_pres)
         return dose_at_vol
 
     def constrain(self, pi):
@@ -334,7 +336,9 @@ class DoseAtVolumeConstraint(DoseStructureConstraint):
         string_unit = self.volume_type.symbol
         dose_value = dose_at_vol.get_dose(self.constraint_dose.unit)
         self.constraint_result = dose_value
-        msg = 'Dose to %1.3f %s of %s is %s' % (self.volume, string_unit, self.structure_name, str(dose_value))
+        msg = 'Dose to %1.3f %s of %s is %s' % (self.volume, string_unit,
+                                                self.structure_name,
+                                                str(dose_value))
         return ConstraintResult(self, passed, msg, str(dose_value))
 
 
@@ -344,7 +348,8 @@ class MaxDoseAtVolConstraint(DoseAtVolumeConstraint):
         self.constraint_type = ConstraintType.MAXIMUM
 
     def passing_func(self, dose_at_vol):
-        return ResultType.PASSED if dose_at_vol <= self.constraint_dose else self.get_failed_result_type()
+        return ResultType.PASSED if dose_at_vol <= self.constraint_dose else self.get_failed_result_type(
+        )
 
     def __str__(self):
         # Mayo format
@@ -365,7 +370,8 @@ class MinDoseAtVolConstraint(DoseAtVolumeConstraint):
         self.constraint_type = ConstraintType.MINIMUM
 
     def passing_func(self, dose_at_vol):
-        return ResultType.PASSED if dose_at_vol >= self.constraint_dose else self.get_failed_result_type()
+        return ResultType.PASSED if dose_at_vol >= self.constraint_dose else self.get_failed_result_type(
+        )
 
     def __str__(self):
         # Mayo format
@@ -420,10 +426,8 @@ class ComplimentDoseAtVolumeConstraint(DoseStructureConstraint):
         """
         d_pres = self.constraint_dose.get_presentation()
         v_pres = self.volume_type
-        dc_at_vol = pi.get_dose_compliment_at_volume(self.structure_name,
-                                                     self.volume,
-                                                     v_pres,
-                                                     d_pres)
+        dc_at_vol = pi.get_dose_compliment_at_volume(
+            self.structure_name, self.volume, v_pres, d_pres)
         return dc_at_vol
 
     def constrain(self, pi):
@@ -446,7 +450,8 @@ class MaxComplimentDoseAtVolumeConstraint(ComplimentDoseAtVolumeConstraint):
         self.constraint_type = ConstraintType.MAXIMUM
 
     def passing_func(self, dc_at_vol):
-        return ResultType.PASSED if dc_at_vol <= self.constraint_dose else self.get_failed_result_type()
+        return ResultType.PASSED if dc_at_vol <= self.constraint_dose else self.get_failed_result_type(
+        )
 
     def __str__(self):
         # Mayo format
@@ -467,7 +472,8 @@ class MinComplimentDoseAtVolumeConstraint(ComplimentDoseAtVolumeConstraint):
         self.constraint_type = ConstraintType.MINIMUM
 
     def passing_func(self, dc_at_vol):
-        return ResultType.PASSED if dc_at_vol >= self.constraint_dose else self.get_failed_result_type()
+        return ResultType.PASSED if dc_at_vol >= self.constraint_dose else self.get_failed_result_type(
+        )
 
     def __str__(self):
         # Mayo format
@@ -518,8 +524,7 @@ class VolumeAtDoseConstraint(DoseStructureConstraint):
         """
         v_pres = self.volume_type
         volume_at_dose = pi.get_volume_at_dose(self.structure_name,
-                                               self.constraint_dose,
-                                               v_pres)
+                                               self.constraint_dose, v_pres)
 
         return volume_at_dose
 
@@ -540,7 +545,8 @@ class MinVolAtDoseConstraint(VolumeAtDoseConstraint):
         self.constraint_type = ConstraintType.MINIMUM
 
     def passing_func(self, vol):
-        return ResultType.PASSED if vol >= self.volume else self.get_failed_result_type()
+        return ResultType.PASSED if vol >= self.volume else self.get_failed_result_type(
+        )
 
     def __str__(self):
         # Mayo format
@@ -561,7 +567,8 @@ class MaxVolAtDoseConstraint(VolumeAtDoseConstraint):
         self.constraint_type = ConstraintType.MAXIMUM
 
     def passing_func(self, vol):
-        return ResultType.PASSED if vol <= self.volume else self.get_failed_result_type()
+        return ResultType.PASSED if vol <= self.volume else self.get_failed_result_type(
+        )
 
     def __str__(self):
         # Mayo format
@@ -611,9 +618,8 @@ class ComplimentVolumeAtDoseConstraint(DoseStructureConstraint):
         :return:
         """
         v_pres = self.volume_type
-        cv_at_dose = pi.get_compliment_volume_at_dose(self.structure_name,
-                                                      self.constraint_dose,
-                                                      v_pres)
+        cv_at_dose = pi.get_compliment_volume_at_dose(
+            self.structure_name, self.constraint_dose, v_pres)
 
         return cv_at_dose
 
@@ -622,9 +628,8 @@ class ComplimentVolumeAtDoseConstraint(DoseStructureConstraint):
         self.constraint_result = cv_at_dose
         passed = self.passing_func(cv_at_dose)
         # string_unit = self.volume_type.symbol
-        msg = 'Compliment volume of %s at %s was %s.' % (self.structure_name,
-                                                         str(self.constraint_dose),
-                                                         str(cv_at_dose))
+        msg = 'Compliment volume of %s at %s was %s.' % (
+            self.structure_name, str(self.constraint_dose), str(cv_at_dose))
         return ConstraintResult(self, passed, msg, str(cv_at_dose))
 
 
@@ -634,7 +639,8 @@ class MinComplimentVolumeAtDose(ComplimentVolumeAtDoseConstraint):
         self.constraint_type = ConstraintType.MINIMUM
 
     def passing_func(self, volume):
-        return ResultType.PASSED if volume >= self.volume else self.get_failed_result_type()
+        return ResultType.PASSED if volume >= self.volume else self.get_failed_result_type(
+        )
 
     def __str__(self):
         # Mayo format
@@ -655,7 +661,8 @@ class MaxComplimentVolumeAtDose(ComplimentVolumeAtDoseConstraint):
         self.constraint_type = ConstraintType.MAXIMUM
 
     def passing_func(self, vol):
-        return ResultType.PASSED if vol <= self.volume else self.get_failed_result_type()
+        return ResultType.PASSED if vol <= self.volume else self.get_failed_result_type(
+        )
 
     def __str__(self):
         # Mayo format
@@ -686,7 +693,8 @@ class MaxDoseConstraint(DoseStructureConstraint):
         self.constraint_result = dose_value
         value = str(dose_value)
 
-        passed = ResultType.PASSED if dose_value <= self.constraint_dose else self.get_failed_result_type()
+        passed = ResultType.PASSED if dose_value <= self.constraint_dose else self.get_failed_result_type(
+        )
         msg = 'Maximum dose to %s is %s.' % (self.structure_name, value)
 
         return ConstraintResult(self, passed, msg, value)
@@ -717,7 +725,8 @@ class MinDoseConstraint(DoseStructureConstraint):
         self.constraint_result = dose_value
         value = str(dose_value)
 
-        passed = ResultType.PASSED if dose_value >= self.constraint_dose else self.get_failed_result_type()
+        passed = ResultType.PASSED if dose_value >= self.constraint_dose else self.get_failed_result_type(
+        )
         msg = 'Minimum dose to %s is %s.' % (self.structure_name, value)
 
         return ConstraintResult(self, passed, msg, value)
@@ -749,7 +758,8 @@ class MinMeanDoseConstraint(DoseStructureConstraint):
         self.constraint_result = dose_value
         value = str(dose_value)
 
-        passed = ResultType.PASSED if dose_value >= self.constraint_dose else self.get_failed_result_type()
+        passed = ResultType.PASSED if dose_value >= self.constraint_dose else self.get_failed_result_type(
+        )
         msg = 'Mean dose to %s is %s.' % (self.structure_name, value)
 
         return ConstraintResult(self, passed, msg, value)
@@ -781,7 +791,8 @@ class MaxMeanDoseConstraint(DoseStructureConstraint):
         self.constraint_result = dose_value
         value = str(dose_value)
 
-        passed = ResultType.PASSED if dose_value <= self.constraint_dose else self.get_failed_result_type()
+        passed = ResultType.PASSED if dose_value <= self.constraint_dose else self.get_failed_result_type(
+        )
         msg = 'Mean dose to %s is %s.' % (self.structure_name, value)
 
         return ConstraintResult(self, passed, msg, value)
@@ -824,8 +835,10 @@ class ConformationIndexConstraint(DoseStructureConstraint):
         dm = pi.execute_query(str(self.mc.query), self.structure_name)
         self.constraint_result = dm
         value = str(dm)
-        passed = ResultType.PASSED if dm >= self.constraint_value else self.get_failed_result_type()
-        msg = '%s to %s is %s.' % (str(self.mc.query), self.structure_name, value)
+        passed = ResultType.PASSED if dm >= self.constraint_value else self.get_failed_result_type(
+        )
+        msg = '%s to %s is %s.' % (str(self.mc.query), self.structure_name,
+                                   value)
 
         return ConstraintResult(self, passed, msg, value)
 
@@ -864,8 +877,10 @@ class HomogeneityIndexConstraint(DoseStructureConstraint):
         dm = pi.execute_query(str(self.mc.query), self.structure_name)
         self.constraint_result = dm
         value = str(dm)
-        passed = ResultType.PASSED if dm <= self.constraint_value else self.get_failed_result_type()
-        msg = '%s to %s is %s.' % (str(self.mc.query), self.structure_name, value)
+        passed = ResultType.PASSED if dm <= self.constraint_value else self.get_failed_result_type(
+        )
+        msg = '%s to %s is %s.' % (str(self.mc.query), self.structure_name,
+                                   value)
 
         return ConstraintResult(self, passed, msg, value)
 
@@ -924,15 +939,18 @@ class MayoConstraint:
                 "{MayoQuery} {Discriminator} {ConstraintValue}")
 
         self._query = QueryExtensions().read(split[0])
-        self.discriminator = DiscriminatorConverter.read_discriminator(split[1])
+        self.discriminator = DiscriminatorConverter.read_discriminator(
+            split[1])
         self._constraintValue = float(split[2])
 
         return self
 
     def write(self):
         query = MayoQueryWriter().write(self.query)
-        discriminator = DiscriminatorConverter.write_discriminator(self.discriminator)
-        constraint_value = ('%f' % self.constraint_value).rstrip('0').rstrip('.')
+        discriminator = DiscriminatorConverter.write_discriminator(
+            self.discriminator)
+        constraint_value = (
+            '%f' % self.constraint_value).rstrip('0').rstrip('.')
         return query + ' ' + discriminator + ' ' + constraint_value
 
 
@@ -952,7 +970,8 @@ class DiscriminatorConverter:
             "=": Discriminator.EQUAL
         }
 
-        return switcher.get(disc_string, "Not a valid comparitor (eg >=, =, <=...)")
+        return switcher.get(disc_string,
+                            "Not a valid comparitor (eg >=, =, <=...)")
 
     @staticmethod
     def write_discriminator(disc):
@@ -985,16 +1004,19 @@ class MayoConstraintConverter:
         if isinstance(mc, str):
             mc = MayoConstraint().read(mc)
 
-        switch = {QueryType.MAX_DOSE: self.build_max_dose_constraint,
-                  QueryType.MIN_DOSE: self.build_min_dose_constraint,
-                  QueryType.MEAN_DOSE: self.build_mean_dose_constraint,
-                  QueryType.DOSE_AT_VOLUME: self.build_dose_at_volume_constraint,
-                  QueryType.VOLUME_AT_DOSE: self.build_volume_at_dose_constraint,
-                  QueryType.DOSE_COMPLIMENT: self.build_dose_compliment_constraint,
-                  QueryType.COMPLIMENT_VOLUME: self.build_compliment_volume_constraint,
-                  QueryType.CI: self.build_ci_constraint,
-                  QueryType.HI: self.build_hi_constraint,
-                  QueryType.GI: self.build_gi_constraint}
+        switch = {
+            QueryType.MAX_DOSE: self.build_max_dose_constraint,
+            QueryType.MIN_DOSE: self.build_min_dose_constraint,
+            QueryType.MEAN_DOSE: self.build_mean_dose_constraint,
+            QueryType.DOSE_AT_VOLUME: self.build_dose_at_volume_constraint,
+            QueryType.VOLUME_AT_DOSE: self.build_volume_at_dose_constraint,
+            QueryType.DOSE_COMPLIMENT: self.build_dose_compliment_constraint,
+            QueryType.COMPLIMENT_VOLUME:
+            self.build_compliment_volume_constraint,
+            QueryType.CI: self.build_ci_constraint,
+            QueryType.HI: self.build_hi_constraint,
+            QueryType.GI: self.build_gi_constraint
+        }
 
         build_function = switch.get(mc.query.query_type)
 
@@ -1007,8 +1029,10 @@ class MayoConstraintConverter:
         :param mayo_unit: Units mayo_unit
         :return: VolumePresentation atribute
         """
-        switcher = {Units.CC: VolumePresentation.absolute_cm3,
-                    Units.PERC: VolumePresentation.relative}
+        switcher = {
+            Units.CC: VolumePresentation.absolute_cm3,
+            Units.PERC: VolumePresentation.relative
+        }
 
         return switcher.get(mayo_unit, VolumePresentation.Unknown)
 
@@ -1018,9 +1042,11 @@ class MayoConstraintConverter:
         :param mayo_unit: Units mayo_unit
         :return: DoseUnit
         """
-        switcher = {Units.CGY: DoseUnit.cGy,
-                    Units.GY: DoseUnit.Gy,
-                    Units.PERC: DoseUnit.Percent}
+        switcher = {
+            Units.CGY: DoseUnit.cGy,
+            Units.GY: DoseUnit.Gy,
+            Units.PERC: DoseUnit.Percent
+        }
 
         return switcher.get(mayo_unit, DoseUnit.Unknown)
 
@@ -1085,11 +1111,13 @@ class MayoConstraintConverter:
         max_mean.structure_name = structure_name
         max_mean.priority = priority
 
-        switch = {Discriminator.EQUAL: min_mean,
-                  Discriminator.GREATER_THAN: min_mean,
-                  Discriminator.GREATHER_THAN_OR_EQUAL: min_mean,
-                  Discriminator.LESS_THAN: max_mean,
-                  Discriminator.LESS_THAN_OR_EQUAL: max_mean}
+        switch = {
+            Discriminator.EQUAL: min_mean,
+            Discriminator.GREATER_THAN: min_mean,
+            Discriminator.GREATHER_THAN_OR_EQUAL: min_mean,
+            Discriminator.LESS_THAN: max_mean,
+            Discriminator.LESS_THAN_OR_EQUAL: max_mean
+        }
 
         return switch.get(mc.discriminator)
 
@@ -1125,11 +1153,13 @@ class MayoConstraintConverter:
         max_dv.volume = volume * volume_unit
         max_dv.volume_type = volume_unit
 
-        switch = {Discriminator.EQUAL: min_dv,
-                  Discriminator.GREATER_THAN: min_dv,
-                  Discriminator.GREATHER_THAN_OR_EQUAL: min_dv,
-                  Discriminator.LESS_THAN: max_dv,
-                  Discriminator.LESS_THAN_OR_EQUAL: max_dv}
+        switch = {
+            Discriminator.EQUAL: min_dv,
+            Discriminator.GREATER_THAN: min_dv,
+            Discriminator.GREATHER_THAN_OR_EQUAL: min_dv,
+            Discriminator.LESS_THAN: max_dv,
+            Discriminator.LESS_THAN_OR_EQUAL: max_dv
+        }
 
         return switch.get(mc.discriminator)
 
@@ -1164,11 +1194,13 @@ class MayoConstraintConverter:
         max_vd.volume = volume * volume_unit
         max_vd.volume_type = volume_unit
 
-        switch = {Discriminator.EQUAL: min_vd,
-                  Discriminator.GREATER_THAN: min_vd,
-                  Discriminator.GREATHER_THAN_OR_EQUAL: min_vd,
-                  Discriminator.LESS_THAN: max_vd,
-                  Discriminator.LESS_THAN_OR_EQUAL: max_vd}
+        switch = {
+            Discriminator.EQUAL: min_vd,
+            Discriminator.GREATER_THAN: min_vd,
+            Discriminator.GREATHER_THAN_OR_EQUAL: min_vd,
+            Discriminator.LESS_THAN: max_vd,
+            Discriminator.LESS_THAN_OR_EQUAL: max_vd
+        }
 
         return switch.get(mc.discriminator)
 
@@ -1203,11 +1235,13 @@ class MayoConstraintConverter:
         max_cv.volume = volume * volume_unit
         max_cv.volume_type = volume_unit
 
-        switch = {Discriminator.EQUAL: min_cv,
-                  Discriminator.GREATER_THAN: min_cv,
-                  Discriminator.GREATHER_THAN_OR_EQUAL: min_cv,
-                  Discriminator.LESS_THAN: max_cv,
-                  Discriminator.LESS_THAN_OR_EQUAL: max_cv}
+        switch = {
+            Discriminator.EQUAL: min_cv,
+            Discriminator.GREATER_THAN: min_cv,
+            Discriminator.GREATHER_THAN_OR_EQUAL: min_cv,
+            Discriminator.LESS_THAN: max_cv,
+            Discriminator.LESS_THAN_OR_EQUAL: max_cv
+        }
 
         return switch.get(mc.discriminator)
 
@@ -1242,11 +1276,13 @@ class MayoConstraintConverter:
         max_dc.volume = volume * volume_unit
         max_dc.volume_type = volume_unit
 
-        switch = {Discriminator.EQUAL: min_dc,
-                  Discriminator.GREATER_THAN: min_dc,
-                  Discriminator.GREATHER_THAN_OR_EQUAL: min_dc,
-                  Discriminator.LESS_THAN: max_dc,
-                  Discriminator.LESS_THAN_OR_EQUAL: max_dc}
+        switch = {
+            Discriminator.EQUAL: min_dc,
+            Discriminator.GREATER_THAN: min_dc,
+            Discriminator.GREATHER_THAN_OR_EQUAL: min_dc,
+            Discriminator.LESS_THAN: max_dc,
+            Discriminator.LESS_THAN_OR_EQUAL: max_dc
+        }
 
         return switch.get(mc.discriminator)
 

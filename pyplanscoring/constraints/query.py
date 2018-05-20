@@ -8,7 +8,9 @@ https://rexcardan.github.io/ESAPIX/api/ESAPIX.Constraints.DVH.Query.html
 """
 import re
 
-from core.types import QueryType, Units, DoseUnit, VolumePresentation, DoseValuePresentation, DoseValue, DICOMType
+from ..core.types import (DICOMType, DoseUnit, DoseValue,
+                          DoseValuePresentation, QueryType, Units,
+                          VolumePresentation)
 
 
 class MayoRegex:
@@ -16,7 +18,7 @@ class MayoRegex:
     QueryType = r"^(V|CV|DC|D|Mean|Max|Min|CI|HI|GI)"
     QueryValue = r"\d+(\.?)(\d+)?"
     QueryUnits = r"((cc)|%|(c?Gy))"
-    Valid = '(((V|CV|DC|D|CI|HI|GI)(\d+(\.?)(\d+)?((cc)|%|(c?Gy))))|(Mean|Max|Min))\[(cc|%|(c?Gy)|)\]'
+    Valid = r'(((V|CV|DC|D|CI|HI|GI)(\d+(\.?)(\d+)?((cc)|%|(c?Gy))))|(Mean|Max|Min))\[(cc|%|(c?Gy)|)\]'
 
 
 class MayoQuery:
@@ -198,16 +200,18 @@ class MayoQueryReader:
         if not match:
             raise ValueError('Not a valid query type: %s' % query)
 
-        switcher = {"DC": QueryType.DOSE_COMPLIMENT,
-                    "V": QueryType.VOLUME_AT_DOSE,
-                    "D": QueryType.DOSE_AT_VOLUME,
-                    "CV": QueryType.COMPLIMENT_VOLUME,
-                    "Min": QueryType.MIN_DOSE,
-                    "Max": QueryType.MAX_DOSE,
-                    "Mean": QueryType.MEAN_DOSE,
-                    "CI": QueryType.CI,
-                    "HI": QueryType.HI,
-                    "GI": QueryType.GI}
+        switcher = {
+            "DC": QueryType.DOSE_COMPLIMENT,
+            "V": QueryType.VOLUME_AT_DOSE,
+            "D": QueryType.DOSE_AT_VOLUME,
+            "CV": QueryType.COMPLIMENT_VOLUME,
+            "Min": QueryType.MIN_DOSE,
+            "Max": QueryType.MAX_DOSE,
+            "Mean": QueryType.MEAN_DOSE,
+            "CI": QueryType.CI,
+            "HI": QueryType.HI,
+            "GI": QueryType.GI
+        }
 
         return switcher.get(match.group(), QueryType.VOLUME_AT_DOSE)
 
@@ -229,22 +233,26 @@ class MayoQueryReader:
             # dimensionless
             return self.convert_string_to_unit('NA')
 
-        return self.convert_string_to_unit(match.group().replace('[', '').replace(']', ''))
+        return self.convert_string_to_unit(match.group().replace('[',
+                                                                 '').replace(
+                                                                     ']', ''))
 
     @staticmethod
     def convert_string_to_unit(value):
-        switcher = {"cc": Units.CC,
-                    "CC": Units.CC,
-                    "cGy": Units.CGY,
-                    "cGY": Units.CGY,
-                    "CGY": Units.CGY,
-                    "cgy": Units.CGY,
-                    "gy": Units.GY,
-                    "Gy": Units.GY,
-                    "GY": Units.GY,
-                    "%": Units.PERC,
-                    "NA": Units.NA,
-                    "": Units.NA}
+        switcher = {
+            "cc": Units.CC,
+            "CC": Units.CC,
+            "cGy": Units.CGY,
+            "cGY": Units.CGY,
+            "CGY": Units.CGY,
+            "cgy": Units.CGY,
+            "gy": Units.GY,
+            "Gy": Units.GY,
+            "GY": Units.GY,
+            "%": Units.PERC,
+            "NA": Units.NA,
+            "": Units.NA
+        }
         return switcher.get(value, Units.NA)
 
 
@@ -265,16 +273,18 @@ class QueryExtensions(MayoQuery):
         v_pres = self.get_volume_presentation(query)
         dvh = pi.get_dvh_cumulative_data(ss, d_pres, v_pres)
 
-        switch = {QueryType.DOSE_AT_VOLUME: self.query_dose,
-                  QueryType.DOSE_COMPLIMENT: self.query_dose_compliment,
-                  QueryType.VOLUME_AT_DOSE: self.query_volume,
-                  QueryType.COMPLIMENT_VOLUME: self.query_compliment_volume,
-                  QueryType.MAX_DOSE: self.query_max_dose,
-                  QueryType.MEAN_DOSE: self.query_mean_dose,
-                  QueryType.MIN_DOSE: self.query_min_dose,
-                  QueryType.CI: self.query_ci,
-                  QueryType.HI: self.query_hi,
-                  QueryType.GI: self.query_gi}
+        switch = {
+            QueryType.DOSE_AT_VOLUME: self.query_dose,
+            QueryType.DOSE_COMPLIMENT: self.query_dose_compliment,
+            QueryType.VOLUME_AT_DOSE: self.query_volume,
+            QueryType.COMPLIMENT_VOLUME: self.query_compliment_volume,
+            QueryType.MAX_DOSE: self.query_max_dose,
+            QueryType.MEAN_DOSE: self.query_mean_dose,
+            QueryType.MIN_DOSE: self.query_min_dose,
+            QueryType.CI: self.query_ci,
+            QueryType.HI: self.query_hi,
+            QueryType.GI: self.query_gi
+        }
 
         metric_function = switch.get(query.query_type)
 
@@ -297,15 +307,16 @@ class QueryExtensions(MayoQuery):
         :return: dose_value_presentation
         """
         # If volume query return query unit to dose unit
-        switch = {Units.CGY: DoseValuePresentation.Absolute,
-                  Units.GY: DoseValuePresentation.Absolute,
-                  Units.PERC: DoseValuePresentation.Relative}
+        switch = {
+            Units.CGY: DoseValuePresentation.Absolute,
+            Units.GY: DoseValuePresentation.Absolute,
+            Units.PERC: DoseValuePresentation.Relative
+        }
 
-        query_types = [QueryType.COMPLIMENT_VOLUME,
-                       QueryType.VOLUME_AT_DOSE,
-                       QueryType.HI,
-                       QueryType.CI,
-                       QueryType.GI]
+        query_types = [
+            QueryType.COMPLIMENT_VOLUME, QueryType.VOLUME_AT_DOSE,
+            QueryType.HI, QueryType.CI, QueryType.GI
+        ]
 
         if query.query_type in query_types:
             return switch.get(query.query_units, DoseValuePresentation.Unknown)
@@ -319,15 +330,16 @@ class QueryExtensions(MayoQuery):
         :param query: MayoQuery
         :return: DoseValue.DoseUnit
         """
-        switch = {Units.CGY: DoseUnit.cGy,
-                  Units.GY: DoseUnit.Gy,
-                  Units.PERC: DoseUnit.Percent}
+        switch = {
+            Units.CGY: DoseUnit.cGy,
+            Units.GY: DoseUnit.Gy,
+            Units.PERC: DoseUnit.Percent
+        }
 
-        query_types = [QueryType.COMPLIMENT_VOLUME,
-                       QueryType.VOLUME_AT_DOSE,
-                       QueryType.HI,
-                       QueryType.CI,
-                       QueryType.GI]
+        query_types = [
+            QueryType.COMPLIMENT_VOLUME, QueryType.VOLUME_AT_DOSE,
+            QueryType.HI, QueryType.CI, QueryType.GI
+        ]
         # If volume query return query unit to dose unit
         if query.query_type in query_types:
             return switch.get(query.query_units, DoseUnit.Unknown)
@@ -342,14 +354,20 @@ class QueryExtensions(MayoQuery):
         :return: the volume presentation of the query
         """
         # If volume query return query unit to dose unit
-        if query.query_type in [QueryType.COMPLIMENT_VOLUME, QueryType.VOLUME_AT_DOSE]:
-            switch = {Units.CC: VolumePresentation.absolute_cm3,
-                      Units.PERC: VolumePresentation.relative}
+        if query.query_type in [
+                QueryType.COMPLIMENT_VOLUME, QueryType.VOLUME_AT_DOSE
+        ]:
+            switch = {
+                Units.CC: VolumePresentation.absolute_cm3,
+                Units.PERC: VolumePresentation.relative
+            }
 
             return switch.get(query.units_desired, VolumePresentation.Unknown)
 
-        switch = {Units.CC: VolumePresentation.absolute_cm3,
-                  Units.PERC: VolumePresentation.relative}
+        switch = {
+            Units.CC: VolumePresentation.absolute_cm3,
+            Units.PERC: VolumePresentation.relative
+        }
 
         return switch.get(query.query_units, VolumePresentation.Unknown)
 
@@ -467,14 +485,17 @@ class QueryExtensions(MayoQuery):
         target_structure = pi.get_structure(target_structure_name)
         dose_unit = query.get_dose_unit(query)
         reference_dose = DoseValue(query.query_value, dose_unit)
-        prescription_vol_isodose = pi.get_volume_at_dose(external['name'], reference_dose,
-                                                         VolumePresentation.absolute_cm3)
+        prescription_vol_isodose = pi.get_volume_at_dose(
+            external['name'], reference_dose, VolumePresentation.absolute_cm3)
 
-        target_vol_isodose = pi.get_volume_at_dose(target_structure_name, reference_dose,
-                                                   VolumePresentation.absolute_cm3)
-        target_vol = target_structure['volume'] * VolumePresentation.absolute_cm3
+        target_vol_isodose = pi.get_volume_at_dose(
+            target_structure_name, reference_dose,
+            VolumePresentation.absolute_cm3)
+        target_vol = target_structure[
+            'volume'] * VolumePresentation.absolute_cm3
 
-        ci = (target_vol_isodose * target_vol_isodose) / (target_vol * prescription_vol_isodose)
+        ci = (target_vol_isodose * target_vol_isodose) / (
+            target_vol * prescription_vol_isodose)
         return float(ci)
 
     @staticmethod
@@ -515,15 +536,16 @@ class QueryExtensions(MayoQuery):
 
         dose_unit = query.get_dose_unit(query)
         reference_dose = DoseValue(query.query_value, dose_unit)
-        vol_prescription_isodose = pi.get_volume_at_dose(external['name'],
-                                                         reference_dose,
-                                                         VolumePresentation.absolute_cm3)
+        vol_prescription_isodose = pi.get_volume_at_dose(
+            external['name'], reference_dose, VolumePresentation.absolute_cm3)
 
-        half_vol_prescription_isodose = pi.get_volume_at_dose(external['name'],
-                                                              reference_dose / 2.0,
-                                                              VolumePresentation.absolute_cm3)
+        half_vol_prescription_isodose = pi.get_volume_at_dose(
+            external['name'], reference_dose / 2.0,
+            VolumePresentation.absolute_cm3)
 
-        return float(half_vol_prescription_isodose / vol_prescription_isodose) if vol_prescription_isodose > 0 else None
+        return float(
+            half_vol_prescription_isodose /
+            vol_prescription_isodose) if vol_prescription_isodose > 0 else None
 
 
 class PyQueryExtensions(MayoQuery):
@@ -539,16 +561,18 @@ class PyQueryExtensions(MayoQuery):
         :return: float value
         """
 
-        switch = {QueryType.DOSE_AT_VOLUME: self.query_dose,
-                  QueryType.DOSE_COMPLIMENT: self.query_dose_compliment,
-                  QueryType.VOLUME_AT_DOSE: self.query_volume,
-                  QueryType.COMPLIMENT_VOLUME: self.query_compliment_volume,
-                  QueryType.MAX_DOSE: self.query_max_dose,
-                  QueryType.MEAN_DOSE: self.query_mean_dose,
-                  QueryType.MIN_DOSE: self.query_min_dose,
-                  QueryType.CI: self.query_ci,
-                  QueryType.HI: self.query_hi,
-                  QueryType.GI: self.query_gi}
+        switch = {
+            QueryType.DOSE_AT_VOLUME: self.query_dose,
+            QueryType.DOSE_COMPLIMENT: self.query_dose_compliment,
+            QueryType.VOLUME_AT_DOSE: self.query_volume,
+            QueryType.COMPLIMENT_VOLUME: self.query_compliment_volume,
+            QueryType.MAX_DOSE: self.query_max_dose,
+            QueryType.MEAN_DOSE: self.query_mean_dose,
+            QueryType.MIN_DOSE: self.query_min_dose,
+            QueryType.CI: self.query_ci,
+            QueryType.HI: self.query_hi,
+            QueryType.GI: self.query_gi
+        }
 
         metric_function = switch.get(query.query_type)
 
@@ -753,15 +777,16 @@ class PyQueryExtensions(MayoQuery):
         :return: dose_value_presentation
         """
         # If volume query return query unit to dose unit
-        switch = {Units.CGY: DoseValuePresentation.Absolute,
-                  Units.GY: DoseValuePresentation.Absolute,
-                  Units.PERC: DoseValuePresentation.Relative}
+        switch = {
+            Units.CGY: DoseValuePresentation.Absolute,
+            Units.GY: DoseValuePresentation.Absolute,
+            Units.PERC: DoseValuePresentation.Relative
+        }
 
-        query_types = [QueryType.COMPLIMENT_VOLUME,
-                       QueryType.VOLUME_AT_DOSE,
-                       QueryType.HI,
-                       QueryType.CI,
-                       QueryType.GI]
+        query_types = [
+            QueryType.COMPLIMENT_VOLUME, QueryType.VOLUME_AT_DOSE,
+            QueryType.HI, QueryType.CI, QueryType.GI
+        ]
 
         if query.query_type in query_types:
             return switch.get(query.query_units, DoseValuePresentation.Unknown)
@@ -775,15 +800,16 @@ class PyQueryExtensions(MayoQuery):
         :param query: MayoQuery
         :return: DoseValue.DoseUnit
         """
-        switch = {Units.CGY: DoseUnit.cGy,
-                  Units.GY: DoseUnit.Gy,
-                  Units.PERC: DoseUnit.Percent}
+        switch = {
+            Units.CGY: DoseUnit.cGy,
+            Units.GY: DoseUnit.Gy,
+            Units.PERC: DoseUnit.Percent
+        }
 
-        query_types = [QueryType.COMPLIMENT_VOLUME,
-                       QueryType.VOLUME_AT_DOSE,
-                       QueryType.HI,
-                       QueryType.CI,
-                       QueryType.GI]
+        query_types = [
+            QueryType.COMPLIMENT_VOLUME, QueryType.VOLUME_AT_DOSE,
+            QueryType.HI, QueryType.CI, QueryType.GI
+        ]
         # If volume query return query unit to dose unit
         if query.query_type in query_types:
             return switch.get(query.query_units, DoseUnit.Unknown)
@@ -798,14 +824,20 @@ class PyQueryExtensions(MayoQuery):
         :return: the volume presentation of the query
         """
         # If volume query return query unit to dose unit
-        if query.query_type in [QueryType.COMPLIMENT_VOLUME, QueryType.VOLUME_AT_DOSE]:
-            switch = {Units.CC: VolumePresentation.absolute_cm3,
-                      Units.PERC: VolumePresentation.relative}
+        if query.query_type in [
+                QueryType.COMPLIMENT_VOLUME, QueryType.VOLUME_AT_DOSE
+        ]:
+            switch = {
+                Units.CC: VolumePresentation.absolute_cm3,
+                Units.PERC: VolumePresentation.relative
+            }
 
             return switch.get(query.units_desired, VolumePresentation.Unknown)
 
-        switch = {Units.CC: VolumePresentation.absolute_cm3,
-                  Units.PERC: VolumePresentation.relative}
+        switch = {
+            Units.CC: VolumePresentation.absolute_cm3,
+            Units.PERC: VolumePresentation.relative
+        }
 
         return switch.get(query.query_units, VolumePresentation.Unknown)
 

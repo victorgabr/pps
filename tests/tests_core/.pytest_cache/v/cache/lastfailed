@@ -1,0 +1,6 @@
+{
+  "test_DVHCalculation.py::test_calc_structure_rings": true,
+  "test_IOHandler.py::test_get_participant_folder_data": true,
+  "test_IOHandler.py::test_save_formatted_repport": true,
+  "test_pyDicomParser.py::test_global_max": true
+}

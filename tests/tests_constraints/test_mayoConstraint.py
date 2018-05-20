@@ -1,4 +1,4 @@
-from constraints.constraints import MayoConstraint
+from  pyplanscoring.constraints.constraints import MayoConstraint
 
 
 def test_MayoConstraint():

@@ -9,12 +9,16 @@ import difflib
 import string
 
 import numpy as np
+
 import pandas as pd
 
-from constraints.query import QueryExtensions, PyQueryExtensions
-from core.calculation import PyStructure
-from core.dvhdoses import get_dvh_min, get_dvh_max, get_dvh_mean
-from core.types import DoseValuePresentation, DoseValue, DoseUnit, DVHData, DICOMType
+from ..core.calculation import PyStructure
+from ..core.dvhdoses import get_dvh_max, get_dvh_mean, get_dvh_min
+
+from ..core.types import (DICOMType, DoseUnit, DoseValue,
+                          DoseValuePresentation, DVHData)
+
+from .query import PyQueryExtensions, QueryExtensions
 
 
 # TODO refactor to use PyDicomParser class and PyStructure
@@ -501,6 +505,10 @@ class PyPlanningItem:
     def dvh_data(self):
         return self._dvh_data
 
+    @dvh_data.setter
+    def dvh_data(self, value):
+        self._dvh_data = dict(value)
+
     @property
     def external_name(self):
         return self.rt_case.external_name
@@ -511,7 +519,7 @@ class PyPlanningItem:
 
     def calculate_dvh(self):
         if not self._dvh_data:
-            self._dvh_data = self.dvh_calculator.calculate_serial(self.dose_3d)
+            self._dvh_data = self.dvh_calculator.calculate_all(self.dose_3d)
 
     def get_dvh_cumulative_data(self, structure, dose_presentation, volume_presentation=None):
         """
@@ -657,7 +665,7 @@ class PyPlanningItem:
         return query.run_query(query, self, ss)
 
 
-class PyDVHItem:
+class DVHMetrics:
     # TODO write unit tests
     def __init__(self, dvh_data):
         """
@@ -807,7 +815,7 @@ class PyDVHItem:
 
             result_dvh = self._prepare_dvh_data(result, other)
 
-            return PyDVHItem(result_dvh)
+            return DVHMetrics(result_dvh)
         else:
             current = other.volume_array
 
@@ -818,7 +826,7 @@ class PyDVHItem:
 
             result_dvh = self._prepare_dvh_data(result, other)
 
-            return PyDVHItem(result_dvh)
+            return DVHMetrics(result_dvh)
 
     def __radd__(self, other):
         """

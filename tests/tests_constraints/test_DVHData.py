@@ -1,4 +1,4 @@
-from core.types import DoseValue, DoseUnit, VolumePresentation
+from pyplanscoring.core.types import DoseValue, DoseUnit, VolumePresentation
 import numpy as np
 from unittest import TestCase
 

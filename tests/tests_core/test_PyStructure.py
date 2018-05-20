@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from core.calculation import PyStructure
+from pyplanscoring.core.calculation import PyStructure
 
 
 def test_structure(brain):

@@ -1,9 +1,13 @@
 """
-    slice3.py - plot 3D data on a uniform tensor-product grid as a set of 
+    slice3.py - plot 3D data on a uniform tensor-product grid as a set of
     three adjustable xy, yz, and xz plots
 
-    Copyright (c) 2013 Greg von Winckel 
+    Copyright (c) 2013 Greg von Winckel
     All rights reserved.
+
+    added dicom coordinate system.
+    Copyright (c) 2017 Victor Gabriel Leandro Alves, D.Sc.
+
 
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -18,20 +22,19 @@
 
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
-    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-    Created on Wed Dec 4 11:24:14 MST 2013
 """
 
 import matplotlib.pyplot as plt
-import numpy as np
-from matplotlib.widgets import Slider
 
-from core.dicom_reader import ScoringDicomParser
+import numpy as np
+
+from matplotlib.widgets import Slider
 
 
 def meshgrid3(x, y, z):
@@ -49,7 +52,7 @@ def meshgrid3(x, y, z):
 
 
 class DiscreteSlider(Slider):
-    """A matplotlib slider widget with discrete steps. 
+    """A matplotlib slider widget with discrete steps.
        Created by Joe Kington and submitted to StackOverflow on Dec 1 2012
        http://stackoverflow.com/questions/13656387/can-i-make-matplotlib-sliders-more-discrete
     """
@@ -111,25 +114,31 @@ class slice3(object):
         self.zplot_yline = self.ax3.axhline(color='m', linestyle='--', lw=2)
         self.zplot_yline.set_ydata(self.y[0])
 
-        self.xslice = self.ax1.imshow(u[0, :, :], extent=(self.z[0], self.z[-1], self.y[0], self.y[-1]))
-        self.yslice = self.ax2.imshow(u[:, 0, :], extent=(self.z[0], self.z[-1], self.x[0], self.x[-1]))
-        self.zslice = self.ax3.imshow(u[:, :, 0], extent=(self.x[0], self.x[-1], self.y[0], self.y[-1]))
+        self.xslice = self.ax1.imshow(
+            u[0, :, :], extent=(self.z[0], self.z[-1], self.y[0], self.y[-1]))
+        self.yslice = self.ax2.imshow(
+            u[:, 0, :], extent=(self.z[0], self.z[-1], self.x[0], self.x[-1]))
+        self.zslice = self.ax3.imshow(
+            u[:, :, 0], extent=(self.x[0], self.x[-1], self.y[0], self.y[-1]))
 
         # Create and initialize x-slider
         self.sliderax1 = self.fig.add_axes([0.125, 0.08, 0.225, 0.03])
-        self.sliderx = DiscreteSlider(self.sliderax1, '', 0, len(self.x) - 1, increment=1, valinit=0)
+        self.sliderx = DiscreteSlider(
+            self.sliderax1, '', 0, len(self.x) - 1, increment=1, valinit=0)
         self.sliderx.on_changed(self.update_x)
         self.sliderx.set_val(0)
 
         # Create and initialize y-slider
         self.sliderax2 = self.fig.add_axes([0.4, 0.08, 0.225, 0.03])
-        self.slidery = DiscreteSlider(self.sliderax2, '', 0, len(self.y) - 1, increment=1, valinit=0)
+        self.slidery = DiscreteSlider(
+            self.sliderax2, '', 0, len(self.y) - 1, increment=1, valinit=0)
         self.slidery.on_changed(self.update_y)
         self.slidery.set_val(0)
 
         # Create and initialize z-slider
         self.sliderax3 = self.fig.add_axes([0.675, 0.08, 0.225, 0.03])
-        self.sliderz = DiscreteSlider(self.sliderax3, '', 0, len(self.z) - 1, increment=1, valinit=0)
+        self.sliderz = DiscreteSlider(
+            self.sliderax3, '', 0, len(self.z) - 1, increment=1, valinit=0)
         self.sliderz.on_changed(self.update_z)
         self.sliderz.set_val(0)
 
@@ -181,13 +190,14 @@ class DoseSlice3D(object):
 
     """
 
-    def __init__(self, xx, yy, zz, u):
+    def __init__(self, dose_3d):
+        xx, yy, zz = dose_3d.grid
+        u = dose_3d.values
         self.x = xx[::-1]
         self.y = -yy  # inverted y axis to pixel Position
         self.z = zz
 
         self.data = u
-
         self.fig = plt.figure(1, (20, 7))
         self.fig.suptitle(' ---- 3D slices viewer ----')
         self.ax1 = self.fig.add_subplot(131, aspect='equal')
@@ -217,38 +227,60 @@ class DoseSlice3D(object):
         vmin = u.min()
         vmax = u.max()
 
-        zl, yl, xl = int(u.shape[0] / 2), int(u.shape[1] / 2), int(u.shape[2] / 2)
+        zl, yl, xl = int(u.shape[0] / 2), int(u.shape[1] / 2), int(
+            u.shape[2] / 2)
 
-        self.xslice = self.ax1.imshow(np.flipud(u[:, :, xl]),
-                                      extent=(self.y[0], self.y[-1], self.z[0], self.z[-1]),
-                                      vmin=vmin,
-                                      vmax=vmax)
+        self.xslice = self.ax1.imshow(
+            np.flipud(u[:, :, xl]),
+            extent=(self.y[0], self.y[-1], self.z[0], self.z[-1]),
+            vmin=vmin,
+            vmax=vmax)
 
-        self.yslice = self.ax2.imshow(np.flipud(u[:, yl, :]),
-                                      extent=(self.x[0], self.x[-1], self.z[0], self.z[-1]),
-                                      vmin=vmin,
-                                      vmax=vmax)
+        self.yslice = self.ax2.imshow(
+            np.flipud(u[:, yl, :]),
+            extent=(self.x[0], self.x[-1], self.z[0], self.z[-1]),
+            vmin=vmin,
+            vmax=vmax)
 
-        self.zslice = self.ax3.imshow(u[zl, :, :],
-                                      extent=(self.x[0], self.x[-1], self.y[-1], self.y[0]),
-                                      vmin=vmin,
-                                      vmax=vmax)
+        self.zslice = self.ax3.imshow(
+            u[zl, :, :],
+            extent=(self.x[0], self.x[-1], self.y[-1], self.y[0]),
+            vmin=vmin,
+            vmax=vmax)
 
         # Create and initialize x-slider
         self.sliderax1 = self.fig.add_axes([0.125, 0.08, 0.225, 0.03])
-        self.sliderx = DiscreteSlider(self.sliderax1, 'x-slice', 0, len(self.x) - 1, increment=1, valinit=0)
+        self.sliderx = DiscreteSlider(
+            self.sliderax1,
+            'x-slice',
+            0,
+            len(self.x) - 1,
+            increment=1,
+            valinit=0)
         self.sliderx.on_changed(self.update_x)
         self.sliderx.set_val(xl)
 
         # Create and initialize y-slider
         self.sliderax2 = self.fig.add_axes([0.4, 0.08, 0.225, 0.03])
-        self.slidery = DiscreteSlider(self.sliderax2, 'y-slice', 0, len(self.y) - 1, increment=1, valinit=0)
+        self.slidery = DiscreteSlider(
+            self.sliderax2,
+            'y-slice',
+            0,
+            len(self.y) - 1,
+            increment=1,
+            valinit=0)
         self.slidery.on_changed(self.update_y)
         self.slidery.set_val(yl)
 
         # Create and initialize z-slider
         self.sliderax3 = self.fig.add_axes([0.675, 0.08, 0.225, 0.03])
-        self.sliderz = DiscreteSlider(self.sliderax3, 'z-slice', 0, len(self.z) - 1, increment=1, valinit=0)
+        self.sliderz = DiscreteSlider(
+            self.sliderax3,
+            'z-slice',
+            0,
+            len(self.z) - 1,
+            increment=1,
+            valinit=0)
         self.sliderz.on_changed(self.update_z)
         self.sliderz.set_val(zl)
 
@@ -286,34 +318,3 @@ class DoseSlice3D(object):
         figManager = plt.get_current_fig_manager()
         # figManager.window.showMaximized()
         plt.show()
-
-
-if __name__ == '__main__':
-    # Number of x-grid points
-    arq = r'D:\Dropbox\Plan_Competition_Project\Competition_2016\Eclipse Plans\Saad RapidArc Eclipse\Saad RapidArc Eclipse\RD.Saad-Eclipse-RapidArc.dcm'
-    dose_obj = ScoringDicomParser(filename=arq)
-    x, y, z = dose_obj.get_grid_3d()
-    dose_3D = dose_obj.ds.pixel_array * float(dose_obj.ds.DoseGridScaling) * 100
-
-    dose_view = DoseSlice3D(x, y, z, dose_3D)
-    dose_view.show()
-    #
-    # # Number of
-    # ny = 100
-    # nz = 200
-    #
-    # x = np.linspace(-4, 4, nx)
-    # y = np.linspace(-4, 4, ny)
-    # z = np.linspace(0, 8, nz)
-    #
-    # xx, yy, zz = meshgrid3(x, y, z)
-    #
-    # # Display three cross sections of a Gaussian Beam/Paraxial wave
-    # u = np.real(np.exp(-(2 * xx ** 2 + yy ** 2) / (.2 + 2j * zz)) / np.sqrt(.2 + 2j * zz))
-    #
-    # s3 = slice3(xx, yy, zz, u)
-    # s3.xlabel('x', fontsize=18)
-    # s3.ylabel('y', fontsize=18)
-    # s3.zlabel('z', fontsize=18)
-    #
-    # s3.show()

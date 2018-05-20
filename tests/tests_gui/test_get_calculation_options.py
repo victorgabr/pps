@@ -1,6 +1,6 @@
 import os
 
-from core.calculation import get_calculation_options
+from pyplanscoring.core.calculation import get_calculation_options
 
 
 def test_get_calculation_options(data_dir):

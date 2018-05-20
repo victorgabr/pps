@@ -1,14 +1,18 @@
 import os
+from unittest import TestCase
+
+import pandas as pd
 import pytest
 import quantities as pq
-import pandas as pd
-from unittest import TestCase
-from constraints.constraints import MayoConstraintConverter
-from constraints.metrics import RTCase, PlanningItem, PyPlanningItem
-from constraints.query import QueryExtensions
-from core.calculation import get_calculation_options, DVHCalculator
-from core.dicom_reader import PyDicomParser
-from core.types import Dose3D, DVHData
+
+from pyplanscoring.constraints.constraints import MayoConstraintConverter
+from pyplanscoring.constraints.metrics import (PlanningItem, PyPlanningItem,
+                                               RTCase)
+from pyplanscoring.constraints.query import QueryExtensions
+from pyplanscoring.core.calculation import (DVHCalculator,
+                                            get_calculation_options)
+from pyplanscoring.core.dicom_reader import PyDicomParser
+from pyplanscoring.core.types import Dose3D, DVHData
 
 # TODO review fixtures changing to singleton objects
 # TODO split this file in many conftest.py inside each folder
@@ -56,30 +60,13 @@ rs = os.path.join(DATA_DIR, 'RS.dcm')
 rd = os.path.join(DATA_DIR, 'RD.dcm')
 rp = os.path.join(DATA_DIR, 'RP.dcm')
 
-str_names = ['LENS LT',
-             'PAROTID LT',
-             'BRACHIAL PLEXUS',
-             'OPTIC N. RT PRV',
-             'OPTIC CHIASM PRV',
-             'OPTIC N. RT',
-             'ORAL CAVITY',
-             'BRAINSTEM',
-             'SPINAL CORD',
-             'OPTIC CHIASM',
-             'LENS RT',
-             'LARYNX',
-             'SPINAL CORD PRV',
-             'EYE LT',
-             'PTV56',
-             'BRAINSTEM PRV',
-             'PTV70',
-             'OPTIC N. LT PRV',
-             'EYE RT',
-             'PTV63',
-             'OPTIC N. LT',
-             'LIPS',
-             'ESOPHAGUS',
-             'PTV70']
+str_names = [
+    'LENS LT', 'PAROTID LT', 'BRACHIAL PLEXUS', 'OPTIC N. RT PRV',
+    'OPTIC CHIASM PRV', 'OPTIC N. RT', 'ORAL CAVITY', 'BRAINSTEM',
+    'SPINAL CORD', 'OPTIC CHIASM', 'LENS RT', 'LARYNX', 'SPINAL CORD PRV',
+    'EYE LT', 'PTV56', 'BRAINSTEM PRV', 'PTV70', 'OPTIC N. LT PRV', 'EYE RT',
+    'PTV63', 'OPTIC N. LT', 'LIPS', 'ESOPHAGUS', 'PTV70'
+]
 
 rs_dvh = os.path.join(DATA_DIR, 'RS_dvh.dcm')
 structures_tmp = PyDicomParser(filename=rs_dvh).GetStructures()
@@ -239,12 +226,12 @@ def query_extensions():
 #                       PyDicomParser(filename=rd_dvh))
 #     return pi
 
-
 rd_dvh = os.path.join(DATA_DIR, 'RD_dvh.dcm')
 rs_dvh = os.path.join(DATA_DIR, 'RS_dvh.dcm')
-planning_item = PlanningItem(PyDicomParser(filename=rp),
-                             PyDicomParser(filename=rs_dvh),
-                             PyDicomParser(filename=rd_dvh))
+planning_item = PlanningItem(
+    PyDicomParser(filename=rp),
+    PyDicomParser(filename=rs_dvh),
+    PyDicomParser(filename=rd_dvh))
 
 
 @pytest.fixture(scope="session")

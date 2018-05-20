@@ -2,7 +2,7 @@ from unittest import TestCase
 
 import pytest
 
-from constraints.query import MayoQueryReader
+from  pyplanscoring.constraints.query import MayoQueryReader
 
 # instantiate the MayoReader class
 

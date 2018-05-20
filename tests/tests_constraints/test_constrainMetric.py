@@ -1,4 +1,4 @@
-from constraints.metrics import ConstrainMetric, MetricType
+from  pyplanscoring.constraints.metrics import ConstrainMetric, MetricType
 from tests.conftest import planning_item
 
 

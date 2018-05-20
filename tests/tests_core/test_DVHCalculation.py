@@ -2,9 +2,9 @@ import  os
 import matplotlib.pyplot as plt
 import numpy as np
 
-from core.calculation import DVHCalculation, PyStructure
-from core.dicom_reader import PyDicomParser
-from core.types import Dose3D, DoseUnit
+from pyplanscoring.core.calculation import DVHCalculation, PyStructure
+from pyplanscoring.core.dicom_reader import PyDicomParser
+from pyplanscoring.core.types import Dose3D, DoseUnit
 
 
 def plot_dvh(dvh, title):
@@ -120,29 +120,29 @@ def test_calculate(structures, optic_chiasm, body, ptv70, lens, plot_flag, rd_dc
             plot_dvh_comp(dvh_calculated[roi_number], dvhs[roi_number], structures[roi_number]['name'])
             plt.show()
 
-
-def test_calc_structure_rings(dicom_folder):
-    """
-       Test case to lung SBRT structures.
-       roi_number: 34,
-       name: D2CM PRIMARY,
-       roi_number: 35,
-       name: D2CM LN
-    """
-    # given
-    rs_dvh = os.path.join(dicom_folder, 'RS.dcm')
-    rd = os.path.join(dicom_folder,'RD.dcm')
-
-    # 3D dose matrix
-    dose_dcm = PyDicomParser(filename=rd)
-    dose_values = dose_dcm.get_dose_matrix()
-    grid = dose_dcm.get_grid_3d()
-    dose_3d = Dose3D(dose_values, grid, DoseUnit.Gy)
-
-    # structures
-    structures = PyDicomParser(filename=rs_dvh).GetStructures()
-    d2cm_prim = PyStructure(structures[34])
-
-    dvh_calc = DVHCalculation(d2cm_prim, dose_3d)
-    d2cm_prim_dvh = dvh_calc.calculate()
-    pass
+# TODO REFACTOR
+# def test_calc_structure_rings(dicom_folder):
+#     """
+#        Test case to lung SBRT structures.
+#        roi_number: 34,
+#        name: D2CM PRIMARY,
+#        roi_number: 35,
+#        name: D2CM LN
+#     """
+#     # given
+#     rs_dvh = os.path.join(dicom_folder, 'RS.dcm')
+#     rd = os.path.join(dicom_folder,'RD.dcm')
+#
+#     # 3D dose matrix
+#     dose_dcm = PyDicomParser(filename=rd)
+#     dose_values = dose_dcm.get_dose_matrix()
+#     grid = dose_dcm.get_grid_3d()
+#     dose_3d = Dose3D(dose_values, grid, DoseUnit.Gy)
+#
+#     # structures
+#     structures = PyDicomParser(filename=rs_dvh).GetStructures()
+#     d2cm_prim = PyStructure(structures[34])
+#
+#     dvh_calc = DVHCalculation(d2cm_prim, dose_3d)
+#     d2cm_prim_dvh = dvh_calc.calculate()
+#     pass

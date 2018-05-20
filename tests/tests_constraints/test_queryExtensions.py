@@ -1,6 +1,6 @@
 # initializing the objects
-from constraints.query import QueryExtensions
-from core.types import VolumePresentation, DoseValue, DoseUnit
+from  pyplanscoring.constraints.query import QueryExtensions
+from pyplanscoring.core.types import VolumePresentation, DoseValue, DoseUnit
 
 
 def test_get_dose_presentation():

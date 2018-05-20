@@ -3,9 +3,9 @@ import os
 
 import numpy as np
 
-from constraints.metrics import PlanningItem
-from core.dicom_reader import PyDicomParser
-from core.types import DoseUnit, DoseValuePresentation, VolumePresentation, DoseValue
+from  pyplanscoring.constraints.metrics import PlanningItem
+from pyplanscoring.core.dicom_reader import PyDicomParser
+from pyplanscoring.core.types import DoseUnit, DoseValuePresentation, VolumePresentation, DoseValue
 from tests.conftest import DATA_DIR, rp
 
 # given

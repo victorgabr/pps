@@ -1,0 +1,12 @@
+Plan Quality Metric Component	Objective(s)	Result		Raw Score	Max Score	Performance	PlanIQ Adjusted Performance	Comments
+[PTV_1] D[99.0%] (Gy)	> 33.25 [≥ 35]				12 *			
+[PTV_2] D[99.0%] (Gy)	> 33.25 [≥ 35]				12 *			
+[PTV_3] D[99.0%] (Gy)	> 33.25 [≥ 35]				12 *			
+[PTV_4] D[99.0%] (Gy)	> 33.25 [≥ 35]				12 *			
+[PTV_5] D[99.0%] (Gy)	> 33.25 [≥ 35]				12 *			
+[PTV_ALL] Conformality Index [35.0Gy]	< 1.6 [≤ 1.2]				3 *			
+[BRAIN - PTV] V[17.5Gy] (cc)	< 30 [≤ 10]				5 *			
+[BRAIN STEM] V[3.0Gy] (cc)	< 0.75 [≤ 0.25]				15 *			
+[LOW DOSE REGION] V[15.0Gy] (cc)	< 0.75 [≤ 0.25]				5 *			
+[OPTIC STRUCTURES] V[2.0Gy] (cc)	< 0.75 [≤ 0.25]				12 *			
+Total [10 Metrics]				0.00 *	0.00 *			

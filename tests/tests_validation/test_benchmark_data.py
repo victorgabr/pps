@@ -6,9 +6,9 @@ import scipy.interpolate as itp
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from constraints.metrics import PyDVHItem
-from core.calculation import DVHCalculation
-from core.types import DVHData
+from  pyplanscoring.constraints.metrics import DVHMetrics
+from pyplanscoring.core.calculation import DVHCalculation
+from pyplanscoring.core.types import DVHData
 
 plt.style.use('ggplot')
 
@@ -103,7 +103,7 @@ def calc_data(row, dose_files_dict, structure_dict, constrains, calc_grid):
     dose_obj = dose_files_dict[gradient_direction][dose_voxel]
     dvh_calculator = DVHCalculation(py_struc, dose_obj, calc_grid=calc_grid)
     dvh = dvh_calculator.calculate(True)
-    dvh_item = PyDVHItem(dvh)
+    dvh_item = DVHMetrics(dvh)
     constraints_results = [dvh_item.execute_query(q) for q in constrains]
     constraints_results = [dvh_item.volume] + constraints_results
     return {row[0]: constraints_results}
@@ -170,7 +170,7 @@ def test_1(test1_calc_data, constraints_data, results_folder, grid=0.1, lim=3, s
         dose_obj = dose_files_dict[gradient_direction][dose_voxel]
         dvh_calculator = DVHCalculation(py_struc, dose_obj, calc_grid=calc_grid)
         dvh = dvh_calculator.calculate(True)
-        dvh_item = PyDVHItem(dvh)
+        dvh_item = DVHMetrics(dvh)
         constraints_results = [dvh_item.execute_query(q) for q in constraints_data]
         constraints_results = [dvh_item.volume] + constraints_results
         result[row[0]] = constraints_results
@@ -222,7 +222,7 @@ def test_2(test2_calc_data, constraints_data, results_folder, grid=0.1, lim=3, s
         dose_obj = dose_files_dict[gradient_direction][dose_voxel]
         dvh_calculator = DVHCalculation(py_struc, dose_obj, calc_grid=calc_grid)
         dvh = dvh_calculator.calculate(True)
-        dvh_item = PyDVHItem(dvh)
+        dvh_item = DVHMetrics(dvh)
         constraints_results = [dvh_item.execute_query(q) for q in constraints_data]
         constraints_results = [dvh_item.volume] + constraints_results
         result[row[0]] = constraints_results

@@ -2,15 +2,16 @@
     Module to encapsulate the public interface
 
 """
+from typing import Dict, Tuple
+
 import matplotlib.pyplot as plt
 import numpy as np
 
-from core.calculation import PyStructure, DVHCalculation
-from core.dicom_reader import PyDicomParser
-from typing import Tuple, Dict
+from .core.calculation import DVHCalculation, PyStructure
+from .core.dicom_reader import PyDicomParser
 
 
-def plot_dvh(dvh, title):
+def plot_dvh(dvh, title=''):
     """
         Plots an absolute DVH
     :param dvh:
@@ -25,6 +26,7 @@ def plot_dvh(dvh, title):
     plt.ylabel(y_label)
     plt.title(title)
     plt.legend()
+    plt.show()
 
 
 def plot_dvhs(dvhs, title):
@@ -85,28 +87,39 @@ class PyPlanScoringAPI:
     def dvhs(self):
         return self._dvhs
 
-    def get_structure_dvh(self, dicom_id: int, end_cap: float = None, calc_grid: Tuple = None, verbose=False) -> Dict:
+    def get_structure_dvh(self,
+                          roi_number: int,
+                          end_cap: float = None,
+                          calc_grid: Tuple = None,
+                          verbose=False) -> Dict:
         """
             Helper method to calculate a structure DVH from DICOM dataset
-        :param dicom_id: strucure id - 1,2,3..N
+        :param roi_number: strucure id - 1,2,3..N
         :param end_cap: end cap value in mm - e.g, half slice size.
         :param calc_grid: (dx,dy,dz) up-sampling grid delta in mm - Voxel size
         :return:
         """
-        if dicom_id in self.structures:
+        if roi_number in self.structures:
             # setup Structure object that encapsulates end-cap and oversampling
-            py_struc = PyStructure(self.structures[dicom_id], end_cap=end_cap)
+            py_struc = PyStructure(
+                self.structures[roi_number], end_cap=end_cap)
 
             # Setup DVH calculator
-            dvh_calc_obj = DVHCalculation(py_struc, self.dose_3d, calc_grid=calc_grid)
+            dvh_calc_obj = DVHCalculation(
+                py_struc, self.dose_3d, calc_grid=calc_grid)
             structure_dvh = dvh_calc_obj.calculate(verbose=verbose)
 
             return structure_dvh
 
         else:
-            raise ValueError("Structure of DICOM-ID: {} not found on DICOM-RTSS dataset".format(dicom_id))
+            raise ValueError(
+                "Structure of DICOM-ID: %s not found on DICOM-RTSS dataset" %
+                roi_number)
 
-    def calc_dvhs(self, end_cap: float = None, calc_grid: Tuple = None, verbose=False) -> Dict:
+    def calc_dvhs(self,
+                  end_cap: float = None,
+                  calc_grid: Tuple = None,
+                  verbose=False) -> Dict:
         """
             Calculates all DVHs
         """
@@ -114,23 +127,10 @@ class PyPlanScoringAPI:
         # TODO implement auto grid size selecting
 
         for roi_number, contour in self.structures.items():
-            self._dvhs[roi_number] = self.get_structure_dvh(dicom_id=roi_number,
-                                                            end_cap=end_cap,
-                                                            calc_grid=calc_grid,
-                                                            verbose=verbose)
+            self._dvhs[roi_number] = self.get_structure_dvh(
+                roi_number=roi_number,
+                end_cap=end_cap,
+                calc_grid=calc_grid,
+                verbose=verbose)
 
         return self._dvhs
-
-
-if __name__ == '__main__':
-    # given RT-DOSE and RT structure
-
-    # RS file
-    rs_file = '/home/victor/Dropbox/Plan_Competition_Project/tests/tests_validation/benchmark_data/RS.dcm'
-
-    # RD file
-    rd_file = '/home/victor/Dropbox/Plan_Competition_Project/tests/tests_validation/benchmark_data/RD.dcm'
-
-    pp = PyPlanScoringAPI(rs_file, rd_file)
-    dvhs = pp.calc_dvhs(verbose=True)
-    plot_dvhs(dvhs, 'PyPlanScoring')

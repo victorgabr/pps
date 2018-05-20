@@ -1,19 +1,28 @@
 """Class that parses and returns formatted DICOM RT data."""
-# Copyright (c) 2017      Victor Gabriel Leandro Alves
+# Copyright (c) 2017-2018      Victor Gabriel Leandro Alves
 # Copyright (c) 2009-2016 Aditya Panchal
 # Copyright (c) 2009-2010 Roy Keyes
 # This file based on part of dicompyler-core, released under a BSD license.
 
 import random
-from math import sqrt, pow
+from math import pow, sqrt
+
+from PIL import Image
 
 import numpy as np
-import pydicom as dicom
-from PIL import Image
-from scipy.interpolate import interp1d, RegularGridInterpolator
 
-from core.geometry import centroid_of_polygon
-from core.types import Dose3D, DoseUnit
+import pydicom as dicom
+
+from scipy.interpolate import RegularGridInterpolator, interp1d
+
+from .geometry import centroid_of_polygon
+from .types import Dose3D, DoseUnit
+'''
+
+http://dicom.nema.org/medical/Dicom/2016b/output/chtml/part03/sect_C.8.8.html
+http://dicom.nema.org/medical/Dicom/2016b/output/chtml/part03/sect_C.7.6.2.html#sect_C.7.6.2.1.1
+
+'''
 
 
 class DicomParserBase(object):
@@ -28,7 +37,8 @@ class DicomParserBase(object):
             try:
                 # Only pydicom 0.9.5 and above supports the force read argument
                 if dicom.__version__ >= "0.9.5":
-                    self.ds = dicom.read_file(filename, defer_size=100, force=True)
+                    self.ds = dicom.read_file(
+                        filename, defer_size=100, force=True)
                 else:
                     self.ds = dicom.read_file(filename, defer_size=100)
             except (EOFError, IOError):
@@ -38,7 +48,7 @@ class DicomParserBase(object):
                 # Sometimes DICOM files may not have headers, but they should always
                 # have a SOPClassUID to declare what type of file it is. If the
                 # file doesn't have a SOPClassUID, then it probably isn't DICOM.
-                if not "SOPClassUID" in self.ds:
+                if "SOPClassUID" not in self.ds:
                     raise AttributeError
         else:
             raise AttributeError
@@ -104,11 +114,13 @@ class DicomParserBase(object):
 
         if "ReferencedFrameofReferences" in self.ds:
             if "RTReferencedStudies" in self.ds.ReferencedFrameofReferences[0]:
-                if "RTReferencedSeries" in self.ds.ReferencedFrameofReferences[0].RTReferencedStudies[0]:
+                if "RTReferencedSeries" in self.ds.ReferencedFrameofReferences[
+                        0].RTReferencedStudies[0]:
                     if "SeriesInstanceUID" in \
                             self.ds.ReferencedFrameofReferences[0].RTReferencedStudies[0].RTReferencedSeries[0]:
-                        return self.ds.ReferencedFrameofReferences[0].RTReferencedStudies[0].RTReferencedSeries[
-                            0].SeriesInstanceUID
+                        return self.ds.ReferencedFrameofReferences[
+                            0].RTReferencedStudies[0].RTReferencedSeries[
+                                0].SeriesInstanceUID
         else:
             return ''
 
@@ -142,13 +154,16 @@ class DicomParserBase(object):
         """Return the patient demographics from a DICOM file."""
 
         # Set up some sensible defaults for demographics
-        patient = {'name': 'N/A',
-                   'id': 'N/A',
-                   'dob': 'None Found',
-                   'gender': 'Other'}
+        patient = {
+            'name': 'N/A',
+            'id': 'N/A',
+            'dob': 'None Found',
+            'gender': 'Other'
+        }
         if 'PatientsName' in self.ds:
             name = self.ds.PatientsName
-            patient['name'] = name.family_comma_given().replace(',', '').replace('^', ' ').strip()
+            patient['name'] = name.family_comma_given().replace(
+                ',', '').replace('^', ' ').strip()
         if 'PatientID' in self.ds:
             patient['id'] = self.ds.PatientID
         if 'PatientsSex' in self.ds:
@@ -231,10 +246,13 @@ class DicomParserBase(object):
     def GetLUTValue(self, data, window, level):
         """Apply the RGB Look-Up Table for the given data and window/level value."""
 
-        lutvalue = np.piecewise(data,
-                                [data <= (level - 0.5 - (window - 1) / 2),
-                                 data > (level - 0.5 + (window - 1) / 2)],
-                                [0, 255, lambda data: ((data - (level - 0.5)) / (window - 1) + 0.5) * (255 - 0)])
+        lutvalue = np.piecewise(data, [
+            data <= (level - 0.5 - (window - 1) / 2), data > (level - 0.5 +
+                                                              (window - 1) / 2)
+        ], [
+            0, 255,
+            lambda data: ((data - (level - 0.5)) / (window - 1) + 0.5) * (255 - 0)
+        ])
         # Convert the resultant array to an unsigned 8-bit array to create
         # an 8-bit grayscale LUT since the range is only from 0 to 255
         return np.array(lutvalue, dtype=np.uint8)
@@ -251,8 +269,8 @@ class DicomParserBase(object):
         m = np.matrix(
             [[orientation[0] * di, orientation[3] * dj, 0, position[0]],
              [orientation[1] * di, orientation[4] * dj, 0, position[1]],
-             [orientation[2] * di, orientation[5] * dj, 0, position[2]],
-             [0, 0, 0, 1]])
+             [orientation[2] * di, orientation[5] * dj, 0,
+              position[2]], [0, 0, 0, 1]])
 
         x = []
         y = []
@@ -311,10 +329,10 @@ class DicomParserBase(object):
                 number = roi.ReferencedROINumber
 
                 # Generate a random color for the current ROI
-                structures[number]['color'] = np.array((
-                    random.randint(0, 255),
-                    random.randint(0, 255),
-                    random.randint(0, 255)), dtype=float)
+                structures[number]['color'] = np.array(
+                    (random.randint(0, 255), random.randint(0, 255),
+                     random.randint(0, 255)),
+                    dtype=float)
                 # Get the RGB color triplet for the current ROI if it exists
                 if 'ROIDisplayColor' in roi:
                     # Make sure the color is not none
@@ -344,21 +362,26 @@ class DicomParserBase(object):
 
                         # Determine all the plane properties
                         plane['geometricType'] = contour.ContourGeometricType
-                        plane['numContourPoints'] = contour.NumberofContourPoints
-                        plane['contourData'] = self.GetContourPoints(contour.ContourData)
+                        plane[
+                            'numContourPoints'] = contour.NumberofContourPoints
+                        plane['contourData'] = self.GetContourPoints(
+                            contour.ContourData)
                         # Each plane which coincides with a image slice will have a unique ID
                         if 'ContourImages' in contour:
-                            plane['UID'] = contour.ContourImages[0].ReferencedSOPInstanceUID
+                            plane['UID'] = contour.ContourImages[
+                                0].ReferencedSOPInstanceUID
 
                         # Add each plane to the planes dictionary of the current ROI
                         if 'geometricType' in plane:
-                            z = ('%.2f' % plane['contourData'][0][2]).replace('-0', '0')
+                            z = ('%.2f' % plane['contourData'][0][2]).replace(
+                                '-0', '0')
                             if z not in planes.keys():
                                 planes[z] = []
                             planes[z].append(plane)
 
                 # Calculate the plane thickness for the current ROI
-                structures[number]['thickness'] = self.CalculatePlaneThickness(planes)
+                structures[number]['thickness'] = self.CalculatePlaneThickness(
+                    planes)
 
                 # Add the planes dictionary to the current ROI
                 # print(planes)
@@ -525,8 +548,8 @@ class DicomParserBase(object):
                 lb = np.argmin(lmin)
                 # Fractional distance of dose plane between upper and lower bound
                 fz = (z - planes[lb]) / (planes[ub] - planes[lb])
-                plane = self.InterpolateDosePlanes(
-                    self.ds.pixel_array[ub], self.ds.pixel_array[lb], fz)
+                plane = self.InterpolateDosePlanes(self.ds.pixel_array[ub],
+                                                   self.ds.pixel_array[lb], fz)
                 return plane
         else:
             return []
@@ -574,7 +597,9 @@ class DicomParserBase(object):
             dist = 100000  # Arbitrary large number
             # Determine the distance from each point in the upper bound to each point in the lower bound
             for l, lp in enumerate(lbpoints):
-                newDist = sqrt(pow((up[0] - lp[0]), 2) + pow((up[1] - lp[1]), 2) + pow((ub - lb), 2))
+                newDist = sqrt(
+                    pow((up[0] - lp[0]), 2) + pow((up[1] - lp[1]), 2) + pow(
+                        (ub - lb), 2))
                 # If the distance is smaller, then linearly interpolate the point
                 if newDist < dist:
                     dist = newDist
@@ -636,7 +661,8 @@ class DicomParserBase(object):
                         self.plan['rxdose'] = item.TargetPrescriptionDose
         if ("FractionGroups" in self.ds) and (self.plan['rxdose'] == 0):
             fg = self.ds.FractionGroups[0]
-            if ("ReferencedBeams" in fg) and ("NumberofFractionsPlanned" in fg):
+            if ("ReferencedBeams" in fg) and (
+                    "NumberofFractionsPlanned" in fg):
                 beams = fg.ReferencedBeams
                 fx = fg.NumberofFractionsPlanned
                 for beam in beams:
@@ -657,7 +683,8 @@ class DicomParserBase(object):
         else:
             self.plan['plan_name'] = ''
         if 'PatientsName' in self.ds:
-            name = self.ds.PatientsName.family_comma_given().replace(',', '').replace('^', ' ').strip()
+            name = self.ds.PatientsName.family_comma_given().replace(
+                ',', '').replace('^', ' ').strip()
             self.plan['patient_name'] = name
         else:
             self.plan['patient_name'] = ''
@@ -678,7 +705,8 @@ class DicomParserBase(object):
         for b in bdict:
             beam = {}
             beam['name'] = b.BeamName if "BeamName" in b else ""
-            beam['description'] = b.BeamDescription if "BeamDescription" in b else ""
+            beam[
+                'description'] = b.BeamDescription if "BeamDescription" in b else ""
             beams[b.BeamNumber] = beam
 
         # Obtain the referenced beam info from the fraction info
@@ -689,7 +717,8 @@ class DicomParserBase(object):
                 nfx = fg.NumberofFractionsPlanned
                 for b in rb:
                     if "BeamDose" in b:
-                        beams[b.ReferencedBeamNumber]['dose'] = b.BeamDose * nfx
+                        beams[b.ReferencedBeamNumber][
+                            'dose'] = b.BeamDose * nfx
                     if 'BeamMeterset' in b:
                         beams[b.ReferencedBeamNumber]['MU'] = b.BeamMeterset
         return beams
@@ -774,10 +803,10 @@ class PyDicomParser(DicomParserBase):
                 number = roi.ReferencedROINumber
 
                 # Generate a random color for the current ROI
-                structures[number]['color'] = np.array((
-                    random.randint(0, 255),
-                    random.randint(0, 255),
-                    random.randint(0, 255)), dtype=float)
+                structures[number]['color'] = np.array(
+                    (random.randint(0, 255), random.randint(0, 255),
+                     random.randint(0, 255)),
+                    dtype=float)
                 # Get the RGB color triplet for the current ROI if it exists
                 if 'ROIDisplayColor' in roi:
                     # Make sure the color is not none
@@ -808,22 +837,27 @@ class PyDicomParser(DicomParserBase):
 
                         # Determine all the plane properties
                         plane['geometricType'] = contour.ContourGeometricType
-                        plane['numContourPoints'] = contour.NumberOfContourPoints
-                        contour_data = self.GetContourPoints(contour.ContourData)
+                        plane[
+                            'numContourPoints'] = contour.NumberOfContourPoints
+                        contour_data = self.GetContourPoints(
+                            contour.ContourData)
                         plane['contourData'] = contour_data
                         # add info about contour centroid
 
                         # TODO DEBUG centroid calculation on XiO
                         # if contour.roi not in ['POINT', 'ISOCENTER']:
                         try:
-                            plane['centroid'] = centroid_of_polygon(contour_data[:, 0], contour_data[:, 1])
+                            plane['centroid'] = centroid_of_polygon(
+                                contour_data[:, 0], contour_data[:, 1])
                             # Each plane which coincides with a image slice will have a unique ID
                         except:
-                            plane['centroid'] = (contour_data[:, 0].mean(), contour_data[:, 1].mean())
+                            plane['centroid'] = (contour_data[:, 0].mean(),
+                                                 contour_data[:, 1].mean())
                         # plane['centroid'] = np.median(contour_data[:, 0]), np.median(contour_data[:, 1])
 
                         if 'ContourImages' in contour:
-                            plane['UID'] = contour.ContourImages[0].ReferencedSOPInstanceUID
+                            plane['UID'] = contour.ContourImages[
+                                0].ReferencedSOPInstanceUID
 
                         # Add each plane to the planes dictionary of the current ROI
                         if 'geometricType' in plane:
@@ -834,7 +868,8 @@ class PyDicomParser(DicomParserBase):
                             planes[z].append(plane)
 
                 # Calculate the plane thickness for the current ROI
-                structures[number]['thickness'] = self.CalculatePlaneThickness(planes)
+                structures[number]['thickness'] = self.CalculatePlaneThickness(
+                    planes)
 
                 # Add the planes dictionary to the current ROI
                 # print(planes)
@@ -858,13 +893,15 @@ class PyDicomParser(DicomParserBase):
         return x, y, z
 
     def get_dose_matrix(self):
-        return self.ds.pixel_array * float(self.ds.DoseGridScaling)  # 3D dose matrix in Gy
+        return self.ds.pixel_array * float(
+            self.ds.DoseGridScaling)  # 3D dose matrix in Gy
 
     def DoseRegularGridInterpolator(self):
 
         x, y, z = self.get_grid_3d()
 
-        values = self.ds.pixel_array * float(self.ds.DoseGridScaling)  # 3D dose matrix in Gy
+        values = self.ds.pixel_array * float(
+            self.ds.DoseGridScaling)  # 3D dose matrix in Gy
 
         # ascending x,y z coordinates
         x_coord = np.arange(len(x))
@@ -876,17 +913,13 @@ class PyDicomParser(DicomParserBase):
         fy = interp1d(y, y_coord, fill_value='extrapolate')
         fz = interp1d(z, z_coord, fill_value='extrapolate')
 
-        dose_interp = RegularGridInterpolator((z_coord, y_coord, x_coord), values, bounds_error=False, fill_value=None)
+        dose_interp = RegularGridInterpolator(
+            (z_coord, y_coord, x_coord),
+            values,
+            bounds_error=False,
+            fill_value=None)
 
         return dose_interp, (x, y, z), (fx, fy, fz)
-
-    @property
-    def global_max(self):
-
-        dose_matrix = self.ds.pixel_array * float(self.ds.DoseGridScaling)  # 3D dose matrix in Gy
-
-        return np.max(dose_matrix)  # 3D dose matrix in Gy
-
 
     def get_dose_3d(self):
         """
@@ -901,7 +934,7 @@ class PyDicomParser(DicomParserBase):
     def HasDVHs(self):
         """Returns whether dose-volume histograms (DVHs) exist."""
 
-        if not "DVHSequence" in self.ds:
+        if "DVHSequence" not in self.ds:
             return False
         else:
             return True
@@ -917,7 +950,7 @@ class PyDicomParser(DicomParserBase):
         if self.HasDVHs():
             for item in self.ds.DVHSequence:
                 # Make sure that the DVH has a referenced structure / ROI
-                if not 'DVHReferencedROISequence' in item:
+                if 'DVHReferencedROISequence' not in item:
                     continue
                 number = item.DVHReferencedROISequence[0].ReferencedROINumber
                 # logger.debug("Found DVH for ROI #%s", str(number))
@@ -941,7 +974,8 @@ class PyDicomParser(DicomParserBase):
                 dvhitem['volumeunits'] = item.DVHVolumeUnits
                 dvhitem['doseunits'] = item.DoseUnits
                 # ref  https://dicom.innolitics.com/ciods/rt-dose/rt-dvh/30040050/30040052
-                dvhitem['scaling'] = float(item.DVHDoseScaling) * float(float(item.DVHData[0]))
+                dvhitem['scaling'] = float(item.DVHDoseScaling) * float(
+                    float(item.DVHData[0]))
 
                 if "DVHMinimumDose" in item:
                     dvhitem['min'] = float(item.DVHMinimumDose)
@@ -966,7 +1000,6 @@ class PyDicomParser(DicomParserBase):
         """Determine the SOP Class UID of the current file.
             http://www.dicomlibrary.com/dicom/sop/
         """
-
 
         if self.ds.SOPClassUID == '1.2.840.10008.5.1.4.1.1.481.2':
             return 'rtdose'
@@ -1011,7 +1044,8 @@ class PyDicomParser(DicomParserBase):
                         self.plan['rxdose'] = item.TargetPrescriptionDose
         if ("FractionGroupSequence" in self.ds) and (self.plan['rxdose'] == 0):
             fg = self.ds.FractionGroupSequence[0]
-            if ("ReferencedBeamSequence" in fg) and ("NumberofFractionsPlanned" in fg):
+            if ("ReferencedBeamSequence" in fg) and (
+                    "NumberofFractionsPlanned" in fg):
                 beams = fg.ReferencedBeamSequence
                 fx = fg.NumberofFractionsPlanned
                 for beam in beams:
@@ -1030,11 +1064,12 @@ class PyDicomParser(DicomParserBase):
         isos = np.array([ref_beams[i]['IsocenterPosition'] for i in ref_beams])
         # round to 2 decimals
         isos = np.round(isos, 2)
-        dist = np.sqrt(np.sum((isos - isos[0]) ** 2, axis=1))
+        dist = np.sqrt(np.sum((isos - isos[0])**2, axis=1))
         self.plan['n_isocenters'] = len(np.unique(dist))
 
         # Total number of MU
-        total_mu = np.sum([ref_beams[b]['MU'] for b in ref_beams if 'MU' in ref_beams[b]])
+        total_mu = np.sum(
+            [ref_beams[b]['MU'] for b in ref_beams if 'MU' in ref_beams[b]])
         self.plan['Plan_MU'] = total_mu
 
         tmp = self.GetStudyInfo()
@@ -1044,7 +1079,8 @@ class PyDicomParser(DicomParserBase):
         else:
             self.plan['plan_name'] = ''
         if 'PatientsName' in self.ds:
-            name = self.ds.PatientsName.family_comma_given().replace(',', '').replace('^', ' ').strip()
+            name = self.ds.PatientsName.family_comma_given().replace(
+                ',', '').replace('^', ' ').strip()
             self.plan['patient_name'] = name
         else:
             self.plan['patient_name'] = ''
@@ -1063,27 +1099,41 @@ class PyDicomParser(DicomParserBase):
         # Obtain the beam information
         for bi in bdict:
             beam = {}
-            beam['Manufacturer'] = bi.Manufacturer if "Manufacturer" in bi else ""
-            beam['InstitutionName'] = bi.InstitutionName if "InstitutionName" in bi else ""
-            beam['TreatmentMachineName'] = bi.TreatmentMachineName if "TreatmentMachineName" in bi else ""
+            beam[
+                'Manufacturer'] = bi.Manufacturer if "Manufacturer" in bi else ""
+            beam[
+                'InstitutionName'] = bi.InstitutionName if "InstitutionName" in bi else ""
+            beam[
+                'TreatmentMachineName'] = bi.TreatmentMachineName if "TreatmentMachineName" in bi else ""
             beam['BeamName'] = bi.BeamName if "BeamName" in bi else ""
-            beam['SourcetoSurfaceDistance'] = bi.SourcetoSurfaceDistance if "SourcetoSurfaceDistance" in bi else ""
-            beam['BeamDescription '] = bi.BeamDescription if "BeamDescription" in bi else ""
+            beam[
+                'SourcetoSurfaceDistance'] = bi.SourcetoSurfaceDistance if "SourcetoSurfaceDistance" in bi else ""
+            beam[
+                'BeamDescription '] = bi.BeamDescription if "BeamDescription" in bi else ""
             beam['BeamType'] = bi.BeamType if "BeamType" in bi else ""
-            beam['RadiationType'] = bi.RadiationType if "RadiationType" in bi else ""
-            beam['ManufacturerModelName'] = bi.ManufacturerModelName if "ManufacturerModelName" in bi else ""
-            beam['PrimaryDosimeterUnit'] = bi.PrimaryDosimeterUnit if "PrimaryDosimeterUnit" in bi else ""
-            beam['NumberofWedges'] = bi.NumberofWedges if "NumberofWedges" in bi else ""
-            beam['NumberofCompensators'] = bi.NumberofCompensators if "NumberofCompensators" in bi else ""
-            beam['NumberofBoli'] = bi.NumberofBoli if "NumberofBoli" in bi else ""
-            beam['NumberofBlocks'] = bi.NumberofBlocks if "NumberofBlocks" in bi else ""
+            beam[
+                'RadiationType'] = bi.RadiationType if "RadiationType" in bi else ""
+            beam[
+                'ManufacturerModelName'] = bi.ManufacturerModelName if "ManufacturerModelName" in bi else ""
+            beam[
+                'PrimaryDosimeterUnit'] = bi.PrimaryDosimeterUnit if "PrimaryDosimeterUnit" in bi else ""
+            beam[
+                'NumberofWedges'] = bi.NumberofWedges if "NumberofWedges" in bi else ""
+            beam[
+                'NumberofCompensators'] = bi.NumberofCompensators if "NumberofCompensators" in bi else ""
+            beam[
+                'NumberofBoli'] = bi.NumberofBoli if "NumberofBoli" in bi else ""
+            beam[
+                'NumberofBlocks'] = bi.NumberofBlocks if "NumberofBlocks" in bi else ""
             ftemp = bi.FinalCumulativeMetersetWeight if "FinalCumulativeMetersetWeight" in bi else ""
             beam['FinalCumulativeMetersetWeight'] = ftemp
-            beam['NumberofControlPoints'] = bi.NumberofControlPoints if "NumberofControlPoints" in bi else ""
+            beam[
+                'NumberofControlPoints'] = bi.NumberofControlPoints if "NumberofControlPoints" in bi else ""
             # adding mlc info from BeamLimitingDeviceSequence
             beam_limits = bi.BeamLimitingDeviceSequence if "BeamLimitingDeviceSequence" in bi else ""
             beam['BeamLimitingDeviceSequence'] = beam_limits
-            beam['TreatmentDeliveryType'] = bi.TreatmentDeliveryType if 'TreatmentDeliveryType' in bi else ''
+            beam[
+                'TreatmentDeliveryType'] = bi.TreatmentDeliveryType if 'TreatmentDeliveryType' in bi else ''
 
             # Check control points if exists
             if "ControlPointSequence" in bi:
@@ -1093,10 +1143,14 @@ class PyDicomParser(DicomParserBase):
                 # final control point
                 final_cp = bi.ControlPointSequence[-1]
 
-                beam['NominalBeamEnergy'] = cp0.NominalBeamEnergy if "NominalBeamEnergy" in cp0 else ""
-                beam['DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
-                beam['IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
-                beam['GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
+                beam[
+                    'NominalBeamEnergy'] = cp0.NominalBeamEnergy if "NominalBeamEnergy" in cp0 else ""
+                beam[
+                    'DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
+                beam[
+                    'IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
+                beam[
+                    'GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
 
                 # check VMAT delivery
                 if 'GantryRotationDirection' in cp0:
@@ -1115,7 +1169,8 @@ class PyDicomParser(DicomParserBase):
 
                 btmp = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
                 beam['BeamLimitingDeviceAngle'] = btmp
-                beam['TableTopEccentricAngle'] = cp0.TableTopEccentricAngle if "TableTopEccentricAngle" in cp0 else ""
+                beam[
+                    'TableTopEccentricAngle'] = cp0.TableTopEccentricAngle if "TableTopEccentricAngle" in cp0 else ""
 
                 # check beam limits
                 if 'BeamLimitingDevicePositionSequence' in cp0:
@@ -1126,11 +1181,16 @@ class PyDicomParser(DicomParserBase):
             if "IonControlPointSequence" in bi:
                 beam['IonControlPointSequence'] = bi.IonControlPointSequence
                 cp0 = bi.IonControlPointSequence[0]
-                beam['NominalBeamEnergyUnit'] = cp0.NominalBeamEnergyUnit if "NominalBeamEnergyUnit" in cp0 else ""
-                beam['NominalBeamEnergy'] = cp0.NominalBeamEnergy if "NominalBeamEnergy" in cp0 else ""
-                beam['DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
-                beam['IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
-                beam['GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
+                beam[
+                    'NominalBeamEnergyUnit'] = cp0.NominalBeamEnergyUnit if "NominalBeamEnergyUnit" in cp0 else ""
+                beam[
+                    'NominalBeamEnergy'] = cp0.NominalBeamEnergy if "NominalBeamEnergy" in cp0 else ""
+                beam[
+                    'DoseRateSet'] = cp0.DoseRateSet if "DoseRateSet" in cp0 else ""
+                beam[
+                    'IsocenterPosition'] = cp0.IsocenterPosition if "IsocenterPosition" in cp0 else ""
+                beam[
+                    'GantryAngle'] = cp0.GantryAngle if "GantryAngle" in cp0 else ""
                 btmp1 = cp0.BeamLimitingDeviceAngle if "BeamLimitingDeviceAngle" in cp0 else ""
                 beam['BeamLimitingDeviceAngle'] = btmp1
 
@@ -1145,7 +1205,8 @@ class PyDicomParser(DicomParserBase):
                 nfx = fg.NumberOfFractionsPlanned
                 for bi in rb:
                     if "BeamDose" in bi:
-                        beams[bi.ReferencedBeamNumber]['dose'] = bi.BeamDose * nfx
+                        beams[bi.ReferencedBeamNumber][
+                            'dose'] = bi.BeamDose * nfx
                     if 'BeamMeterset' in bi:
                         beams[bi.ReferencedBeamNumber]['MU'] = bi.BeamMeterset
         return beams

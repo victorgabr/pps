@@ -1,4 +1,4 @@
-from core.types import DoseValue, DoseUnit, DoseValuePresentation
+from pyplanscoring.core.types import DoseValue, DoseUnit, DoseValuePresentation
 
 
 def test_value():

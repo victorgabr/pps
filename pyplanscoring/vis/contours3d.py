@@ -14,23 +14,28 @@ import vispy
 from vispy.scene import visuals
 
 
-def plot_contours(pos, symbol='+'):
+def plot_structure_contours(point_cloud, title=''):
+    """
+        PLot contours from Dicom Structure point cloud (x,y,z) property.
+    :param point_cloud: array of x,y,z contour points
+    :param symbol:
+    """
     #
     # Make a canvas and add simple view
     #
-    canvas = vispy.scene.SceneCanvas(keys='interactive', show=True, bgcolor='white')
+    canvas = vispy.scene.SceneCanvas(title=title, keys='interactive', show=True, bgcolor='white')
     view = canvas.central_widget.add_view()
 
     # create scatter object and fill in the data
     scatter = visuals.Markers()
-    scatter.set_data(pos, symbol=symbol, face_color=(1, 1, 1, .5), size=1)
+    scatter.set_data(point_cloud, symbol='+', face_color=(1, 1, 1, .5), size=1)
 
     view.add(scatter)
 
     view.camera = 'arcball'  # or try 'arcball'
     # view.camera = 'turntable'
     # add a colored 3D axis for orientation
-    axis = visuals.XYZAxis(parent=view.scene)
+    visuals.XYZAxis(parent=view.scene)
     vispy.app.run()
 
 
@@ -88,4 +93,4 @@ if __name__ == '__main__':
                      (0.5528383255004883, -0.5528383255004883, -0.6234897971153259),
                      (0.3068021237850189, -0.3068021237850189, -0.9009688496589661)])
 
-    plot_contours(sp)
+    plot_structure_contours(sp)
