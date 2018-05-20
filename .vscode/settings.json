@@ -1,8 +1,0 @@
-{
-    "python.pythonPath": "/home/victor/miniconda3/envs/pyside/bin/python",
-    "python.unitTest.pyTestArgs": [
-        "tests"
-    ],
-    "python.unitTest.pyTestEnabled": true,
-
-}
