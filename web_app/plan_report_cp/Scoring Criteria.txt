@@ -1,0 +1,33 @@
+Plan Quality Metric Component	Objective(s)	Result		Raw Score	Max Score	Performance	PlanIQ Adjusted Performance	Comments
+[PTV70] D[95.0%] (Gy)	> 64 [≥ 66.5]				5 *			
+[PTV63] D[98.0%] (Gy)	> 56.7 [≥ 59.8]				5 *			
+[PTV56] D[99.0%] (Gy)	> 51 [≥ 53.2]				5 *			
+[OPTIC CHIASM] Max dose (Gy)	< 55 [≤ 52]				4 *			
+[OPTIC CHIASM PRV] Max dose (Gy)	< 58 [≤ 55]				3 *			
+[OPTIC N. RT] Max dose (Gy)	< 54 [≤ 50]				4 *			
+[OPTIC N. RT PRV] Max dose (Gy)	< 58 [≤ 55]				3 *			
+[OPTIC N. LT] Max dose (Gy)	< 54 [≤ 50]				4 *			
+[OPTIC N. LT PRV] Max dose (Gy)	< 58 [≤ 56]				3 *			
+[EYE RT] Max dose (Gy)	< 56 [≤ 53]				2 *			
+[EYE LT] Max dose (Gy)	< 52 [≤ 48]				2 *			
+[LENS RT] Max dose (Gy)	< 12 [≤ 10]				3 *			
+[LENS LT] Max dose (Gy)	< 12 [≤ 10]				3 *			
+[BRAINSTEM] Max dose (Gy)	< 54 [≤ 50]				4 *			
+[BRAINSTEM PRV] Max dose (Gy)	< 60 [≤ 55]				2 *			
+[SPINAL CORD] Max dose (Gy)	< 42 [≤ 40]				3 *			
+[SPINAL CORD PRV] Max dose (Gy)	< 45 [≤ 40]				2 *			
+[PAROTID LT] D[50.0%] (Gy)	< 40 [≤ 30]				2 *			
+[LIPS] D[0.1cc] (Gy)	< 35 [≤ 30]				3 *			
+[POST NECK] D[0.1cc] (Gy)	< 40 [≤ 35]				3 *			
+[ORAL CAVITY] Mean dose (Gy)	< 45 [≤ 40]				3 *			
+[LARYNX] Mean dose (Gy)	< 50 [≤ 45]				3 *			
+[BRACHIAL PLEXUS] D[0.1cc] (Gy)	< 66 [≤ 63]				5 *			
+[ESOPHAGUS] Mean dose (Gy)	< 50 [≤ 45]				3 *			
+[PTV70-BR.PLX 4MM] Conformation Number [66.5Gy]	> 0.65 [≥ 0.9]				4 *			
+[PTV70-BR.PLX 4MM] Homogeneity Index [70.0Gy]	< 0.13 [≤ 0.08]				2 *			
+[PTV63-BR.PLX 1MM] Conformation Number [59.8Gy]	> 0.65 [≥ 0.88]				3 *			
+[PTV63-70 3MM] Homogeneity Index [63.0Gy]	< 0.14 [≤ 0.08]				3 *			
+[PTV56] Conformation Number [53.2Gy]	> 0.65 [≥ 0.87]				3 *			
+[PTV56-63 3MM] Homogeneity Index [56.0Gy]	< 0.14 [≤ 0.08]				3 *			
+[BODY] D[0.1cc] (Gy)	< 77 [≤ 75]				3 *			
+Total [31 Metrics]				0.00 *	0.00 *			

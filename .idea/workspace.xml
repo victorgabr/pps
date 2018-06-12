@@ -2,670 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="484ffb55-fed9-470a-b652-a0b196ac3165" name="Default" comment="New: Test cases on complexity aperture metric module.">
-      <change beforePath="$PROJECT_DIR$/.idea/Plan_Competition_Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Plan_Competition_Project.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/_importlib_modulespec.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/_importlib_modulespec.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/abc.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/abc.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/builtins.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/builtins.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/codecs.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/codecs.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/collections/__init__.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/collections/__init__.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/collections/abc.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/collections/abc.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/enum.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/enum.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/__init__.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/__init__.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/api/__init__.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/api/__init__.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/api/backend.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/api/backend.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/api/tools.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/api/tools.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/cases/LeftChestWallCase/PyPlanScoringLCWC.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/cases/LeftChestWallCase/PyPlanScoringLCWC.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/cases/LeftChestWallCase/__init__.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/cases/LeftChestWallCase/__init__.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/cases/LeftChestWallCase/app.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/cases/LeftChestWallCase/app.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/cases/__init__.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/cases/__init__.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/qt_ui/__init__.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/qt_ui/__init__.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/qt_ui/icons_rc.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/gui/qt_ui/icons_rc.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/io.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/io.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/mmap.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/mmap.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/mypy_extensions.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/mypy_extensions.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/os/__init__.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/os/__init__.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/os/path.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/os/path.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/platform.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/platform.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/posix.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/posix.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/re.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/re.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/scratch_13.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/scratch_13.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/sys.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/sys.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/types.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/types.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/typing.data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mypy_cache/3.6/typing.meta.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/BRACHIAL PLEXUS volume (cc): 43.1 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/BRAINSTEM PRV volume (cc): 62.6 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/BRAINSTEM volume (cc): 29.3 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/ESOPHAGUS volume (cc): 18.6 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/LARYNX volume (cc): 24.5 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/LENS LT volume (cc): 0.2 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/LENS RT volume (cc): 0.2 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/LIPS volume (cc): 9.6 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/OPTIC CHIASM PRV volume (cc): 3.1 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/OPTIC CHIASM volume (cc): 0.3 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/OPTIC N. LT PRV volume (cc): 5.9 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/OPTIC N. LT volume (cc): 0.3 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/OPTIC N. RT PRV volume (cc): 5.8 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/OPTIC N. RT volume (cc): 0.4 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/ORAL CAVITY volume (cc): 98.2 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/PAROTID LT volume (cc): 23.3 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/POST NECK volume (cc): 497.0 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/PTV56 volume (cc): 1307.5 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/PTV56-63 3MM volume (cc): 290.8 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/PTV63 volume (cc): 848.9 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/PTV63-70 3MM volume (cc): 211.9 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/PTV63-BR.PLX 1MM volume (cc): 826.9 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/PTV70 volume (cc): 473.1 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/PTV70-BR.PLX 4MM volume (cc): 455.2 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/SPINAL CORD PRV volume (cc): 82.4 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/SPINAL CORD volume (cc): 25.3 - end_cap: False .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/Tip Francoir/Brainstem.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/Tip Francoir/LArynx.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/Tip Francoir/Mandible.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/Tip Francoir/Optic_chiasm.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/Tip Francoir/PTV_70.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/Tip Francoir/SPINAL_BB.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/Tip Francoir/SPINAL_BB_GRAD_DIFFERENCES.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/Tip Francoir/SPINAL_BB_GRAD_DIFFERENCES_Up_sampled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/Tip Francoir/SPINAL_BB_up_sampled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/Tip Francoir/Spinal _cord.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/Tip Francoir/brain.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/10.1016@j.radonc.2017.05.019.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/2017 Plan Comp Banner.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/Byung_Sungkyunkwan University School of Medicine.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/Control_points_metrics_DICOM.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/DICOM_RT_TAGS.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/DVH_METRICS_PAPER.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/IRT_BOOK_SCORING.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/Kyle Sunderland_et_all_SLICER_RT_Queen University Kingston Canada.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/Modulation_index_reference.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/PACKAG 1 Document - 3D-CRT Left Chest Wall - May 14 2018 Send to Victor.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/PLAN_COMPLEXITY.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/Penalization of aperture complexity in inversely planned volumetric modulated arc therapy.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/Predicting deliverability of volumetric-modulated arc therapy (VMAT) plans using aperture complexity analysis.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/PyPlanScoring - a tool for the evaluation of radiotherapy treatment plans.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/PyPlanScoring - a tool for the evaluation of radiotherapy treatment plans.pdf.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/PyPlanScoring.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/Supporting Document - PyPlanScoring.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/Supporting Document - PyPlanScoring.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/T_Ackerly_et_al_APESN_vol26_n2_2003.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/Volume_calculation_poly3d.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/XiO-Release-500-Document-No-LEDDCMXIO0001.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/Xio Reports.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/Xio Reports.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/du2014_Beam_Irregularity_Factor.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/ebert2010.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/masi2013_MCS2.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/mcniven2010_MCS_FACTOR.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/mohan2000_BEAM_ON_TIME_ESTIMATION_IMRT.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/spirou1994_beam_on_time.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/references/webb2003_mod_index_integral.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/Absolute_DVHs.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/Plan_IQ_versus_Python_.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/Plan_IQ_versus_Python_BODY_DMAX.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/Plan_IQ_versus_Python_DEBUG.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/Plan_IQ_versus_Python_DONE.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/Plan_IQ_versus_Python_DONE_diff_greater_than_4_TPS.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/Plan_IQ_versus_Python_TOP.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/PyPlanScoring_DVH.dvh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/Pyhton_X_planIQ_scoring_difference.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/Pyhton_X_planIQ_scoring_difference_barplot.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/Python_2016_2x2x2_voxel.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/Python_2016_last_update.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/RELATIVE_DVH.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/Screenshot _Victor_eval_SAAD_plan_score_python.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/Test_1_result.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/Test_2_result.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_BRACHIAL PLEXUS_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_BRACHIAL PLEXUS_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_BRAINSTEM PRV_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_BRAINSTEM PRV_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_BRAINSTEM_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_BRAINSTEM_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_ESOPHAGUS_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_ESOPHAGUS_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_EYE LT_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_EYE LT_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_EYE RT_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_EYE RT_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_LARYNX_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_LARYNX_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_LENS LT_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_LENS LT_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_LENS RT_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_LENS RT_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_LIPS_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_LIPS_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_OPTIC CHIASM PRV_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_OPTIC CHIASM PRV_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_OPTIC CHIASM_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_OPTIC CHIASM_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_OPTIC N. LT PRV_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_OPTIC N. LT PRV_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_OPTIC N. LT_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_OPTIC N. LT_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_OPTIC N. RT PRV_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_OPTIC N. RT PRV_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_OPTIC N. RT_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_OPTIC N. RT_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_ORAL CAVITY_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_ORAL CAVITY_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_PAROTID LT_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_PAROTID LT_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_POST NECK_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_POST NECK_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_POST-CRICOID_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_POST-CRICOID_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_PTV56-63 3MM_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_PTV56-63 3MM_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_PTV56_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_PTV56_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_PTV63-70 3MM_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_PTV63-70 3MM_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_PTV63-BR.PLX 1MM_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_PTV63-BR.PLX 1MM_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_PTV70-BR.PLX 4MM_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_PTV70-BR.PLX 4MM_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_PTV70_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_PTV70_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_SPINAL CORD PRV_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_SPINAL CORD PRV_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_SPINAL CORD_DVH_RELATIVE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/dvhs/PyPlanScoring_versus_PlanIQ_SPINAL CORD_DVH_absolute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/paper_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/pyplanscoring_raster.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/test_1_table_paper.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/test_2_table_paper.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/test_3_table.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Cone_10_0 Dose Gradient Y(SI).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Cone_10_0 Dose Gradient Z(AP).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Cone_30_0 Dose Gradient Y(SI).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Cone_30_0 Dose Gradient Z(AP).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Cylinder_10_0 Dose Gradient Y(SI).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Cylinder_10_0 Dose Gradient Z(AP).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Cylinder_30_0 Dose Gradient Y(SI).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Cylinder_30_0 Dose Gradient Z(AP).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/RtCone_10_0 Dose Gradient Y(SI).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/RtCone_10_0 Dose Gradient Z(AP).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/RtCone_30_0 Dose Gradient Y(SI).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/RtCone_30_0 Dose Gradient Z(AP).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/RtCylinder_10_0 Dose Gradient Y(SI).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/RtCylinder_10_0 Dose Gradient Z(AP).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/RtCylinder_30_0 Dose Gradient Y(SI).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/RtCylinder_30_0 Dose Gradient Z(AP).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Sphere_10_0 Dose Gradient Y(SI).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Sphere_10_0 Dose Gradient Z(AP).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Sphere_30_0 Dose Gradient Y(SI).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Sphere_30_0 Dose Gradient Z(AP).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Tables_presentation.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Test_1_result.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/Test_2_result.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/analytical_data.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/test_2_table_paper.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/validation_paper/test_3_table.xls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/deploy_AWS" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/tutorial_web_app" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/.nojekyll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0000_web4sa_django.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0000_web4sa_flask.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0000_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0001_web4sa_django.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0001_web4sa_flask.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0001_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0002_web4sa_django.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0002_web4sa_flask.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0002_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0003_web4sa_django.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0003_web4sa_flask.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0003_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0004_web4sa_django.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0004_web4sa_flask.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0004_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0005_web4sa_django.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0005_web4sa_flask.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0005_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0006_web4sa_django.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0006_web4sa_flask.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0006_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0007_web4sa_django.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0007_web4sa_flask.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0007_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0008_web4sa_django.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0008_web4sa_flask.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0008_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0009_web4sa_django.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0009_web4sa_flask.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0009_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0010_web4sa_flask.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0010_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0011_web4sa_flask.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0011_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0012_web4sa_flask.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0012_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0013_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0014_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0015_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0016_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._part0017_web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_django000.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_django001.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_django002.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_django003.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_django004.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_django005.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_django006.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_django007.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_django008.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask000.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask001.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask002.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask003.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask004.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask005.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask006.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask007.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask008.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask009.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask010.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask011.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask012.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask013.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask014.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask015.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask016.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_flask017.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain000.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain001.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain002.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain003.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain004.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain005.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain006.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain007.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain008.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain009.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain010.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain011.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain012.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain013.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain014.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain015.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain016.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain017.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain018.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain019.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain020.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_plain021.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized000.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized001.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized002.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized003.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized004.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized005.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized006.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized007.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized008.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized009.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized010.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized011.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized012.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized013.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized014.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized015.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized016.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized017.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized018.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized019.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized020.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/._web4sa_solarized021.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/Taylor_approx.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/Taylor_approx_exp2t.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/Taylor_approx_exp2t.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/gen_flask_gamma.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/hw1_django_input.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/hw1_django_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/hw1_flask_input.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/hw1_flask_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/hw2_django_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/hw2_flask_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/login_login.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/login_main.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/login_old.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/login_register.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/login_results.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/plot_formula.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/upload1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/upload2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/upload3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/vib1_flask_bootstrap.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/vib1_flask_bootswatch_journal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/vib1_flask_error1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/vib1_flask_input.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/vib1_flask_latex.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/vib1_flask_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/vib1_flask_table2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/vib2_flask_error1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/fig-web4sa/vib3_flask_gamma.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/._web4sa000.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/._web4sa001.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/.buildinfo" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_images/hw1_django_input.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_images/hw1_django_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_images/hw1_flask_input.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_images/hw1_flask_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_images/hw2_django_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_images/hw2_flask_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_images/vib1_flask_error1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_images/vib1_flask_input.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_images/vib1_flask_latex.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_images/vib1_flask_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_images/vib1_flask_table2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_images/vib2_flask_error1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_sources/._web4sa000.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_sources/._web4sa001.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_sources/index.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/ajax-loader.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/basic.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/cbc_banner.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/cbc_logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/comment-bright.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/comment-close.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/comment.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/default.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/doctools.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/down-pressed.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/down.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/file.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/jquery.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/minus.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/plus.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/pygments.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/searchtools.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/sidebar.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/underscore.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/up-pressed.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/up.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/_static/websupport.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/genindex.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/objects.inv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/search.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/sphinx-cbc/searchindex.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/web4sa.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/web4sa.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/web4sa_django.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/web4sa_flask.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/web4sa_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/web4sa_plain_all.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/pub/web4sa_solarized.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/clean.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/django_hw.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/django_vib.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exer/Taylor_approx/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exer/Taylor_approx/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exer/Taylor_approx/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exer/addmul/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exer/addmul/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exer/addmul/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exer/gen_ext/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exer/gen_ext/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exer/gen_ext/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exer/gen_ext/view.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exer/plot_formula/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exer/plot_formula/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exer/plot_formula/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exer/plot_formula/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/exercises.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/Taylor_approx.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/Taylor_approx_exp2t.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/Taylor_approx_exp2t.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/gen_flask_gamma.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/hw1_django_input.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/hw1_django_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/hw1_flask_input.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/hw1_flask_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/hw2_django_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/hw2_flask_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/login_main.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/login_register.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/plot_formula.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/upload1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/upload2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/upload3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/vib1_flask_bootstrap.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/vib1_flask_bootswatch_journal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/vib1_flask_error1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/vib1_flask_input.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/vib1_flask_latex.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/vib1_flask_output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/vib1_flask_table2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/fig-web4sa/vib2_flask_error1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/flask_hw.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/flask_vib.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/index.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/intro.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/links.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/make.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/publish.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/slides-web4sa/django_hw.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/slides-web4sa/django_vib.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/slides-web4sa/flask_hw.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/slides-web4sa/flask_vib.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/slides-web4sa/intro.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/slides-web4sa/links.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/slides_web4sa.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/hw1/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/hw1/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/hw1/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/hw1/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/hw1/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/hw2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/hw2/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/hw2/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/hw2/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/vib1/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/vib1/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/vib1/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/vib1/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/vib2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/vib2/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/vib2/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/django_apps/vib2/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/gen/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/gen/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/gen/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/hw1/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/hw1/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/hw1/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/hw2/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/hw2/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/hw3/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/hw3/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/hw3/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/login/_generate_app.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/login/app.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/login/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/login/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/login/db_models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/login/forms.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/upload/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/upload/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/upload/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/upload/testfile.dat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/vib1/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/vib1/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/vib1/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/vib1/static/basic.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/vib2/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/vib2/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/vib2/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/vib3/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/vib3/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/flask_apps/vib3/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/py_apps/hw_mvc/compute.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/py_apps/hw_mvc/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/py_apps/hw_mvc/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/py_apps/hw_mvc/view.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/apps/py_apps/hw_orig/hw.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/django_project/django_project/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/django_project/django_project/settings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/django_project/django_project/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/django_project/django_project/wsgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/src_web4sa/django_project/manage.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/src/web4sa/web4sa.do.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/web/images/body-bg.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/web/images/highlight-bg.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/web/images/hr.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/web/images/octocat-icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/web/images/tar-gz-icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/web/images/zip-icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/web/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/web/javascripts/main.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/web/params.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/web/stylesheets/print.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/web/stylesheets/pygment_trac.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/flask_django_tutorial/web4sciapps/doc/web/stylesheets/stylesheet.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/jinja2_templating/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/jinja2_templating/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/jinja2_templating/jinja2plugin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/jinja2_templating/jinja2tool.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/jinja2_templating/main_jinja_app.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/2017 Plan Comp Banner.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/RP.1.2.246.352.71.5.584747638204.955801.20170210152428.dcm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/RS.1.2.246.352.71.4.584747638204.253443.20170222200317.dcm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/Scoring Criteria.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/licence.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/mandible.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/report_creator.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/report_creator_bkp.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/css/bootstrap-theme.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/css/bootstrap-theme.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/css/bootstrap-theme.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/css/bootstrap.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/css/bootstrap.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/css/bootstrap.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/css/dashboard.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/css/uploads/demo-ie8.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/css/uploads/demo.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/css/uploads/jquery.fileupload-noscript.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/css/uploads/jquery.fileupload-ui-noscript.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/css/uploads/jquery.fileupload-ui.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/css/uploads/jquery.fileupload.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/css/uploads/style.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/fonts/glyphicons-halflings-regular.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/fonts/glyphicons-halflings-regular.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/fonts/glyphicons-halflings-regular.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/fonts/glyphicons-halflings-regular.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/img/loading.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/img/progressbar.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/bootstrap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/bootstrap.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/frontend.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/jquery-2.1.1.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/npm.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/uploads/jquery.fileupload-angular.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/uploads/jquery.fileupload-audio.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/uploads/jquery.fileupload-image.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/uploads/jquery.fileupload-jquery-ui.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/uploads/jquery.fileupload-process.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/uploads/jquery.fileupload-ui.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/uploads/jquery.fileupload-validate.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/uploads/jquery.fileupload-video.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/uploads/jquery.fileupload.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/static/js/vendor/jquery.ui.widget.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/templates/basic-plus.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/templates/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/viewer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report/viewer.spec" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/2017 Plan Comp Banner.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/RP.1.2.246.352.71.5.584747638204.955801.20170210152428.dcm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/RS.1.2.246.352.71.4.584747638204.253443.20170222200317.dcm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/Scoring Criteria.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/licence.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/report_creator.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/css/bootstrap-theme.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/css/bootstrap-theme.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/css/bootstrap-theme.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/css/bootstrap.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/css/bootstrap.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/css/bootstrap.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/css/dashboard.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/css/uploads/demo-ie8.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/css/uploads/demo.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/css/uploads/jquery.fileupload-noscript.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/css/uploads/jquery.fileupload-ui-noscript.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/css/uploads/jquery.fileupload-ui.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/css/uploads/jquery.fileupload.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/css/uploads/style.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/fonts/glyphicons-halflings-regular.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/fonts/glyphicons-halflings-regular.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/fonts/glyphicons-halflings-regular.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/fonts/glyphicons-halflings-regular.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/img/loading.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/img/progressbar.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/bootstrap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/bootstrap.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/frontend.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/jquery-2.1.1.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/npm.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/uploads/jquery.fileupload-angular.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/uploads/jquery.fileupload-audio.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/uploads/jquery.fileupload-image.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/uploads/jquery.fileupload-jquery-ui.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/uploads/jquery.fileupload-process.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/uploads/jquery.fileupload-ui.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/uploads/jquery.fileupload-validate.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/uploads/jquery.fileupload-video.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/uploads/jquery.fileupload.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/static/js/vendor/jquery.ui.widget.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/templates/basic-plus.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/templates/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/viewer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/plan_report_cp/web_app_cp.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/python-django-exporting-files" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_app/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/Scoring_criteria.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/Scoring_criteria_r1.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/Scoring_criteriaSecondRound.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/Scoring_criteria.xlsx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -678,7 +17,92 @@
     <favorites_list name="Plan_Competition_Project" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450" />
+    <leaf>
+      <file leaf-file-name="scratch_18.py" pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_18.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="scratch_17.py" pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_17.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-480">
+              <folding>
+                <element signature="e#0#31#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scratch_16.py" pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_16.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scratch_15.py" pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_15.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="scratch_14.py" pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_14.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1187">
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scratch_19.py" pinned="false" current-in-tab="true">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_19.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="66">
+              <caret line="12" selection-start-line="10" selection-start-column="4" selection-end-line="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pyplanscoring/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="256">
+              <caret line="8" column="59" selection-start-line="8" selection-start-column="54" selection-end-line="8" selection-end-column="67" />
+              <folding>
+                <element signature="e#0#54#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dicom_reader.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pyplanscoring/core/dicom_reader.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="223">
+              <caret line="726" column="6" selection-start-line="726" selection-start-column="6" selection-end-line="726" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scratch_13.py" pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_13.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#31#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -753,7 +177,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/docs1/source/index.rst" />
         <option value="$PROJECT_DIR$/docs/contributing.rst" />
         <option value="$PROJECT_DIR$/docs/Makefile" />
         <option value="$PROJECT_DIR$/tests/tests_validation/conftest.py" />
@@ -804,6 +227,7 @@
         <option value="$PROJECT_DIR$/tests/tests_core/test_DVHCalculation.py" />
         <option value="$PROJECT_DIR$/tests/tests_core/test_IOHandler.py" />
         <option value="$PROJECT_DIR$/tests/tests_core/test_pyDicomParser.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_19.py" />
       </list>
     </option>
   </component>
@@ -823,6 +247,20 @@
             <path>
               <item name="Plan_Competition_Project" type="b2602c69:ProjectViewProjectNode" />
               <item name="Plan_Competition_Project" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Plan_Competition_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Plan_Competition_Project" type="462c0819:PsiDirectoryNode" />
+              <item name="pyplanscoring" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Plan_Competition_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+            </path>
+            <path>
+              <item name="Plan_Competition_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
             </path>
           </expand>
           <select />
@@ -876,7 +314,25 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.py.test in tests_core">
+  <component name="RunManager" selected="Python.app (1)">
+    <configuration name="app (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Plan_Competition_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gui/cases/BiLateralLungSBRTCase/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
     <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Plan_Competition_Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -890,24 +346,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gui/cases/LeftChestWallCase/app.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-    </configuration>
-    <configuration name="scratch_18" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Plan_Competition_Project" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_18.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -957,18 +395,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.app" />
-      <item itemvalue="Python.scratch_18" />
       <item itemvalue="Python tests.py.test in tests_core" />
       <item itemvalue="Python tests.py.test in test_api" />
       <item itemvalue="Python tests.py.test in tests_constraints" />
+      <item itemvalue="Python.app (1)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.app (1)" />
         <item itemvalue="Python tests.py.test in tests_core" />
         <item itemvalue="Python.app" />
         <item itemvalue="Python tests.py.test in tests_constraints" />
         <item itemvalue="Python tests.py.test in test_api" />
-        <item itemvalue="Python.scratch_18" />
       </list>
     </recent_temporary>
   </component>
@@ -1149,46 +587,46 @@
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1035" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49882352" visible="true" weight="0.20464362" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49882352" visible="true" weight="0.15820734" />
       <window_info anchor="bottom" id="TODO" order="8" weight="0.32941177" />
       <window_info anchor="bottom" id="Event Log" order="6" sideWeight="0.5091793" side_tool="true" weight="0.6694118" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.61764705" />
       <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49786097" weight="0.3282353" />
-      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49298057" weight="0.35882354" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4949868" weight="0.66" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="10" sideWeight="0.49298057" visible="true" weight="0.68352944" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4949868" weight="0.16705883" />
       <window_info id="Structure" order="1" sideWeight="0.5011765" side_tool="true" weight="0.19222462" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49082074" visible="true" weight="0.28235295" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49082074" weight="0.28117648" />
       <window_info id="Favorites" order="2" side_tool="true" weight="0.32998413" />
       <window_info anchor="right" id="JSON Viewer" order="3" weight="0.32991362" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.48983958" weight="0.39764705" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Messages" order="7" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21871658" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="JSON Viewer" order="3" weight="0.32994652" />
       <window_info id="Structure" order="1" weight="0.21497326" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3295583" />
-      <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49786097" weight="0.32850778" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4949868" weight="0.3062361" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.24242425" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49572194" weight="0.2423556" />
+      <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49814913" weight="0.33853006" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49603385" weight="0.32850778" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50427806" side_tool="true" weight="0.3908686" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" weight="0.32998413" />
-      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49786097" weight="0.32850778" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.24242425" />
       <window_info anchor="bottom" id="Messages" order="7" />
-      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49572194" weight="0.2423556" />
+      <window_info id="Favorites" order="2" side_tool="true" weight="0.32998413" />
     </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -1404,111 +842,22 @@ dose_file = doses_files_dict[grad_name][dose_grid_name]</expression-string>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/dev/ESOPHAGUS volume (cc): 18.6 - end_cap: False .png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/calculation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-96">
-          <folding>
-            <element signature="e#359#378#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_complimentVolumeAtDoseConstraint.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="4" lean-forward="true" selection-start-column="4" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_complimentDoseAtVolumeConstraint.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#81#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_conformationIndexConstraint.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#61#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_constrainMetric.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="20" selection-start-column="20" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_doseAtVolumeConstraint.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#81#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_doseStructureConstraint.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#49#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_doseValue.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_DVHCalculator.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-597" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_DVHData.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#76#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_homogeneityIndexConstraint.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#61#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_maxDoseConstraint.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#61#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_maxMeanDoseConstraint.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#61#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_mayoConstraint.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -1539,31 +888,13 @@ dose_file = doses_files_dict[grad_name][dose_grid_name]</expression-string>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_minDoseConstraint.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#61#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_minMeanDoseConstraint.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#61#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_quantityRegex.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_queryExtensions.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -1578,13 +909,7 @@ dose_file = doses_files_dict[grad_name][dose_grid_name]</expression-string>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_constraints/test_volumeAtDoseConstraint.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#81#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_core/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
@@ -1607,13 +932,7 @@ dose_file = doses_files_dict[grad_name][dose_grid_name]</expression-string>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_core/test_PyStructure.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_gui/test_criteria.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -1623,13 +942,7 @@ dose_file = doses_files_dict[grad_name][dose_grid_name]</expression-string>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_gui/test_get_calculation_options.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_radiobiology/tests/test_NTCP.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -1643,11 +956,7 @@ dose_file = doses_files_dict[grad_name][dose_grid_name]</expression-string>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_validation/conftest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-288">
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
+        <state relative-caret-position="-288" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_validation/test_benchmark_data.py">
@@ -1665,22 +974,10 @@ dose_file = doses_files_dict[grad_name][dose_grid_name]</expression-string>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_validation/test_gammaKnife.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_validation/test_gtvBasedSRS.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_validation/test_iPlan.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -1709,9 +1006,6 @@ dose_file = doses_files_dict[grad_name][dose_grid_name]</expression-string>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="23">
           <caret line="7" column="61" lean-forward="true" selection-start-line="7" selection-start-column="61" selection-end-line="7" selection-end-column="61" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1719,9 +1013,6 @@ dose_file = doses_files_dict[grad_name][dose_grid_name]</expression-string>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="102" column="22" selection-start-line="102" selection-start-column="22" selection-end-line="102" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1741,20 +1032,13 @@ dose_file = doses_files_dict[grad_name][dose_grid_name]</expression-string>
     </entry>
     <entry file="file://$PROJECT_DIR$/gui/cases/LeftChestWallCase/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-480">
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
+        <state relative-caret-position="-480" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/tests_core/test_DVHCalculation.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-488">
           <caret line="122" column="15" selection-start-line="122" selection-start-column="15" selection-end-line="122" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1762,9 +1046,6 @@ dose_file = doses_files_dict[grad_name][dose_grid_name]</expression-string>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1677">
           <caret line="77" column="28" lean-forward="true" selection-start-line="77" selection-start-column="28" selection-end-line="77" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1782,8 +1063,72 @@ dose_file = doses_files_dict[grad_name][dose_grid_name]</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/tests_gui/test_mainDialog.py">
+    <entry file="file://$PROJECT_DIR$/tests/tests_gui/test_mainDialog.py" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_18.py">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_17.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-480">
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_16.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_15.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_13.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_14.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1187">
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="8" column="59" selection-start-line="8" selection-start-column="54" selection-end-line="8" selection-end-column="67" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyplanscoring/core/dicom_reader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="726" column="6" selection-start-line="726" selection-start-column="6" selection-end-line="726" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_19.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="12" selection-start-line="10" selection-start-column="4" selection-end-line="12" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>

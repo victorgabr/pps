@@ -1,0 +1,705 @@
+<!--
+Automatically generated HTML file from DocOnce source
+(https://github.com/hplgit/doconce/)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="generator" content="DocOnce: https://github.com/hplgit/doconce/"/>
+    <meta name="description" content="Using Web Frameworks for Scientific Applications">
+    <meta name="keywords"
+          content="web frameworks,MVC pattern,Flask installation,Flask input forms,Flask HTML templates,Flask MVC pattern,Flask troubleshooting,Django installation,Django making a project,Django making an application,Django input forms,Django HTML templates,Flask input forms,Flask error checking,Flask CSS style sheets,Flask LaTeX mathematics,Flask input validation,inline PNG image in HTML,base64 encoding of PNG images,inline SVG figure in HTML,mpld3 plotting,Flask Bokeh plotting,Bokeh plotting,highcharts,Flask login,Flask database,Flask uploading of files,Flask file upload,Django input forms,Django input validation">
+
+    <title>Using Web Frameworks for Scientific Applications</title>
+
+
+    <style type="text/css">
+/* bloodish style */
+
+body {
+  font-family: Helvetica, Verdana, Arial, Sans-serif;
+  color: #404040;
+  background: #ffffff;
+}
+h1 { font-size: 1.8em;  color: #8A0808; }
+h2 { font-size: 1.6em;  color: #8A0808; }
+h3 { font-size: 1.4em;  color: #8A0808; }
+h4 { color: #8A0808; }
+a { color: #8A0808; text-decoration:none; }
+tt { font-family: "Courier New", Courier; }
+/* pre style removed because it will interfer with pygments */
+p { text-indent: 0px; }
+hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+p.caption { width: 80%; font-style: normal; text-align: left; }
+hr.figure { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+.alert-text-small   { font-size: 80%;  }
+.alert-text-large   { font-size: 130%; }
+.alert-text-normal  { font-size: 90%;  }
+.alert {
+  padding:8px 35px 8px 14px; margin-bottom:18px;
+  text-shadow:0 1px 0 rgba(255,255,255,0.5);
+  border:1px solid #bababa;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  color: #555;
+  background-color: #f8f8f8;
+  background-position: 10px 5px;
+  background-repeat: no-repeat;
+  background-size: 38px;
+  padding-left: 55px;
+  width: 75%;
+ }
+.alert-block {padding-top:14px; padding-bottom:14px}
+.alert-block > p, .alert-block > ul {margin-bottom:1em}
+.alert li {margin-top: 1em}
+.alert-block p+p {margin-top:5px}
+.alert-notice { background-image: url(https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_images/small_gray_notice.png); }
+.alert-summary  { background-image:url(https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_images/small_gray_summary.png); }
+.alert-warning { background-image: url(https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_images/small_gray_warning.png); }
+.alert-question {background-image:url(https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_images/small_gray_question.png); }
+
+div { text-align: justify; text-justify: inter-word; }
+
+    </style>
+
+
+</head>
+
+<!-- tocinfo
+{'highest level': 1,
+ 'sections': [('Web frameworks', 1, None, '___sec0'),
+              ('Other frameworks', 3, None, '___sec1'),
+              ('The MVC pattern', 2, None, '___sec2'),
+              ('A very simple application', 2, None, '___sec3'),
+              ('Application of the MVC pattern', 2, 'wf:hw:mvc', 'wf:hw:mvc'),
+              ('Making a Flask application', 1, None, '___sec5'),
+              ('Programming the Flask application', 2, None, '___sec6'),
+              ('The user interaction', 3, None, '___sec7'),
+              ('The Python code', 3, None, '___sec8'),
+              ('Dissection', 3, None, '___sec9'),
+              ('The template files', 3, None, '___sec10'),
+              ('Testing the application', 3, None, '___sec11'),
+              ('Equipping the input page with output results',
+               2,
+               None,
+               '___sec12'),
+              ('Splitting the app into model, view, and controller files',
+               2,
+               'wf:hw3:flask',
+               'wf:hw3:flask'),
+              ('Troubleshooting', 2, None, '___sec14'),
+              ('Address already in use', 3, None, '___sec15'),
+              ('Making a Django application', 1, None, '___sec16'),
+              ('Setting up a Django project', 2, None, '___sec17'),
+              ('Setting up a Django application', 2, None, '___sec18'),
+              ('Programming the Django application', 2, None, '___sec19'),
+              ('The user interaction', 3, None, '___sec20'),
+              ('The model', 3, None, '___sec21'),
+              ('The view', 3, None, '___sec22'),
+              ('Making the input page', 3, None, '___sec23'),
+              ('Making the results page', 3, None, '___sec24'),
+              ('Equipping the input page with output results',
+               2,
+               None,
+               '___sec25'),
+              ('Handling multiple input variables in Flask',
+               1,
+               'wf:vib:flask',
+               'wf:vib:flask'),
+              ('Programming the Flask application',
+               2,
+               'wf:vib1:flask:app',
+               'wf:vib1:flask:app'),
+              ('The compute part', 3, None, '___sec28'),
+              ('The model', 3, None, '___sec29'),
+              ('The view', 3, None, '___sec30'),
+              ('The HTML template', 3, None, '___sec31'),
+              ('Implementing error checking in the template',
+               2,
+               None,
+               '___sec32'),
+              ('Using style sheets', 2, None, '___sec33'),
+              ('Using LaTeX mathematics', 2, None, '___sec34'),
+              ('Rearranging the elements in the HTML template',
+               2,
+               None,
+               '___sec35'),
+              ('Bootstrap HTML style', 2, None, '___sec36'),
+              ('Custom validation',
+               2,
+               'wf:vib1:flask:validation',
+               'wf:vib1:flask:validation'),
+              ('Using Flask validators', 3, None, '___sec38'),
+              ('Tailored validation', 3, None, '___sec39'),
+              ('Tailored validation of intervals', 3, None, '___sec40'),
+              ('Demo', 3, None, '___sec41'),
+              ('Avoiding plot files',
+               2,
+               'wf:vib2:flask:nofiles',
+               'wf:vib2:flask:nofiles'),
+              ('PNG plots', 3, None, '___sec43'),
+              ('SVG plots', 3, None, '___sec44'),
+              ('Using mpld3', 3, None, '___sec45'),
+              ('Plotting with the Bokeh library',
+               2,
+               'wf:bokeh:flask',
+               'wf:bokeh:flask'),
+              ('Pandas highcharts plotting library', 3, None, '___sec47'),
+              ('Autogenerating the code',
+               2,
+               'wf:autogen:flask',
+               'wf:autogen:flask'),
+              ('Inspecting function signatures', 3, None, '___sec49'),
+              ('Generating the model', 3, None, '___sec50'),
+              ('Generating the view', 3, None, '___sec51'),
+              ('Generating the template', 3, None, '___sec52'),
+              ('Application', 3, None, '___sec53'),
+              ('User login and storage of computed results',
+               2,
+               'wf:flask:login',
+               'wf:flask:login'),
+              ('Required additional software', 3, None, '___sec55'),
+              ('The compute part', 3, None, '___sec56'),
+              ('The interfaces of the app', 3, None, '___sec57'),
+              ('The source code', 3, None, '___sec58'),
+              ('Resources', 3, None, '___sec59'),
+              ('Uploading of files', 2, 'wf:flask:upload', 'wf:flask:upload'),
+              ('Overview of the application', 3, None, '___sec61'),
+              ('The model class', 3, None, '___sec62'),
+              ('The controller file', 3, None, '___sec63'),
+              ('The compute function', 3, None, '___sec64'),
+              ('The HTML template', 3, None, '___sec65'),
+              ('Handling multiple input variables in Django',
+               1,
+               'wf:vib:django',
+               'wf:vib:django'),
+              ('Programming the Django application', 2, None, '___sec67'),
+              ('Adding the app to a project', 3, None, '___sec68'),
+              ('The compute part', 3, None, '___sec69'),
+              ('The model', 3, None, '___sec70'),
+              ('The view', 3, None, '___sec71'),
+              ('Custom validation', 2, None, '___sec72'),
+              ('Customizing widgets', 2, None, '___sec73'),
+              ('Resources', 2, None, '___sec74'),
+              ('Exercises', 1, None, '___sec75'),
+              ('Exercise 1: Add two numbers',
+               2,
+               'wf:exer:add2',
+               'wf:exer:add2'),
+              ('Exercise 2: Upload data file and visualize curves',
+               2,
+               'wf:exer:upload',
+               'wf:exer:upload'),
+              ('Exercise 3: Plot a user-specified formula',
+               2,
+               'wf:exer:formula',
+               'wf:exer:formula'),
+              ('Exercise 4: Visualize Taylor polynomial approximations',
+               2,
+               'wf:exer:Taylor',
+               'wf:exer:Taylor'),
+              ('Exercise 5: Extend the `gen` app',
+               2,
+               'wf:exer:gen:demo',
+               'wf:exer:gen:demo'),
+              ('Exercise 6: Make a web app with multiple apps',
+               2,
+               'wf:exer:addmul',
+               'wf:exer:addmul'),
+              ('Exercise 7: Equip the `gen` app with more data types',
+               2,
+               'wf:exer:gen:lists',
+               'wf:exer:gen:lists'),
+              ('Exercise 8: Auto-generate code from function signature',
+               2,
+               None,
+               '___sec83'),
+              ('Project 9: Interactive function exploration',
+               2,
+               'wf:exer:bokeh_UI',
+               'wf:exer:bokeh_UI'),
+              ('Resources', 1, None, '___sec85'),
+              ('Flask resources', 2, None, '___sec86'),
+              ('Django resources', 2, None, '___sec87')]}
+end of tocinfo -->
+
+<body>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+     equationNumbers: {  autoNumber: "none"  },
+     extensions: ["AMSmath.js", "AMSsymbols.js", "autobold.js", "color.js"]
+  }
+});
+
+</script>
+<script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<a name="part0007"></a>
+<p>
+    <!-- begin top navigation -->
+<table style="width: 100%">
+    <tr>
+        <td>
+            <div style="text-align: left;"><a href="._web4sa_plain006.html">&laquo; Previous</a></div>
+        </td>
+        <td>
+            <div style="text-align: right;"><a href="._web4sa_plain008.html">Next &raquo;</a></div>
+        </td>
+    </tr>
+</table>
+<!-- end top navigation -->
+</p>
+
+<p>
+    <!-- !split -->
+
+<h2 id="___sec19">Programming the Django application </h2>
+
+<p>
+    The Django application is about filling the files <code>views.py</code> and <code>models.py</code>
+    with content. The mathematical computations are performed in <code>compute.py</code>
+    so we copy this file from the <code>mvc</code> directory to the <code>hw1</code> directory
+    for convenience (we could alternatively add <code>../mvc</code> to <code>sys.path</code> such that
+    <code>import compute</code> would work from the <code>hw1</code> directory).
+
+<h3 id="___sec20">The user interaction </h3>
+
+<p>
+    The web application offers a text field where the user can
+    write the value of <code>r</code>, see Figure <a href="#wf:hw1:django:fig:input">4</a>.
+    After clicking on the <em>equals</em> button,
+    the mathematics is performed and a new page as
+    seen in Figure <a href="#wf:hw1:django:fig:result">5</a> appears.
+
+<p>
+    <center> <!-- figure -->
+        <hr class="figure">
+        <center>
+<p class="caption">Figure 4: The input page.
+<div id="wf:hw1:django:fig:input"></div>
+</p></center>
+<p><img src="fig-web4sa/hw1_django_input.png" align="bottom" width=600></p>
+</center>
+
+<p>
+    <center> <!-- figure -->
+        <hr class="figure">
+        <center>
+<p class="caption">Figure 5: The result page.
+<div id="wf:hw1:django:fig:result"></div>
+</p></center>
+<p><img src="fig-web4sa/hw1_django_output.png" align="bottom" width=600></p>
+</center>
+
+<h3 id="___sec21">The model </h3>
+
+<p>
+    The <code>models.py</code> file contains the model, which consists
+    of the data we need in the application, stored in Django's data types.
+    Our data consists of one number, called <code>r</code>, and <code>models.py</code> then
+    look like
+
+<p>
+
+    <!-- code=python (!bc pypro) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span
+        style="color: #008000; font-weight: bold">from</span> <span
+        style="color: #0000FF; font-weight: bold">django.db</span> <span style="color: #008000; font-weight: bold">import</span> models
+<span style="color: #008000; font-weight: bold">from</span> <span
+            style="color: #0000FF; font-weight: bold">django.forms</span> <span
+            style="color: #008000; font-weight: bold">import</span> ModelForm
+
+<span style="color: #008000; font-weight: bold">class</span> <span
+            style="color: #0000FF; font-weight: bold">Input</span>(models<span style="color: #666666">.</span>Model):
+    r <span style="color: #666666">=</span> models<span style="color: #666666">.</span>FloatField()
+
+<span style="color: #008000; font-weight: bold">class</span> <span
+            style="color: #0000FF; font-weight: bold">InputForm</span>(ModelForm):
+    <span style="color: #008000; font-weight: bold">class</span> <span
+            style="color: #0000FF; font-weight: bold">Meta</span>:
+        model <span style="color: #666666">=</span> Input
+</pre>
+</div>
+<p>
+    The <code>Input</code> class lists variables representing data as static class
+    attributes. The <code>django.db.models</code> module contains various classes
+    for different types of data, here we use <code>FloatField</code> to represent
+    a floating-point number.
+    The <code>InputForm</code> class has a the shown generic form across applications
+    if we by convention apply the name <code>Input</code> for the class holding the data.
+
+<h3 id="___sec22">The view </h3>
+
+<p>
+    The <code>views.py</code> file contains a function <code>index</code> which defines
+    the actions we want to perform when invoking
+    the URL ( here <code>http://127.0.0.1:8000/hw1/</code>).
+    In addition, <code>views.py</code> has the <code>present_output</code> function from
+    the <code>view.py</code> file in the <code>mvc</code> directory.
+
+<p>
+
+    <!-- code=python (!bc pypro) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span
+        style="color: #008000; font-weight: bold">from</span> <span style="color: #0000FF; font-weight: bold">django.shortcuts</span> <span
+        style="color: #008000; font-weight: bold">import</span> render_to_response
+<span style="color: #008000; font-weight: bold">from</span> <span style="color: #0000FF; font-weight: bold">django.template</span> <span
+            style="color: #008000; font-weight: bold">import</span> RequestContext
+<span style="color: #008000; font-weight: bold">from</span> <span
+            style="color: #0000FF; font-weight: bold">django.http</span> <span
+            style="color: #008000; font-weight: bold">import</span> HttpResponse
+<span style="color: #008000; font-weight: bold">from</span> <span
+            style="color: #0000FF; font-weight: bold">models</span> <span style="color: #008000; font-weight: bold">import</span> InputForm
+<span style="color: #008000; font-weight: bold">from</span> <span
+            style="color: #0000FF; font-weight: bold">compute</span> <span style="color: #008000; font-weight: bold">import</span> compute
+
+<span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">index</span>(request):
+    <span style="color: #008000; font-weight: bold">if</span> request<span style="color: #666666">.</span>method <span
+            style="color: #666666">==</span> <span style="color: #BA2121">&#39;POST&#39;</span>:
+        form <span style="color: #666666">=</span> InputForm(request<span style="color: #666666">.</span>POST)
+        <span style="color: #008000; font-weight: bold">if</span> form<span style="color: #666666">.</span>is_valid():
+            form <span style="color: #666666">=</span> form<span style="color: #666666">.</span>save(commit<span
+            style="color: #666666">=</span><span style="color: #008000">False</span>)
+            <span style="color: #008000; font-weight: bold">return</span> present_output(form)
+    <span style="color: #008000; font-weight: bold">else</span>:
+        form <span style="color: #666666">=</span> InputForm()
+
+    <span style="color: #008000; font-weight: bold">return</span> render_to_response(<span style="color: #BA2121">&#39;hw1.html&#39;</span>,
+            {<span style="color: #BA2121">&#39;form&#39;</span>: form}, context_instance<span
+            style="color: #666666">=</span>RequestContext(request))
+
+<span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">present_output</span>(form):
+    r <span style="color: #666666">=</span> form<span style="color: #666666">.</span>r
+    s <span style="color: #666666">=</span> compute(r)
+    <span style="color: #008000; font-weight: bold">return</span> HttpResponse(<span style="color: #BA2121">&#39;Hello, World! sin(</span><span
+            style="color: #BB6688; font-weight: bold">%s</span><span style="color: #BA2121">)=</span><span
+            style="color: #BB6688; font-weight: bold">%s</span><span style="color: #BA2121">&#39;</span> <span
+            style="color: #666666">%</span> (r, s))
+</pre>
+</div>
+<p>
+    The <code>index</code> function deserves some explanation. It must take one
+    argument, usually called <code>request</code>. There are two modes in the function. Either
+    the user has provided input on the web page, which means that
+    <code>request.method</code> equals <code>'POST'</code>, or we show a new web page
+    with which the user is supposed to interact.
+
+<h3 id="___sec23">Making the input page </h3>
+
+<p>
+    The input consists of a web form with
+    one field where we can fill in our <code>r</code> variable. This page
+    is realized by the two central statements
+
+<p>
+
+    <!-- code=python (!bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span
+        style="color: #408080; font-style: italic"># Make info needed in the web form</span>
+form <span style="color: #666666">=</span> InputForm()
+<span style="color: #408080; font-style: italic"># Make HTML code</span>
+render_to_response(<span style="color: #BA2121">&#39;hw1.html&#39;</span>,
+    {<span style="color: #BA2121">&#39;form&#39;</span>: form}, context_instance<span style="color: #666666">=</span>RequestContext(request))
+</pre>
+</div>
+<p>
+    The <code>hw1.html</code> file resides in the <code>templates</code> subdirectory and contains
+    a template for the HTML code:
+
+<p>
+
+    <!-- code=html (!bc htmlpro) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span
+        style="color: #008000; font-weight: bold">&lt;form</span> <span style="color: #7D9029">method=</span><span
+        style="color: #BA2121">&quot;post&quot;</span> <span style="color: #7D9029">action=</span><span
+        style="color: #BA2121">&quot;&quot;</span><span style="color: #008000; font-weight: bold">&gt;</span>{% csrf_token %}
+    Hello, World! The sine of {{ form.r }}
+    <span style="color: #008000; font-weight: bold">&lt;input</span> <span style="color: #7D9029">type=</span><span
+            style="color: #BA2121">&quot;submit&quot;</span> <span style="color: #7D9029">value=</span><span
+            style="color: #BA2121">&quot;equals&quot;</span> <span
+            style="color: #008000; font-weight: bold">/&gt;</span>
+<span style="color: #008000; font-weight: bold">&lt;/form&gt;</span>
+</pre>
+</div>
+<p>
+    This is a <em>template file</em> because it contains instructions like
+    <code>{% csrf_token %}</code> and variables like <code>{{ form.r }}</code>. Django will
+    replace the former by some appropriate HTML statements, while the
+    latter simply extracts the numerical value of the variable <code>r</code> in
+    our form (specified in the <code>Input</code> class in <code>models.py</code>).
+    Typically, this <code>hw1.html</code> file
+    results in the HTML code
+
+<p>
+
+    <!-- code=html (!bc htmlpro) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span
+        style="color: #008000; font-weight: bold">&lt;form</span> <span style="color: #7D9029">method=</span><span
+        style="color: #BA2121">&quot;post&quot;</span> <span style="color: #7D9029">action=</span><span
+        style="color: #BA2121">&quot;&quot;</span><span style="color: #008000; font-weight: bold">&gt;</span>
+<span style="color: #008000; font-weight: bold">&lt;div</span> <span style="color: #7D9029">style=</span><span
+            style="color: #BA2121">&#39;display:none&#39;</span><span
+            style="color: #008000; font-weight: bold">&gt;</span>
+<span style="color: #008000; font-weight: bold">&lt;input</span> <span style="color: #7D9029">type=</span><span
+            style="color: #BA2121">&#39;hidden&#39;</span> <span style="color: #7D9029">name=</span><span
+            style="color: #BA2121">&#39;csrfmiddlewaretoken&#39;</span>
+<span style="color: #7D9029">value=</span><span style="color: #BA2121">&#39;oPWMuuy1gLlXm9GvUZINv49eVUYnux5Q&#39;</span> <span
+            style="color: #008000; font-weight: bold">/&gt;&lt;/div&gt;</span>
+    Hello, World! The sine of <span style="color: #008000; font-weight: bold">&lt;input</span> <span
+            style="color: #7D9029">type=</span><span style="color: #BA2121">&quot;text&quot;</span> <span
+            style="color: #7D9029">name=</span><span style="color: #BA2121">&quot;r&quot;</span> <span
+            style="color: #7D9029">id=</span><span style="color: #BA2121">&quot;id_r&quot;</span> <span
+            style="color: #008000; font-weight: bold">/&gt;</span>
+    <span style="color: #008000; font-weight: bold">&lt;input</span> <span style="color: #7D9029">type=</span><span
+            style="color: #BA2121">&quot;submit&quot;</span> <span style="color: #7D9029">value=</span><span
+            style="color: #BA2121">&quot;equals&quot;</span> <span
+            style="color: #008000; font-weight: bold">/&gt;</span>
+<span style="color: #008000; font-weight: bold">&lt;/form&gt;</span>
+</pre>
+</div>
+
+<h3 id="___sec24">Making the results page </h3>
+
+<p>
+    When then user has filled in a value in the text field on the input
+    page, the <code>index</code> function is called again and <code>request.method</code> equals
+    <code>'POST'</code>. A new form object is made, this time with user info (<code>request.POST</code>).
+    We can check that the form is valid and if so, proceed with
+    computations followed by presenting the results in a
+    new web page (see Figure <a href="#wf:hw1:django:fig:result">5</a>):
+
+<p>
+
+    <!-- code=python (!bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span
+        style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">index</span>(request):
+    <span style="color: #008000; font-weight: bold">if</span> request<span style="color: #666666">.</span>method <span
+            style="color: #666666">==</span> <span style="color: #BA2121">&#39;POST&#39;</span>:
+        form <span style="color: #666666">=</span> InputForm(request<span style="color: #666666">.</span>POST)
+        <span style="color: #008000; font-weight: bold">if</span> form<span style="color: #666666">.</span>is_valid():
+            form <span style="color: #666666">=</span> form<span style="color: #666666">.</span>save(commit<span
+            style="color: #666666">=</span><span style="color: #008000">False</span>)
+            <span style="color: #008000; font-weight: bold">return</span> present_output(form)
+
+<span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">present_output</span>(form):
+    r <span style="color: #666666">=</span> form<span style="color: #666666">.</span>r
+    s <span style="color: #666666">=</span> compute(r)
+    <span style="color: #008000; font-weight: bold">return</span> HttpResponse(<span style="color: #BA2121">&#39;Hello, World! sin(</span><span
+            style="color: #BB6688; font-weight: bold">%s</span><span style="color: #BA2121">)=</span><span
+            style="color: #BB6688; font-weight: bold">%s</span><span style="color: #BA2121">&#39;</span> <span
+            style="color: #666666">%</span> (r, s))
+</pre>
+</div>
+<p>
+    The numerical value of <code>r</code> as given by the user is available as <code>form.r</code>.
+    Instead of using a template for the output page, which is natural to
+    do in more advanced cases, we here illustrate the possibility to
+    send raw HTML to the output page by returning an <code>HttpResponse</code>
+    object initialized by a string containing the desired HTML code.
+
+<p>
+    Launch this application by filling in the address <code>http://127.0.0.1:8000/hw1/</code>
+    in your web browser. Make sure the Django development server is running,
+    and if not, restart it by
+
+<p>
+
+    <!-- code=text (!bc sys) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">Terminal&gt; python ../../../django_project/manage.py runserver
+</pre>
+</div>
+<p>
+    Fill
+    in some number on the input page and view the output.
+    To show how easy it is to change the application, invoke the <code>views.py</code>
+    file in an editor and add some color to the output HTML code from
+    the <code>present_output</code> function:
+
+<p>
+
+    <!-- code=python (!bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">    <span
+        style="color: #008000; font-weight: bold">return</span> HttpResponse(<span style="color: #BA2121">&quot;&quot;&quot;</span>
+<span style="color: #BA2121">&lt;font color=&#39;blue&#39;&gt;Hello&lt;/font&gt;, World!</span>
+<span style="color: #BA2121">sin(</span><span style="color: #BB6688; font-weight: bold">%s</span><span
+            style="color: #BA2121">)=</span><span style="color: #BB6688; font-weight: bold">%s</span><span
+            style="color: #BA2121"></span>
+<span style="color: #BA2121">&quot;&quot;&quot;</span><span style="color: #666666">%</span> (r, s))
+</pre>
+</div>
+<p>
+    Go back to the input page, provide a new number, and observe how
+    the "Hello" word now has a blue color.
+
+<h2 id="___sec25">Equipping the input page with output results </h2>
+
+<p>
+    Instead of making a separate output page with the result, we can
+    simply add the sine value to the input page. This makes the user
+    feel that she interacts with the same page, as when operating a calculator.
+    The output page should then look as shown in Figure <a href="#wf:hw2:django:fig:result">6</a>.
+
+<p>
+    <center> <!-- figure -->
+        <hr class="figure">
+        <center>
+<p class="caption">Figure 6: The modified result page.
+<div id="wf:hw2:django:fig:result"></div>
+</p></center>
+<p><img src="fig-web4sa/hw2_django_output.png" align="bottom" width=600></p>
+</center>
+
+<p>
+    We need to make a new Django application, now called
+    <a href="https://github.com/hplgit/web4sciapps/tree/master/doc/src/web4sa/src-web4sa/apps/django_apps/hw2"
+       target="_self"><tt>hw2</tt></a>.
+    Instead of running the standard
+    <code>manage.py startapp hw2</code> command,
+    we can simply copy the <code>hw1</code>
+    directory to <code>hw2</code>. We need, of course, to add information about this
+    new application in <code>settings.py</code> and <code>urls.py</code>.
+    In the former file we must have
+
+<p>
+
+    <!-- code=python (!bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">TEMPLATE_DIRS <span
+        style="color: #666666">=</span> (
+    relative2absolute_path(<span style="color: #BA2121">&#39;../../apps/django_apps/hw1/templates&#39;</span>),
+    relative2absolute_path(<span style="color: #BA2121">&#39;../../apps/django_apps/hw2/templates&#39;</span>),
+)
+
+INSTALLED_APPS <span style="color: #666666">=</span> (
+    <span style="color: #BA2121">&#39;django.contrib.auth&#39;</span>,
+    <span style="color: #BA2121">&#39;django.contrib.contenttypes&#39;</span>,
+    <span style="color: #BA2121">&#39;django.contrib.sessions&#39;</span>,
+    <span style="color: #BA2121">&#39;django.contrib.sites&#39;</span>,
+    <span style="color: #BA2121">&#39;django.contrib.messages&#39;</span>,
+    <span style="color: #BA2121">&#39;django.contrib.staticfiles&#39;</span>,
+    <span style="color: #408080; font-style: italic"># Uncomment the next line to enable the admin:</span>
+    <span style="color: #408080; font-style: italic"># &#39;django.contrib.admin&#39;,</span>
+    <span style="color: #408080; font-style: italic"># Uncomment the next line to enable admin documentation:</span>
+    <span style="color: #408080; font-style: italic"># &#39;django.contrib.admindocs&#39;,</span>
+    <span style="color: #BA2121">&#39;hw1&#39;</span>,
+    <span style="color: #BA2121">&#39;hw2&#39;</span>,
+)
+</pre>
+</div>
+<p>
+    In <code>urls.py</code> we add the URL <code>hw2</code> which is to call our <code>index</code> function
+    in the <code>views.py</code> file of the <code>hw2</code> app:
+
+<p>
+
+    <!-- code=python (!bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">urlpatterns <span
+        style="color: #666666">=</span> patterns(<span style="color: #BA2121">&#39;&#39;</span>,
+    url(<span style="color: #BA2121">r&#39;^hw1/&#39;</span>, <span style="color: #BA2121">&#39;django_apps.hw1.views.index&#39;</span>),
+    url(<span style="color: #BA2121">r&#39;^hw2/&#39;</span>, <span style="color: #BA2121">&#39;django_apps.hw2.views.index&#39;</span>),
+</pre>
+</div>
+<p>
+    The <code>views.py</code> file changes a bit since we shall generate almost the same
+    web page on input and output. This makes the <code>present_output</code> function
+    unnatural, and everything is done within the <code>index</code> function:
+
+<p>
+
+    <!-- code=python (!bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span
+        style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">index</span>(request):
+    s <span style="color: #666666">=</span> <span style="color: #008000">None</span>  <span
+            style="color: #408080; font-style: italic"># initial value of result</span>
+    <span style="color: #008000; font-weight: bold">if</span> request<span style="color: #666666">.</span>method <span
+            style="color: #666666">==</span> <span style="color: #BA2121">&#39;POST&#39;</span>:
+        form <span style="color: #666666">=</span> InputForm(request<span style="color: #666666">.</span>POST)
+        <span style="color: #008000; font-weight: bold">if</span> form<span style="color: #666666">.</span>is_valid():
+            form <span style="color: #666666">=</span> form<span style="color: #666666">.</span>save(commit<span
+            style="color: #666666">=</span><span style="color: #008000">False</span>)
+            r <span style="color: #666666">=</span> form<span style="color: #666666">.</span>r
+            s <span style="color: #666666">=</span> compute(r)
+    <span style="color: #008000; font-weight: bold">else</span>:
+        form <span style="color: #666666">=</span> InputForm()
+
+    <span style="color: #008000; font-weight: bold">return</span> render_to_response(<span style="color: #BA2121">&#39;hw2.html&#39;</span>,
+            {<span style="color: #BA2121">&#39;form&#39;</span>: form,
+             <span style="color: #BA2121">&#39;s&#39;</span>: <span style="color: #BA2121">&#39;</span><span
+            style="color: #BB6688; font-weight: bold">%.5f</span><span style="color: #BA2121">&#39;</span> <span
+            style="color: #666666">%</span> s <span style="color: #008000; font-weight: bold">if</span> <span
+            style="color: #008000">isinstance</span>(s, <span style="color: #008000">float</span>) <span
+            style="color: #008000; font-weight: bold">else</span> <span style="color: #BA2121">&#39;&#39;</span>
+             }, context_instance<span style="color: #666666">=</span>RequestContext(request))
+</pre>
+</div>
+<p>
+    Note that the output variable <code>s</code> is computed within the <code>index</code>
+    function and defaults to <code>None</code>. The template file <code>hw2.html</code>
+    looks like
+
+<p>
+
+    <!-- code=html (!bc htmlpro) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span
+        style="color: #008000; font-weight: bold">&lt;form</span> <span style="color: #7D9029">method=</span><span
+        style="color: #BA2121">&quot;post&quot;</span> <span style="color: #7D9029">action=</span><span
+        style="color: #BA2121">&quot;&quot;</span><span style="color: #008000; font-weight: bold">&gt;</span>{% csrf_token %}
+    Hello, World! The sine of {{ form.r }}
+    <span style="color: #008000; font-weight: bold">&lt;input</span> <span style="color: #7D9029">type=</span><span
+            style="color: #BA2121">&quot;submit&quot;</span> <span style="color: #7D9029">value=</span><span
+            style="color: #BA2121">&quot;equals&quot;</span> <span
+            style="color: #008000; font-weight: bold">/&gt;</span>
+{% if s != &#39;&#39; %}
+{{ s }}
+{% endif %}
+<span style="color: #008000; font-weight: bold">&lt;/form&gt;</span>
+</pre>
+</div>
+<p>
+    The difference from <code>hw1.html</code> is that we right after the <em>equals</em>
+    button write out the value of <code>s</code>. However, we make a test that
+    the value is only written if it is computed, here recognized by
+    being a non-empty string. The <code>s</code> in the template file
+    is substituted by the value of the object
+    corresponding to the key <code>'s'</code> in the
+    dictionary we pass to the <code>render_to_response</code>. As seen,
+    we pass a string where <code>s</code> is formatted with five digits if <code>s</code>
+    is a float, i.e., if <code>s</code> is computed. Otherwise, <code>s</code> has the
+    default value <code>None</code> and we send an empty string to the template.
+    The template language allows tests using Python syntax, but the
+    if-block must be explicitly ended by <code>{% endif %}</code>.
+
+<p>
+<p>
+    <!-- begin bottom navigation -->
+<table style="width: 100%">
+    <tr>
+        <td>
+            <div style="text-align: left;"><a href="._web4sa_plain006.html">&laquo; Previous</a></div>
+        </td>
+        <td>
+            <div style="text-align: right;"><a href="._web4sa_plain008.html">Next &raquo;</a></div>
+        </td>
+    </tr>
+</table>
+<!-- end bottom navigation -->
+</p>
+
+<!-- ------------------- end of main content --------------- -->
+
+
+<center style="font-size:80%">
+    <!-- copyright only on the titlepage -->
+</center>
+
+
+</body>
+</html>
+    
+

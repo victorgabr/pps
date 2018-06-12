@@ -39,8 +39,14 @@ class DicomParserBase(object):
                 if dicom.__version__ >= "0.9.5":
                     self.ds = dicom.read_file(
                         filename, defer_size=100, force=True)
+                    # force tansfer syntax uid
+                    if 'TransferSyntaxUID' not in self.ds:
+                        self.ds.file_meta.TransferSyntaxUID = dicom.uid.ImplicitVRLittleEndian
                 else:
                     self.ds = dicom.read_file(filename, defer_size=100)
+                    # force tansfer sintax uid
+                    if 'TransferSyntaxUID' not in self.ds:
+                        self.ds.file_meta.TransferSyntaxUID = dicom.uid.ImplicitVRLittleEndian
             except (EOFError, IOError):
                 # Raise the error for the calling method to handle
                 raise
@@ -247,8 +253,8 @@ class DicomParserBase(object):
         """Apply the RGB Look-Up Table for the given data and window/level value."""
 
         lutvalue = np.piecewise(data, [
-            data <= (level - 0.5 - (window - 1) / 2), data > (level - 0.5 +
-                                                              (window - 1) / 2)
+            data <= (level - 0.5 - (window - 1) / 2), data >
+            (level - 0.5 + (window - 1) / 2)
         ], [
             0, 255,
             lambda data: ((data - (level - 0.5)) / (window - 1) + 0.5) * (255 - 0)
@@ -598,8 +604,8 @@ class DicomParserBase(object):
             # Determine the distance from each point in the upper bound to each point in the lower bound
             for l, lp in enumerate(lbpoints):
                 newDist = sqrt(
-                    pow((up[0] - lp[0]), 2) + pow((up[1] - lp[1]), 2) + pow(
-                        (ub - lb), 2))
+                    pow((up[0] - lp[0]), 2) + pow((up[1] - lp[1]), 2) +
+                    pow((ub - lb), 2))
                 # If the distance is smaller, then linearly interpolate the point
                 if newDist < dist:
                     dist = newDist

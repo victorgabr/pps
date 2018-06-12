@@ -1,0 +1,228 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="generator" content="Doconce: http://code.google.com/p/doconce/"/>
+
+    <link rel="stylesheet"
+          href="https://raw.githubusercontent.com/hplgit/doconce/master/bundled/html_styles/style_vagrant/css/twitter_bootstrap.css">
+    <link rel="stylesheet"
+          href="https://raw.githubusercontent.com/hplgit/doconce/master/bundled/html_styles/style_vagrant/css/vagrant.css">
+    <!-- Define color of headings here (last definition counts) -->
+    <style type="text/css">
+h1, h2, h3, h4, h5, h6 {
+  color: #000;     /* black */
+  color: #999;     /* gray */
+  color: #005580;  /* dark blue */
+  color: #08c;     /* characteristic blue */
+
+    </style>
+</head>
+<body>
+
+<title>Using Django for Scientific Web Applications</title>
+
+<div class="container">
+    <div class="row Header with-border">
+        <div class="span3 Module logo">
+            <h1><a href="/">Django<span class="subtitle">4scientists</span></a></h1>
+        </div>
+        <div class="span9">
+            <div class="Module navigation">
+                <ul>
+                    <li><a href="https://www.djangoproject.com/">Django</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="span3 Module sidebar">
+        <div class="well" style="padding: 8px 0px;">
+            <ul class="nav nav-list">
+                <!-- navigation toc: -->
+                <li><a href="._web4sa_django000.html#___sec0" style="font-size: 80%;">Web frameworks</a></li>
+                <!-- navigation toc: -->
+                <li><a href="._web4sa_django004.html#___sec4" style="font-size: 80%;">Making a Django application</a>
+                </li>
+                <!-- navigation toc: -->
+                <li><a href="._web4sa_django006.html#wf:vib:django" style="font-size: 80%;">Handling multiple input
+                    variables in Django</a></li>
+                <!-- navigation toc: -->
+                <li><a href="._web4sa_django008.html#___sec23" style="font-size: 80%;">Exercises</a></li>
+                <!-- navigation toc: -->
+                <li><a href="._web4sa_django008.html#___sec28" style="font-size: 80%;">Django resources</a></li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="span9">
+
+
+        <!-- tocinfo
+        {'highest level': 1,
+         'sections': [('Web frameworks', 1, None, '___sec0'),
+                      ('The MVC pattern', 2, None, '___sec1'),
+                      ('A very simple application', 2, None, '___sec2'),
+                      ('Application of the MVC pattern', 2, 'wf:hw:mvc', 'wf:hw:mvc'),
+                      ('Making a Django application', 1, None, '___sec4'),
+                      ('Setting up a Django project', 2, None, '___sec5'),
+                      ('Setting up a Django application', 2, None, '___sec6'),
+                      ('Programming the Django application', 2, None, '___sec7'),
+                      ('The user interaction', 3, None, '___sec8'),
+                      ('The model', 3, None, '___sec9'),
+                      ('The view', 3, None, '___sec10'),
+                      ('Making the input page', 3, None, '___sec11'),
+                      ('Making the results page', 3, None, '___sec12'),
+                      ('Equipping the input page with output results',
+                       2,
+                       None,
+                       '___sec13'),
+                      ('Handling multiple input variables in Django',
+                       1,
+                       'wf:vib:django',
+                       'wf:vib:django'),
+                      ('Programming the Django application', 2, None, '___sec15'),
+                      ('Adding the app to a project', 3, None, '___sec16'),
+                      ('The compute part', 3, None, '___sec17'),
+                      ('The model', 3, None, '___sec18'),
+                      ('The view', 3, None, '___sec19'),
+                      ('Custom validation', 2, None, '___sec20'),
+                      ('Customizing widgets', 2, None, '___sec21'),
+                      ('Resources', 2, None, '___sec22'),
+                      ('Exercises', 1, None, '___sec23'),
+                      ('Exercise 1: Add two numbers',
+                       2,
+                       'wf:exer:add2',
+                       'wf:exer:add2'),
+                      ('Exercise 2: Upload data file and visualize curves',
+                       2,
+                       'wf:exer:upload',
+                       'wf:exer:upload'),
+                      ('Exercise 3: Plot a user-specified formula',
+                       2,
+                       'wf:exer:formula',
+                       'wf:exer:formula'),
+                      ('Exercise 4: Visualize Taylor polynomial approximations',
+                       2,
+                       'wf:exer:Taylor',
+                       'wf:exer:Taylor'),
+                      ('Django resources', 1, None, '___sec28')]}
+        end of tocinfo -->
+
+
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+     equationNumbers: {  autoNumber: "none"  },
+     extensions: ["AMSmath.js", "AMSsymbols.js", "autobold.js", "color.js"]
+  }
+});
+
+        </script>
+        <script type="text/javascript"
+                src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+
+
+        <a name="part0001"></a>
+        <!-- !split -->
+
+        <h2 id="___sec1">The MVC pattern </h2>
+
+        <p>
+            The MVC pattern stands for Model-View-Controller and is a way of
+            separating the user's interaction with an application from the inner
+            workings of the application. In a scientific application this
+            usually means separating mathematical computations from the
+            user interface and visualization of results.
+            The <a href="http://en.wikipedia.org/wiki/MVC_Pattern" target="_self">Wikipedia definition of the MVC
+            pattern</a> gives a very high-level
+            explanation of what the model, view, and controller do and mentions
+            the fact that different web frameworks interpret the three components
+            differently. Any web application works with a set of data and needs
+            a user interface for the communication of data between the user and
+            some data processing software. The classical
+            MVC pattern introduces
+
+        <ul>
+            <li> the model to hold the data</li>
+            <li> the view to display the data</li>
+            <li> the controller to move the data by gluing the model and the view.</li>
+        </ul>
+
+        For applications performing mathematical computations we find it
+        convenient to explicitly introduce a fourth component that we call
+        <em>compute</em> where the mathematical computations are encapsulated. With
+        the MVC pattern and the compute component we have a clear separation
+        between data (model), the way data is presented (view), the
+        computations (compute), and the way these components communicate
+        (controller). In a small program such a separation may look as
+        overkill, but it pays off in more complicated applications. More
+        importantly, the concepts of the MVC pattern are widely used in web
+        frameworks and their documentation so one should really adapt to the
+        MVC way of thinking.
+
+        <p>
+            Web frameworks often have their own way of interpreting the
+            model, view, and controller parts of the MVC pattern.
+            In particular, most frameworks often divide the view into two parts:
+            one software component and one HTML template. The latter takes care
+            of the look and feel of the web page while the former often takes
+            the role of being the controller too.
+            For our scientific applications
+            we shall employ an interpretation of the MVC pattern
+            which is compatible with what we need later on:
+
+        <ul>
+            <li> the model contains the data (often only the input data) of the application,</li>
+            <li> the view controls the user interface that handles input and output data,
+                and also calls to functionality that computes the output given the input.
+            </li>
+        </ul>
+
+        The model will be a Python class with static attributes holding the data.
+        The view consists of Python code processing the model's data, calling the
+        compute component, and specifying HTML
+        templates for the design of the web pages.
+
+        <p>
+            Django generates files with names <code>models.py</code> and <code>views.py</code> so the
+            model and view concepts are very explicit.
+            The controller functionality in Django lies both in the <code>views.py</code> file and
+            in configuration
+            files (<code>settings.py</code> and <code>urls.py</code>). The view component consists of
+            the <code>views.py</code> file and HTML templates.
+
+        <p>
+            Forthcoming examples will illustrate how a scientific application is
+            split to meet the requirements of the MVC software design pattern.
+
+        <p>
+        <p>
+            <!-- navigation buttons at the bottom of the page -->
+        <ul class="pager">
+            <li class="previous">
+                <a href="._web4sa_django000.html">&larr; Prev</a>
+            </li>
+            <li class="next">
+                <a href="._web4sa_django002.html">Next &rarr;</a>
+            </li>
+        </ul>
+        <!-- ------------------- end of main content --------------- -->
+
+
+    </div>
+
+    <div class="row Footer">
+        <div class="span12">
+            &copy 2013; Hans Petter Langtangen and Anders E. Johansen.
+            Last update: Oct 11, 2015.
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
