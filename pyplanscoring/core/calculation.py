@@ -432,8 +432,22 @@ class DVHCalculation:
         units = str(self.dose.unit.symbol).upper()
         # TODO inspect nbins change
         # TODO round data to 3 decimal places ?
+        # dvh_data = {
+        #     'data': list(cdvh),  # round 3 decimal
+        #     'bins': len(cdvh),
+        #     'type': 'CUMULATIVE',
+        #     'doseunits': units,
+        #     'volumeunits': 'cm3',
+        #     'scaling': scaling,
+        #     'roi_number': self.structure.roi_number,
+        #     'name': self.structure.name,
+        #     'min': get_dvh_min(cdvh) * scaling,
+        #     'max': get_dvh_max(cdvh, scaling) * scaling,
+        #     'mean': get_dvh_mean(cdvh) * scaling
+        # }
+
         dvh_data = {
-            'data': list(cdvh),  # round 3 decimal
+            'data': list(np.round(cdvh, 2)),  # round 3 decimal
             'bins': len(cdvh),
             'type': 'CUMULATIVE',
             'doseunits': units,
@@ -441,9 +455,9 @@ class DVHCalculation:
             'scaling': scaling,
             'roi_number': self.structure.roi_number,
             'name': self.structure.name,
-            'min': get_dvh_min(cdvh) * scaling,
-            'max': get_dvh_max(cdvh, scaling) * scaling,
-            'mean': get_dvh_mean(cdvh) * scaling
+            'min': np.round(get_dvh_min(cdvh) * scaling, 2),
+            'max': np.round(get_dvh_max(cdvh, scaling) * scaling, 2),
+            'mean': np.round(get_dvh_mean(cdvh) * scaling, 2)
         }
 
         return dvh_data
@@ -542,7 +556,7 @@ class DVHCalculationMP:
         if self.verbose:
             print(" ---- Starting multiprocessing -----")
 
-        res = Parallel()(delayed(self.calculate)(s, g, self.dose, self.verbose)
+        res = Parallel(n_jobs=-1)(delayed(self.calculate)(s, g, self.dose, self.verbose)
                          for s, g in self.calc_data.items())
         # map name, grid and roi_number
         cdvh = {}
