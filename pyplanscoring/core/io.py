@@ -175,8 +175,8 @@ def parse_patient_dicom_folder(pt_folder):
     for dicom_file in dicom_files:
         if os.path.isfile(dicom_file):
             try:
-                ds = pydicom.read_file(dicom_file, defer_size=100, force=True)
-                rt_type = GetSOPClassUID(ds)
+                ds = PyDicomParser(filename=dicom_file)
+                rt_type = ds.GetSOPClassUID()
                 if rt_type == "rtdose":
                     filtered_files["rtdose"] = dicom_file
                 if rt_type == "rtss":
