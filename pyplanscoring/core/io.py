@@ -6,7 +6,6 @@ import pickle
 from pydicom.valuerep import IS
 
 from .dicom_reader import PyDicomParser
-import pydicom
 
 
 def load(filename):
@@ -15,7 +14,7 @@ def load(filename):
     :param filename: Calibration filemane *.fco
     :return: object
     """
-    with bz2.BZ2File(filename, 'rb') as f:
+    with bz2.BZ2File(filename, "rb") as f:
         obj = pickle.load(f)
     return obj
 
@@ -28,7 +27,7 @@ def save(obj, filename, protocol=-1):
     :param protocol: cPickle protocol
     """
     # TODO check if compression is necessary
-    with bz2.BZ2File(filename, 'wb') as f:
+    with bz2.BZ2File(filename, "wb") as f:
         pickle.dump(obj, f, protocol)
 
 
@@ -39,10 +38,22 @@ def save_dvh_json(dvh_data_dict, file_path_name):
     :param file_path_name:
     """
 
-    with open(file_path_name, 'w', encoding='utf-8') as json_file:
-        json.dump(dvh_data_dict,
-                  json_file,
-                  ensure_ascii=False)
+    with open(file_path_name, "w", encoding="utf-8") as json_file:
+        json.dump(dvh_data_dict, json_file, ensure_ascii=False)
+
+
+# def load_dvh_json(file_path_name):
+#     """
+#
+#     :param file_path_name:
+#     :return:
+#     """
+#
+#     with open(file_path_name, 'r', encoding='utf-8') as json_file:
+#         json_dict = json.load(json_file)
+#         # add pydicom key type (int)
+#         json_dict = {IS(k): v for k, v in json_dict.items()}
+#         return json_dict
 
 
 def load_dvh_json(file_path_name):
@@ -52,10 +63,10 @@ def load_dvh_json(file_path_name):
     :return:
     """
 
-    with open(file_path_name, 'r', encoding='utf-8') as json_file:
+    with open(file_path_name, "r", encoding="utf-8") as json_file:
         json_dict = json.load(json_file)
         # add pydicom key type (int)
-        json_dict = {IS(k): v for k, v in json_dict.items()}
+        json_dict = {k: v for k, v in json_dict.items()}
         return json_dict
 
 
@@ -64,7 +75,6 @@ def normalize_data(dvh_data_dict):
 
 
 class IOHandler:
-
     def __init__(self, dvh_data_dict=None, header_info=None):
         """
             Class to encapsulate IO methods for DVH data storage
@@ -135,58 +145,23 @@ def get_participant_folder_data(root_path):
         Provide all participant required files (RP,RS an RD DICOM FILES)
     :param root_path: participant folder
     :return: Pandas DataFrame containing path to files
-
     """
-    filtered_files = parse_patient_dicom_folder(root_path)
+    files = [
+        os.path.join(root, name)
+        for root, dirs, files in os.walk(root_path)
+        for name in files
+        if name.endswith((".dcm", ".DCM", ".dcm_", ".DCM_"))
+    ]
 
-    missing_files = [key for key, value in filtered_files.items() if value is False]
+    filtered_files = {"rtdose": False, "rtplan": False, "rtss": False}
+    for f in files:
+        obj = PyDicomParser(filename=f)
+        rt_type = obj.GetSOPClassUID()
+        # fix halcyon SOP class UI
+        if rt_type is None:
+            rt_type = obj.ds.Modality.lower()
 
-    if not missing_files:
-        return filtered_files, True
-    else:
-        return missing_files, False
-
-
-def GetSOPClassUID(ds):
-    """Determine the SOP Class UID of the current file."""
-
-    if "SOPClassUID" not in ds:
-        return None
-    if ds.SOPClassUID == "1.2.840.10008.5.1.4.1.1.481.2":
-        return "rtdose"
-    elif ds.SOPClassUID == "1.2.840.10008.5.1.4.1.1.481.3":
-        return "rtss"
-    elif ds.SOPClassUID == "1.2.840.10008.5.1.4.1.1.481.5":
-        return "rtplan"
-    elif ds.SOPClassUID == "1.2.840.10008.5.1.4.1.1.2":
-        return "ct"
-    else:
-        return None
-
-
-def parse_patient_dicom_folder(pt_folder):
-    """
-        Method parse an exported patient folder
-    :param pt_folder: path to the patient folder
-    :return: dictionary with rtdose, rtss keys.
-    """
-    dicom_files = [os.path.join(pt_folder, f) for f in os.listdir(pt_folder)]
-    filtered_files = {"rtdose": [], "rtss": [], "rtplan": [], "ct": []}
-    for dicom_file in dicom_files:
-        if os.path.isfile(dicom_file):
-            try:
-                ds = PyDicomParser(filename=dicom_file)
-                rt_type = ds.GetSOPClassUID()
-                if rt_type == "rtdose":
-                    filtered_files["rtdose"] = dicom_file
-                if rt_type == "rtss":
-                    filtered_files["rtss"] = dicom_file
-                if rt_type == "rtplan":
-                    filtered_files["rtplan"] = dicom_file
-                if rt_type == "ct":
-                    filtered_files["ct"].append(dicom_file)
-            except IOError:
-                print("{os.path.split(dicom_file)[-1]} is not dicom")
+        if rt_type in ["rtdose", "rtplan", "rtss"]:
+            filtered_files[rt_type] = f
 
     return filtered_files
-
